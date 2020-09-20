@@ -3,16 +3,12 @@ import { CommonModule } from '@angular/common';
 
 import { PageSimpleModule } from '@custom/pages/page-simple.module';
 import { HomeRoutingModule } from './home-routing.module';
-import { MaterialModule } from '@kernel/material/material.module';
 import { HomeComponent } from './home.component';
+import { ContentComponent } from './content/content.component';
+import { SimpleLayoutComponent } from '@custom/layouts/simple-layout/simple-layout.component';
 
 @NgModule({
-  declarations: [HomeComponent],
-  imports: [
-    PageSimpleModule,
-    CommonModule,
-    HomeRoutingModule,
-  ],
-  exports: [MaterialModule],
+  declarations: [HomeComponent, ContentComponent, SimpleLayoutComponent],
+  imports: [PageSimpleModule, CommonModule, HomeRoutingModule],
 })
 export class HomeModule {}
