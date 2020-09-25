@@ -42,7 +42,11 @@ __webpack_require__.r(__webpack_exports__);
 const routes = [
     {
         path: "",
-        loadChildren: () => __webpack_require__.e(/*! import() | final-pages-home-home-module */ "final-pages-home-home-module").then(__webpack_require__.bind(null, /*! @final/pages/home/home.module */ "./src/final/pages/home/home.module.ts")).then(m => m.HomeModule)
+        loadChildren: () => Promise.all(/*! import() | final-pages-home-page-home-module */[__webpack_require__.e("default~final-pages-home-page-home-module~final-pages-login-page-login-module"), __webpack_require__.e("final-pages-home-page-home-module")]).then(__webpack_require__.bind(null, /*! @final/pages/home/page.home.module */ "./src/final/pages/home/page.home.module.ts")).then(m => m.PageHomeModule)
+    },
+    {
+        path: "login",
+        loadChildren: () => Promise.all(/*! import() | final-pages-login-page-login-module */[__webpack_require__.e("default~final-pages-home-page-home-module~final-pages-login-page-login-module"), __webpack_require__.e("final-pages-login-page-login-module")]).then(__webpack_require__.bind(null, /*! @final/pages/login/page.login.module */ "./src/final/pages/login/page.login.module.ts")).then(m => m.PageLoginModule)
     }
 ];
 class AppRoutingModule {
@@ -111,6 +115,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _app_routing_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./app-routing.module */ "./src/app/app-routing.module.ts");
 /* harmony import */ var _app_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./app.component */ "./src/app/app.component.ts");
+/* harmony import */ var _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/platform-browser/animations */ "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/animations.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
+
+
 
 
 
@@ -121,10 +129,14 @@ class AppModule {
 AppModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: AppModule, bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]] });
 AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function AppModule_Factory(t) { return new (t || AppModule)(); }, providers: [], imports: [[
             _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
-            _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"]
+            _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_4__["BrowserAnimationsModule"],
+            _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
         ]] });
 (function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](AppModule, { declarations: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]], imports: [_angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
-        _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"]] }); })();
+        _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_4__["BrowserAnimationsModule"],
+        _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](AppModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
@@ -133,7 +145,9 @@ AppModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector
                 ],
                 imports: [
                     _angular_platform_browser__WEBPACK_IMPORTED_MODULE_0__["BrowserModule"],
-                    _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"]
+                    _angular_platform_browser_animations__WEBPACK_IMPORTED_MODULE_4__["BrowserAnimationsModule"],
+                    _app_routing_module__WEBPACK_IMPORTED_MODULE_2__["AppRoutingModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
                 ],
                 providers: [],
                 bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_3__["AppComponent"]]

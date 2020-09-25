@@ -1,0 +1,32 @@
+.mat-button {
+  text-align: left;
+  width: 100%;
+}
+
+.split-mat-button {
+  width: 50%;
+}
+
+.footer {
+  max-height: 52px;
+  width: 100%;
+  position: absolute;
+  bottom: 0px;
+  margin-bottom: 8px;
+}
+
+.active {
+  font-weight: bold;
+  color: #3f51b5;
+  background-color: rgba(63, 81, 181, 0.1);
+}
+
+.header-scroll {
+  overflow: auto;
+  max-height: 100%;
+}
+
+.header {
+  height: calc(100% - 52px);
+  overflow: hidden;
+}

@@ -1,0 +1,31 @@
+<div class="header">
+  <div class="header-scroll">
+    <div>
+      <a
+        mat-button
+        routerLink=""
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        ><mat-icon>home</mat-icon> Home</a
+      >
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <a
+    mat-button
+    class="split-mat-button"
+    routerLink="/login"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    ><mat-icon>login</mat-icon> Login</a
+  >
+  <a
+    mat-button
+    class="split-mat-button"
+    routerLink="/login/register"
+    routerLinkActive="active"
+    [routerLinkActiveOptions]="{ exact: true }"
+    ><mat-icon>follow_the_signs</mat-icon> Register</a
+  >
+</div>
