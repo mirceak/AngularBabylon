@@ -6161,38 +6161,6 @@ LoginService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInje
 
 /***/ }),
 
-/***/ "./src/custom/components/pages/shared/base/page-formly/page-formly.directive.ts":
-/*!**************************************************************************************!*\
-  !*** ./src/custom/components/pages/shared/base/page-formly/page-formly.directive.ts ***!
-  \**************************************************************************************/
-/*! exports provided: PageFormlyDirective */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageFormlyDirective", function() { return PageFormlyDirective; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-formly/page-formly.service */ "./src/custom/components/pages/shared/base/page-formly/page-formly.service.ts");
-
-
-
-
-class PageFormlyDirective {
-    constructor(pageFormlyService) { }
-}
-PageFormlyDirective.ɵfac = function PageFormlyDirective_Factory(t) { return new (t || PageFormlyDirective)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_shared_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"])); };
-PageFormlyDirective.ɵdir = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineDirective"]({ type: PageFormlyDirective, selectors: [["", "appPageFormly", ""]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_shared_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"]])] });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageFormlyDirective, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"],
-        args: [{
-                selector: '[appPageFormly]',
-                providers: [_custom_components_pages_shared_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"]],
-            }]
-    }], function () { return [{ type: _custom_components_pages_shared_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"] }]; }, null); })();
-
-
-/***/ }),
-
 /***/ "./src/custom/components/pages/shared/base/page-formly/page-formly.module.ts":
 /*!***********************************************************************************!*\
   !*** ./src/custom/components/pages/shared/base/page-formly/page-formly.module.ts ***!
@@ -6205,13 +6173,11 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageFormlyModule", function() { return PageFormlyModule; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @kernel/pages/base/base.form-page.module */ "./src/kernel/pages/base/base.form-page.module.ts");
-/* harmony import */ var _custom_components_pages_shared_base_page_formly_page_formly_directive__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-formly/page-formly.directive */ "./src/custom/components/pages/shared/base/page-formly/page-formly.directive.ts");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngx-formly/material */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple/page-simple.module */ "./src/custom/components/pages/shared/base/page-simple/page-simple.module.ts");
-/* harmony import */ var _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @custom/components/pages/shared/forms/form-simple/form-simple.component */ "./src/custom/components/pages/shared/forms/form-simple/form-simple.component.ts");
-
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
+/* harmony import */ var _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/material */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple/page-simple.module */ "./src/custom/components/pages/shared/base/page-simple/page-simple.module.ts");
+/* harmony import */ var _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @custom/components/pages/shared/forms/form-simple/form-simple.component */ "./src/custom/components/pages/shared/forms/form-simple/form-simple.component.ts");
 
 
 
@@ -6225,39 +6191,39 @@ class PageFormlyModule {
 }
 PageFormlyModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: PageFormlyModule });
 PageFormlyModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function PageFormlyModule_Factory(t) { return new (t || PageFormlyModule)(); }, imports: [[
-            _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
+            _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
             _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"],
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
-            _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"],
-        ], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
-        _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"],
-        _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"],
-        _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageFormlyModule, { declarations: [_custom_components_pages_shared_base_page_formly_page_formly_directive__WEBPACK_IMPORTED_MODULE_2__["PageFormlyDirective"], _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__["FormSimpleComponent"]], imports: [_custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
-        _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
-        _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"]], exports: [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
-        _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"],
-        _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"],
-        _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
-        _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__["FormSimpleComponent"]] }); })();
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
+            _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+        ], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+        _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"],
+        _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+        _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageFormlyModule, { declarations: [_custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["FormSimpleComponent"]], imports: [_custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+        _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"]], exports: [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+        _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"],
+        _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+        _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+        _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["FormSimpleComponent"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageFormlyModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
-                declarations: [_custom_components_pages_shared_base_page_formly_page_formly_directive__WEBPACK_IMPORTED_MODULE_2__["PageFormlyDirective"], _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__["FormSimpleComponent"]],
+                declarations: [_custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["FormSimpleComponent"]],
                 imports: [
-                    _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
+                    _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
                     _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
-                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
+                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
                 ],
                 exports: [
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"],
-                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"],
-                    _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
-                    _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__["FormSimpleComponent"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"],
+                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+                    _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+                    _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["FormSimpleComponent"],
                 ],
             }]
     }], null, null); })();
