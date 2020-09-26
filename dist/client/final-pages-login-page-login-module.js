@@ -5927,7 +5927,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
 /* harmony import */ var _custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.service */ "./src/custom/components/pages/login/login.service.ts");
-/* harmony import */ var _custom_entities_user_service_entity_service_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/entities/user/service/entity.service.user */ "./src/custom/entities/user/service/entity.service.user.ts");
+/* harmony import */ var _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/entities/user/service/service.user */ "./src/custom/entities/user/service/service.user.ts");
 /* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/card */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/card.js");
 /* harmony import */ var _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @custom/components/pages/shared/forms/form-simple/form-simple.component */ "./src/custom/components/pages/shared/forms/form-simple/form-simple.component.ts");
 
@@ -5939,16 +5939,16 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class LoginContentComponent {
-    constructor(loginService, entityServiceUser) {
+    constructor(loginService, serviceUser) {
         this.loginService = loginService;
-        this.entityServiceUser = entityServiceUser;
+        this.serviceUser = serviceUser;
         this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({});
     }
     login() {
-        this.entityServiceUser.login(this.form.value).subscribe((res) => { console.log(res); });
+        this.serviceUser.login(this.form.value).subscribe((res) => { console.log(res); });
     }
 }
-LoginContentComponent.ɵfac = function LoginContentComponent_Factory(t) { return new (t || LoginContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_entity_service_user__WEBPACK_IMPORTED_MODULE_3__["EntityServiceUser"])); };
+LoginContentComponent.ɵfac = function LoginContentComponent_Factory(t) { return new (t || LoginContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__["ServiceUser"])); };
 LoginContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: LoginContentComponent, selectors: [["app-login-content"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"]])], decls: 5, vars: 4, consts: [[3, "form", "fields", "submitLabel", "submitIcon", "onSubmit"]], template: function LoginContentComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-card");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "mat-card-header");
@@ -5972,7 +5972,7 @@ LoginContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
                 styleUrls: ['./login-content.component.scss'],
                 providers: [_custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"]],
             }]
-    }], function () { return [{ type: _custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"] }, { type: _custom_entities_user_service_entity_service_user__WEBPACK_IMPORTED_MODULE_3__["EntityServiceUser"] }]; }, null); })();
+    }], function () { return [{ type: _custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"] }, { type: _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__["ServiceUser"] }]; }, null); })();
 
 
 /***/ }),

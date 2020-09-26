@@ -13,7 +13,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
 /* harmony import */ var _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/register/register.service */ "./src/custom/components/pages/register/register.service.ts");
-/* harmony import */ var _custom_entities_user_service_entity_service_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/entities/user/service/entity.service.user */ "./src/custom/entities/user/service/entity.service.user.ts");
+/* harmony import */ var _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/entities/user/service/service.user */ "./src/custom/entities/user/service/service.user.ts");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
 /* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/card */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/card.js");
 /* harmony import */ var _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @custom/components/pages/shared/forms/form-simple/form-simple.component */ "./src/custom/components/pages/shared/forms/form-simple/form-simple.component.ts");
@@ -27,19 +27,19 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class RegisterContentComponent {
-    constructor(registerService, entityServiceUser, router) {
+    constructor(registerService, serviceUser, router) {
         this.registerService = registerService;
-        this.entityServiceUser = entityServiceUser;
+        this.serviceUser = serviceUser;
         this.router = router;
         this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({});
     }
     register() {
-        this.entityServiceUser.register(this.form.value).subscribe((res) => {
+        this.serviceUser.register(this.form.value).subscribe((res) => {
             this.router.navigate(['/login']);
         }, (error) => console.log(error));
     }
 }
-RegisterContentComponent.ɵfac = function RegisterContentComponent_Factory(t) { return new (t || RegisterContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_entity_service_user__WEBPACK_IMPORTED_MODULE_3__["EntityServiceUser"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"])); };
+RegisterContentComponent.ɵfac = function RegisterContentComponent_Factory(t) { return new (t || RegisterContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__["ServiceUser"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"])); };
 RegisterContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: RegisterContentComponent, selectors: [["app-register-content"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]])], decls: 5, vars: 4, consts: [[3, "form", "fields", "submitLabel", "submitIcon", "onSubmit"]], template: function RegisterContentComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-card");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "mat-card-header");
@@ -63,7 +63,7 @@ RegisterContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ�
                 styleUrls: ['./register-content.component.scss'],
                 providers: [_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]],
             }]
-    }], function () { return [{ type: _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"] }, { type: _custom_entities_user_service_entity_service_user__WEBPACK_IMPORTED_MODULE_3__["EntityServiceUser"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }]; }, null); })();
+    }], function () { return [{ type: _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"] }, { type: _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__["ServiceUser"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }]; }, null); })();
 
 
 /***/ }),

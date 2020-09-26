@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LoginService } from '@custom/components/pages/login/login.service';
-import { ServiceEntityUser } from '@custom/entities/user/service/service.entity.user';
+import { ServiceUser } from '@custom/entities/user/service/service.user';
 
 @Component({
   selector: 'app-login-content',
@@ -14,10 +14,10 @@ export class LoginContentComponent {
 
   constructor(
     public loginService: LoginService,
-    private serviceEntityUser: ServiceEntityUser
+    private serviceUser: ServiceUser
   ) {}
 
   login(): void {
-    this.serviceEntityUser.login(this.form.value).subscribe((res) => {console.log(res)});
+    this.serviceUser.login(this.form.value).subscribe((res) => {console.log(res)});
   }
 }
