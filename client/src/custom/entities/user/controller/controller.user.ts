@@ -1,10 +1,9 @@
 import * as jwt from 'jsonwebtoken';
 import BaseController from '@kernel/backend/controllers/base/base.controller';
-import IBaseController from '@kernel/backend/controllers/base/ibase.controller';
 
 import SchemaUser from '@custom/entities/user/schema/schema.user';
 
-class ControllerUser extends BaseController implements IBaseController {
+class ControllerUser extends BaseController {
   Entity = SchemaUser;  
 
   login = (req, res) => {   

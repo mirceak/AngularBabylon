@@ -5,7 +5,7 @@ import * as morgan from 'morgan';
 
 import setMongo from './mongo';
 import Controllers from '@kernel/backend/controllers/base.controller.index';
-import IBaseController from '@kernel/backend/controllers/base/ibase.controller';
+import BaseController from '@kernel/backend/controllers/base/base.controller';
 
 const app = express();
 async function main(): Promise<any> {
@@ -20,7 +20,7 @@ async function main(): Promise<any> {
 
     const controllerParser = (controllers: any[]) => {
       Object.keys(controllers).map((key) => {
-        let ctrl: IBaseController = new controllers[key]();
+        let ctrl: BaseController = new controllers[key]();
         app.use('/api', ctrl.getRouter());
       });
     };
