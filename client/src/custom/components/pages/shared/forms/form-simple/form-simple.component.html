@@ -1,4 +1,4 @@
-<form [formGroup]="form" #formDirective="ngForm" (ngSubmit)="submit.emit()">
+<form [formGroup]="form" #formDirective="ngForm" (ngSubmit)="onSubmit.emit()">
   <mat-card-content>
     <formly-form [form]="form" [fields]="fields"></formly-form>
   </mat-card-content>

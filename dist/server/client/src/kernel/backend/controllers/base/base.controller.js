@@ -3,11 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 class BaseController {
     constructor() {
-        this.router = express.Router();
         // Get all
         this.getAll = async (req, res) => {
             try {
-                const docs = await this.model.find({});
+                const docs = await this.Entity.find({});
                 res.status(200).json(docs);
             }
             catch (err) {
@@ -17,7 +16,7 @@ class BaseController {
         // Count all
         this.count = async (req, res) => {
             try {
-                const count = await this.model.countDocuments();
+                const count = await this.Entity.countDocuments();
                 res.status(200).json(count);
             }
             catch (err) {
@@ -27,7 +26,7 @@ class BaseController {
         // Insert
         this.insert = async (req, res) => {
             try {
-                const obj = await new this.model(req.body).save();
+                const obj = await new this.Entity(req.body).save();
                 res.status(201).json(obj);
             }
             catch (err) {
@@ -37,7 +36,7 @@ class BaseController {
         // Get by id
         this.get = async (req, res) => {
             try {
-                const obj = await this.model.findOne({ _id: req.params.id });
+                const obj = await this.Entity.findOne({ _id: req.params.id });
                 res.status(200).json(obj);
             }
             catch (err) {
@@ -47,7 +46,7 @@ class BaseController {
         // Update by id
         this.update = async (req, res) => {
             try {
-                await this.model.findOneAndUpdate({ _id: req.params.id }, req.body);
+                await this.Entity.findOneAndUpdate({ _id: req.params.id }, req.body);
                 res.sendStatus(200);
             }
             catch (err) {
@@ -57,7 +56,7 @@ class BaseController {
         // Delete by id
         this.delete = async (req, res) => {
             try {
-                await this.model.findOneAndRemove({ _id: req.params.id });
+                await this.Entity.findOneAndRemove({ _id: req.params.id });
                 res.sendStatus(200);
             }
             catch (err) {
@@ -66,20 +65,25 @@ class BaseController {
         };
     }
     getRouter() {
-        this.router.route('/' + this.model.apiPaths.pathNamePlural).get(this.getAll);
-        this.router
-            .route('/' + this.model.apiPaths.pathNamePlural + '/count')
-            .get(this.count);
-        this.router.route('/' + this.model.apiPaths.pathName).post(this.insert);
-        this.router
-            .route('/' + this.model.apiPaths.pathName + '/:id')
-            .get(this.get);
-        this.router
-            .route('/' + this.model.apiPaths.pathName + '/:id')
-            .put(this.update);
-        this.router
-            .route('/' + this.model.apiPaths.pathName + '/:id')
-            .delete(this.delete);
+        if (!this.router) {
+            this.router = express.Router();
+            this.router
+                .route('/' + this.Entity.apiPaths.pathNamePlural)
+                .get(this.getAll);
+            this.router
+                .route('/' + this.Entity.apiPaths.pathNamePlural + '/count')
+                .get(this.count);
+            this.router.route('/' + this.Entity.apiPaths.pathName).post(this.insert);
+            this.router
+                .route('/' + this.Entity.apiPaths.pathName + '/:id')
+                .get(this.get);
+            this.router
+                .route('/' + this.Entity.apiPaths.pathName + '/:id')
+                .put(this.update);
+            this.router
+                .route('/' + this.Entity.apiPaths.pathName + '/:id')
+                .delete(this.delete);
+        }
         return this.router;
     }
 }

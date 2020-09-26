@@ -1,9 +1,11 @@
 import 'module-alias/register';
 import * as express from 'express';
 import * as path from 'path';
+import * as morgan from 'morgan';
 
 import setMongo from './mongo';
 import Controllers from '@kernel/backend/controllers/base.controller.index';
+import IBaseController from '@kernel/backend/controllers/base/ibase.controller';
 
 const app = express();
 async function main(): Promise<any> {
@@ -11,13 +13,14 @@ async function main(): Promise<any> {
     await setMongo();
 
     app.set('port', 3000);
+    app.use(morgan('dev'));
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
     app.use('/', express.static(path.join(__dirname, '../../client')));
 
-    const controllerParser = (controllers) => {
+    const controllerParser = (controllers: any[]) => {
       Object.keys(controllers).map((key) => {
-        let ctrl = new controllers[key]();
+        let ctrl: IBaseController = new controllers[key]();
         app.use('/api', ctrl.getRouter());
       });
     };
@@ -26,10 +29,9 @@ async function main(): Promise<any> {
     app.get('/*', (req, res) => {
       res.sendFile(path.join(__dirname, '../../client/index.html'));
     });
-    app.listen(app.get('port'), () => console.log(`An2gular F1ull Ssstack listening ons port ${app.get('port')}`));
+    app.listen(app.get('port'), () => console.log(`Angular Full Stack listening on port ${app.get('port')}`));
   } catch (err) {
     console.error(err);
   }
 }
-
 main();

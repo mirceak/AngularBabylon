@@ -102,7 +102,7 @@ class HomeComponent {
         this.userService = userService;
     }
     ngOnInit() {
-        this.userService.getUsers().subscribe((data) => console.log(111, data), (error) => console.log(error), () => console.log('done'));
+        this.userService.getEntities().subscribe((data) => console.log(111, data), (error) => console.log(error), () => console.log('done'));
     }
 }
 HomeComponent.ɵfac = function HomeComponent_Factory(t) { return new (t || HomeComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_1__["UserService"])); };
@@ -158,62 +158,6 @@ HomeModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjecto
                 exports: [_custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_1__["PageSimpleModule"]]
             }]
     }], null, null); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/entities/user/service/user.service.ts":
-/*!**********************************************************!*\
-  !*** ./src/custom/entities/user/service/user.service.ts ***!
-  \**********************************************************/
-/*! exports provided: UserService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserService", function() { return UserService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
-
-
-
-class UserService {
-    constructor(http) {
-        this.http = http;
-    }
-    register(user) {
-        return this.http.post('/api/user', user);
-    }
-    login(credentials) {
-        return this.http.post('/api/login', credentials);
-    }
-    getUsers() {
-        return this.http.get('/api/users');
-    }
-    countUsers() {
-        return this.http.get('/api/users/count');
-    }
-    addUser(user) {
-        return this.http.post('/api/user', user);
-    }
-    getUser(user) {
-        return this.http.get(`/api/user/${user._id}`);
-    }
-    editUser(user) {
-        return this.http.put(`/api/user/${user._id}`, user, { responseType: 'text' });
-    }
-    deleteUser(user) {
-        return this.http.delete(`/api/user/${user._id}`, { responseType: 'text' });
-    }
-}
-UserService.ɵfac = function UserService_Factory(t) { return new (t || UserService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"])); };
-UserService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: UserService, factory: UserService.ɵfac, providedIn: "root" });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](UserService, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
-        args: [{
-                providedIn: "root"
-            }]
-    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }]; }, null); })();
 
 
 /***/ }),

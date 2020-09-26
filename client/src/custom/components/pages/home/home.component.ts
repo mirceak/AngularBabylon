@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit(): void {
-    this.userService.getUsers().subscribe(
+    this.userService.getEntities().subscribe(
       (data) => console.log(111, data),
       (error) => console.log(error),
       () => console.log('done')

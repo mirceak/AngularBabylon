@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const bcrypt = require("bcryptjs");
 const mongoose = require("mongoose");
-const Entity = "User";
+const EntityName = "User";
 const userSchema = new mongoose.Schema({
     username: String,
     email: { type: String, unique: true, lowercase: true, trim: true },
@@ -44,10 +44,10 @@ userSchema.set('toJSON', {
         return ret;
     }
 });
-const SchemaUser = mongoose.model(Entity, userSchema);
+const SchemaUser = mongoose.model(EntityName, userSchema);
 SchemaUser.apiPaths = {
-    pathNamePlural: mongoose.pluralize()(Entity),
-    pathName: Entity.toLowerCase()
+    pathNamePlural: mongoose.pluralize()(EntityName),
+    pathName: EntityName.toLowerCase()
 };
 exports.default = SchemaUser;
 //# sourceMappingURL=schema.user.js.map

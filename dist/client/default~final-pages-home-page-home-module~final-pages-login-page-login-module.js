@@ -52532,6 +52532,102 @@ NavListSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
 
 /***/ }),
 
+/***/ "./src/custom/entities/user/service/user.service.ts":
+/*!**********************************************************!*\
+  !*** ./src/custom/entities/user/service/user.service.ts ***!
+  \**********************************************************/
+/*! exports provided: UserService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserService", function() { return UserService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _custom_services_entities_base_base_entity_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/services/entities/base/base.entity.service */ "./src/custom/services/entities/base/base.entity.service.ts");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
+
+
+
+
+class UserService extends _custom_services_entities_base_base_entity_service__WEBPACK_IMPORTED_MODULE_1__["BaseEntityService"] {
+    constructor(http) {
+        super(http, {
+            pathNamePlural: 'users',
+            pathName: 'user',
+        });
+    }
+    register(user) {
+        return this.http.post('/api/user', user);
+    }
+    login(credentials) {
+        return this.http.post('/api/login', credentials);
+    }
+}
+UserService.ɵfac = function UserService_Factory(t) { return new (t || UserService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"])); };
+UserService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: UserService, factory: UserService.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](UserService, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
+        args: [{
+                providedIn: 'root',
+            }]
+    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }]; }, null); })();
+
+
+/***/ }),
+
+/***/ "./src/custom/services/entities/base/base.entity.service.ts":
+/*!******************************************************************!*\
+  !*** ./src/custom/services/entities/base/base.entity.service.ts ***!
+  \******************************************************************/
+/*! exports provided: BaseEntityService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BaseEntityService", function() { return BaseEntityService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
+
+
+
+class Options {
+}
+class BaseEntityService {
+    constructor(http, options) {
+        this.http = http;
+        this.options = options;
+    }
+    getEntities() {
+        return this.http.get(`/${this.options.pathName}`);
+    }
+    countEntities() {
+        return this.http.get(`/api/${this.options.pathNamePlural}/count`);
+    }
+    addEntity(entity) {
+        return this.http.post(`/api/${this.options.pathName}`, entity);
+    }
+    getEntity(entity) {
+        return this.http.get(`/api/${this.options.pathName}/${entity._id}`);
+    }
+    editEntity(entity) {
+        return this.http.put(`/api/${this.options.pathName}/${entity._id}`, entity, { responseType: 'text' });
+    }
+    deleteEntity(entity) {
+        return this.http.delete(`/api/${this.options.pathName}/${entity._id}`, { responseType: 'text' });
+    }
+}
+BaseEntityService.ɵfac = function BaseEntityService_Factory(t) { return new (t || BaseEntityService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](Options)); };
+BaseEntityService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: BaseEntityService, factory: BaseEntityService.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](BaseEntityService, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
+        args: [{
+                providedIn: 'root',
+            }]
+    }], function () { return [{ type: _angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"] }, { type: Options }]; }, null); })();
+
+
+/***/ }),
+
 /***/ "./src/kernel/material/base.material.module.ts":
 /*!*****************************************************!*\
   !*** ./src/kernel/material/base.material.module.ts ***!

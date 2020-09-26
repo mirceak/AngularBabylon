@@ -13,8 +13,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
 /* harmony import */ var _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/register/register.service */ "./src/custom/components/pages/register/register.service.ts");
-/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/card */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/card.js");
-/* harmony import */ var _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @custom/components/pages/shared/forms/form-simple/form-simple.component */ "./src/custom/components/pages/shared/forms/form-simple/form-simple.component.ts");
+/* harmony import */ var _custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/entities/user/service/user.service */ "./src/custom/entities/user/service/user.service.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
+/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/card */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/card.js");
+/* harmony import */ var _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @custom/components/pages/shared/forms/form-simple/form-simple.component */ "./src/custom/components/pages/shared/forms/form-simple/form-simple.component.ts");
+
+
 
 
 
@@ -23,25 +27,34 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class RegisterContentComponent {
-    constructor(registerService) {
+    constructor(registerService, userService, router) {
         this.registerService = registerService;
+        this.userService = userService;
+        this.router = router;
         this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({});
     }
+    register() {
+        this.userService.register(this.form.value).subscribe((res) => {
+            this.router.navigate(['/login']);
+        }, (error) => console.log(error));
+    }
 }
-RegisterContentComponent.ɵfac = function RegisterContentComponent_Factory(t) { return new (t || RegisterContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"])); };
-RegisterContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: RegisterContentComponent, selectors: [["app-register-content"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]])], decls: 5, vars: 4, consts: [[3, "form", "fields", "submitLabel", "submitIcon"]], template: function RegisterContentComponent_Template(rf, ctx) { if (rf & 1) {
+RegisterContentComponent.ɵfac = function RegisterContentComponent_Factory(t) { return new (t || RegisterContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"])); };
+RegisterContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: RegisterContentComponent, selectors: [["app-register-content"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]])], decls: 5, vars: 4, consts: [[3, "form", "fields", "submitLabel", "submitIcon", "onSubmit"]], template: function RegisterContentComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-card");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "mat-card-header");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "mat-card-title");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, "Register");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](4, "app-form-simple", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "app-form-simple", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("onSubmit", function RegisterContentComponent_Template_app_form_simple_onSubmit_4_listener() { return ctx.register(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("form", ctx.form)("fields", ctx.registerService.fields)("submitLabel", "Register")("submitIcon", "follow_the_signs");
-    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCardTitle"], _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_4__["FormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jdXN0b20vY29tcG9uZW50cy9wYWdlcy9yZWdpc3Rlci9yZWdpc3Rlci1jb250ZW50L3JlZ2lzdGVyLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoic3JjL2N1c3RvbS9jb21wb25lbnRzL3BhZ2VzL3JlZ2lzdGVyL3JlZ2lzdGVyLWNvbnRlbnQvcmVnaXN0ZXItY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gICAgcGFkZGluZzogMjRweDtcbn0iXX0= */"] });
+    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_5__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_5__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_5__["MatCardTitle"], _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["FormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jdXN0b20vY29tcG9uZW50cy9wYWdlcy9yZWdpc3Rlci9yZWdpc3Rlci1jb250ZW50L3JlZ2lzdGVyLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoic3JjL2N1c3RvbS9jb21wb25lbnRzL3BhZ2VzL3JlZ2lzdGVyL3JlZ2lzdGVyLWNvbnRlbnQvcmVnaXN0ZXItY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gICAgcGFkZGluZzogMjRweDtcbn0iXX0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](RegisterContentComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -50,7 +63,7 @@ RegisterContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ�
                 styleUrls: ['./register-content.component.scss'],
                 providers: [_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]],
             }]
-    }], function () { return [{ type: _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"] }]; }, null); })();
+    }], function () { return [{ type: _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"] }, { type: _custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }]; }, null); })();
 
 
 /***/ }),

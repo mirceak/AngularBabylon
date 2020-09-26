@@ -5927,8 +5927,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
 /* harmony import */ var _custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.service */ "./src/custom/components/pages/login/login.service.ts");
-/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/material/card */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/card.js");
-/* harmony import */ var _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @custom/components/pages/shared/forms/form-simple/form-simple.component */ "./src/custom/components/pages/shared/forms/form-simple/form-simple.component.ts");
+/* harmony import */ var _custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/entities/user/service/user.service */ "./src/custom/entities/user/service/user.service.ts");
+/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/card */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/card.js");
+/* harmony import */ var _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @custom/components/pages/shared/forms/form-simple/form-simple.component */ "./src/custom/components/pages/shared/forms/form-simple/form-simple.component.ts");
+
 
 
 
@@ -5937,26 +5939,31 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class LoginContentComponent {
-    constructor(loginService) {
+    constructor(loginService, userService) {
         this.loginService = loginService;
+        this.userService = userService;
         this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({});
     }
-    login() { }
+    login() {
+        this.userService.login(this.form.value).subscribe((res) => { console.log(res); });
+    }
 }
-LoginContentComponent.ɵfac = function LoginContentComponent_Factory(t) { return new (t || LoginContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"])); };
-LoginContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: LoginContentComponent, selectors: [["app-login-content"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"]])], decls: 5, vars: 4, consts: [[3, "form", "fields", "submitLabel", "submitIcon"]], template: function LoginContentComponent_Template(rf, ctx) { if (rf & 1) {
+LoginContentComponent.ɵfac = function LoginContentComponent_Factory(t) { return new (t || LoginContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"])); };
+LoginContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: LoginContentComponent, selectors: [["app-login-content"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"]])], decls: 5, vars: 4, consts: [[3, "form", "fields", "submitLabel", "submitIcon", "onSubmit"]], template: function LoginContentComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-card");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "mat-card-header");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "mat-card-title");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, "Login");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](4, "app-form-simple", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "app-form-simple", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("onSubmit", function LoginContentComponent_Template_app_form_simple_onSubmit_4_listener() { return ctx.login(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("form", ctx.form)("fields", ctx.loginService.fields)("submitLabel", "Login")("submitIcon", "login");
-    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCardTitle"], _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_4__["FormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jdXN0b20vY29tcG9uZW50cy9wYWdlcy9sb2dpbi9sb2dpbi1jb250ZW50L2xvZ2luLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoic3JjL2N1c3RvbS9jb21wb25lbnRzL3BhZ2VzL2xvZ2luL2xvZ2luLWNvbnRlbnQvbG9naW4tY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gICAgcGFkZGluZzogMjRweDtcbn0iXX0= */"] });
+    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCardTitle"], _custom_components_pages_shared_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_5__["FormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jdXN0b20vY29tcG9uZW50cy9wYWdlcy9sb2dpbi9sb2dpbi1jb250ZW50L2xvZ2luLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoic3JjL2N1c3RvbS9jb21wb25lbnRzL3BhZ2VzL2xvZ2luL2xvZ2luLWNvbnRlbnQvbG9naW4tY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gICAgcGFkZGluZzogMjRweDtcbn0iXX0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginContentComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -5965,7 +5972,7 @@ LoginContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
                 styleUrls: ['./login-content.component.scss'],
                 providers: [_custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"]],
             }]
-    }], function () { return [{ type: _custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"] }]; }, null); })();
+    }], function () { return [{ type: _custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__["LoginService"] }, { type: _custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_3__["UserService"] }]; }, null); })();
 
 
 /***/ }),
@@ -6334,13 +6341,13 @@ __webpack_require__.r(__webpack_exports__);
 
 class FormSimpleComponent {
     constructor() {
-        this.submit = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
+        this.onSubmit = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
     }
 }
 FormSimpleComponent.ɵfac = function FormSimpleComponent_Factory(t) { return new (t || FormSimpleComponent)(); };
-FormSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: FormSimpleComponent, selectors: [["app-form-simple"]], inputs: { form: "form", fields: "fields", submitLabel: "submitLabel", submitIcon: "submitIcon" }, outputs: { submit: "submit" }, decls: 9, vars: 6, consts: [[3, "formGroup", "ngSubmit"], ["formDirective", "ngForm"], [3, "form", "fields"], ["mat-flat-button", "", "color", "primary", "type", "submit", 3, "disabled"]], template: function FormSimpleComponent_Template(rf, ctx) { if (rf & 1) {
+FormSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: FormSimpleComponent, selectors: [["app-form-simple"]], inputs: { form: "form", fields: "fields", submitLabel: "submitLabel", submitIcon: "submitIcon" }, outputs: { onSubmit: "onSubmit" }, decls: 9, vars: 6, consts: [[3, "formGroup", "ngSubmit"], ["formDirective", "ngForm"], [3, "form", "fields"], ["mat-flat-button", "", "color", "primary", "type", "submit", 3, "disabled"]], template: function FormSimpleComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "form", 0, 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function FormSimpleComponent_Template_form_ngSubmit_0_listener() { return ctx.submit.emit(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function FormSimpleComponent_Template_form_ngSubmit_0_listener() { return ctx.onSubmit.emit(); });
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "mat-card-content");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "formly-form", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
@@ -6371,7 +6378,7 @@ FormSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefi
                 templateUrl: './form-simple.component.html',
                 styleUrls: ['./form-simple.component.scss']
             }]
-    }], function () { return []; }, { submit: [{
+    }], function () { return []; }, { onSubmit: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
         }], form: [{
             type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]

@@ -6,9 +6,9 @@ const schema_user_1 = require("@custom/entities/user/schema/schema.user");
 class ControllerUser extends base_controller_1.default {
     constructor() {
         super(...arguments);
-        this.model = schema_user_1.default;
+        this.Entity = schema_user_1.default;
         this.login = (req, res) => {
-            this.model.findOne({ email: req.body.email }, (err, user) => {
+            this.Entity.findOne({ email: req.body.email }, (err, user) => {
                 if (!user) {
                     return res.sendStatus(403);
                 }
@@ -16,11 +16,16 @@ class ControllerUser extends base_controller_1.default {
                     if (!isMatch) {
                         return res.sendStatus(403);
                     }
-                    const token = jwt.sign({ user }, process.env.SECRET_TOKEN); // , { expiresIn: 10 } seconds
+                    const token = jwt.sign({ user }, "SECRET_TOKEN");
                     res.status(200).json({ token });
                 });
             });
         };
+    }
+    getRouter() {
+        let router = super.getRouter();
+        router.route('/login').post(this.login);
+        return router;
     }
 }
 exports.default = ControllerUser;

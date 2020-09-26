@@ -8,7 +8,7 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
   styleUrls: ['./form-simple.component.scss']
 })
 export class FormSimpleComponent {
-  @Output() submit: EventEmitter<any> = new EventEmitter();
+  @Output() onSubmit: EventEmitter<any> = new EventEmitter();
   @Input() form: FormGroup;
   @Input() fields: [FormlyFieldConfig];
   @Input() submitLabel: string;

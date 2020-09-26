@@ -10,7 +10,7 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "ES2020",
-    "module": "None",
+    "module": "CommonJS",
     "lib": ["ES2020", "dom"],
     "paths": {
       "@kernel/*": ["./client/src/kernel/*"],
