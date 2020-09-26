@@ -52532,24 +52532,24 @@ NavListSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
 
 /***/ }),
 
-/***/ "./src/custom/entities/user/service/entity.user.service.ts":
+/***/ "./src/custom/entities/user/service/entity.service.user.ts":
 /*!*****************************************************************!*\
-  !*** ./src/custom/entities/user/service/entity.user.service.ts ***!
+  !*** ./src/custom/entities/user/service/entity.service.user.ts ***!
   \*****************************************************************/
-/*! exports provided: EntityUserService */
+/*! exports provided: EntityServiceUser */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EntityUserService", function() { return EntityUserService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EntityServiceUser", function() { return EntityServiceUser; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _custom_services_entities_base_base_entity_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/services/entities/base/base.entity.service */ "./src/custom/services/entities/base/base.entity.service.ts");
+/* harmony import */ var _custom_services_entities_base_entity_service_base__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/services/entities/base/entity.service.base */ "./src/custom/services/entities/base/entity.service.base.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
 
 
 
 
-class EntityUserService extends _custom_services_entities_base_base_entity_service__WEBPACK_IMPORTED_MODULE_1__["BaseEntityService"] {
+class EntityServiceUser extends _custom_services_entities_base_entity_service_base__WEBPACK_IMPORTED_MODULE_1__["EntityServiceBase"] {
     constructor(http) {
         super(http, {
             pathNamePlural: 'users',
@@ -52563,9 +52563,9 @@ class EntityUserService extends _custom_services_entities_base_base_entity_servi
         return this.http.post('/api/login', credentials);
     }
 }
-EntityUserService.ɵfac = function EntityUserService_Factory(t) { return new (t || EntityUserService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"])); };
-EntityUserService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: EntityUserService, factory: EntityUserService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](EntityUserService, [{
+EntityServiceUser.ɵfac = function EntityServiceUser_Factory(t) { return new (t || EntityServiceUser)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"])); };
+EntityServiceUser.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: EntityServiceUser, factory: EntityServiceUser.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](EntityServiceUser, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root',
@@ -52575,16 +52575,16 @@ EntityUserService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefin
 
 /***/ }),
 
-/***/ "./src/custom/services/entities/base/base.entity.service.ts":
+/***/ "./src/custom/services/entities/base/entity.service.base.ts":
 /*!******************************************************************!*\
-  !*** ./src/custom/services/entities/base/base.entity.service.ts ***!
+  !*** ./src/custom/services/entities/base/entity.service.base.ts ***!
   \******************************************************************/
-/*! exports provided: BaseEntityService */
+/*! exports provided: EntityServiceBase */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BaseEntityService", function() { return BaseEntityService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EntityServiceBase", function() { return EntityServiceBase; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
 
@@ -52592,7 +52592,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class Options {
 }
-class BaseEntityService {
+class EntityServiceBase {
     constructor(http, options) {
         this.http = http;
         this.options = options;
@@ -52616,9 +52616,9 @@ class BaseEntityService {
         return this.http.delete(`/api/${this.options.pathName}/${entity._id}`, { responseType: 'text' });
     }
 }
-BaseEntityService.ɵfac = function BaseEntityService_Factory(t) { return new (t || BaseEntityService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](Options)); };
-BaseEntityService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: BaseEntityService, factory: BaseEntityService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](BaseEntityService, [{
+EntityServiceBase.ɵfac = function EntityServiceBase_Factory(t) { return new (t || EntityServiceBase)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](Options)); };
+EntityServiceBase.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: EntityServiceBase, factory: EntityServiceBase.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](EntityServiceBase, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root',

@@ -2,13 +2,13 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { BaseEntityService } from '@custom/services/entities/base/base.entity.service';
+import { EntityServiceBase } from '@custom/services/entities/base/entity.service.base';
 import { ModelUser } from '@custom/entities/user/model/model.user';
 
 @Injectable({
   providedIn: 'root',
 })
-export class EntityUserService extends BaseEntityService<ModelUser> {
+export class EntityServiceUser extends EntityServiceBase<ModelUser> {
   constructor(http: HttpClient) {
     super(http, {
       pathNamePlural: 'users',
