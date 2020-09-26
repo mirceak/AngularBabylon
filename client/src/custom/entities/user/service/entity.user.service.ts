@@ -3,12 +3,12 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
 import { BaseEntityService } from '@custom/services/entities/base/base.entity.service';
-import { User } from '@custom/entities/user/model/user.model';
+import { ModelUser } from '@custom/entities/user/model/model.user';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UserService extends BaseEntityService<User> {
+export class EntityUserService extends BaseEntityService<ModelUser> {
   constructor(http: HttpClient) {
     super(http, {
       pathNamePlural: 'users',
@@ -16,8 +16,8 @@ export class UserService extends BaseEntityService<User> {
     });
   }
 
-  register(user: User): Observable<User> {
-    return this.http.post<User>('/api/user', user);
+  register(user: ModelUser): Observable<ModelUser> {
+    return this.http.post<ModelUser>('/api/user', user);
   }
 
   login(credentials): Observable<any> {

@@ -87,7 +87,7 @@ HomeRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefine
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomeComponent", function() { return HomeComponent; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/entities/user/service/user.service */ "./src/custom/entities/user/service/user.service.ts");
+/* harmony import */ var _custom_entities_user_service_entity_user_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/entities/user/service/entity.user.service */ "./src/custom/entities/user/service/entity.user.service.ts");
 /* harmony import */ var _custom_components_pages_shared_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple/page-simple.component */ "./src/custom/components/pages/shared/base/page-simple/page-simple.component.ts");
 /* harmony import */ var _custom_components_pages_shared_navs_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/shared/navs/nav-list-simple/nav-list-simple.component */ "./src/custom/components/pages/shared/navs/nav-list-simple/nav-list-simple.component.ts");
 /* harmony import */ var _custom_components_pages_home_home_content_home_content_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @custom/components/pages/home/home-content/home-content.component */ "./src/custom/components/pages/home/home-content/home-content.component.ts");
@@ -98,14 +98,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 class HomeComponent {
-    constructor(userService) {
-        this.userService = userService;
+    constructor(entityUserService) {
+        this.entityUserService = entityUserService;
     }
     ngOnInit() {
-        this.userService.getEntities().subscribe((data) => console.log(111, data), (error) => console.log(error), () => console.log('done'));
+        this.entityUserService.getEntities().subscribe((data) => console.log(111, data), (error) => console.log(error), () => console.log('done'));
     }
 }
-HomeComponent.ɵfac = function HomeComponent_Factory(t) { return new (t || HomeComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_1__["UserService"])); };
+HomeComponent.ɵfac = function HomeComponent_Factory(t) { return new (t || HomeComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_entity_user_service__WEBPACK_IMPORTED_MODULE_1__["EntityUserService"])); };
 HomeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: HomeComponent, selectors: [["app-home"]], decls: 3, vars: 0, consts: [["nav-list", ""], ["content", ""]], template: function HomeComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "app-page-simple");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-nav-list", 0);
@@ -119,7 +119,7 @@ HomeComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComp
                 templateUrl: './home.component.html',
                 styleUrls: ['./home.component.scss'],
             }]
-    }], function () { return [{ type: _custom_entities_user_service_user_service__WEBPACK_IMPORTED_MODULE_1__["UserService"] }]; }, null); })();
+    }], function () { return [{ type: _custom_entities_user_service_entity_user_service__WEBPACK_IMPORTED_MODULE_1__["EntityUserService"] }]; }, null); })();
 
 
 /***/ }),

@@ -52532,16 +52532,16 @@ NavListSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
 
 /***/ }),
 
-/***/ "./src/custom/entities/user/service/user.service.ts":
-/*!**********************************************************!*\
-  !*** ./src/custom/entities/user/service/user.service.ts ***!
-  \**********************************************************/
-/*! exports provided: UserService */
+/***/ "./src/custom/entities/user/service/entity.user.service.ts":
+/*!*****************************************************************!*\
+  !*** ./src/custom/entities/user/service/entity.user.service.ts ***!
+  \*****************************************************************/
+/*! exports provided: EntityUserService */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "UserService", function() { return UserService; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "EntityUserService", function() { return EntityUserService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _custom_services_entities_base_base_entity_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/services/entities/base/base.entity.service */ "./src/custom/services/entities/base/base.entity.service.ts");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
@@ -52549,7 +52549,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class UserService extends _custom_services_entities_base_base_entity_service__WEBPACK_IMPORTED_MODULE_1__["BaseEntityService"] {
+class EntityUserService extends _custom_services_entities_base_base_entity_service__WEBPACK_IMPORTED_MODULE_1__["BaseEntityService"] {
     constructor(http) {
         super(http, {
             pathNamePlural: 'users',
@@ -52563,9 +52563,9 @@ class UserService extends _custom_services_entities_base_base_entity_service__WE
         return this.http.post('/api/login', credentials);
     }
 }
-UserService.ɵfac = function UserService_Factory(t) { return new (t || UserService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"])); };
-UserService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: UserService, factory: UserService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](UserService, [{
+EntityUserService.ɵfac = function EntityUserService_Factory(t) { return new (t || EntityUserService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"])); };
+EntityUserService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: EntityUserService, factory: EntityUserService.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](EntityUserService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root',

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '@custom/entities/user/service/user.service';
+import { EntityUserService } from '@custom/entities/user/service/entity.user.service';
 
 @Component({
   selector: 'app-home',
@@ -7,10 +7,10 @@ import { UserService } from '@custom/entities/user/service/user.service';
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
-  constructor(private userService: UserService) {}
+  constructor(private entityUserService: EntityUserService) {}
 
   ngOnInit(): void {
-    this.userService.getEntities().subscribe(
+    this.entityUserService.getEntities().subscribe(
       (data) => console.log(111, data),
       (error) => console.log(error),
       () => console.log('done')
