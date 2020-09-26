@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import { RegisterService } from '@custom/components/pages/register/register.service';
-import { EntityServiceUser } from '@custom/entities/user/service/entity.service.user';
+import { ServiceEntityUser } from '@custom/entities/user/service/service.entity.user';
 
 @Component({
   selector: 'app-register-content',
@@ -15,12 +15,12 @@ export class RegisterContentComponent {
 
   constructor(
     public registerService: RegisterService,
-    private entityServiceUser: EntityServiceUser,
+    private serviceEntityUser: ServiceEntityUser,
     private router: Router
   ) {}
 
   register() {
-    this.entityServiceUser.register(this.form.value).subscribe(
+    this.serviceEntityUser.register(this.form.value).subscribe(
       (res) => {
         this.router.navigate(['/login']);
       },

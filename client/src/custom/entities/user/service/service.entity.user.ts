@@ -8,7 +8,7 @@ import { ModelUser } from '@custom/entities/user/model/model.user';
 @Injectable({
   providedIn: 'root',
 })
-export class EntityServiceUser extends EntityServiceBase<ModelUser> {
+export class ServiceEntityUser extends EntityServiceBase<ModelUser> {
   constructor(http: HttpClient) {
     super(http, {
       pathNamePlural: 'users',
