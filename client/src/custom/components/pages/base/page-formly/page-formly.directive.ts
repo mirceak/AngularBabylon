@@ -1,5 +1,5 @@
 import { Directive } from '@angular/core';
-import { PageFormlyService } from './page-formly.service'
+import { PageFormlyService } from '@custom/components/pages/base/page-formly/page-formly.service'
 
 @Directive({
   selector: '[appPageFormly]',

@@ -3,6 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 class BaseController {
     constructor() {
+        this.router = express.Router();
         // Get all
         this.getAll = async (req, res) => {
             try {
@@ -16,7 +17,7 @@ class BaseController {
         // Count all
         this.count = async (req, res) => {
             try {
-                const count = await this.model.count();
+                const count = await this.model.countDocuments();
                 res.status(200).json(count);
             }
             catch (err) {
@@ -65,14 +66,21 @@ class BaseController {
         };
     }
     getRouter() {
-        const router = express.Router();
-        router.route('/cats').get(this.getAll);
-        router.route('/cats/count').get(this.count);
-        router.route('/cat').post(this.insert);
-        router.route('/cat/:id').get(this.get);
-        router.route('/cat/:id').put(this.update);
-        router.route('/cat/:id').delete(this.delete);
-        return router;
+        this.router.route('/' + this.model.apiPaths.pathNamePlural).get(this.getAll);
+        this.router
+            .route('/' + this.model.apiPaths.pathNamePlural + '/count')
+            .get(this.count);
+        this.router.route('/' + this.model.apiPaths.pathName).post(this.insert);
+        this.router
+            .route('/' + this.model.apiPaths.pathName + '/:id')
+            .get(this.get);
+        this.router
+            .route('/' + this.model.apiPaths.pathName + '/:id')
+            .put(this.update);
+        this.router
+            .route('/' + this.model.apiPaths.pathName + '/:id')
+            .delete(this.delete);
+        return this.router;
     }
 }
 exports.default = BaseController;

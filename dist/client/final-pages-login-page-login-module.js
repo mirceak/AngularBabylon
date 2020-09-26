@@ -6002,7 +6002,7 @@ FormSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefi
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageFormlyDirective", function() { return PageFormlyDirective; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _page_formly_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./page-formly.service */ "./src/custom/components/pages/base/page-formly/page-formly.service.ts");
+/* harmony import */ var _custom_components_pages_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/base/page-formly/page-formly.service */ "./src/custom/components/pages/base/page-formly/page-formly.service.ts");
 
 
 
@@ -6010,15 +6010,15 @@ __webpack_require__.r(__webpack_exports__);
 class PageFormlyDirective {
     constructor(pageFormlyService) { }
 }
-PageFormlyDirective.ɵfac = function PageFormlyDirective_Factory(t) { return new (t || PageFormlyDirective)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"])); };
-PageFormlyDirective.ɵdir = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineDirective"]({ type: PageFormlyDirective, selectors: [["", "appPageFormly", ""]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"]])] });
+PageFormlyDirective.ɵfac = function PageFormlyDirective_Factory(t) { return new (t || PageFormlyDirective)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"])); };
+PageFormlyDirective.ɵdir = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineDirective"]({ type: PageFormlyDirective, selectors: [["", "appPageFormly", ""]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"]])] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageFormlyDirective, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Directive"],
         args: [{
                 selector: '[appPageFormly]',
-                providers: [_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"]],
+                providers: [_custom_components_pages_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"]],
             }]
-    }], function () { return [{ type: _page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"] }]; }, null); })();
+    }], function () { return [{ type: _custom_components_pages_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"] }]; }, null); })();
 
 
 /***/ }),
@@ -6039,7 +6039,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
 /* harmony import */ var _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngx-formly/material */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js");
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../page-simple/page-simple.module */ "./src/custom/components/pages/base/page-simple/page-simple.module.ts");
+/* harmony import */ var _custom_components_pages_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @custom/components/pages/base/page-simple/page-simple.module */ "./src/custom/components/pages/base/page-simple/page-simple.module.ts");
 /* harmony import */ var _custom_components_pages_base_page_formly_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @custom/components/pages/base/page-formly/forms/form-simple/form-simple.component */ "./src/custom/components/pages/base/page-formly/forms/form-simple/form-simple.component.ts");
 
 
@@ -6055,7 +6055,7 @@ class PageFormlyModule {
 }
 PageFormlyModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: PageFormlyModule });
 PageFormlyModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function PageFormlyModule_Factory(t) { return new (t || PageFormlyModule)(); }, imports: [[
-            _page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
+            _custom_components_pages_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
             _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
             _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"],
             _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
@@ -6063,20 +6063,20 @@ PageFormlyModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineI
         ], _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
         _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"],
         _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"],
-        _page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageFormlyModule, { declarations: [_custom_components_pages_base_page_formly_page_formly_directive__WEBPACK_IMPORTED_MODULE_2__["PageFormlyDirective"], _custom_components_pages_base_page_formly_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__["FormSimpleComponent"]], imports: [_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
+        _custom_components_pages_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageFormlyModule, { declarations: [_custom_components_pages_base_page_formly_page_formly_directive__WEBPACK_IMPORTED_MODULE_2__["PageFormlyDirective"], _custom_components_pages_base_page_formly_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__["FormSimpleComponent"]], imports: [_custom_components_pages_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
         _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
         _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"]], exports: [_angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
         _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"],
         _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"],
-        _page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
+        _custom_components_pages_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
         _custom_components_pages_base_page_formly_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__["FormSimpleComponent"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageFormlyModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
                 declarations: [_custom_components_pages_base_page_formly_page_formly_directive__WEBPACK_IMPORTED_MODULE_2__["PageFormlyDirective"], _custom_components_pages_base_page_formly_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__["FormSimpleComponent"]],
                 imports: [
-                    _page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
+                    _custom_components_pages_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
                     _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"],
                     _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
@@ -6086,7 +6086,7 @@ PageFormlyModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineI
                     _angular_forms__WEBPACK_IMPORTED_MODULE_5__["ReactiveFormsModule"],
                     _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyModule"],
                     _ngx_formly_material__WEBPACK_IMPORTED_MODULE_4__["FormlyMaterialModule"],
-                    _page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
+                    _custom_components_pages_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_6__["PageSimpleModule"],
                     _custom_components_pages_base_page_formly_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_7__["FormSimpleComponent"],
                 ],
             }]
@@ -6188,7 +6188,7 @@ LoginContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("form", ctx.form)("fields", ctx.loginService.fields)("submitLabel", "Login")("submitIcon", "login");
-    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCardTitle"], _custom_components_pages_base_page_formly_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_4__["FormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jdXN0b20vY29tcG9uZW50cy9wYWdlcy9sb2dpbi9sb2dpbi1jb250ZW50L2xvZ2luLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoic3JjL2N1c3RvbS9jb21wb25lbnRzL3BhZ2VzL2xvZ2luL2xvZ2luLWNvbnRlbnQvbG9naW4tY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XHJcbiAgICBwYWRkaW5nOiAyNHB4O1xyXG59Il19 */"] });
+    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_3__["MatCardTitle"], _custom_components_pages_base_page_formly_forms_form_simple_form_simple_component__WEBPACK_IMPORTED_MODULE_4__["FormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jdXN0b20vY29tcG9uZW50cy9wYWdlcy9sb2dpbi9sb2dpbi1jb250ZW50L2xvZ2luLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoic3JjL2N1c3RvbS9jb21wb25lbnRzL3BhZ2VzL2xvZ2luL2xvZ2luLWNvbnRlbnQvbG9naW4tY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gICAgcGFkZGluZzogMjRweDtcbn0iXX0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginContentComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -6214,7 +6214,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginRoutingModule", function() { return LoginRoutingModule; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
-/* harmony import */ var _login_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./login.component */ "./src/custom/components/pages/login/login.component.ts");
+/* harmony import */ var _custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.component */ "./src/custom/components/pages/login/login.component.ts");
 
 
 
@@ -6223,7 +6223,7 @@ __webpack_require__.r(__webpack_exports__);
 const routes = [
     {
         path: '',
-        component: _login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"],
+        component: _custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"],
     },
     {
         path: 'register',
@@ -6259,7 +6259,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _custom_components_pages_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/base/page-simple/page-simple.component */ "./src/custom/components/pages/base/page-simple/page-simple.component.ts");
 /* harmony import */ var _custom_components_nav_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/nav/nav-list-simple/nav-list-simple.component */ "./src/custom/components/nav/nav-list-simple/nav-list-simple.component.ts");
-/* harmony import */ var _login_content_login_content_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./login-content/login-content.component */ "./src/custom/components/pages/login/login-content/login-content.component.ts");
+/* harmony import */ var _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/login/login-content/login-content.component */ "./src/custom/components/pages/login/login-content/login-content.component.ts");
 
 
 
@@ -6271,12 +6271,20 @@ class LoginComponent {
     }
 }
 LoginComponent.ɵfac = function LoginComponent_Factory(t) { return new (t || LoginComponent)(); };
-LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: LoginComponent, selectors: [["app-login"]], decls: 3, vars: 0, consts: [["appPageFormly", ""], ["nav-list", ""], ["content", ""]], template: function LoginComponent_Template(rf, ctx) { if (rf & 1) {
+LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: LoginComponent, selectors: [["app-login"]], decls: 11, vars: 0, consts: [["appPageFormly", ""], ["nav-list", ""], ["content", ""]], template: function LoginComponent_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "app-page-simple", 0);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-nav-list", 1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-login-content", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "app-login-content", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](4, "app-login-content", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](5, "app-login-content", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](6, "app-login-content", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](7, "app-login-content", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](8, "app-login-content", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](9, "app-login-content", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](10, "app-login-content", 2);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    } }, directives: [_custom_components_pages_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__["PageSimpleComponent"], _custom_components_nav_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__["NavListSimpleComponent"], _login_content_login_content_component__WEBPACK_IMPORTED_MODULE_3__["LoginContentComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvY3VzdG9tL2NvbXBvbmVudHMvcGFnZXMvbG9naW4vbG9naW4uY29tcG9uZW50LnNjc3MifQ== */"] });
+    } }, directives: [_custom_components_pages_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__["PageSimpleComponent"], _custom_components_nav_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__["NavListSimpleComponent"], _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_3__["LoginContentComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvY3VzdG9tL2NvbXBvbmVudHMvcGFnZXMvbG9naW4vbG9naW4uY29tcG9uZW50LnNjc3MifQ== */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -6301,9 +6309,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginModule", function() { return LoginModule; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _custom_components_pages_base_page_formly_page_formly_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/base/page-formly/page-formly.module */ "./src/custom/components/pages/base/page-formly/page-formly.module.ts");
-/* harmony import */ var _login_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./login.component */ "./src/custom/components/pages/login/login.component.ts");
-/* harmony import */ var _login_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./login-routing.module */ "./src/custom/components/pages/login/login-routing.module.ts");
-/* harmony import */ var _login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./login-content/login-content.component */ "./src/custom/components/pages/login/login-content/login-content.component.ts");
+/* harmony import */ var _custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.component */ "./src/custom/components/pages/login/login.component.ts");
+/* harmony import */ var _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/login/login-routing.module */ "./src/custom/components/pages/login/login-routing.module.ts");
+/* harmony import */ var _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @custom/components/pages/login/login-content/login-content.component */ "./src/custom/components/pages/login/login-content/login-content.component.ts");
 
 
 
@@ -6313,13 +6321,13 @@ __webpack_require__.r(__webpack_exports__);
 class LoginModule {
 }
 LoginModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: LoginModule });
-LoginModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function LoginModule_Factory(t) { return new (t || LoginModule)(); }, imports: [[_custom_components_pages_base_page_formly_page_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](LoginModule, { declarations: [_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"], _login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__["LoginContentComponent"]], imports: [_custom_components_pages_base_page_formly_page_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]] }); })();
+LoginModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function LoginModule_Factory(t) { return new (t || LoginModule)(); }, imports: [[_custom_components_pages_base_page_formly_page_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](LoginModule, { declarations: [_custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"], _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__["LoginContentComponent"]], imports: [_custom_components_pages_base_page_formly_page_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]] }); })();
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
-                declarations: [_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"], _login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__["LoginContentComponent"]],
-                imports: [_custom_components_pages_base_page_formly_page_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]],
+                declarations: [_custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"], _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__["LoginContentComponent"]],
+                imports: [_custom_components_pages_base_page_formly_page_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]],
                 exports: [],
             }]
     }], null, null); })();
@@ -6338,7 +6346,7 @@ LoginModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInject
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginService", function() { return LoginService; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../base/page-formly/page-formly.service */ "./src/custom/components/pages/base/page-formly/page-formly.service.ts");
+/* harmony import */ var _custom_components_pages_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/base/page-formly/page-formly.service */ "./src/custom/components/pages/base/page-formly/page-formly.service.ts");
 
 
 
@@ -6374,14 +6382,14 @@ class LoginService {
         ];
     }
 }
-LoginService.ɵfac = function LoginService_Factory(t) { return new (t || LoginService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"])); };
+LoginService.ɵfac = function LoginService_Factory(t) { return new (t || LoginService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_custom_components_pages_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"])); };
 LoginService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: LoginService, factory: LoginService.ɵfac, providedIn: 'root' });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginService, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root',
             }]
-    }], function () { return [{ type: _base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"] }]; }, null); })();
+    }], function () { return [{ type: _custom_components_pages_base_page_formly_page_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"] }]; }, null); })();
 
 
 /***/ }),
@@ -6472,9 +6480,11 @@ PageLoginModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineIn
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BaseFormPageModule", function() { return BaseFormPageModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _ngx_formly_material__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/material */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
+/* harmony import */ var _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/material */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js");
+
 
 
 
@@ -6482,20 +6492,20 @@ __webpack_require__.r(__webpack_exports__);
 
 class BaseFormPageModule {
 }
-BaseFormPageModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: BaseFormPageModule });
-BaseFormPageModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function BaseFormPageModule_Factory(t) { return new (t || BaseFormPageModule)(); }, imports: [[
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
-            _ngx_formly_material__WEBPACK_IMPORTED_MODULE_2__["FormlyMaterialModule"],
-        ], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_2__["FormlyMaterialModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](BaseFormPageModule, { imports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_2__["FormlyMaterialModule"]], exports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_2__["FormlyMaterialModule"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](BaseFormPageModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+BaseFormPageModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: BaseFormPageModule });
+BaseFormPageModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function BaseFormPageModule_Factory(t) { return new (t || BaseFormPageModule)(); }, imports: [[
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
+            _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+        ], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](BaseFormPageModule, { imports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"]], exports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](BaseFormPageModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
                 imports: [
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
-                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_2__["FormlyMaterialModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
+                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
                 ],
-                exports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_2__["FormlyMaterialModule"]],
+                exports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"]],
             }]
     }], null, null); })();
 

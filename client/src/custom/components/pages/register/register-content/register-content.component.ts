@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { RegisterService } from '../register.service';
+import { RegisterService } from '@custom/components/pages/register/register.service';
 
 @Component({
   selector: 'app-register-content',

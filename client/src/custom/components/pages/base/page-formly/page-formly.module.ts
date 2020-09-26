@@ -4,7 +4,7 @@ import { PageFormlyDirective } from '@custom/components/pages/base/page-formly/p
 import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { ReactiveFormsModule } from '@angular/forms';
-import { PageSimpleModule } from '../page-simple/page-simple.module';
+import { PageSimpleModule } from '@custom/components/pages/base/page-simple/page-simple.module';
 import { FormSimpleComponent } from '@custom/components/pages/base/page-formly/forms/form-simple/form-simple.component';
 
 @NgModule({

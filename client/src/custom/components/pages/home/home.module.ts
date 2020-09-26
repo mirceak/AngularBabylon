@@ -8,6 +8,6 @@ import { HomeContentComponent } from '@custom/components/pages/home/home-content
 @NgModule({
   declarations: [HomeComponent, HomeContentComponent],
   imports: [PageSimpleModule, HomeRoutingModule],
-  exports: [PageSimpleModule],
+  exports: [PageSimpleModule]
 })
 export class HomeModule {}

@@ -2,10 +2,10 @@
   "name": "angularbabylon",
   "version": "1.0.0",
   "description": "",
-  "main": "index.ts",
+  "main": "server/index.ts",
   "scripts": {
-    "tst": "tsc -w -p ./",
-    "dev": "concurrently \"cd client && ng build --watch\" \"tsc -w -p ./\" \"nodemon dist/server/index.js\""
+    "tst": "tsc -w -p server",
+    "dev": "concurrently \"mongod\" \"cd client && ng build --watch\" \"tsc -w -p server\" \"nodemon dist/server/server/index.js\""
   },
   "repository": {
     "type": "git",
@@ -23,9 +23,14 @@
     "concurrently": "^5.3.0",
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
+    "module-alias": "^2.2.2",
     "mongoose": "^5.10.7",
     "nodemon": "^2.0.4",
     "ts-node": "^9.0.0",
     "typescript": "^4.0.3"
+  },
+  "_moduleAliases": {
+    "@kernel": "./dist/server/client/src/kernel",
+    "@custom": "./dist/server/client/src/custom"
   }
 }

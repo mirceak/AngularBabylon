@@ -1,7 +1,7 @@
 import * as jwt from 'jsonwebtoken';
-import BaseController from '../../../../kernel/backend/controllers/base/base.controller';
+import BaseController from '@kernel/backend/controllers/base/base.controller';
 
-import SchemaUser from '../schema/schema.user';
+import SchemaUser from '@custom/entities/user/schema/schema.user';
 
 class ControllerUser extends BaseController {
   model = SchemaUser;  

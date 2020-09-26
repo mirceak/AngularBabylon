@@ -8,13 +8,13 @@
 
   <mat-sidenav-container
     class="layout-sidenav-container"
-    [style.marginTop.px]="mobileQuery.matches ? 56 : 0"
+    [style.marginTop.px]="mobileQuery.matches ? 264 : 0"
   >
     <mat-sidenav
       #snav
       [mode]="mobileQuery.matches ? 'over' : 'side'"
       [fixedInViewport]="mobileQuery.matches"
-      fixedTopGap="56"
+      fixedTopGap="264"
     >
       <mat-nav-list>
         <ng-content select="[nav-list]"></ng-content>
@@ -22,7 +22,9 @@
     </mat-sidenav>
 
     <mat-sidenav-content>
+      <div class="layout-content">
         <ng-content select="[content]"></ng-content>
+      </div>
     </mat-sidenav-content>
   </mat-sidenav-container>
 </div>

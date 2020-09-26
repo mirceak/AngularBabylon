@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const jwt = require("jsonwebtoken");
-const base_controller_1 = require("../../../../kernel/backend/controllers/base/base.controller");
-const schema_user_1 = require("../schema/schema.user");
+const base_controller_1 = require("@kernel/backend/controllers/base/base.controller");
+const schema_user_1 = require("@custom/entities/user/schema/schema.user");
 class ControllerUser extends base_controller_1.default {
     constructor() {
         super(...arguments);

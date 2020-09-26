@@ -1,0 +1,20 @@
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "../",
+    "outDir": "../dist/server",
+    "sourceMap": true,
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2020",
+    "module": "None",
+    "lib": ["ES2020", "dom"],
+    "paths": {
+      "@kernel/*": ["./client/src/kernel/*"],
+      "@custom/*": ["./client/src/custom/*"]
+    },
+  }
+}

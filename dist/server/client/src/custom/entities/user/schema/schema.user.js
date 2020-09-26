@@ -12,6 +12,7 @@ const userSchema = new mongoose.Schema({
 // Before saving the user, hash the password
 userSchema.pre('save', function (next) {
     const user = this;
+    console.log(user);
     if (!user.isModified('password')) {
         return next();
     }
@@ -44,8 +45,7 @@ userSchema.set('toJSON', {
     }
 });
 const SchemaUser = mongoose.model(Entity, userSchema);
-SchemaUser.apiOptions = {
-    Entity,
+SchemaUser.apiPaths = {
     pathNamePlural: mongoose.pluralize()(Entity),
     pathName: Entity.toLowerCase()
 };

@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { MaterialModule } from '@kernel/material/material.module';
+import { BaseMaterialModule } from '@kernel/material/base.material.module';
 
 @NgModule({
   declarations: [],
-  imports: [MaterialModule],
-  exports: [MaterialModule],
+  imports: [BaseMaterialModule],
+  exports: [BaseMaterialModule],
 })
 export class BasePageModule {}
