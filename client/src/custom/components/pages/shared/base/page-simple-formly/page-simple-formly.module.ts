@@ -4,10 +4,10 @@ import { FormlyModule } from '@ngx-formly/core';
 import { FormlyMaterialModule } from '@ngx-formly/material';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PageSimpleModule } from '@custom/components/pages/shared/base/page-simple/page-simple.module';
-import { FormSimpleComponent } from '@custom/components/pages/shared/forms/form-simple/form-simple.component';
+import { PageFormSimpleComponent } from '@custom/components/pages/shared/base/page-simple-formly/page-form-simple.component';
 
 @NgModule({
-  declarations: [ FormSimpleComponent],
+  declarations: [PageFormSimpleComponent],
   imports: [
     PageSimpleModule,
     ReactiveFormsModule,
@@ -20,7 +20,7 @@ import { FormSimpleComponent } from '@custom/components/pages/shared/forms/form-
     FormlyModule,
     FormlyMaterialModule,
     PageSimpleModule,
-    FormSimpleComponent,
+    PageFormSimpleComponent,
   ],
 })
 export class PageFormlyModule {}

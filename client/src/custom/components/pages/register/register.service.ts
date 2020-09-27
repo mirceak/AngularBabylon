@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
-import { PageFormlyService } from '@custom/components/pages/shared/base/page-formly/page-formly.service';
+import { PageFormlyService } from '@custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service';
 
 @Injectable({
   providedIn: 'root'
