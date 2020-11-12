@@ -52532,6 +52532,22 @@ NavListSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
 
 /***/ }),
 
+/***/ "./src/custom/entities/user/model/model.user.ts":
+/*!******************************************************!*\
+  !*** ./src/custom/entities/user/model/model.user.ts ***!
+  \******************************************************/
+/*! exports provided: ModelUser */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ModelUser", function() { return ModelUser; });
+class ModelUser {
+}
+
+
+/***/ }),
+
 /***/ "./src/custom/entities/user/service/service.user.ts":
 /*!**********************************************************!*\
   !*** ./src/custom/entities/user/service/service.user.ts ***!
@@ -52549,7 +52565,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-class ServiceUser extends _custom_services_entities_base_service_entity_base__WEBPACK_IMPORTED_MODULE_1__["ServiceEnityBase"] {
+class ServiceUser extends _custom_services_entities_base_service_entity_base__WEBPACK_IMPORTED_MODULE_1__["ServiceEntityBase"] {
     constructor(http) {
         super(http, {
             pathNamePlural: 'users',
@@ -52575,16 +52591,94 @@ ServiceUser.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjec
 
 /***/ }),
 
-/***/ "./src/custom/services/entities/base/service.entity.base.ts":
-/*!******************************************************************!*\
-  !*** ./src/custom/services/entities/base/service.entity.base.ts ***!
-  \******************************************************************/
-/*! exports provided: ServiceEnityBase */
+/***/ "./src/custom/services/auth/service.auth.ts":
+/*!**************************************************!*\
+  !*** ./src/custom/services/auth/service.auth.ts ***!
+  \**************************************************/
+/*! exports provided: ServiceAuth */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServiceEnityBase", function() { return ServiceEnityBase; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServiceAuth", function() { return ServiceAuth; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _custom_entities_user_model_model_user__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/entities/user/model/model.user */ "./src/custom/entities/user/model/model.user.ts");
+/* harmony import */ var _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/entities/user/service/service.user */ "./src/custom/entities/user/service/service.user.ts");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
+/* harmony import */ var _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @auth0/angular-jwt */ "./node_modules/@auth0/angular-jwt/__ivy_ngcc__/fesm2015/auth0-angular-jwt.js");
+
+
+
+
+
+
+class ServiceAuth {
+    constructor(serviceUser, router, jwtHelper) {
+        this.serviceUser = serviceUser;
+        this.router = router;
+        this.jwtHelper = jwtHelper;
+        this.loggedIn = false;
+        this.roles = {
+            guest: true,
+        };
+        this.currentUser = new _custom_entities_user_model_model_user__WEBPACK_IMPORTED_MODULE_1__["ModelUser"]();
+        const token = localStorage.getItem('token');
+        if (token) {
+            const decodedUser = this.decodeUserFromToken(token);
+            this.setCurrentUser(decodedUser);
+            console.log(decodedUser);
+        }
+    }
+    login(emailAndPassword) {
+        this.serviceUser.login(emailAndPassword).subscribe((res) => {
+            localStorage.setItem('token', res.token);
+            const decodedUser = this.decodeUserFromToken(res.token);
+            this.setCurrentUser(decodedUser);
+            this.loggedIn = true;
+            this.router.navigate(['/']);
+        }, (error) => console.log('invalid email or password!', 'danger'));
+    }
+    logout() {
+        localStorage.removeItem('token');
+        this.loggedIn = false;
+        this.roles.admin = false;
+        this.currentUser = new _custom_entities_user_model_model_user__WEBPACK_IMPORTED_MODULE_1__["ModelUser"]();
+        this.router.navigate(['/login']);
+    }
+    decodeUserFromToken(token) {
+        return this.jwtHelper.decodeToken(token).user;
+    }
+    setCurrentUser(decodedUser) {
+        this.loggedIn = true;
+        this.currentUser._id = decodedUser._id;
+        this.currentUser.username = decodedUser.username;
+        this.currentUser.role = decodedUser.role;
+        this.roles.admin = decodedUser.role === 'admin';
+        delete decodedUser.role;
+    }
+}
+ServiceAuth.ɵfac = function ServiceAuth_Factory(t) { return new (t || ServiceAuth)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_2__["ServiceUser"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_4__["JwtHelperService"])); };
+ServiceAuth.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: ServiceAuth, factory: ServiceAuth.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ServiceAuth, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
+        args: [{
+                providedIn: 'root',
+            }]
+    }], function () { return [{ type: _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_2__["ServiceUser"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }, { type: _auth0_angular_jwt__WEBPACK_IMPORTED_MODULE_4__["JwtHelperService"] }]; }, null); })();
+
+
+/***/ }),
+
+/***/ "./src/custom/services/entities/base/service.entity.base.ts":
+/*!******************************************************************!*\
+  !*** ./src/custom/services/entities/base/service.entity.base.ts ***!
+  \******************************************************************/
+/*! exports provided: ServiceEntityBase */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ServiceEntityBase", function() { return ServiceEntityBase; });
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
 
@@ -52592,7 +52686,7 @@ __webpack_require__.r(__webpack_exports__);
 
 class Options {
 }
-class ServiceEnityBase {
+class ServiceEntityBase {
     constructor(http, options) {
         this.http = http;
         this.options = options;
@@ -52616,9 +52710,9 @@ class ServiceEnityBase {
         return this.http.delete(`/api/${this.options.pathName}/${entity._id}`, { responseType: 'text' });
     }
 }
-ServiceEnityBase.ɵfac = function ServiceEnityBase_Factory(t) { return new (t || ServiceEnityBase)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](Options)); };
-ServiceEnityBase.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: ServiceEnityBase, factory: ServiceEnityBase.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ServiceEnityBase, [{
+ServiceEntityBase.ɵfac = function ServiceEntityBase_Factory(t) { return new (t || ServiceEntityBase)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](Options)); };
+ServiceEntityBase.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: ServiceEntityBase, factory: ServiceEntityBase.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](ServiceEntityBase, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
         args: [{
                 providedIn: 'root',
@@ -52905,6 +52999,37 @@ BaseMaterialModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefin
 
 /***/ }),
 
+/***/ "./src/kernel/modules/auth/auth.module.ts":
+/*!************************************************!*\
+  !*** ./src/kernel/modules/auth/auth.module.ts ***!
+  \************************************************/
+/*! exports provided: AuthModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "AuthModule", function() { return AuthModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _custom_services_auth_service_auth__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/services/auth/service.auth */ "./src/custom/services/auth/service.auth.ts");
+
+
+
+class AuthModule {
+}
+AuthModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: AuthModule });
+AuthModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function AuthModule_Factory(t) { return new (t || AuthModule)(); }, providers: [_custom_services_auth_service_auth__WEBPACK_IMPORTED_MODULE_1__["ServiceAuth"]], imports: [[]] });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](AuthModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+        args: [{
+                imports: [],
+                exports: [],
+                providers: [_custom_services_auth_service_auth__WEBPACK_IMPORTED_MODULE_1__["ServiceAuth"]],
+            }]
+    }], null, null); })();
+
+
+/***/ }),
+
 /***/ "./src/kernel/pages/base/base.page.module.ts":
 /*!***************************************************!*\
   !*** ./src/kernel/pages/base/base.page.module.ts ***!
@@ -52915,22 +53040,27 @@ BaseMaterialModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefin
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BasePageModule", function() { return BasePageModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @kernel/material/base.material.module */ "./src/kernel/material/base.material.module.ts");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
+/* harmony import */ var _kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @kernel/material/base.material.module */ "./src/kernel/material/base.material.module.ts");
+/* harmony import */ var _kernel_modules_auth_auth_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @kernel/modules/auth/auth.module */ "./src/kernel/modules/auth/auth.module.ts");
+
+
 
 
 
 class BasePageModule {
 }
-BasePageModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: BasePageModule });
-BasePageModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function BasePageModule_Factory(t) { return new (t || BasePageModule)(); }, imports: [[_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_1__["BaseMaterialModule"]], _kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_1__["BaseMaterialModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](BasePageModule, { imports: [_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_1__["BaseMaterialModule"]], exports: [_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_1__["BaseMaterialModule"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](BasePageModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+BasePageModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: BasePageModule });
+BasePageModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function BasePageModule_Factory(t) { return new (t || BasePageModule)(); }, providers: [], imports: [[_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_2__["BaseMaterialModule"], _kernel_modules_auth_auth_module__WEBPACK_IMPORTED_MODULE_3__["AuthModule"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"]], _kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_2__["BaseMaterialModule"], _kernel_modules_auth_auth_module__WEBPACK_IMPORTED_MODULE_3__["AuthModule"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](BasePageModule, { imports: [_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_2__["BaseMaterialModule"], _kernel_modules_auth_auth_module__WEBPACK_IMPORTED_MODULE_3__["AuthModule"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"]], exports: [_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_2__["BaseMaterialModule"], _kernel_modules_auth_auth_module__WEBPACK_IMPORTED_MODULE_3__["AuthModule"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](BasePageModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
         args: [{
                 declarations: [],
-                imports: [_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_1__["BaseMaterialModule"]],
-                exports: [_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_1__["BaseMaterialModule"]],
+                imports: [_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_2__["BaseMaterialModule"], _kernel_modules_auth_auth_module__WEBPACK_IMPORTED_MODULE_3__["AuthModule"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"]],
+                exports: [_kernel_material_base_material_module__WEBPACK_IMPORTED_MODULE_2__["BaseMaterialModule"], _kernel_modules_auth_auth_module__WEBPACK_IMPORTED_MODULE_3__["AuthModule"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"]],
+                providers: [],
             }]
     }], null, null); })();
 

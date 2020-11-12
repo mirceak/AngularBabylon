@@ -10,7 +10,7 @@ class Options {
 @Injectable({
   providedIn: 'root',
 })
-export abstract class ServiceEnityBase<Entity> {
+export abstract class ServiceEntityBase<Entity> {
   constructor(public http: HttpClient, private options: Options) {}
 
   getEntities(): Observable<Entity[]> {
