@@ -1,204 +1,40 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["final-pages-login-page-login-module"],{
 
-/***/ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core-select.js":
-/*!***************************************************************************************!*\
-  !*** ./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core-select.js ***!
-  \***************************************************************************************/
-/*! exports provided: FormlySelectModule, ɵa */
+/***/ "04AV":
+/*!****************************************************!*\
+  !*** ./src/final/pages/login/page.login.module.ts ***!
+  \****************************************************/
+/*! exports provided: PageLoginModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlySelectModule", function() { return FormlySelectModule; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return FormlySelectOptionsPipe; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageLoginModule", function() { return PageLoginModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _final_pages_login_page_login_routing_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @final/pages/login/page.login-routing.module */ "XnP8");
+/* harmony import */ var _custom_components_pages_login_login_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/login/login.module */ "WlNF");
 
 
 
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 
-class FormlySelectOptionsPipe {
-    /**
-     * @param {?} options
-     * @param {?=} field
-     * @return {?}
-     */
-    transform(options, field) {
-        if (!(options instanceof rxjs__WEBPACK_IMPORTED_MODULE_1__["Observable"])) {
-            options = Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["of"])(options);
-        }
-        return ((/** @type {?} */ (options))).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((/**
-         * @param {?} value
-         * @return {?}
-         */
-        value => this.toOptions(value, field || {}))));
-    }
-    /**
-     * @private
-     * @param {?} options
-     * @param {?} field
-     * @return {?}
-     */
-    toOptions(options, field) {
-        /** @type {?} */
-        const gOptions = [];
-        /** @type {?} */
-        const groups = {};
-        /** @type {?} */
-        const to = field.templateOptions || {};
-        to._flatOptions = true;
-        options.map((/**
-         * @param {?} option
-         * @return {?}
-         */
-        (option) => {
-            if (!this.getGroupProp(option, to)) {
-                gOptions.push(this.toOption(option, to));
-            }
-            else {
-                to._flatOptions = false;
-                if (!groups[this.getGroupProp(option, to)]) {
-                    groups[this.getGroupProp(option, to)] = [];
-                    gOptions.push({
-                        label: this.getGroupProp(option, to),
-                        group: groups[this.getGroupProp(option, to)],
-                    });
-                }
-                groups[this.getGroupProp(option, to)].push(this.toOption(option, to));
-            }
-        }));
-        return gOptions;
-    }
-    /**
-     * @private
-     * @param {?} item
-     * @param {?} to
-     * @return {?}
-     */
-    toOption(item, to) {
-        return {
-            label: this.getLabelProp(item, to),
-            value: this.getValueProp(item, to),
-            disabled: this.getDisabledProp(item, to) || false,
-        };
-    }
-    /**
-     * @private
-     * @param {?} item
-     * @param {?} to
-     * @return {?}
-     */
-    getLabelProp(item, to) {
-        if (typeof to.labelProp === 'function') {
-            return to.labelProp(item);
-        }
-        if (this.shouldUseLegacyOption(item, to)) {
-            console.warn(`NgxFormly: legacy select option '{key, value}' is deprecated since v5.5, use '{value, label}' instead.`);
-            return item.value;
-        }
-        return item[to.labelProp || 'label'];
-    }
-    /**
-     * @private
-     * @param {?} item
-     * @param {?} to
-     * @return {?}
-     */
-    getValueProp(item, to) {
-        if (typeof to.valueProp === 'function') {
-            return to.valueProp(item);
-        }
-        if (this.shouldUseLegacyOption(item, to)) {
-            return item.key;
-        }
-        return item[to.valueProp || 'value'];
-    }
-    /**
-     * @private
-     * @param {?} item
-     * @param {?} to
-     * @return {?}
-     */
-    getDisabledProp(item, to) {
-        if (typeof to.disabledProp === 'function') {
-            return to.disabledProp(item);
-        }
-        return item[to.disabledProp || 'disabled'];
-    }
-    /**
-     * @private
-     * @param {?} item
-     * @param {?} to
-     * @return {?}
-     */
-    getGroupProp(item, to) {
-        if (typeof to.groupProp === 'function') {
-            return to.groupProp(item);
-        }
-        return item[to.groupProp || 'group'];
-    }
-    /**
-     * @private
-     * @param {?} item
-     * @param {?} to
-     * @return {?}
-     */
-    shouldUseLegacyOption(item, to) {
-        return !to.valueProp
-            && !to.labelProp
-            && item != null
-            && typeof item === 'object'
-            && 'key' in item
-            && 'value' in item;
-    }
+class PageLoginModule {
 }
-FormlySelectOptionsPipe.ɵfac = function FormlySelectOptionsPipe_Factory(t) { return new (t || FormlySelectOptionsPipe)(); };
-FormlySelectOptionsPipe.ɵpipe = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefinePipe"]({ name: "formlySelectOptions", type: FormlySelectOptionsPipe, pure: true });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](FormlySelectOptionsPipe, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"],
-        args: [{ name: 'formlySelectOptions' }]
-    }], null, null); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlySelectModule {
-}
-FormlySelectModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: FormlySelectModule });
-FormlySelectModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function FormlySelectModule_Factory(t) { return new (t || FormlySelectModule)(); } });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](FormlySelectModule, { declarations: [FormlySelectOptionsPipe], exports: [FormlySelectOptionsPipe] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](FormlySelectModule, [{
+PageLoginModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: PageLoginModule });
+PageLoginModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function PageLoginModule_Factory(t) { return new (t || PageLoginModule)(); }, imports: [[_custom_components_pages_login_login_module__WEBPACK_IMPORTED_MODULE_3__["LoginModule"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _final_pages_login_page_login_routing_module__WEBPACK_IMPORTED_MODULE_2__["PageLoginRoutingModule"]]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageLoginModule, { imports: [_custom_components_pages_login_login_module__WEBPACK_IMPORTED_MODULE_3__["LoginModule"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _final_pages_login_page_login_routing_module__WEBPACK_IMPORTED_MODULE_2__["PageLoginRoutingModule"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageLoginModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
-                declarations: [FormlySelectOptionsPipe],
-                exports: [FormlySelectOptionsPipe]
+                imports: [_custom_components_pages_login_login_module__WEBPACK_IMPORTED_MODULE_3__["LoginModule"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _final_pages_login_page_login_routing_module__WEBPACK_IMPORTED_MODULE_2__["PageLoginRoutingModule"]],
             }]
     }], null, null); })();
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-//# sourceMappingURL=ngx-formly-core-select.js.map
 
 /***/ }),
 
-/***/ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js":
+/***/ "0FS3":
 /*!********************************************************************************!*\
   !*** ./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js ***!
   \********************************************************************************/
@@ -231,13 +67,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵd", function() { return FormlyTemplateType; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵb", function() { return FormlyGroup; });
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵc", function() { return FormlyValidationMessage; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ "./node_modules/@angular/platform-browser/__ivy_ngcc__/fesm2015/platform-browser.js");
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ "./node_modules/@ngx-formly/core/node_modules/tslib/tslib.es6.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_platform_browser__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/platform-browser */ "jhN1");
+/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! tslib */ "mB6T");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "qCKp");
 
 
 
@@ -329,7 +165,13 @@ function assignFieldValue(field, value) {
     if (paths.length === 0) {
         return;
     }
-    if (value == null && field['autoClear'] && !field.formControl.parent) {
+    /** @type {?} */
+    let root = field;
+    while (root.parent) {
+        root = root.parent;
+        paths = [...getKeyPath(root), ...paths];
+    }
+    if (value === undefined && field['autoClear']) {
         /** @type {?} */
         const k = paths.pop();
         /** @type {?} */
@@ -338,15 +180,11 @@ function assignFieldValue(field, value) {
          * @param {?} path
          * @return {?}
          */
-        (model, path) => model[path] || {}), field.parent.model);
+        (model, path) => model[path] || {}), root.model);
         delete m[k];
         return;
     }
-    while (field.parent) {
-        field = field.parent;
-        paths = [...getKeyPath(field), ...paths];
-    }
-    assignModelValue(field.model, paths, value);
+    assignModelValue(root.model, paths, value);
 }
 /**
  * @param {?} model
@@ -1062,6 +900,211 @@ FormlyFormBuilder.ctorParameters = () => [
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
+/**
+ * @param {?} field
+ * @param {?=} emitEvent
+ * @return {?}
+ */
+function unregisterControl(field, emitEvent = false) {
+    /** @type {?} */
+    const form = (/** @type {?} */ (field.formControl.parent));
+    if (!form) {
+        return;
+    }
+    /** @type {?} */
+    const control = field.formControl;
+    /** @type {?} */
+    const opts = { emitEvent };
+    if (form instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormArray"]) {
+        /** @type {?} */
+        const key = form.controls.findIndex((/**
+         * @param {?} c
+         * @return {?}
+         */
+        c => c === control));
+        if (key !== -1) {
+            updateControl(form, opts, (/**
+             * @return {?}
+             */
+            () => form.removeAt(key)));
+        }
+    }
+    else if (form instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormGroup"]) {
+        /** @type {?} */
+        const paths = getKeyPath(field);
+        /** @type {?} */
+        const key = paths[paths.length - 1];
+        if (form.get([key]) === control) {
+            updateControl(form, opts, (/**
+             * @return {?}
+             */
+            () => form.removeControl(key)));
+        }
+    }
+    control.setParent(null);
+}
+/**
+ * @param {?} field
+ * @return {?}
+ */
+function findControl(field) {
+    if (field.formControl) {
+        return field.formControl;
+    }
+    if (field['shareFormControl'] === false) {
+        return null;
+    }
+    /** @type {?} */
+    const form = (/** @type {?} */ (field.parent.formControl));
+    return form ? form.get(getKeyPath(field)) : null;
+}
+/**
+ * @param {?} field
+ * @param {?=} control
+ * @param {?=} emitEvent
+ * @return {?}
+ */
+function registerControl(field, control, emitEvent = false) {
+    control = control || field.formControl;
+    if (!control['_fields']) {
+        defineHiddenProp(control, '_fields', []);
+    }
+    if (control['_fields'].indexOf(field) === -1) {
+        control['_fields'].push(field);
+    }
+    if (!field.formControl && control) {
+        defineHiddenProp(field, 'formControl', control);
+        field.templateOptions.disabled = !!field.templateOptions.disabled;
+        wrapProperty(field.templateOptions, 'disabled', (/**
+         * @param {?} __0
+         * @return {?}
+         */
+        ({ firstChange, currentValue }) => {
+            if (!firstChange) {
+                currentValue ? field.formControl.disable() : field.formControl.enable();
+            }
+        }));
+        if (control.registerOnDisabledChange) {
+            control.registerOnDisabledChange((/**
+             * @param {?} value
+             * @return {?}
+             */
+            (value) => field.templateOptions['___$disabled'] = value));
+        }
+    }
+    /** @type {?} */
+    let parent = (/** @type {?} */ (field.parent.formControl));
+    if (!parent || !field.key) {
+        return;
+    }
+    /** @type {?} */
+    const paths = getKeyPath(field);
+    /** @type {?} */
+    const value = getFieldValue(field);
+    if (!(isNullOrUndefined(control.value) && isNullOrUndefined(value))
+        && control.value !== value
+        && control instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormControl"]) {
+        control.patchValue(value);
+    }
+    for (let i = 0; i < (paths.length - 1); i++) {
+        /** @type {?} */
+        const path = paths[i];
+        if (!parent.get([path])) {
+            updateControl(parent, { emitEvent }, (/**
+             * @return {?}
+             */
+            () => parent.setControl(path, new _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormGroup"]({}))));
+        }
+        parent = (/** @type {?} */ (parent.get([path])));
+    }
+    /** @type {?} */
+    const key = paths[paths.length - 1];
+    if (!field._hide && parent.get([key]) !== control) {
+        updateControl(parent, { emitEvent }, (/**
+         * @return {?}
+         */
+        () => parent.setControl(key, control)));
+    }
+}
+/**
+ * @param {?} c
+ * @return {?}
+ */
+function updateValidity(c) {
+    /** @type {?} */
+    const status = c.status;
+    c.updateValueAndValidity({ emitEvent: false });
+    if (status !== c.status) {
+        ((/** @type {?} */ (c.statusChanges))).emit(c.status);
+    }
+}
+/**
+ * @param {?} form
+ * @param {?} opts
+ * @param {?} action
+ * @return {?}
+ */
+function updateControl(form, opts, action) {
+    /**
+     *  workaround for https://github.com/angular/angular/issues/27679
+     */
+    if (form instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormGroup"] && !form['__patchForEachChild']) {
+        defineHiddenProp(form, '__patchForEachChild', true);
+        ((/** @type {?} */ (form)))._forEachChild = (/**
+         * @param {?} cb
+         * @return {?}
+         */
+        (cb) => {
+            Object
+                .keys(form.controls)
+                .forEach((/**
+             * @param {?} k
+             * @return {?}
+             */
+            k => form.controls[k] && cb(form.controls[k], k)));
+        });
+    }
+    /**
+     * workaround for https://github.com/angular/angular/issues/20439
+     * @type {?}
+     */
+    const updateValueAndValidity = form.updateValueAndValidity.bind(form);
+    if (opts.emitEvent === false) {
+        form.updateValueAndValidity = (/**
+         * @param {?} opts
+         * @return {?}
+         */
+        (opts) => {
+            updateValueAndValidity(Object.assign({}, (opts || {}), { emitEvent: false }));
+        });
+    }
+    action();
+    if (opts.emitEvent === false) {
+        form.updateValueAndValidity = updateValueAndValidity;
+    }
+}
+/**
+ * @param {?} form
+ * @return {?}
+ */
+function clearControl(form) {
+    form['_fields'] && delete form['_fields'];
+    form.setValidators(null);
+    form.setAsyncValidators(null);
+    if (form instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormGroup"] || form instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormArray"]) {
+        Object.keys(form.controls)
+            .forEach((/**
+         * @param {?} k
+         * @return {?}
+         */
+        (k) => clearControl(form.controls[k])));
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
 class FormlyForm {
     /**
      * @param {?} formlyBuilder
@@ -1110,7 +1153,12 @@ class FormlyForm {
     /**
      * @return {?}
      */
-    get model() { return this._model || {}; }
+    get model() {
+        if (!this._model) {
+            this._model = {};
+        }
+        return this._model;
+    }
     /**
      * @param {?} fields
      * @return {?}
@@ -1154,6 +1202,9 @@ class FormlyForm {
         // https://github.com/ngx-formly/ngx-formly/issues/2294
         if (changes.model && this.field) {
             this.field.model = this.model;
+        }
+        if (changes.fields && this.form) {
+            clearControl(this.form);
         }
         if (changes.fields || changes.form || (changes.model && this._modelChangeValue !== changes.model.currentValue)) {
             this.form = this.form || (new _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormGroup"]({}));
@@ -1340,7 +1391,7 @@ FormlyForm.ɵfac = function FormlyForm_Factory(t) { return new (t || FormlyForm)
 FormlyForm.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: FormlyForm, selectors: [["formly-form"]], viewQuery: function FormlyForm_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵviewQuery"](_c0, true);
     } if (rf & 2) {
-        var _t;
+        let _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵloadQuery"]()) && (ctx.content = _t.first);
     } }, inputs: { model: "model", fields: "fields", options: "options", form: "form" }, outputs: { modelChange: "modelChange" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵProvidersFeature"]([FormlyFormBuilder]), _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵNgOnChangesFeature"]], ngContentSelectors: _c1, decls: 4, vars: 1, consts: [["hide-deprecation", "", 3, "form", "options", "model", "field", 4, "ngFor", "ngForOf"], ["content", ""], ["hide-deprecation", "", 3, "form", "options", "model", "field"]], template: function FormlyForm_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵprojectionDef"]();
@@ -1667,7 +1718,7 @@ FormlyField.ɵfac = function FormlyField_Factory(t) { return new (t || FormlyFie
 FormlyField.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineComponent"]({ type: FormlyField, selectors: [["formly-field"]], viewQuery: function FormlyField_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵstaticViewQuery"](_c2, true, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"]);
     } if (rf & 2) {
-        var _t;
+        let _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵloadQuery"]()) && (ctx.containerRef = _t.first);
     } }, inputs: { model: "model", form: "form", options: "options", field: "field" }, outputs: { modelChange: "modelChange" }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵNgOnChangesFeature"]], decls: 2, vars: 0, consts: [["container", ""]], template: function FormlyField_Template(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplate"](0, FormlyField_ng_template_0_Template, 0, 0, "ng-template", null, 0, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵtemplateRefExtractor"]);
@@ -2085,199 +2136,6 @@ class Field extends FieldType {
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 /**
- * @param {?} field
- * @param {?=} emitEvent
- * @return {?}
- */
-function unregisterControl(field, emitEvent = false) {
-    /** @type {?} */
-    const form = (/** @type {?} */ (field.formControl.parent));
-    if (!form) {
-        return;
-    }
-    /** @type {?} */
-    const control = field.formControl;
-    /** @type {?} */
-    const opts = { emitEvent };
-    if (form instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormArray"]) {
-        /** @type {?} */
-        const key = form.controls.findIndex((/**
-         * @param {?} c
-         * @return {?}
-         */
-        c => c === control));
-        if (key !== -1) {
-            updateControl(form, opts, (/**
-             * @return {?}
-             */
-            () => form.removeAt(key)));
-        }
-    }
-    else if (form instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormGroup"]) {
-        /** @type {?} */
-        const paths = getKeyPath(field);
-        /** @type {?} */
-        const key = paths[paths.length - 1];
-        if (form.get([key]) === control) {
-            updateControl(form, opts, (/**
-             * @return {?}
-             */
-            () => form.removeControl(key)));
-        }
-    }
-    control.setParent(null);
-}
-/**
- * @param {?} field
- * @return {?}
- */
-function findControl(field) {
-    if (field.formControl) {
-        return field.formControl;
-    }
-    if (field['shareFormControl'] === false) {
-        return null;
-    }
-    /** @type {?} */
-    const form = (/** @type {?} */ (field.parent.formControl));
-    return form ? form.get(getKeyPath(field)) : null;
-}
-/**
- * @param {?} field
- * @param {?=} control
- * @param {?=} emitEvent
- * @return {?}
- */
-function registerControl(field, control, emitEvent = false) {
-    control = control || field.formControl;
-    if (!control['_fields']) {
-        defineHiddenProp(control, '_fields', []);
-    }
-    if (control['_fields'].indexOf(field) === -1) {
-        control['_fields'].push(field);
-    }
-    if (!field.formControl && control) {
-        defineHiddenProp(field, 'formControl', control);
-        field.templateOptions.disabled = !!field.templateOptions.disabled;
-        wrapProperty(field.templateOptions, 'disabled', (/**
-         * @param {?} __0
-         * @return {?}
-         */
-        ({ firstChange, currentValue }) => {
-            if (!firstChange) {
-                currentValue ? field.formControl.disable() : field.formControl.enable();
-            }
-        }));
-        if (control.registerOnDisabledChange) {
-            control.registerOnDisabledChange((/**
-             * @param {?} value
-             * @return {?}
-             */
-            (value) => field.templateOptions['___$disabled'] = value));
-        }
-    }
-    /** @type {?} */
-    let parent = (/** @type {?} */ (field.parent.formControl));
-    if (!parent || !field.key) {
-        return;
-    }
-    /** @type {?} */
-    const paths = getKeyPath(field);
-    if (!parent['_formlyControls']) {
-        defineHiddenProp(parent, '_formlyControls', {});
-    }
-    parent['_formlyControls'][paths.join('.')] = control;
-    for (let i = 0; i < (paths.length - 1); i++) {
-        /** @type {?} */
-        const path = paths[i];
-        if (!parent.get([path])) {
-            registerControl({
-                key: [path],
-                formControl: new _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormGroup"]({}),
-                parent: { formControl: parent },
-            });
-        }
-        parent = (/** @type {?} */ (parent.get([path])));
-    }
-    /** @type {?} */
-    const value = getFieldValue(field);
-    if (!(isNullOrUndefined(control.value) && isNullOrUndefined(value))
-        && control.value !== value
-        && control instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormControl"]) {
-        control.patchValue(value);
-    }
-    /** @type {?} */
-    const key = paths[paths.length - 1];
-    if (!field._hide && parent.get([key]) !== control) {
-        updateControl(parent, { emitEvent }, (/**
-         * @return {?}
-         */
-        () => parent.setControl(key, control)));
-    }
-}
-/**
- * @param {?} c
- * @return {?}
- */
-function updateValidity(c) {
-    /** @type {?} */
-    const status = c.status;
-    c.updateValueAndValidity({ emitEvent: false });
-    if (status !== c.status) {
-        ((/** @type {?} */ (c.statusChanges))).emit(c.status);
-    }
-}
-/**
- * @param {?} form
- * @param {?} opts
- * @param {?} action
- * @return {?}
- */
-function updateControl(form, opts, action) {
-    /**
-     *  workaround for https://github.com/angular/angular/issues/27679
-     */
-    if (form instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormGroup"] && !form['__patchForEachChild']) {
-        defineHiddenProp(form, '__patchForEachChild', true);
-        ((/** @type {?} */ (form)))._forEachChild = (/**
-         * @param {?} cb
-         * @return {?}
-         */
-        (cb) => {
-            Object
-                .keys(form.controls)
-                .forEach((/**
-             * @param {?} k
-             * @return {?}
-             */
-            k => form.controls[k] && cb(form.controls[k], k)));
-        });
-    }
-    /**
-     * workaround for https://github.com/angular/angular/issues/20439
-     * @type {?}
-     */
-    const updateValueAndValidity = form.updateValueAndValidity.bind(form);
-    if (opts.emitEvent === false) {
-        form.updateValueAndValidity = (/**
-         * @param {?} opts
-         * @return {?}
-         */
-        (opts) => {
-            updateValueAndValidity(Object.assign({}, (opts || {}), { emitEvent: false }));
-        });
-    }
-    action();
-    if (opts.emitEvent === false) {
-        form.updateValueAndValidity = updateValueAndValidity;
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
  * @abstract
  * @template F
  */
@@ -2293,6 +2151,12 @@ class FieldArrayType extends FieldType {
         if (builder instanceof FormlyFormBuilder) {
             console.warn(`NgxFormly: passing 'FormlyFormBuilder' to '${this.constructor.name}' type is not required anymore, you may remove it!`);
         }
+    }
+    /**
+     * @return {?}
+     */
+    get formControl() {
+        return (/** @type {?} */ (this.field.formControl));
     }
     /**
      * @param {?} field
@@ -2372,7 +2236,7 @@ FieldWrapper.ɵfac = function FieldWrapper_Factory(t) { return ɵFieldWrapper_Ba
 FieldWrapper.ɵdir = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineDirective"]({ type: FieldWrapper, viewQuery: function FieldWrapper_Query(rf, ctx) { if (rf & 1) {
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵviewQuery"](_c3, true, _angular_core__WEBPACK_IMPORTED_MODULE_1__["ViewContainerRef"]);
     } if (rf & 2) {
-        var _t;
+        let _t;
         _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵloadQuery"]()) && (ctx.fieldComponent = _t.first);
     } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵInheritDefinitionFeature"]] });
 FieldWrapper.propDecorators = {
@@ -2618,7 +2482,7 @@ class FieldExpressionExtension {
      * @param {?} field
      * @return {?}
      */
-    onPopulate(field) {
+    postPopulate(field) {
         if (!field.parent || field._expressionProperties) {
             return;
         }
@@ -2630,7 +2494,7 @@ class FieldExpressionExtension {
                 const expressionProperty = field.expressionProperties[key];
                 if (typeof expressionProperty === 'string' || isFunction(expressionProperty)) {
                     field._expressionProperties[key] = {
-                        expression: this._evalExpression(expressionProperty, key === 'templateOptions.disabled' && field.parent.expressionProperties && field.parent.expressionProperties.hasOwnProperty('templateOptions.disabled')
+                        expression: this._evalExpression(key, expressionProperty, key === 'templateOptions.disabled' && field.parent.expressionProperties && field.parent.expressionProperties.hasOwnProperty('templateOptions.disabled')
                             ? (/**
                              * @return {?}
                              */
@@ -2697,15 +2561,17 @@ class FieldExpressionExtension {
         if (field.hideExpression) {
             // delete hide value in order to force re-evaluate it in FormlyFormExpression.
             delete field.hide;
-            /** @type {?} */
-            let parent = field.parent;
-            while (parent && !parent.hideExpression) {
-                parent = parent.parent;
-            }
-            field.hideExpression = this._evalExpression(field.hideExpression, parent && parent.hideExpression ? (/**
+            field.hideExpression = this._evalExpression('hide', field.hideExpression, (/**
              * @return {?}
              */
-            () => parent.hide) : undefined);
+            () => {
+                /** @type {?} */
+                let root = field.parent;
+                while (root.parent && !root.hide) {
+                    root = root.parent;
+                }
+                return root.hide;
+            }));
         }
         else {
             wrapProperty(field, 'hide', (/**
@@ -2722,27 +2588,36 @@ class FieldExpressionExtension {
     }
     /**
      * @private
+     * @param {?} prop
      * @param {?} expression
      * @param {?=} parentExpression
      * @return {?}
      */
-    _evalExpression(expression, parentExpression) {
-        expression = expression || ((/**
+    _evalExpression(prop, expression, parentExpression) {
+        return (/**
+         * @param {?} model
+         * @param {?} formState
+         * @param {?} field
          * @return {?}
          */
-        () => false));
-        if (typeof expression === 'string') {
-            expression = evalStringExpression(expression, ['model', 'formState', 'field']);
-        }
-        return parentExpression
-            ? (/**
-             * @param {?} model
-             * @param {?} formState
-             * @param {?} field
-             * @return {?}
-             */
-            (model, formState, field) => parentExpression() || expression(model, formState, field))
-            : expression;
+        (model, formState, field) => {
+            try {
+                if (typeof expression === 'string') {
+                    expression = evalStringExpression(expression, ['model', 'formState', 'field']);
+                }
+                if (typeof expression !== 'function') {
+                    expression = (/**
+                     * @return {?}
+                     */
+                    () => !!expression);
+                }
+                return (parentExpression && parentExpression()) || expression(model, formState, field);
+            }
+            catch (error) {
+                error.message = `[Formly Error] [Expression "${prop}"] ${error.message}`;
+                throw error;
+            }
+        });
     }
     /**
      * @private
@@ -2890,6 +2765,12 @@ class FieldExpressionExtension {
                 unregisterControl(field);
                 if (resetOnHide && field['autoClear']) {
                     field.formControl.reset({ value: undefined, disabled: field.formControl.disabled });
+                    if (field.fieldGroup) {
+                        assignFieldValue(field, undefined);
+                        if (field.formControl instanceof _angular_forms__WEBPACK_IMPORTED_MODULE_5__["FormArray"]) {
+                            field.fieldGroup.length = 0;
+                        }
+                    }
                 }
             }
             else if (hide === false) {
@@ -2897,7 +2778,7 @@ class FieldExpressionExtension {
                     assignFieldValue(field, field.defaultValue);
                 }
                 registerControl(field);
-                if (field.fieldArray && (field.fieldGroup || []).length !== (field.model || []).length) {
+                if (field['autoClear'] && field.fieldArray && (field.fieldGroup || []).length !== (field.model || []).length) {
                     ((/** @type {?} */ (field.options)))._buildForm(true);
                 }
             }
@@ -2931,7 +2812,7 @@ class FieldExpressionExtension {
             /** @type {?} */
             let target = field;
             /** @type {?} */
-            const paths = prop.split('.');
+            const paths = (prop.indexOf('[') === -1 ? prop : prop.replace(/\[(\w+)\]/g, '.$1')).split('.');
             /** @type {?} */
             const lastIndex = paths.length - 1;
             for (let i = 0; i < lastIndex; i++) {
@@ -3297,13 +3178,18 @@ class FieldFormExtension {
     setValidators(field) {
         /** @type {?} */
         let updateValidity$$1 = false;
-        if (field.key || !field.parent) {
+        if (field.key || !field.parent || (!field.key && !field.fieldGroup)) {
             const { formControl: c } = field;
             /** @type {?} */
             const disabled = field.templateOptions ? field.templateOptions.disabled : false;
             if (disabled && c.enabled) {
                 c.disable({ emitEvent: false, onlySelf: true });
-                updateValidity$$1 = true;
+                if (!c.parent) {
+                    updateValidity(c);
+                }
+                else {
+                    updateValidity$$1 = true;
+                }
             }
             if (null === c.validator || null === c.asyncValidator) {
                 c.setValidators((/**
@@ -3726,7 +3612,2245 @@ FormlyModule.ctorParameters = () => [
 
 /***/ }),
 
-/***/ "./node_modules/@ngx-formly/core/node_modules/tslib/tslib.es6.js":
+/***/ "AKay":
+/*!************************************************************!*\
+  !*** ./src/custom/components/pages/login/login.service.ts ***!
+  \************************************************************/
+/*! exports provided: LoginService */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginService", function() { return LoginService; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service */ "qzCD");
+
+
+
+class LoginService {
+    constructor(pageFormlyService) {
+        this.pageFormlyService = pageFormlyService;
+        this.fields = [
+            {
+                key: 'email',
+                type: 'input',
+                templateOptions: {
+                    label: 'Email',
+                    placeholder: 'Enter email',
+                    required: true,
+                },
+                validators: {
+                    email: this.pageFormlyService.emailValidator,
+                    required: this.pageFormlyService.requiredValidator,
+                },
+            },
+            {
+                key: 'password',
+                type: 'input',
+                templateOptions: {
+                    label: 'Password',
+                    required: true,
+                },
+                validators: {
+                    minLength: this.pageFormlyService.minLengthValidator(6),
+                    required: this.pageFormlyService.requiredValidator,
+                },
+            },
+        ];
+    }
+}
+LoginService.ɵfac = function LoginService_Factory(t) { return new (t || LoginService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"])); };
+LoginService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: LoginService, factory: LoginService.ɵfac, providedIn: 'root' });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginService, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
+        args: [{
+                providedIn: 'root',
+            }]
+    }], function () { return [{ type: _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"] }]; }, null); })();
+
+
+/***/ }),
+
+/***/ "Dd7e":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-checkbox.js ***!
+  \*************************************************************************************************/
+/*! exports provided: FormlyMatCheckboxModule, FormlyFieldCheckbox */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatCheckboxModule", function() { return FormlyMatCheckboxModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldCheckbox", function() { return FormlyFieldCheckbox; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "c2SN");
+/* harmony import */ var _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/checkbox */ "bSwM");
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+
+
+
+function FormlyFieldCheckbox_span_2_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "span", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1, "*");
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+} }
+class FormlyFieldCheckbox extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FieldType"] {
+    /**
+     * @param {?} renderer
+     */
+    constructor(renderer) {
+        super();
+        this.renderer = renderer;
+        this.defaultOptions = {
+            templateOptions: {
+                hideFieldUnderline: true,
+                indeterminate: true,
+                floatLabel: 'always',
+                hideLabel: true,
+                align: 'start',
+                // start or end
+                color: 'accent',
+            },
+        };
+    }
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    onContainerClick(event) {
+        this.checkbox.focus();
+        super.onContainerClick(event);
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewChecked() {
+        if (this.required !== this._required && this.checkbox && this.checkbox._inputElement) {
+            this._required = this.required;
+            /** @type {?} */
+            const inputElement = this.checkbox._inputElement.nativeElement;
+            if (this.required) {
+                this.renderer.setAttribute(inputElement, 'required', 'required');
+            }
+            else {
+                this.renderer.removeAttribute(inputElement, 'required');
+            }
+        }
+    }
+}
+FormlyFieldCheckbox.ɵfac = function FormlyFieldCheckbox_Factory(t) { return new (t || FormlyFieldCheckbox)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_3__["Renderer2"])); };
+FormlyFieldCheckbox.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: FormlyFieldCheckbox, selectors: [["formly-field-mat-checkbox"]], viewQuery: function FormlyFieldCheckbox_Query(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵviewQuery"](_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckbox"], true);
+    } if (rf & 2) {
+        let _t;
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵloadQuery"]()) && (ctx.checkbox = _t.first);
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵInheritDefinitionFeature"]], decls: 3, vars: 9, consts: [[3, "formControl", "id", "formlyAttributes", "tabIndex", "indeterminate", "color", "labelPosition"], ["class", "mat-form-field-required-marker", 4, "ngIf"], [1, "mat-form-field-required-marker"]], template: function FormlyFieldCheckbox_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "mat-checkbox", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](2, FormlyFieldCheckbox_span_2_Template, 2, 0, "span", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("formControl", ctx.formControl)("id", ctx.id)("formlyAttributes", ctx.field)("tabIndex", ctx.to.tabindex)("indeterminate", ctx.to.indeterminate && ctx.formControl.value === null)("color", ctx.to.color)("labelPosition", ctx.to.align || ctx.to.labelPosition);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", ctx.to.label, " ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx.to.required && ctx.to.hideRequiredMarker !== true);
+    } }, directives: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckbox"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyAttributes"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgIf"]], encapsulation: 2 });
+/** @nocollapse */
+FormlyFieldCheckbox.ctorParameters = () => [
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Renderer2"] }
+];
+FormlyFieldCheckbox.propDecorators = {
+    checkbox: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckbox"],] }]
+};
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyFieldCheckbox, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"],
+        args: [{
+                selector: 'formly-field-mat-checkbox',
+                template: `
+    <mat-checkbox
+      [formControl]="formControl"
+      [id]="id"
+      [formlyAttributes]="field"
+      [tabIndex]="to.tabindex"
+      [indeterminate]="to.indeterminate && formControl.value === null"
+      [color]="to.color"
+      [labelPosition]="to.align || to.labelPosition">
+      {{ to.label }}
+      <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
+    </mat-checkbox>
+  `
+            }]
+    }], function () { return [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Renderer2"] }]; }, { checkbox: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"],
+            args: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckbox"]]
+        }] }); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FormlyMatCheckboxModule {
+}
+FormlyMatCheckboxModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: FormlyMatCheckboxModule });
+FormlyMatCheckboxModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ factory: function FormlyMatCheckboxModule_Factory(t) { return new (t || FormlyMatCheckboxModule)(); }, imports: [[
+            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
+            _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckboxModule"],
+            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
+                types: [
+                    {
+                        name: 'checkbox',
+                        component: FormlyFieldCheckbox,
+                        wrappers: ['form-field']
+                    },
+                ]
+            }),
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](FormlyMatCheckboxModule, { declarations: function () { return [FormlyFieldCheckbox]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
+        _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckboxModule"],
+        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"]]; } }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyMatCheckboxModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"],
+        args: [{
+                declarations: [FormlyFieldCheckbox],
+                imports: [
+                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
+                    _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckboxModule"],
+                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
+                        types: [
+                            {
+                                name: 'checkbox',
+                                component: FormlyFieldCheckbox,
+                                wrappers: ['form-field']
+                            },
+                        ]
+                    }),
+                ]
+            }]
+    }], null, null); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+//# sourceMappingURL=ngx-formly-material-checkbox.js.map
+
+/***/ }),
+
+/***/ "Gm3Y":
+/*!****************************************************************************************!*\
+  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js ***!
+  \****************************************************************************************/
+/*! exports provided: FieldType, FormlyMaterialModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMaterialModule", function() { return FormlyMaterialModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "c2SN");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FieldType", function() { return _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__["FieldType"]; });
+
+/* harmony import */ var _ngx_formly_material_input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/material/input */ "LNXZ");
+/* harmony import */ var _ngx_formly_material_textarea__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/material/textarea */ "RNLs");
+/* harmony import */ var _ngx_formly_material_radio__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngx-formly/material/radio */ "hmTt");
+/* harmony import */ var _ngx_formly_material_checkbox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/material/checkbox */ "Dd7e");
+/* harmony import */ var _ngx_formly_material_multicheckbox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-formly/material/multicheckbox */ "LEpV");
+/* harmony import */ var _ngx_formly_material_select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ngx-formly/material/select */ "P7mT");
+
+
+
+
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FormlyMaterialModule {
+}
+FormlyMaterialModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: FormlyMaterialModule });
+FormlyMaterialModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function FormlyMaterialModule_Factory(t) { return new (t || FormlyMaterialModule)(); }, imports: [[
+            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__["FormlyMatFormFieldModule"],
+            _ngx_formly_material_input__WEBPACK_IMPORTED_MODULE_2__["FormlyMatInputModule"],
+            _ngx_formly_material_textarea__WEBPACK_IMPORTED_MODULE_3__["FormlyMatTextAreaModule"],
+            _ngx_formly_material_radio__WEBPACK_IMPORTED_MODULE_4__["FormlyMatRadioModule"],
+            _ngx_formly_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["FormlyMatCheckboxModule"],
+            _ngx_formly_material_multicheckbox__WEBPACK_IMPORTED_MODULE_6__["FormlyMatMultiCheckboxModule"],
+            _ngx_formly_material_select__WEBPACK_IMPORTED_MODULE_7__["FormlyMatSelectModule"],
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](FormlyMaterialModule, { imports: function () { return [_ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__["FormlyMatFormFieldModule"],
+        _ngx_formly_material_input__WEBPACK_IMPORTED_MODULE_2__["FormlyMatInputModule"],
+        _ngx_formly_material_textarea__WEBPACK_IMPORTED_MODULE_3__["FormlyMatTextAreaModule"],
+        _ngx_formly_material_radio__WEBPACK_IMPORTED_MODULE_4__["FormlyMatRadioModule"],
+        _ngx_formly_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["FormlyMatCheckboxModule"],
+        _ngx_formly_material_multicheckbox__WEBPACK_IMPORTED_MODULE_6__["FormlyMatMultiCheckboxModule"],
+        _ngx_formly_material_select__WEBPACK_IMPORTED_MODULE_7__["FormlyMatSelectModule"]]; } }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](FormlyMaterialModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+        args: [{
+                imports: [
+                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__["FormlyMatFormFieldModule"],
+                    _ngx_formly_material_input__WEBPACK_IMPORTED_MODULE_2__["FormlyMatInputModule"],
+                    _ngx_formly_material_textarea__WEBPACK_IMPORTED_MODULE_3__["FormlyMatTextAreaModule"],
+                    _ngx_formly_material_radio__WEBPACK_IMPORTED_MODULE_4__["FormlyMatRadioModule"],
+                    _ngx_formly_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["FormlyMatCheckboxModule"],
+                    _ngx_formly_material_multicheckbox__WEBPACK_IMPORTED_MODULE_6__["FormlyMatMultiCheckboxModule"],
+                    _ngx_formly_material_select__WEBPACK_IMPORTED_MODULE_7__["FormlyMatSelectModule"],
+                ]
+            }]
+    }], null, null); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+//# sourceMappingURL=ngx-formly-material.js.map
+
+/***/ }),
+
+/***/ "LEpV":
+/*!******************************************************************************************************!*\
+  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-multicheckbox.js ***!
+  \******************************************************************************************************/
+/*! exports provided: FormlyMatMultiCheckboxModule, FormlyFieldMultiCheckbox */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatMultiCheckboxModule", function() { return FormlyMatMultiCheckboxModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldMultiCheckbox", function() { return FormlyFieldMultiCheckbox; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+/* harmony import */ var _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/core/select */ "oKox");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "c2SN");
+/* harmony import */ var _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/checkbox */ "bSwM");
+
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+
+
+
+function FormlyFieldMultiCheckbox_ng_container_0_Template(rf, ctx) { if (rf & 1) {
+    const _r4 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](1, "mat-checkbox", 1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("change", function FormlyFieldMultiCheckbox_ng_container_0_Template_mat_checkbox_change_1_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r4); const option_r1 = ctx.$implicit; const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r3.onChange(option_r1.value, $event.checked); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
+} if (rf & 2) {
+    const option_r1 = ctx.$implicit;
+    const i_r2 = ctx.index;
+    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("id", ctx_r0.id + "_" + i_r2)("formlyAttributes", ctx_r0.field)("tabIndex", ctx_r0.to.tabindex)("color", ctx_r0.to.color)("labelPosition", ctx_r0.to.labelPosition)("checked", ctx_r0.isChecked(option_r1))("disabled", ctx_r0.formControl.disabled);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", option_r1.label, " ");
+} }
+class FormlyFieldMultiCheckbox extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FieldType"] {
+    constructor() {
+        super(...arguments);
+        this.defaultOptions = {
+            templateOptions: {
+                hideFieldUnderline: true,
+                floatLabel: 'always',
+                options: [],
+                color: 'accent',
+            },
+        };
+    }
+    /**
+     * @param {?} value
+     * @param {?} checked
+     * @return {?}
+     */
+    onChange(value, checked) {
+        if (this.to.type === 'array') {
+            this.formControl.patchValue(checked
+                ? [...(this.formControl.value || []), value]
+                : [...(this.formControl.value || [])].filter((/**
+                 * @param {?} o
+                 * @return {?}
+                 */
+                o => o !== value)));
+        }
+        else {
+            this.formControl.patchValue(Object.assign({}, this.formControl.value, { [value]: checked }));
+        }
+        this.formControl.markAsTouched();
+    }
+    // TODO: find a solution to prevent scroll on focus
+    /**
+     * @return {?}
+     */
+    onContainerClick() { }
+    /**
+     * @param {?} option
+     * @return {?}
+     */
+    isChecked(option) {
+        /** @type {?} */
+        const value = this.formControl.value;
+        return value && (this.to.type === 'array'
+            ? (value.indexOf(option.value) !== -1)
+            : value[option.value]);
+    }
+}
+FormlyFieldMultiCheckbox.ɵfac = function FormlyFieldMultiCheckbox_Factory(t) { return ɵFormlyFieldMultiCheckbox_BaseFactory(t || FormlyFieldMultiCheckbox); };
+FormlyFieldMultiCheckbox.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: FormlyFieldMultiCheckbox, selectors: [["formly-field-mat-multicheckbox"]], viewQuery: function FormlyFieldMultiCheckbox_Query(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵviewQuery"](_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckbox"], true);
+    } if (rf & 2) {
+        let _t;
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.checkboxes = _t);
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]], decls: 3, vars: 6, consts: [[4, "ngFor", "ngForOf"], [3, "id", "formlyAttributes", "tabIndex", "color", "labelPosition", "checked", "disabled", "change"]], template: function FormlyFieldMultiCheckbox_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, FormlyFieldMultiCheckbox_ng_container_0_Template, 3, 8, "ng-container", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipe"](1, "async");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipe"](2, "formlySelectOptions");
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind1"](1, 1, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind2"](2, 3, ctx.to.options, ctx.field)));
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["NgForOf"], _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckbox"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyAttributes"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["AsyncPipe"], _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["ɵa"]], encapsulation: 2 });
+FormlyFieldMultiCheckbox.propDecorators = {
+    checkboxes: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChildren"], args: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckbox"],] }]
+};
+const ɵFormlyFieldMultiCheckbox_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetInheritedFactory"](FormlyFieldMultiCheckbox);
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyFieldMultiCheckbox, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"],
+        args: [{
+                selector: 'formly-field-mat-multicheckbox',
+                template: `
+    <ng-container *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;">
+      <mat-checkbox
+        [id]="id + '_' + i"
+        [formlyAttributes]="field"
+        [tabIndex]="to.tabindex"
+        [color]="to.color"
+        [labelPosition]="to.labelPosition"
+        [checked]="isChecked(option)"
+        [disabled]="formControl.disabled"
+        (change)="onChange(option.value, $event.checked)">
+          {{ option.label }}
+      </mat-checkbox>
+    </ng-container>
+  `
+            }]
+    }], null, { checkboxes: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChildren"],
+            args: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckbox"]]
+        }] }); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FormlyMatMultiCheckboxModule {
+}
+FormlyMatMultiCheckboxModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({ type: FormlyMatMultiCheckboxModule });
+FormlyMatMultiCheckboxModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({ factory: function FormlyMatMultiCheckboxModule_Factory(t) { return new (t || FormlyMatMultiCheckboxModule)(); }, imports: [[
+            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+            _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckboxModule"],
+            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
+            _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"],
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forChild({
+                types: [
+                    {
+                        name: 'multicheckbox',
+                        component: FormlyFieldMultiCheckbox,
+                        wrappers: ['form-field']
+                    },
+                ]
+            }),
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](FormlyMatMultiCheckboxModule, { declarations: function () { return [FormlyFieldMultiCheckbox]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+        _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckboxModule"],
+        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
+        _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"]]; } }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyMatMultiCheckboxModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["NgModule"],
+        args: [{
+                declarations: [FormlyFieldMultiCheckbox],
+                imports: [
+                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+                    _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckboxModule"],
+                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
+                    _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forChild({
+                        types: [
+                            {
+                                name: 'multicheckbox',
+                                component: FormlyFieldMultiCheckbox,
+                                wrappers: ['form-field']
+                            },
+                        ]
+                    }),
+                ]
+            }]
+    }], null, null); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+//# sourceMappingURL=ngx-formly-material-multicheckbox.js.map
+
+/***/ }),
+
+/***/ "LNXZ":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-input.js ***!
+  \**********************************************************************************************/
+/*! exports provided: FormlyMatInputModule, FormlyFieldInput */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatInputModule", function() { return FormlyMatInputModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldInput", function() { return FormlyFieldInput; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/input */ "qFsG");
+/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "c2SN");
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+
+
+
+function FormlyFieldInput_input_0_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "input", 2);
+} if (rf & 2) {
+    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("id", ctx_r0.id)("type", ctx_r0.type || "text")("readonly", ctx_r0.to.readonly)("required", ctx_r0.to.required)("errorStateMatcher", ctx_r0.errorStateMatcher)("formControl", ctx_r0.formControl)("formlyAttributes", ctx_r0.field)("tabindex", ctx_r0.to.tabindex)("placeholder", ctx_r0.to.placeholder);
+} }
+function FormlyFieldInput_ng_template_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "input", 3);
+} if (rf & 2) {
+    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("id", ctx_r2.id)("readonly", ctx_r2.to.readonly)("required", ctx_r2.to.required)("errorStateMatcher", ctx_r2.errorStateMatcher)("formControl", ctx_r2.formControl)("formlyAttributes", ctx_r2.field)("tabIndex", ctx_r2.to.tabindex)("placeholder", ctx_r2.to.placeholder);
+} }
+class FormlyFieldInput extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FieldType"] {
+    /**
+     * @return {?}
+     */
+    get type() {
+        return this.to.type || 'text';
+    }
+}
+FormlyFieldInput.ɵfac = function FormlyFieldInput_Factory(t) { return ɵFormlyFieldInput_BaseFactory(t || FormlyFieldInput); };
+FormlyFieldInput.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: FormlyFieldInput, selectors: [["formly-field-mat-input"]], viewQuery: function FormlyFieldInput_Query(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵviewQuery"](_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], true);
+    } if (rf & 2) {
+        let _t;
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵloadQuery"]()) && (ctx.formFieldControl = _t.first);
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵInheritDefinitionFeature"]], decls: 3, vars: 2, consts: [["matInput", "", 3, "id", "type", "readonly", "required", "errorStateMatcher", "formControl", "formlyAttributes", "tabindex", "placeholder", 4, "ngIf", "ngIfElse"], ["numberTmp", ""], ["matInput", "", 3, "id", "type", "readonly", "required", "errorStateMatcher", "formControl", "formlyAttributes", "tabindex", "placeholder"], ["matInput", "", "type", "number", 3, "id", "readonly", "required", "errorStateMatcher", "formControl", "formlyAttributes", "tabIndex", "placeholder"]], template: function FormlyFieldInput_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, FormlyFieldInput_input_0_Template, 1, 9, "input", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, FormlyFieldInput_ng_template_1_Template, 1, 8, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplateRefExtractor"]);
+    } if (rf & 2) {
+        const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx.type !== "number")("ngIfElse", _r1);
+    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["NgIf"], _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyAttributes"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NumberValueAccessor"]], encapsulation: 2 });
+FormlyFieldInput.propDecorators = {
+    formFieldControl: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], (/** @type {?} */ ({ static: false })),] }]
+};
+const ɵFormlyFieldInput_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetInheritedFactory"](FormlyFieldInput);
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyFieldInput, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"],
+        args: [{
+                selector: 'formly-field-mat-input',
+                template: `
+    <input *ngIf="type !== 'number'; else numberTmp"
+      matInput
+      [id]="id"
+      [type]="type || 'text'"
+      [readonly]="to.readonly"
+      [required]="to.required"
+      [errorStateMatcher]="errorStateMatcher"
+      [formControl]="formControl"
+      [formlyAttributes]="field"
+      [tabindex]="to.tabindex"
+      [placeholder]="to.placeholder">
+    <ng-template #numberTmp>
+      <input matInput
+             [id]="id"
+             type="number"
+             [readonly]="to.readonly"
+             [required]="to.required"
+             [errorStateMatcher]="errorStateMatcher"
+             [formControl]="formControl"
+             [formlyAttributes]="field"
+             [tabIndex]="to.tabindex"
+             [placeholder]="to.placeholder">
+    </ng-template>
+  `
+            }]
+    }], null, { formFieldControl: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"],
+            args: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], ( /** @type {?} */({ static: false }))]
+        }] }); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FormlyMatInputModule {
+}
+FormlyMatInputModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: FormlyMatInputModule });
+FormlyMatInputModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ factory: function FormlyMatInputModule_Factory(t) { return new (t || FormlyMatInputModule)(); }, imports: [[
+            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
+            _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
+            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
+                types: [
+                    {
+                        name: 'input',
+                        component: FormlyFieldInput,
+                        wrappers: ['form-field']
+                    },
+                ]
+            }),
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](FormlyMatInputModule, { declarations: function () { return [FormlyFieldInput]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
+        _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
+        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"]]; } }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyMatInputModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"],
+        args: [{
+                declarations: [FormlyFieldInput],
+                imports: [
+                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
+                    _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
+                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
+                        types: [
+                            {
+                                name: 'input',
+                                component: FormlyFieldInput,
+                                wrappers: ['form-field']
+                            },
+                        ]
+                    }),
+                ]
+            }]
+    }], null, null); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+//# sourceMappingURL=ngx-formly-material-input.js.map
+
+/***/ }),
+
+/***/ "P7mT":
+/*!***********************************************************************************************!*\
+  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-select.js ***!
+  \***********************************************************************************************/
+/*! exports provided: FormlyMatSelectModule, FormlyFieldSelect */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatSelectModule", function() { return FormlyMatSelectModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldSelect", function() { return FormlyFieldSelect; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+/* harmony import */ var _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/core/select */ "oKox");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_material_select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/select */ "d3UM");
+/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "c2SN");
+/* harmony import */ var _angular_material_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material/core */ "FKr1");
+
+
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+
+
+
+
+
+function FormlyFieldSelect_ng_template_0_Template(rf, ctx) { if (rf & 1) {
+    const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetCurrentView"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-option", 3);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function FormlyFieldSelect_ng_template_0_Template_mat_option_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const selectOptions_r3 = ctx.selectOptions; const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r4.toggleSelectAll(selectOptions_r3); });
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](1, "mat-pseudo-checkbox", 4);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const selectOptions_r3 = ctx.selectOptions;
+    const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("state", ctx_r1.getSelectAllState(selectOptions_r3));
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", ctx_r1.to.selectAllOption, " ");
+} }
+const _c0 = function (a0) { return { selectOptions: a0 }; };
+function FormlyFieldSelect_ng_container_3_ng_container_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainer"](0, 7);
+} if (rf & 2) {
+    const selectOptions_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]().ngIf;
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
+    const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵreference"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngTemplateOutlet", _r0)("ngTemplateOutletContext", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpureFunction1"](2, _c0, selectOptions_r6));
+} }
+function FormlyFieldSelect_ng_container_3_ng_container_2_mat_optgroup_1_mat_option_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-option", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const child_r14 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("value", child_r14.value)("disabled", child_r14.disabled);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", child_r14.label, " ");
+} }
+function FormlyFieldSelect_ng_container_3_ng_container_2_mat_optgroup_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-optgroup", 10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyFieldSelect_ng_container_3_ng_container_2_mat_optgroup_1_mat_option_1_Template, 2, 3, "mat-option", 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const item_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]().$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("label", item_r10.label);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngForOf", item_r10.group);
+} }
+function FormlyFieldSelect_ng_container_3_ng_container_2_mat_option_2_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-option", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const item_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]().$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("value", item_r10.value)("disabled", item_r10.disabled);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate"](item_r10.label);
+} }
+function FormlyFieldSelect_ng_container_3_ng_container_2_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyFieldSelect_ng_container_3_ng_container_2_mat_optgroup_1_Template, 2, 2, "mat-optgroup", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, FormlyFieldSelect_ng_container_3_ng_container_2_mat_option_2_Template, 2, 3, "mat-option", 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
+} if (rf & 2) {
+    const item_r10 = ctx.$implicit;
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", item_r10.group);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !item_r10.group);
+} }
+function FormlyFieldSelect_ng_container_3_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyFieldSelect_ng_container_3_ng_container_1_Template, 1, 4, "ng-container", 5);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, FormlyFieldSelect_ng_container_3_ng_container_2_Template, 3, 2, "ng-container", 6);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
+} if (rf & 2) {
+    const selectOptions_r6 = ctx.ngIf;
+    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx_r2.to.multiple && ctx_r2.to.selectAllOption);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngForOf", selectOptions_r6);
+} }
+class FormlyFieldSelect extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__["FieldType"] {
+    constructor() {
+        super(...arguments);
+        this.defaultOptions = {
+            templateOptions: {
+                options: [],
+                /**
+                 * @param {?} o1
+                 * @param {?} o2
+                 * @return {?}
+                 */
+                compareWith(o1, o2) {
+                    return o1 === o2;
+                },
+            },
+        };
+    }
+    /**
+     * @param {?} options
+     * @return {?}
+     */
+    getSelectAllState(options) {
+        if (this.empty || this.value.length === 0) {
+            return '';
+        }
+        return this.value.length !== this.getSelectAllValue(options).length
+            ? 'indeterminate'
+            : 'checked';
+    }
+    /**
+     * @param {?} options
+     * @return {?}
+     */
+    toggleSelectAll(options) {
+        /** @type {?} */
+        const selectAllValue = this.getSelectAllValue(options);
+        this.formControl.setValue(!this.value || this.value.length !== selectAllValue.length
+            ? selectAllValue
+            : []);
+    }
+    /**
+     * @param {?} $event
+     * @return {?}
+     */
+    change($event) {
+        if (this.to.change) {
+            this.to.change(this.field, $event);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    _getAriaLabelledby() {
+        if (this.to.attributes && this.to.attributes['aria-labelledby']) {
+            return this.to.attributes['aria-labelledby'];
+        }
+        if (this.formField && this.formField._labelId) {
+            return this.formField._labelId;
+        }
+        return null;
+    }
+    /**
+     * @private
+     * @param {?} options
+     * @return {?}
+     */
+    getSelectAllValue(options) {
+        if (!this.selectAllValue || options !== this.selectAllValue.options) {
+            /** @type {?} */
+            const flatOptions = [];
+            options.forEach((/**
+             * @param {?} o
+             * @return {?}
+             */
+            o => o.group
+                ? flatOptions.push(...o.group)
+                : flatOptions.push(o)));
+            this.selectAllValue = {
+                options,
+                value: flatOptions.filter((/**
+                 * @param {?} o
+                 * @return {?}
+                 */
+                o => !o.disabled)).map((/**
+                 * @param {?} o
+                 * @return {?}
+                 */
+                o => o.value)),
+            };
+        }
+        return this.selectAllValue.value;
+    }
+}
+FormlyFieldSelect.ɵfac = function FormlyFieldSelect_Factory(t) { return ɵFormlyFieldSelect_BaseFactory(t || FormlyFieldSelect); };
+FormlyFieldSelect.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: FormlyFieldSelect, selectors: [["formly-field-mat-select"]], viewQuery: function FormlyFieldSelect_Query(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵstaticViewQuery"](_angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelect"], true);
+    } if (rf & 2) {
+        let _t;
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.formFieldControl = _t.first);
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]], decls: 6, vars: 17, consts: [["selectAll", ""], [3, "id", "formControl", "formlyAttributes", "placeholder", "tabIndex", "required", "compareWith", "multiple", "errorStateMatcher", "aria-labelledby", "disableOptionCentering", "selectionChange"], [4, "ngIf"], [3, "click"], [1, "mat-option-pseudo-checkbox", 3, "state"], [3, "ngTemplateOutlet", "ngTemplateOutletContext", 4, "ngIf"], [4, "ngFor", "ngForOf"], [3, "ngTemplateOutlet", "ngTemplateOutletContext"], [3, "label", 4, "ngIf"], [3, "value", "disabled", 4, "ngIf"], [3, "label"], [3, "value", "disabled", 4, "ngFor", "ngForOf"], [3, "value", "disabled"]], template: function FormlyFieldSelect_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, FormlyFieldSelect_ng_template_0_Template, 3, 2, "ng-template", null, 0, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplateRefExtractor"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](2, "mat-select", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("selectionChange", function FormlyFieldSelect_Template_mat_select_selectionChange_2_listener($event) { return ctx.change($event); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](3, FormlyFieldSelect_ng_container_3_Template, 3, 2, "ng-container", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipe"](4, "async");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipe"](5, "formlySelectOptions");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("id", ctx.id)("formControl", ctx.formControl)("formlyAttributes", ctx.field)("placeholder", ctx.to.placeholder)("tabIndex", ctx.to.tabindex)("required", ctx.to.required)("compareWith", ctx.to.compareWith)("multiple", ctx.to.multiple)("errorStateMatcher", ctx.errorStateMatcher)("aria-labelledby", ctx._getAriaLabelledby())("disableOptionCentering", ctx.to.disableOptionCentering);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind1"](4, 12, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind2"](5, 14, ctx.to.options, ctx.field)));
+    } }, directives: [_angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelect"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyAttributes"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["RequiredValidator"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgIf"], _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatOption"], _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatPseudoCheckbox"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgTemplateOutlet"], _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatOptgroup"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["AsyncPipe"], _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["ɵa"]], encapsulation: 2 });
+FormlyFieldSelect.propDecorators = {
+    formFieldControl: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: [_angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelect"], (/** @type {?} */ ({ static: true })),] }]
+};
+const ɵFormlyFieldSelect_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetInheritedFactory"](FormlyFieldSelect);
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyFieldSelect, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"],
+        args: [{
+                selector: 'formly-field-mat-select',
+                template: `
+    <ng-template #selectAll let-selectOptions="selectOptions">
+      <mat-option (click)="toggleSelectAll(selectOptions)">
+        <mat-pseudo-checkbox class="mat-option-pseudo-checkbox"
+          [state]="getSelectAllState(selectOptions)">
+        </mat-pseudo-checkbox>
+        {{ to.selectAllOption }}
+      </mat-option>
+    </ng-template>
+
+    <mat-select [id]="id"
+      [formControl]="formControl"
+      [formlyAttributes]="field"
+      [placeholder]="to.placeholder"
+      [tabIndex]="to.tabindex"
+      [required]="to.required"
+      [compareWith]="to.compareWith"
+      [multiple]="to.multiple"
+      (selectionChange)="change($event)"
+      [errorStateMatcher]="errorStateMatcher"
+      [aria-labelledby]="_getAriaLabelledby()"
+      [disableOptionCentering]="to.disableOptionCentering"
+      >
+      <ng-container *ngIf="to.options | formlySelectOptions:field | async as selectOptions">
+        <ng-container *ngIf="to.multiple && to.selectAllOption" [ngTemplateOutlet]="selectAll" [ngTemplateOutletContext]="{ selectOptions: selectOptions }">
+        </ng-container>
+        <ng-container *ngFor="let item of selectOptions">
+          <mat-optgroup *ngIf="item.group" [label]="item.label">
+            <mat-option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
+              {{ child.label }}
+            </mat-option>
+          </mat-optgroup>
+          <mat-option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</mat-option>
+        </ng-container>
+      </ng-container>
+    </mat-select>
+  `
+            }]
+    }], null, { formFieldControl: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"],
+            args: [_angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelect"], ( /** @type {?} */({ static: true }))]
+        }] }); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FormlyMatSelectModule {
+}
+FormlyMatSelectModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({ type: FormlyMatSelectModule });
+FormlyMatSelectModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({ factory: function FormlyMatSelectModule_Factory(t) { return new (t || FormlyMatSelectModule)(); }, imports: [[
+            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+            _angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelectModule"],
+            _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatPseudoCheckboxModule"],
+            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__["FormlyMatFormFieldModule"],
+            _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"],
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forChild({
+                types: [{
+                        name: 'select',
+                        component: FormlyFieldSelect,
+                        wrappers: ['form-field']
+                    }]
+            }),
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](FormlyMatSelectModule, { declarations: function () { return [FormlyFieldSelect]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+        _angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelectModule"],
+        _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatPseudoCheckboxModule"],
+        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__["FormlyMatFormFieldModule"],
+        _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"]]; } }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyMatSelectModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["NgModule"],
+        args: [{
+                declarations: [FormlyFieldSelect],
+                imports: [
+                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+                    _angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelectModule"],
+                    _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatPseudoCheckboxModule"],
+                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__["FormlyMatFormFieldModule"],
+                    _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forChild({
+                        types: [{
+                                name: 'select',
+                                component: FormlyFieldSelect,
+                                wrappers: ['form-field']
+                            }]
+                    }),
+                ]
+            }]
+    }], null, null); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+//# sourceMappingURL=ngx-formly-material-select.js.map
+
+/***/ }),
+
+/***/ "RNLs":
+/*!*************************************************************************************************!*\
+  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-textarea.js ***!
+  \*************************************************************************************************/
+/*! exports provided: FormlyMatTextAreaModule, FormlyFieldTextArea */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatTextAreaModule", function() { return FormlyMatTextAreaModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldTextArea", function() { return FormlyFieldTextArea; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/input */ "qFsG");
+/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "c2SN");
+/* harmony import */ var _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/cdk/text-field */ "ihCf");
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+
+
+class FormlyFieldTextArea extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FieldType"] {
+    constructor() {
+        super(...arguments);
+        this.defaultOptions = {
+            templateOptions: {
+                cols: 1,
+                rows: 1,
+            },
+        };
+    }
+}
+FormlyFieldTextArea.ɵfac = function FormlyFieldTextArea_Factory(t) { return ɵFormlyFieldTextArea_BaseFactory(t || FormlyFieldTextArea); };
+FormlyFieldTextArea.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: FormlyFieldTextArea, selectors: [["formly-field-mat-textarea"]], viewQuery: function FormlyFieldTextArea_Query(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵstaticViewQuery"](_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], true);
+    } if (rf & 2) {
+        let _t;
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵloadQuery"]()) && (ctx.formFieldControl = _t.first);
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵProvidersFeature"]([
+            // fix for https://github.com/ngx-formly/ngx-formly/issues/1688
+            // rely on formControl value instead of elementRef which return empty value in Firefox.
+            { provide: _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MAT_INPUT_VALUE_ACCESSOR"], useExisting: FormlyFieldTextArea },
+        ]), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵInheritDefinitionFeature"]], decls: 2, vars: 15, consts: [["matInput", "", 3, "id", "readonly", "required", "formControl", "errorStateMatcher", "cols", "rows", "formlyAttributes", "placeholder", "tabindex", "cdkTextareaAutosize", "cdkAutosizeMinRows", "cdkAutosizeMaxRows"]], template: function FormlyFieldTextArea_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "textarea", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1, "    ");
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵclassProp"]("cdk-textarea-autosize", ctx.to.autosize);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("id", ctx.id)("readonly", ctx.to.readonly)("required", ctx.to.required)("formControl", ctx.formControl)("errorStateMatcher", ctx.errorStateMatcher)("cols", ctx.to.cols)("rows", ctx.to.rows)("formlyAttributes", ctx.field)("placeholder", ctx.to.placeholder)("tabindex", ctx.to.tabindex)("cdkTextareaAutosize", ctx.to.autosize)("cdkAutosizeMinRows", ctx.to.autosizeMinRows)("cdkAutosizeMaxRows", ctx.to.autosizeMaxRows);
+    } }, directives: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["DefaultValueAccessor"], _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_6__["CdkTextareaAutosize"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyAttributes"]], encapsulation: 2 });
+FormlyFieldTextArea.propDecorators = {
+    formFieldControl: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], (/** @type {?} */ ({ static: true })),] }]
+};
+const ɵFormlyFieldTextArea_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetInheritedFactory"](FormlyFieldTextArea);
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyFieldTextArea, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"],
+        args: [{
+                selector: 'formly-field-mat-textarea',
+                template: `
+    <textarea matInput
+      [id]="id"
+      [readonly]="to.readonly"
+      [required]="to.required"
+      [formControl]="formControl"
+      [errorStateMatcher]="errorStateMatcher"
+      [cols]="to.cols"
+      [rows]="to.rows"
+      [formlyAttributes]="field"
+      [placeholder]="to.placeholder"
+      [tabindex]="to.tabindex"
+      [cdkTextareaAutosize]="to.autosize"
+      [cdkAutosizeMinRows]="to.autosizeMinRows"
+      [cdkAutosizeMaxRows]="to.autosizeMaxRows"
+      [class.cdk-textarea-autosize]="to.autosize"
+      >
+    </textarea>
+  `,
+                providers: [
+                    // fix for https://github.com/ngx-formly/ngx-formly/issues/1688
+                    // rely on formControl value instead of elementRef which return empty value in Firefox.
+                    { provide: _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MAT_INPUT_VALUE_ACCESSOR"], useExisting: FormlyFieldTextArea },
+                ]
+            }]
+    }], null, { formFieldControl: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"],
+            args: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], ( /** @type {?} */({ static: true }))]
+        }] }); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FormlyMatTextAreaModule {
+}
+FormlyMatTextAreaModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: FormlyMatTextAreaModule });
+FormlyMatTextAreaModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ factory: function FormlyMatTextAreaModule_Factory(t) { return new (t || FormlyMatTextAreaModule)(); }, imports: [[
+            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
+            _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
+            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
+                types: [
+                    {
+                        name: 'textarea',
+                        component: FormlyFieldTextArea,
+                        wrappers: ['form-field']
+                    },
+                ]
+            }),
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](FormlyMatTextAreaModule, { declarations: function () { return [FormlyFieldTextArea]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
+        _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
+        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"]]; } }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyMatTextAreaModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"],
+        args: [{
+                declarations: [FormlyFieldTextArea],
+                imports: [
+                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
+                    _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
+                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
+                        types: [
+                            {
+                                name: 'textarea',
+                                component: FormlyFieldTextArea,
+                                wrappers: ['form-field']
+                            },
+                        ]
+                    }),
+                ]
+            }]
+    }], null, null); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+//# sourceMappingURL=ngx-formly-material-textarea.js.map
+
+/***/ }),
+
+/***/ "SD4B":
+/*!********************************************************!*\
+  !*** ./src/kernel/pages/base/base.form-page.module.ts ***!
+  \********************************************************/
+/*! exports provided: BaseFormPageModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BaseFormPageModule", function() { return BaseFormPageModule; });
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common/http */ "tk/3");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+/* harmony import */ var _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/material */ "Gm3Y");
+
+
+
+
+
+
+class BaseFormPageModule {
+}
+BaseFormPageModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: BaseFormPageModule });
+BaseFormPageModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function BaseFormPageModule_Factory(t) { return new (t || BaseFormPageModule)(); }, imports: [[
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
+            _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+        ], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](BaseFormPageModule, { imports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"]], exports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](BaseFormPageModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
+        args: [{
+                imports: [
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
+                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+                ],
+                exports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"]],
+            }]
+    }], null, null); })();
+
+
+/***/ }),
+
+/***/ "T3IH":
+/*!**************************************************************!*\
+  !*** ./src/custom/components/pages/login/login.component.ts ***!
+  \**************************************************************/
+/*! exports provided: LoginComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginComponent", function() { return LoginComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple/page-simple.component */ "aDzp");
+/* harmony import */ var _custom_components_pages_shared_navs_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/shared/navs/nav-list-simple/nav-list-simple.component */ "usSO");
+/* harmony import */ var _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/login/login-content/login-content.component */ "oYRx");
+
+
+
+
+
+class LoginComponent {
+    constructor() { }
+    ngOnInit() {
+    }
+}
+LoginComponent.ɵfac = function LoginComponent_Factory(t) { return new (t || LoginComponent)(); };
+LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: LoginComponent, selectors: [["app-login"]], decls: 3, vars: 0, consts: [["nav-list", ""], ["content", ""]], template: function LoginComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "app-page-simple");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-nav-list", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-login-content", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    } }, directives: [_custom_components_pages_shared_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__["PageSimpleComponent"], _custom_components_pages_shared_navs_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__["NavListSimpleComponent"], _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_3__["LoginContentComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJsb2dpbi5jb21wb25lbnQuc2NzcyJ9 */"] });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+                selector: 'app-login',
+                templateUrl: './login.component.html',
+                styleUrls: ['./login.component.scss']
+            }]
+    }], function () { return []; }, null); })();
+
+
+/***/ }),
+
+/***/ "WlNF":
+/*!***********************************************************!*\
+  !*** ./src/custom/components/pages/login/login.module.ts ***!
+  \***********************************************************/
+/*! exports provided: LoginModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginModule", function() { return LoginModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-simple-formly.module */ "XgGm");
+/* harmony import */ var _custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.component */ "T3IH");
+/* harmony import */ var _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/login/login-routing.module */ "nuTj");
+/* harmony import */ var _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @custom/components/pages/login/login-content/login-content.component */ "oYRx");
+
+
+
+
+
+
+class LoginModule {
+}
+LoginModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: LoginModule });
+LoginModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function LoginModule_Factory(t) { return new (t || LoginModule)(); }, imports: [[_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](LoginModule, { declarations: [_custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"], _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__["LoginContentComponent"]], imports: [_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+        args: [{
+                declarations: [_custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"], _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__["LoginContentComponent"]],
+                imports: [_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]],
+                exports: [],
+            }]
+    }], null, null); })();
+
+
+/***/ }),
+
+/***/ "XgGm":
+/*!*************************************************************************************************!*\
+  !*** ./src/custom/components/pages/shared/base/page-simple-formly/page-simple-formly.module.ts ***!
+  \*************************************************************************************************/
+/*! exports provided: PageFormlyModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageFormlyModule", function() { return PageFormlyModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @kernel/pages/base/base.form-page.module */ "SD4B");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+/* harmony import */ var _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/material */ "Gm3Y");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple/page-simple.module */ "/uTn");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-form-simple.component */ "xh2B");
+
+
+
+
+
+
+
+
+
+class PageFormlyModule {
+}
+PageFormlyModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: PageFormlyModule });
+PageFormlyModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function PageFormlyModule_Factory(t) { return new (t || PageFormlyModule)(); }, imports: [[
+            _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+            _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"],
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
+            _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+        ], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+        _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"],
+        _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+        _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageFormlyModule, { declarations: [_custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"]], imports: [_custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+        _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"]], exports: [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+        _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"],
+        _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+        _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+        _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageFormlyModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+        args: [{
+                declarations: [_custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"]],
+                imports: [
+                    _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+                    _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
+                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+                ],
+                exports: [
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"],
+                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
+                    _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
+                    _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"],
+                ],
+            }]
+    }], null, null); })();
+
+
+/***/ }),
+
+/***/ "XnP8":
+/*!************************************************************!*\
+  !*** ./src/final/pages/login/page.login-routing.module.ts ***!
+  \************************************************************/
+/*! exports provided: PageLoginRoutingModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageLoginRoutingModule", function() { return PageLoginRoutingModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "tyNb");
+
+
+
+
+const routes = [
+    {
+        path: "",
+        loadChildren: () => Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! @custom/components/pages/login/login.module */ "WlNF")).then(m => m.LoginModule)
+    },
+    {
+        path: "register",
+        loadChildren: () => Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! @custom/components/pages/login/login.module */ "WlNF")).then(m => m.LoginModule)
+    }
+];
+class PageLoginRoutingModule {
+}
+PageLoginRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: PageLoginRoutingModule });
+PageLoginRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function PageLoginRoutingModule_Factory(t) { return new (t || PageLoginRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageLoginRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageLoginRoutingModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+        args: [{
+                imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)],
+                exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]]
+            }]
+    }], null, null); })();
+
+
+/***/ }),
+
+/***/ "c2SN":
+/*!***************************************************************************************************!*\
+  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js ***!
+  \***************************************************************************************************/
+/*! exports provided: FormlyMatFormFieldModule, FieldType, ɵa */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatFormFieldModule", function() { return FormlyMatFormFieldModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FieldType", function() { return FieldType$1; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return FormlyWrapperFormField; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/form-field */ "kmnG");
+/* harmony import */ var _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/a11y */ "u47x");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "qCKp");
+
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+
+
+
+const _c0 = ["matPrefix"];
+const _c1 = ["matSuffix"];
+const _c2 = ["fieldComponent"];
+function FormlyWrapperFormField_mat_label_3_span_2_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "span", 8);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1, "*");
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+} }
+function FormlyWrapperFormField_mat_label_3_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-label");
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, FormlyWrapperFormField_mat_label_3_span_2_Template, 2, 0, "span", 7);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", ctx_r1.to.label, " ");
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx_r1.to.required && ctx_r1.to.hideRequiredMarker !== true);
+} }
+function FormlyWrapperFormField_ng_container_4_ng_container_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainer"](0);
+} }
+function FormlyWrapperFormField_ng_container_4_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0, 9);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyWrapperFormField_ng_container_4_ng_container_1_Template, 1, 0, "ng-container", 10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
+} if (rf & 2) {
+    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngTemplateOutlet", ctx_r2.to.prefix ? ctx_r2.to.prefix : ctx_r2.formlyField._matprefix);
+} }
+function FormlyWrapperFormField_ng_container_5_ng_container_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainer"](0);
+} }
+function FormlyWrapperFormField_ng_container_5_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0, 11);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyWrapperFormField_ng_container_5_ng_container_1_Template, 1, 0, "ng-container", 10);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
+} if (rf & 2) {
+    const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngTemplateOutlet", ctx_r3.to.suffix ? ctx_r3.to.suffix : ctx_r3.formlyField._matsuffix);
+} }
+function FormlyWrapperFormField_mat_hint_8_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-hint", 12);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("id", null);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate"](ctx_r4.to.description);
+} }
+class FormlyErrorStateMatcher {
+    /**
+     * @param {?} field
+     */
+    constructor(field) {
+        this.field = field;
+    }
+    /**
+     * @param {?} control
+     * @param {?} form
+     * @return {?}
+     */
+    isErrorState(control, form) {
+        return this.field && this.field.showError;
+    }
+}
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+/**
+ * @abstract
+ * @template F
+ */
+class FieldType$1 extends _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FieldType"] {
+    constructor() {
+        super(...arguments);
+        this.errorStateMatcher = new FormlyErrorStateMatcher(this);
+        this.stateChanges = new rxjs__WEBPACK_IMPORTED_MODULE_6__["Subject"]();
+        this._errorState = false;
+    }
+    /**
+     * @return {?}
+     */
+    get formFieldControl() { return this._control || this; }
+    /**
+     * @param {?} control
+     * @return {?}
+     */
+    set formFieldControl(control) {
+        this._control = control;
+        if (this.formField && control !== this.formField._control) {
+            this.formField._control = control;
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        if (this.formField) {
+            this.formField._control = this.formFieldControl;
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
+        if (this.matPrefix || this.matSuffix) {
+            setTimeout((/**
+             * @return {?}
+             */
+            () => {
+                Object(_ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["ɵdefineHiddenProp"])(this.field, '_matprefix', this.matPrefix);
+                Object(_ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["ɵdefineHiddenProp"])(this.field, '_matsuffix', this.matSuffix);
+                ((/** @type {?} */ (this.options)))._markForCheck(this.field);
+            }));
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        if (this.formField) {
+            delete this.formField._control;
+        }
+        this.stateChanges.complete();
+    }
+    /**
+     * @param {?} ids
+     * @return {?}
+     */
+    setDescribedByIds(ids) { }
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    onContainerClick(event) {
+        this.field.focus = true;
+        this.stateChanges.next();
+    }
+    /**
+     * @return {?}
+     */
+    get errorState() {
+        /** @type {?} */
+        const showError = (/** @type {?} */ ((/** @type {?} */ (this.options)).showError))(this);
+        if (showError !== this._errorState) {
+            this._errorState = showError;
+            this.stateChanges.next();
+        }
+        return showError;
+    }
+    /**
+     * @return {?}
+     */
+    get controlType() {
+        if (this.to.type) {
+            return this.to.type;
+        }
+        if (((/** @type {?} */ (this.field.type))) instanceof _angular_core__WEBPACK_IMPORTED_MODULE_4__["Type"]) {
+            return (/** @type {?} */ (this.field.type)).constructor.name;
+        }
+        return (/** @type {?} */ (this.field.type));
+    }
+    /**
+     * @return {?}
+     */
+    get focused() { return !!this.field.focus && !this.disabled; }
+    /**
+     * @return {?}
+     */
+    get disabled() { return !!this.to.disabled; }
+    /**
+     * @return {?}
+     */
+    get required() { return !!this.to.required; }
+    /**
+     * @return {?}
+     */
+    get placeholder() { return this.to.placeholder || ''; }
+    /**
+     * @return {?}
+     */
+    get shouldPlaceholderFloat() { return this.shouldLabelFloat; }
+    /**
+     * @return {?}
+     */
+    get value() { return this.formControl.value; }
+    /**
+     * @param {?} value
+     * @return {?}
+     */
+    set value(value) { this.formControl.patchValue(value); }
+    /**
+     * @return {?}
+     */
+    get ngControl() { return (/** @type {?} */ (this.formControl)); }
+    /**
+     * @return {?}
+     */
+    get empty() { return this.value === undefined || this.value === null || this.value === ''; }
+    /**
+     * @return {?}
+     */
+    get shouldLabelFloat() { return this.focused || !this.empty; }
+    /**
+     * @return {?}
+     */
+    get formField() { return this.field ? ((/** @type {?} */ (this.field)))['__formField__'] : null; }
+}
+FieldType$1.ɵfac = function FieldType$1_Factory(t) { return ɵFieldType$1_BaseFactory(t || FieldType$1); };
+FieldType$1.ɵdir = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineDirective"]({ type: FieldType$1, viewQuery: function FieldType$1_Query(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵviewQuery"](_c0, true);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵviewQuery"](_c1, true);
+    } if (rf & 2) {
+        let _t;
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.matPrefix = _t.first);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.matSuffix = _t.first);
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]] });
+FieldType$1.propDecorators = {
+    matPrefix: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: ['matPrefix',] }],
+    matSuffix: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: ['matSuffix',] }]
+};
+const ɵFieldType$1_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetInheritedFactory"](FieldType$1);
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FormlyWrapperFormField extends _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FieldWrapper"] {
+    /**
+     * @param {?} config
+     * @param {?} renderer
+     * @param {?} elementRef
+     * @param {?} focusMonitor
+     */
+    constructor(config, renderer, elementRef, focusMonitor) {
+        super();
+        this.config = config;
+        this.renderer = renderer;
+        this.elementRef = elementRef;
+        this.focusMonitor = focusMonitor;
+        this.stateChanges = new rxjs__WEBPACK_IMPORTED_MODULE_6__["Subject"]();
+        this._errorState = false;
+        this.initialGapCalculated = false;
+    }
+    /**
+     * @return {?}
+     */
+    ngOnInit() {
+        this.formField._control = this;
+        Object(_ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["ɵdefineHiddenProp"])(this.field, '__formField__', this.formField);
+        /** @type {?} */
+        const ref = this.config.resolveFieldTypeRef(this.formlyField);
+        if (ref && !(ref.instance instanceof FieldType$1)) {
+            console.warn(`Component '${ref.componentType.name}' must extend 'FieldType' from '@ngx-formly/material/form-field'.`);
+        }
+        // fix for https://github.com/angular/material2/issues/11437
+        if (this.formlyField.hide && (/** @type {?} */ (this.formlyField.templateOptions)).appearance === 'outline') {
+            this.initialGapCalculated = true;
+        }
+        this.focusMonitor.monitor(this.elementRef, true).subscribe((/**
+         * @param {?} origin
+         * @return {?}
+         */
+        origin => {
+            if (!origin && this.field.focus) {
+                this.field.focus = false;
+            }
+            this.stateChanges.next();
+        }));
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterContentChecked() {
+        if (!this.initialGapCalculated || this.formlyField.hide) {
+            return;
+        }
+        this.formField.updateOutlineGap();
+        this.initialGapCalculated = true;
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
+        // temporary fix for https://github.com/angular/material2/issues/7891
+        if (this.formField.appearance !== 'outline' && this.to.hideFieldUnderline === true) {
+            /** @type {?} */
+            const underlineElement = this.formField._elementRef.nativeElement.querySelector('.mat-form-field-underline');
+            underlineElement && this.renderer.removeChild(underlineElement.parentNode, underlineElement);
+        }
+    }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        delete this.formlyField.__formField__;
+        this.stateChanges.complete();
+        this.focusMonitor.stopMonitoring(this.elementRef);
+    }
+    /**
+     * @param {?} ids
+     * @return {?}
+     */
+    setDescribedByIds(ids) { }
+    /**
+     * @param {?} event
+     * @return {?}
+     */
+    onContainerClick(event) {
+        this.formlyField.focus = true;
+        this.stateChanges.next();
+    }
+    /**
+     * @return {?}
+     */
+    get errorState() {
+        /** @type {?} */
+        const showError = (/** @type {?} */ ((/** @type {?} */ (this.options)).showError))(this);
+        if (showError !== this._errorState) {
+            this._errorState = showError;
+            this.stateChanges.next();
+        }
+        return showError;
+    }
+    /**
+     * @return {?}
+     */
+    get controlType() { return this.to.type; }
+    /**
+     * @return {?}
+     */
+    get focused() { return !!this.formlyField.focus && !this.disabled; }
+    /**
+     * @return {?}
+     */
+    get disabled() { return !!this.to.disabled; }
+    /**
+     * @return {?}
+     */
+    get required() { return !!this.to.required; }
+    /**
+     * @return {?}
+     */
+    get placeholder() { return this.to.placeholder || ''; }
+    /**
+     * @return {?}
+     */
+    get shouldPlaceholderFloat() { return this.shouldLabelFloat; }
+    /**
+     * @return {?}
+     */
+    get value() { return this.formControl.value; }
+    /**
+     * @return {?}
+     */
+    get ngControl() { return (/** @type {?} */ (this.formControl)); }
+    /**
+     * @return {?}
+     */
+    get empty() { return !this.formControl.value; }
+    /**
+     * @return {?}
+     */
+    get shouldLabelFloat() { return this.focused || !this.empty; }
+    /**
+     * @return {?}
+     */
+    get formlyField() { return (/** @type {?} */ (this.field)); }
+}
+FormlyWrapperFormField.ɵfac = function FormlyWrapperFormField_Factory(t) { return new (t || FormlyWrapperFormField)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyConfig"]), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_4__["Renderer2"]), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_4__["ElementRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__["FocusMonitor"])); };
+FormlyWrapperFormField.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: FormlyWrapperFormField, selectors: [["formly-wrapper-mat-form-field"]], viewQuery: function FormlyWrapperFormField_Query(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵstaticViewQuery"](_c2, true, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewContainerRef"]);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵstaticViewQuery"](_angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormField"], true);
+    } if (rf & 2) {
+        let _t;
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.fieldComponent = _t.first);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.formField = _t.first);
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵProvidersFeature"]([{ provide: _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldControl"], useExisting: FormlyWrapperFormField }]), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]], decls: 9, vars: 11, consts: [[3, "hideRequiredMarker", "floatLabel", "appearance", "color"], ["fieldComponent", ""], [4, "ngIf"], ["matPrefix", "", 4, "ngIf"], ["matSuffix", "", 4, "ngIf"], [3, "field"], [3, "id", 4, "ngIf"], ["class", "mat-form-field-required-marker", 4, "ngIf"], [1, "mat-form-field-required-marker"], ["matPrefix", ""], [4, "ngTemplateOutlet"], ["matSuffix", ""], [3, "id"]], template: function FormlyWrapperFormField_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-form-field", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainer"](1, null, 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](3, FormlyWrapperFormField_mat_label_3_Template, 3, 2, "mat-label", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](4, FormlyWrapperFormField_ng_container_4_Template, 2, 1, "ng-container", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](5, FormlyWrapperFormField_ng_container_5_Template, 2, 1, "ng-container", 4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](6, "mat-error");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](7, "formly-validation-message", 5);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](8, FormlyWrapperFormField_mat_hint_8_Template, 2, 2, "mat-hint", 6);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵstyleProp"]("width", "100%");
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("hideRequiredMarker", true)("floatLabel", ctx.to.floatLabel)("appearance", ctx.to.appearance)("color", ctx.to.color);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.to.label && ctx.to.hideLabel !== true);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.to.prefix || ctx.formlyField._matprefix);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.to.suffix || ctx.formlyField._matsuffix);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("field", ctx.field);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.to.description);
+    } }, directives: [_angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormField"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgIf"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatError"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["ɵc"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatLabel"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatPrefix"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgTemplateOutlet"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatSuffix"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatHint"]], encapsulation: 2 });
+/** @nocollapse */
+FormlyWrapperFormField.ctorParameters = () => [
+    { type: _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyConfig"] },
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Renderer2"] },
+    { type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ElementRef"] },
+    { type: _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__["FocusMonitor"] }
+];
+FormlyWrapperFormField.propDecorators = {
+    fieldComponent: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: ['fieldComponent', (/** @type {?} */ ({ read: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewContainerRef"], static: true })),] }],
+    formField: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: [_angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormField"], (/** @type {?} */ ({ static: true })),] }]
+};
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyWrapperFormField, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"],
+        args: [{
+                selector: 'formly-wrapper-mat-form-field',
+                template: `
+    <!-- fix https://github.com/angular/material2/pull/7083 by setting width to 100% -->
+    <mat-form-field
+      [hideRequiredMarker]="true"
+      [floatLabel]="to.floatLabel"
+      [appearance]="to.appearance"
+      [color]="to.color"
+      [style.width]="'100%'">
+      <ng-container #fieldComponent></ng-container>
+      <mat-label *ngIf="to.label && to.hideLabel !== true">
+        {{ to.label }}
+        <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
+      </mat-label>
+
+      <ng-container matPrefix *ngIf="to.prefix || formlyField._matprefix">
+        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : formlyField._matprefix"></ng-container>
+      </ng-container>
+
+      <ng-container matSuffix *ngIf="to.suffix || formlyField._matsuffix">
+        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : formlyField._matsuffix"></ng-container>
+      </ng-container>
+
+      <mat-error>
+        <formly-validation-message [field]="field"></formly-validation-message>
+      </mat-error>
+      <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
+      <mat-hint *ngIf="to.description" [id]="null">{{ to.description }}</mat-hint>
+    </mat-form-field>
+  `,
+                providers: [{ provide: _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldControl"], useExisting: FormlyWrapperFormField }]
+            }]
+    }], function () { return [{ type: _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyConfig"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Renderer2"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ElementRef"] }, { type: _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__["FocusMonitor"] }]; }, { fieldComponent: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"],
+            args: ['fieldComponent', ( /** @type {?} */({ read: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewContainerRef"], static: true }))]
+        }], formField: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"],
+            args: [_angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormField"], ( /** @type {?} */({ static: true }))]
+        }] }); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FormlyMatFormFieldModule {
+}
+FormlyMatFormFieldModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({ type: FormlyMatFormFieldModule });
+FormlyMatFormFieldModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({ factory: function FormlyMatFormFieldModule_Factory(t) { return new (t || FormlyMatFormFieldModule)(); }, imports: [[
+            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+            _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyModule"].forChild({
+                wrappers: [{
+                        name: 'form-field',
+                        component: FormlyWrapperFormField
+                    }]
+            }),
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](FormlyMatFormFieldModule, { declarations: function () { return [FormlyWrapperFormField]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+        _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyModule"]]; } }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyMatFormFieldModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["NgModule"],
+        args: [{
+                declarations: [FormlyWrapperFormField],
+                imports: [
+                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+                    _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyModule"].forChild({
+                        wrappers: [{
+                                name: 'form-field',
+                                component: FormlyWrapperFormField
+                            }]
+                    }),
+                ]
+            }]
+    }], null, null); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+//# sourceMappingURL=ngx-formly-material-form-field.js.map
+
+/***/ }),
+
+/***/ "hmTt":
+/*!**********************************************************************************************!*\
+  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-radio.js ***!
+  \**********************************************************************************************/
+/*! exports provided: FormlyMatRadioModule, FormlyFieldRadio */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatRadioModule", function() { return FormlyMatRadioModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldRadio", function() { return FormlyFieldRadio; });
+/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "ofXK");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core/select */ "oKox");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "c2SN");
+/* harmony import */ var _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/radio */ "QibW");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+
+
+
+
+
+
+
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+
+
+
+
+function FormlyFieldRadio_mat_radio_button_1_Template(rf, ctx) { if (rf & 1) {
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "mat-radio-button", 2);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+} if (rf & 2) {
+    const option_r1 = ctx.$implicit;
+    const i_r2 = ctx.index;
+    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("id", ctx_r0.id + "_" + i_r2)("color", ctx_r0.to.color)("labelPosition", ctx_r0.to.labelPosition)("disabled", option_r1.disabled)("value", option_r1.value);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", option_r1.label, " ");
+} }
+class FormlyFieldRadio extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FieldType"] {
+    constructor() {
+        super(...arguments);
+        this.defaultOptions = {
+            templateOptions: {
+                hideFieldUnderline: true,
+                floatLabel: 'always',
+                options: [],
+                tabindex: -1,
+            },
+        };
+    }
+    /**
+     * @return {?}
+     */
+    ngAfterViewInit() {
+        this.focusObserver = Object(_ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["ɵwrapProperty"])(this.field, 'focus', (/**
+         * @param {?} __0
+         * @return {?}
+         */
+        ({ currentValue }) => {
+            if (this.to.tabindex === -1
+                && currentValue
+                && this.radioGroup._radios.length > 0) {
+                // https://github.com/ngx-formly/ngx-formly/issues/2498
+                setTimeout((/**
+                 * @return {?}
+                 */
+                () => {
+                    /** @type {?} */
+                    const radio = this.radioGroup.selected
+                        ? this.radioGroup.selected
+                        : this.radioGroup._radios.first;
+                    radio._elementRef.nativeElement.focus({ preventScroll: true });
+                }));
+            }
+        }));
+    }
+    // TODO: find a solution to prevent scroll on focus
+    /**
+     * @return {?}
+     */
+    onContainerClick() { }
+    /**
+     * @return {?}
+     */
+    ngOnDestroy() {
+        this.focusObserver && this.focusObserver();
+    }
+}
+FormlyFieldRadio.ɵfac = function FormlyFieldRadio_Factory(t) { return ɵFormlyFieldRadio_BaseFactory(t || FormlyFieldRadio); };
+FormlyFieldRadio.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: FormlyFieldRadio, selectors: [["formly-field-mat-radio"]], viewQuery: function FormlyFieldRadio_Query(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵviewQuery"](_angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioGroup"], true);
+    } if (rf & 2) {
+        let _t;
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵloadQuery"]()) && (ctx.radioGroup = _t.first);
+    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵInheritDefinitionFeature"]], decls: 4, vars: 10, consts: [[3, "formControl", "formlyAttributes", "required", "tabindex"], [3, "id", "color", "labelPosition", "disabled", "value", 4, "ngFor", "ngForOf"], [3, "id", "color", "labelPosition", "disabled", "value"]], template: function FormlyFieldRadio_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "mat-radio-group", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, FormlyFieldRadio_mat_radio_button_1_Template, 2, 6, "mat-radio-button", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipe"](2, "async");
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipe"](3, "formlySelectOptions");
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("formControl", ctx.formControl)("formlyAttributes", ctx.field)("required", ctx.to.required)("tabindex", ctx.to.tabindex);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipeBind1"](2, 5, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipeBind2"](3, 7, ctx.to.options, ctx.field)));
+    } }, directives: [_angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["FormlyAttributes"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["RequiredValidator"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgForOf"], _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioButton"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["AsyncPipe"], _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__["ɵa"]], encapsulation: 2 });
+FormlyFieldRadio.propDecorators = {
+    radioGroup: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioGroup"],] }]
+};
+const ɵFormlyFieldRadio_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetInheritedFactory"](FormlyFieldRadio);
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyFieldRadio, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"],
+        args: [{
+                selector: 'formly-field-mat-radio',
+                template: `
+    <mat-radio-group
+      [formControl]="formControl"
+      [formlyAttributes]="field"
+      [required]="to.required"
+      [tabindex]="to.tabindex">
+      <mat-radio-button *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
+        [id]="id + '_' + i"
+        [color]="to.color"
+        [labelPosition]="to.labelPosition"
+        [disabled]="option.disabled"
+        [value]="option.value">
+        {{ option.label }}
+      </mat-radio-button>
+    </mat-radio-group>
+  `
+            }]
+    }], null, { radioGroup: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"],
+            args: [_angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioGroup"]]
+        }] }); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+class FormlyMatRadioModule {
+}
+FormlyMatRadioModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: FormlyMatRadioModule });
+FormlyMatRadioModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ factory: function FormlyMatRadioModule_Factory(t) { return new (t || FormlyMatRadioModule)(); }, imports: [[
+            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+            _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioModule"],
+            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
+            _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__["FormlySelectModule"],
+            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["FormlyModule"].forChild({
+                types: [{
+                        name: 'radio',
+                        component: FormlyFieldRadio,
+                        wrappers: ['form-field']
+                    }]
+            }),
+        ]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](FormlyMatRadioModule, { declarations: function () { return [FormlyFieldRadio]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+        _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+        _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioModule"],
+        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
+        _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__["FormlySelectModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["FormlyModule"]]; } }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyMatRadioModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"],
+        args: [{
+                declarations: [FormlyFieldRadio],
+                imports: [
+                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
+                    _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
+                    _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioModule"],
+                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
+                    _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__["FormlySelectModule"],
+                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["FormlyModule"].forChild({
+                        types: [{
+                                name: 'radio',
+                                component: FormlyFieldRadio,
+                                wrappers: ['form-field']
+                            }]
+                    }),
+                ]
+            }]
+    }], null, null); })();
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+/**
+ * @fileoverview added by tsickle
+ * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
+ */
+
+
+
+//# sourceMappingURL=ngx-formly-material-radio.js.map
+
+/***/ }),
+
+/***/ "mB6T":
 /*!***********************************************************************!*\
   !*** ./node_modules/@ngx-formly/core/node_modules/tslib/tslib.es6.js ***!
   \***********************************************************************/
@@ -3980,224 +6104,64 @@ function __classPrivateFieldSet(receiver, privateMap, value) {
 
 /***/ }),
 
-/***/ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-checkbox.js":
-/*!*************************************************************************************************!*\
-  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-checkbox.js ***!
-  \*************************************************************************************************/
-/*! exports provided: FormlyMatCheckboxModule, FormlyFieldCheckbox */
+/***/ "nuTj":
+/*!*******************************************************************!*\
+  !*** ./src/custom/components/pages/login/login-routing.module.ts ***!
+  \*******************************************************************/
+/*! exports provided: LoginRoutingModule */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatCheckboxModule", function() { return FormlyMatCheckboxModule; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldCheckbox", function() { return FormlyFieldCheckbox; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js");
-/* harmony import */ var _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/checkbox */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/checkbox.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginRoutingModule", function() { return LoginRoutingModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var _custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.component */ "T3IH");
 
 
 
 
 
-
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-
-
-
-function FormlyFieldCheckbox_span_2_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "span", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1, "*");
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-} }
-class FormlyFieldCheckbox extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FieldType"] {
-    /**
-     * @param {?} renderer
-     */
-    constructor(renderer) {
-        super();
-        this.renderer = renderer;
-        this.defaultOptions = {
-            templateOptions: {
-                hideFieldUnderline: true,
-                indeterminate: true,
-                floatLabel: 'always',
-                hideLabel: true,
-                align: 'start',
-                // start or end
-                color: 'accent',
-            },
-        };
-    }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    onContainerClick(event) {
-        this.checkbox.focus();
-        super.onContainerClick(event);
-    }
-    /**
-     * @return {?}
-     */
-    ngAfterViewChecked() {
-        if (this.required !== this._required && this.checkbox && this.checkbox._inputElement) {
-            this._required = this.required;
-            /** @type {?} */
-            const inputElement = this.checkbox._inputElement.nativeElement;
-            if (this.required) {
-                this.renderer.setAttribute(inputElement, 'required', 'required');
-            }
-            else {
-                this.renderer.removeAttribute(inputElement, 'required');
-            }
-        }
-    }
-}
-FormlyFieldCheckbox.ɵfac = function FormlyFieldCheckbox_Factory(t) { return new (t || FormlyFieldCheckbox)(_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_3__["Renderer2"])); };
-FormlyFieldCheckbox.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: FormlyFieldCheckbox, selectors: [["formly-field-mat-checkbox"]], viewQuery: function FormlyFieldCheckbox_Query(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵviewQuery"](_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckbox"], true);
-    } if (rf & 2) {
-        var _t;
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵloadQuery"]()) && (ctx.checkbox = _t.first);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵInheritDefinitionFeature"]], decls: 3, vars: 9, consts: [[3, "formControl", "id", "formlyAttributes", "tabindex", "indeterminate", "color", "labelPosition"], ["class", "mat-form-field-required-marker", 4, "ngIf"], [1, "mat-form-field-required-marker"]], template: function FormlyFieldCheckbox_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "mat-checkbox", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](2, FormlyFieldCheckbox_span_2_Template, 2, 0, "span", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("formControl", ctx.formControl)("id", ctx.id)("formlyAttributes", ctx.field)("tabindex", ctx.to.tabindex)("indeterminate", ctx.to.indeterminate && ctx.formControl.value === null)("color", ctx.to.color)("labelPosition", ctx.to.align || ctx.to.labelPosition);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", ctx.to.label, " ");
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx.to.required && ctx.to.hideRequiredMarker !== true);
-    } }, directives: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckbox"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyAttributes"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgIf"]], encapsulation: 2 });
-/** @nocollapse */
-FormlyFieldCheckbox.ctorParameters = () => [
-    { type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Renderer2"] }
+const routes = [
+    {
+        path: '',
+        component: _custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"],
+    },
+    {
+        path: 'register',
+        loadChildren: () => __webpack_require__.e(/*! import() | custom-components-pages-register-register-module */ "custom-components-pages-register-register-module").then(__webpack_require__.bind(null, /*! @custom/components/pages/register/register.module */ "crUX")).then(m => m.RegisterModule)
+    },
 ];
-FormlyFieldCheckbox.propDecorators = {
-    checkbox: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckbox"],] }]
-};
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyFieldCheckbox, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"],
-        args: [{
-                selector: 'formly-field-mat-checkbox',
-                template: `
-    <mat-checkbox
-      [formControl]="formControl"
-      [id]="id"
-      [formlyAttributes]="field"
-      [tabindex]="to.tabindex"
-      [indeterminate]="to.indeterminate && formControl.value === null"
-      [color]="to.color"
-      [labelPosition]="to.align || to.labelPosition">
-      {{ to.label }}
-      <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
-    </mat-checkbox>
-  `
-            }]
-    }], function () { return [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Renderer2"] }]; }, { checkbox: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"],
-            args: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckbox"]]
-        }] }); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlyMatCheckboxModule {
+class LoginRoutingModule {
 }
-FormlyMatCheckboxModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: FormlyMatCheckboxModule });
-FormlyMatCheckboxModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ factory: function FormlyMatCheckboxModule_Factory(t) { return new (t || FormlyMatCheckboxModule)(); }, imports: [[
-            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-            _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckboxModule"],
-            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
-                types: [
-                    {
-                        name: 'checkbox',
-                        component: FormlyFieldCheckbox,
-                        wrappers: ['form-field']
-                    },
-                ]
-            }),
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](FormlyMatCheckboxModule, { declarations: function () { return [FormlyFieldCheckbox]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-        _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-        _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckboxModule"],
-        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"]]; } }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyMatCheckboxModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"],
+LoginRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: LoginRoutingModule });
+LoginRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function LoginRoutingModule_Factory(t) { return new (t || LoginRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](LoginRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginRoutingModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
-                declarations: [FormlyFieldCheckbox],
-                imports: [
-                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-                    _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["MatCheckboxModule"],
-                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
-                        types: [
-                            {
-                                name: 'checkbox',
-                                component: FormlyFieldCheckbox,
-                                wrappers: ['form-field']
-                            },
-                        ]
-                    }),
-                ]
+                imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)],
+                exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]]
             }]
     }], null, null); })();
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-//# sourceMappingURL=ngx-formly-material-checkbox.js.map
 
 /***/ }),
 
-/***/ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js":
-/*!***************************************************************************************************!*\
-  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js ***!
-  \***************************************************************************************************/
-/*! exports provided: FormlyMatFormFieldModule, FieldType, ɵa */
+/***/ "oKox":
+/*!***************************************************************************************!*\
+  !*** ./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core-select.js ***!
+  \***************************************************************************************/
+/*! exports provided: FormlySelectModule, ɵa */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatFormFieldModule", function() { return FormlyMatFormFieldModule; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FieldType", function() { return FieldType$1; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return FormlyWrapperFormField; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/form-field */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/form-field.js");
-/* harmony import */ var _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/cdk/a11y */ "./node_modules/@angular/cdk/__ivy_ngcc__/fesm2015/a11y.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! rxjs */ "./node_modules/rxjs/_esm2015/index.js");
-
-
-
-
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlySelectModule", function() { return FormlySelectModule; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "ɵa", function() { return FormlySelectOptionsPipe; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var rxjs__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! rxjs */ "qCKp");
+/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! rxjs/operators */ "kU1M");
 
 
 
@@ -4207,1689 +6171,162 @@ __webpack_require__.r(__webpack_exports__);
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-
-
-
-
-
-const _c0 = ["matPrefix"];
-const _c1 = ["matSuffix"];
-const _c2 = ["fieldComponent"];
-function FormlyWrapperFormField_mat_label_3_span_2_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "span", 8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1, "*");
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-} }
-function FormlyWrapperFormField_mat_label_3_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-label");
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, FormlyWrapperFormField_mat_label_3_span_2_Template, 2, 0, "span", 7);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", ctx_r1.to.label, " ");
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx_r1.to.required && ctx_r1.to.hideRequiredMarker !== true);
-} }
-function FormlyWrapperFormField_ng_container_4_ng_container_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainer"](0);
-} }
-function FormlyWrapperFormField_ng_container_4_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0, 9);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyWrapperFormField_ng_container_4_ng_container_1_Template, 1, 0, "ng-container", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
-} if (rf & 2) {
-    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngTemplateOutlet", ctx_r2.to.prefix ? ctx_r2.to.prefix : ctx_r2.formlyField._matprefix);
-} }
-function FormlyWrapperFormField_ng_container_5_ng_container_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainer"](0);
-} }
-function FormlyWrapperFormField_ng_container_5_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0, 11);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyWrapperFormField_ng_container_5_ng_container_1_Template, 1, 0, "ng-container", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
-} if (rf & 2) {
-    const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngTemplateOutlet", ctx_r3.to.suffix ? ctx_r3.to.suffix : ctx_r3.formlyField._matsuffix);
-} }
-function FormlyWrapperFormField_mat_hint_8_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-hint", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("id", null);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate"](ctx_r4.to.description);
-} }
-class FormlyErrorStateMatcher {
-    /**
-     * @param {?} field
-     */
-    constructor(field) {
-        this.field = field;
-    }
-    /**
-     * @param {?} control
-     * @param {?} form
-     * @return {?}
-     */
-    isErrorState(control, form) {
-        return this.field && this.field.showError;
-    }
-}
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-/**
- * @abstract
- * @template F
- */
-class FieldType$1 extends _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FieldType"] {
-    constructor() {
-        super(...arguments);
-        this.errorStateMatcher = new FormlyErrorStateMatcher(this);
-        this.stateChanges = new rxjs__WEBPACK_IMPORTED_MODULE_6__["Subject"]();
-        this._errorState = false;
-    }
-    /**
-     * @return {?}
-     */
-    get formFieldControl() { return this._control || this; }
-    /**
-     * @param {?} control
-     * @return {?}
-     */
-    set formFieldControl(control) {
-        this._control = control;
-        if (this.formField && control !== this.formField._control) {
-            this.formField._control = control;
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        if (this.formField) {
-            this.formField._control = this.formFieldControl;
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngAfterViewInit() {
-        if (this.matPrefix || this.matSuffix) {
-            setTimeout((/**
-             * @return {?}
-             */
-            () => {
-                Object(_ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["ɵdefineHiddenProp"])(this.field, '_matprefix', this.matPrefix);
-                Object(_ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["ɵdefineHiddenProp"])(this.field, '_matsuffix', this.matSuffix);
-                ((/** @type {?} */ (this.options)))._markForCheck(this.field);
-            }));
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        if (this.formField) {
-            delete this.formField._control;
-        }
-        this.stateChanges.complete();
-    }
-    /**
-     * @param {?} ids
-     * @return {?}
-     */
-    setDescribedByIds(ids) { }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    onContainerClick(event) {
-        this.field.focus = true;
-        this.stateChanges.next();
-    }
-    /**
-     * @return {?}
-     */
-    get errorState() {
-        /** @type {?} */
-        const showError = (/** @type {?} */ ((/** @type {?} */ (this.options)).showError))(this);
-        if (showError !== this._errorState) {
-            this._errorState = showError;
-            this.stateChanges.next();
-        }
-        return showError;
-    }
-    /**
-     * @return {?}
-     */
-    get controlType() {
-        if (this.to.type) {
-            return this.to.type;
-        }
-        if (((/** @type {?} */ (this.field.type))) instanceof _angular_core__WEBPACK_IMPORTED_MODULE_4__["Type"]) {
-            return (/** @type {?} */ (this.field.type)).constructor.name;
-        }
-        return (/** @type {?} */ (this.field.type));
-    }
-    /**
-     * @return {?}
-     */
-    get focused() { return !!this.field.focus && !this.disabled; }
-    /**
-     * @return {?}
-     */
-    get disabled() { return !!this.to.disabled; }
-    /**
-     * @return {?}
-     */
-    get required() { return !!this.to.required; }
-    /**
-     * @return {?}
-     */
-    get placeholder() { return this.to.placeholder || ''; }
-    /**
-     * @return {?}
-     */
-    get shouldPlaceholderFloat() { return this.shouldLabelFloat; }
-    /**
-     * @return {?}
-     */
-    get value() { return this.formControl.value; }
-    /**
-     * @param {?} value
-     * @return {?}
-     */
-    set value(value) { this.formControl.patchValue(value); }
-    /**
-     * @return {?}
-     */
-    get ngControl() { return (/** @type {?} */ (this.formControl)); }
-    /**
-     * @return {?}
-     */
-    get empty() { return this.value === undefined || this.value === null || this.value === ''; }
-    /**
-     * @return {?}
-     */
-    get shouldLabelFloat() { return this.focused || !this.empty; }
-    /**
-     * @return {?}
-     */
-    get formField() { return this.field ? ((/** @type {?} */ (this.field)))['__formField__'] : null; }
-}
-FieldType$1.ɵfac = function FieldType$1_Factory(t) { return ɵFieldType$1_BaseFactory(t || FieldType$1); };
-FieldType$1.ɵdir = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineDirective"]({ type: FieldType$1, viewQuery: function FieldType$1_Query(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵviewQuery"](_c0, true);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵviewQuery"](_c1, true);
-    } if (rf & 2) {
-        var _t;
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.matPrefix = _t.first);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.matSuffix = _t.first);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]] });
-FieldType$1.propDecorators = {
-    matPrefix: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: ['matPrefix',] }],
-    matSuffix: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: ['matSuffix',] }]
-};
-const ɵFieldType$1_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetInheritedFactory"](FieldType$1);
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlyWrapperFormField extends _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FieldWrapper"] {
-    /**
-     * @param {?} config
-     * @param {?} renderer
-     * @param {?} elementRef
-     * @param {?} focusMonitor
-     */
-    constructor(config, renderer, elementRef, focusMonitor) {
-        super();
-        this.config = config;
-        this.renderer = renderer;
-        this.elementRef = elementRef;
-        this.focusMonitor = focusMonitor;
-        this.stateChanges = new rxjs__WEBPACK_IMPORTED_MODULE_6__["Subject"]();
-        this._errorState = false;
-        this.initialGapCalculated = false;
-    }
-    /**
-     * @return {?}
-     */
-    ngOnInit() {
-        this.formField._control = this;
-        Object(_ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["ɵdefineHiddenProp"])(this.field, '__formField__', this.formField);
-        /** @type {?} */
-        const ref = this.config.resolveFieldTypeRef(this.formlyField);
-        if (ref && !(ref.instance instanceof FieldType$1)) {
-            console.warn(`Component '${ref.componentType.name}' must extend 'FieldType' from '@ngx-formly/material/form-field'.`);
-        }
-        // fix for https://github.com/angular/material2/issues/11437
-        if (this.formlyField.hide && (/** @type {?} */ (this.formlyField.templateOptions)).appearance === 'outline') {
-            this.initialGapCalculated = true;
-        }
-        this.focusMonitor.monitor(this.elementRef, true).subscribe((/**
-         * @param {?} origin
-         * @return {?}
-         */
-        origin => {
-            if (!origin && this.field.focus) {
-                this.field.focus = false;
-            }
-            this.stateChanges.next();
-        }));
-    }
-    /**
-     * @return {?}
-     */
-    ngAfterContentChecked() {
-        if (!this.initialGapCalculated || this.formlyField.hide) {
-            return;
-        }
-        this.formField.updateOutlineGap();
-        this.initialGapCalculated = true;
-    }
-    /**
-     * @return {?}
-     */
-    ngAfterViewInit() {
-        // temporary fix for https://github.com/angular/material2/issues/7891
-        if (this.formField.appearance !== 'outline' && this.to.hideFieldUnderline === true) {
-            /** @type {?} */
-            const underlineElement = this.formField._elementRef.nativeElement.querySelector('.mat-form-field-underline');
-            underlineElement && this.renderer.removeChild(underlineElement.parentNode, underlineElement);
-        }
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        delete this.formlyField.__formField__;
-        this.stateChanges.complete();
-        this.focusMonitor.stopMonitoring(this.elementRef);
-    }
-    /**
-     * @param {?} ids
-     * @return {?}
-     */
-    setDescribedByIds(ids) { }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    onContainerClick(event) {
-        this.formlyField.focus = true;
-        this.stateChanges.next();
-    }
-    /**
-     * @return {?}
-     */
-    get errorState() {
-        /** @type {?} */
-        const showError = (/** @type {?} */ ((/** @type {?} */ (this.options)).showError))(this);
-        if (showError !== this._errorState) {
-            this._errorState = showError;
-            this.stateChanges.next();
-        }
-        return showError;
-    }
-    /**
-     * @return {?}
-     */
-    get controlType() { return this.to.type; }
-    /**
-     * @return {?}
-     */
-    get focused() { return !!this.formlyField.focus && !this.disabled; }
-    /**
-     * @return {?}
-     */
-    get disabled() { return !!this.to.disabled; }
-    /**
-     * @return {?}
-     */
-    get required() { return !!this.to.required; }
-    /**
-     * @return {?}
-     */
-    get placeholder() { return this.to.placeholder || ''; }
-    /**
-     * @return {?}
-     */
-    get shouldPlaceholderFloat() { return this.shouldLabelFloat; }
-    /**
-     * @return {?}
-     */
-    get value() { return this.formControl.value; }
-    /**
-     * @return {?}
-     */
-    get ngControl() { return (/** @type {?} */ (this.formControl)); }
-    /**
-     * @return {?}
-     */
-    get empty() { return !this.formControl.value; }
-    /**
-     * @return {?}
-     */
-    get shouldLabelFloat() { return this.focused || !this.empty; }
-    /**
-     * @return {?}
-     */
-    get formlyField() { return (/** @type {?} */ (this.field)); }
-}
-FormlyWrapperFormField.ɵfac = function FormlyWrapperFormField_Factory(t) { return new (t || FormlyWrapperFormField)(_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyConfig"]), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_4__["Renderer2"]), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_core__WEBPACK_IMPORTED_MODULE_4__["ElementRef"]), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdirectiveInject"](_angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__["FocusMonitor"])); };
-FormlyWrapperFormField.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: FormlyWrapperFormField, selectors: [["formly-wrapper-mat-form-field"]], viewQuery: function FormlyWrapperFormField_Query(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵstaticViewQuery"](_c2, true, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewContainerRef"]);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵstaticViewQuery"](_angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormField"], true);
-    } if (rf & 2) {
-        var _t;
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.fieldComponent = _t.first);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.formField = _t.first);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵProvidersFeature"]([{ provide: _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldControl"], useExisting: FormlyWrapperFormField }]), _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]], decls: 9, vars: 11, consts: [[3, "hideRequiredMarker", "floatLabel", "appearance", "color"], ["fieldComponent", ""], [4, "ngIf"], ["matPrefix", "", 4, "ngIf"], ["matSuffix", "", 4, "ngIf"], [3, "field"], [3, "id", 4, "ngIf"], ["class", "mat-form-field-required-marker", 4, "ngIf"], [1, "mat-form-field-required-marker"], ["matPrefix", ""], [4, "ngTemplateOutlet"], ["matSuffix", ""], [3, "id"]], template: function FormlyWrapperFormField_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-form-field", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainer"](1, null, 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](3, FormlyWrapperFormField_mat_label_3_Template, 3, 2, "mat-label", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](4, FormlyWrapperFormField_ng_container_4_Template, 2, 1, "ng-container", 3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](5, FormlyWrapperFormField_ng_container_5_Template, 2, 1, "ng-container", 4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](6, "mat-error");
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](7, "formly-validation-message", 5);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](8, FormlyWrapperFormField_mat_hint_8_Template, 2, 2, "mat-hint", 6);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵstyleProp"]("width", "100%");
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("hideRequiredMarker", true)("floatLabel", ctx.to.floatLabel)("appearance", ctx.to.appearance)("color", ctx.to.color);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.to.label && ctx.to.hideLabel !== true);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.to.prefix || ctx.formlyField._matprefix);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.to.suffix || ctx.formlyField._matsuffix);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("field", ctx.field);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx.to.description);
-    } }, directives: [_angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormField"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgIf"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatError"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["ɵc"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatLabel"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatPrefix"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgTemplateOutlet"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatSuffix"], _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatHint"]], encapsulation: 2 });
-/** @nocollapse */
-FormlyWrapperFormField.ctorParameters = () => [
-    { type: _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyConfig"] },
-    { type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Renderer2"] },
-    { type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ElementRef"] },
-    { type: _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__["FocusMonitor"] }
-];
-FormlyWrapperFormField.propDecorators = {
-    fieldComponent: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: ['fieldComponent', (/** @type {?} */ ({ read: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewContainerRef"], static: true })),] }],
-    formField: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: [_angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormField"], (/** @type {?} */ ({ static: true })),] }]
-};
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyWrapperFormField, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"],
-        args: [{
-                selector: 'formly-wrapper-mat-form-field',
-                template: `
-    <!-- fix https://github.com/angular/material2/pull/7083 by setting width to 100% -->
-    <mat-form-field
-      [hideRequiredMarker]="true"
-      [floatLabel]="to.floatLabel"
-      [appearance]="to.appearance"
-      [color]="to.color"
-      [style.width]="'100%'">
-      <ng-container #fieldComponent></ng-container>
-      <mat-label *ngIf="to.label && to.hideLabel !== true">
-        {{ to.label }}
-        <span *ngIf="to.required && to.hideRequiredMarker !== true" class="mat-form-field-required-marker">*</span>
-      </mat-label>
-
-      <ng-container matPrefix *ngIf="to.prefix || formlyField._matprefix">
-        <ng-container *ngTemplateOutlet="to.prefix ? to.prefix : formlyField._matprefix"></ng-container>
-      </ng-container>
-
-      <ng-container matSuffix *ngIf="to.suffix || formlyField._matsuffix">
-        <ng-container *ngTemplateOutlet="to.suffix ? to.suffix : formlyField._matsuffix"></ng-container>
-      </ng-container>
-
-      <mat-error>
-        <formly-validation-message [field]="field"></formly-validation-message>
-      </mat-error>
-      <!-- fix https://github.com/angular/material2/issues/7737 by setting id to null  -->
-      <mat-hint *ngIf="to.description" [id]="null">{{ to.description }}</mat-hint>
-    </mat-form-field>
-  `,
-                providers: [{ provide: _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldControl"], useExisting: FormlyWrapperFormField }]
-            }]
-    }], function () { return [{ type: _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyConfig"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Renderer2"] }, { type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ElementRef"] }, { type: _angular_cdk_a11y__WEBPACK_IMPORTED_MODULE_3__["FocusMonitor"] }]; }, { fieldComponent: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"],
-            args: ['fieldComponent', ( /** @type {?} */({ read: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewContainerRef"], static: true }))]
-        }], formField: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"],
-            args: [_angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormField"], ( /** @type {?} */({ static: true }))]
-        }] }); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlyMatFormFieldModule {
-}
-FormlyMatFormFieldModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({ type: FormlyMatFormFieldModule });
-FormlyMatFormFieldModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({ factory: function FormlyMatFormFieldModule_Factory(t) { return new (t || FormlyMatFormFieldModule)(); }, imports: [[
-            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-            _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyModule"].forChild({
-                wrappers: [{
-                        name: 'form-field',
-                        component: FormlyWrapperFormField
-                    }]
-            }),
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](FormlyMatFormFieldModule, { declarations: function () { return [FormlyWrapperFormField]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-        _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-        _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyModule"]]; } }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyMatFormFieldModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["NgModule"],
-        args: [{
-                declarations: [FormlyWrapperFormField],
-                imports: [
-                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-                    _angular_material_form_field__WEBPACK_IMPORTED_MODULE_2__["MatFormFieldModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_5__["FormlyModule"].forChild({
-                        wrappers: [{
-                                name: 'form-field',
-                                component: FormlyWrapperFormField
-                            }]
-                    }),
-                ]
-            }]
-    }], null, null); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-//# sourceMappingURL=ngx-formly-material-form-field.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-input.js":
-/*!**********************************************************************************************!*\
-  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-input.js ***!
-  \**********************************************************************************************/
-/*! exports provided: FormlyMatInputModule, FormlyFieldInput */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatInputModule", function() { return FormlyMatInputModule; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldInput", function() { return FormlyFieldInput; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/input */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/input.js");
-/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js");
-
-
-
-
-
-
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-
-
-
-function FormlyFieldInput_input_0_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "input", 2);
-} if (rf & 2) {
-    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("id", ctx_r0.id)("type", ctx_r0.type || "text")("readonly", ctx_r0.to.readonly)("required", ctx_r0.to.required)("errorStateMatcher", ctx_r0.errorStateMatcher)("formControl", ctx_r0.formControl)("formlyAttributes", ctx_r0.field)("tabindex", ctx_r0.to.tabindex)("placeholder", ctx_r0.to.placeholder);
-} }
-function FormlyFieldInput_ng_template_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelement"](0, "input", 3);
-} if (rf & 2) {
-    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("id", ctx_r2.id)("readonly", ctx_r2.to.readonly)("required", ctx_r2.to.required)("errorStateMatcher", ctx_r2.errorStateMatcher)("formControl", ctx_r2.formControl)("formlyAttributes", ctx_r2.field)("tabindex", ctx_r2.to.tabindex)("placeholder", ctx_r2.to.placeholder);
-} }
-class FormlyFieldInput extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FieldType"] {
-    /**
-     * @return {?}
-     */
-    get type() {
-        return this.to.type || 'text';
-    }
-}
-FormlyFieldInput.ɵfac = function FormlyFieldInput_Factory(t) { return ɵFormlyFieldInput_BaseFactory(t || FormlyFieldInput); };
-FormlyFieldInput.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: FormlyFieldInput, selectors: [["formly-field-mat-input"]], viewQuery: function FormlyFieldInput_Query(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵviewQuery"](_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], true);
-    } if (rf & 2) {
-        var _t;
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵloadQuery"]()) && (ctx.formFieldControl = _t.first);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵInheritDefinitionFeature"]], decls: 3, vars: 2, consts: [["matInput", "", 3, "id", "type", "readonly", "required", "errorStateMatcher", "formControl", "formlyAttributes", "tabindex", "placeholder", 4, "ngIf", "ngIfElse"], ["numberTmp", ""], ["matInput", "", 3, "id", "type", "readonly", "required", "errorStateMatcher", "formControl", "formlyAttributes", "tabindex", "placeholder"], ["matInput", "", "type", "number", 3, "id", "readonly", "required", "errorStateMatcher", "formControl", "formlyAttributes", "tabindex", "placeholder"]], template: function FormlyFieldInput_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](0, FormlyFieldInput_input_0_Template, 1, 9, "input", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, FormlyFieldInput_ng_template_1_Template, 1, 8, "ng-template", null, 1, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplateRefExtractor"]);
-    } if (rf & 2) {
-        const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵreference"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngIf", ctx.type !== "number")("ngIfElse", _r1);
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["NgIf"], _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["DefaultValueAccessor"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyAttributes"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NumberValueAccessor"]], encapsulation: 2 });
-FormlyFieldInput.propDecorators = {
-    formFieldControl: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], (/** @type {?} */ ({ static: false })),] }]
-};
-const ɵFormlyFieldInput_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetInheritedFactory"](FormlyFieldInput);
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyFieldInput, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"],
-        args: [{
-                selector: 'formly-field-mat-input',
-                template: `
-    <input *ngIf="type !== 'number'; else numberTmp"
-      matInput
-      [id]="id"
-      [type]="type || 'text'"
-      [readonly]="to.readonly"
-      [required]="to.required"
-      [errorStateMatcher]="errorStateMatcher"
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-      [tabindex]="to.tabindex"
-      [placeholder]="to.placeholder">
-    <ng-template #numberTmp>
-      <input matInput
-             [id]="id"
-             type="number"
-             [readonly]="to.readonly"
-             [required]="to.required"
-             [errorStateMatcher]="errorStateMatcher"
-             [formControl]="formControl"
-             [formlyAttributes]="field"
-             [tabindex]="to.tabindex"
-             [placeholder]="to.placeholder">
-    </ng-template>
-  `
-            }]
-    }], null, { formFieldControl: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"],
-            args: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], ( /** @type {?} */({ static: false }))]
-        }] }); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlyMatInputModule {
-}
-FormlyMatInputModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: FormlyMatInputModule });
-FormlyMatInputModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ factory: function FormlyMatInputModule_Factory(t) { return new (t || FormlyMatInputModule)(); }, imports: [[
-            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-            _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
-            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
-                types: [
-                    {
-                        name: 'input',
-                        component: FormlyFieldInput,
-                        wrappers: ['form-field']
-                    },
-                ]
-            }),
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](FormlyMatInputModule, { declarations: function () { return [FormlyFieldInput]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-        _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-        _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
-        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"]]; } }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyMatInputModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"],
-        args: [{
-                declarations: [FormlyFieldInput],
-                imports: [
-                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-                    _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
-                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
-                        types: [
-                            {
-                                name: 'input',
-                                component: FormlyFieldInput,
-                                wrappers: ['form-field']
-                            },
-                        ]
-                    }),
-                ]
-            }]
-    }], null, null); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-//# sourceMappingURL=ngx-formly-material-input.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-multicheckbox.js":
-/*!******************************************************************************************************!*\
-  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-multicheckbox.js ***!
-  \******************************************************************************************************/
-/*! exports provided: FormlyMatMultiCheckboxModule, FormlyFieldMultiCheckbox */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatMultiCheckboxModule", function() { return FormlyMatMultiCheckboxModule; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldMultiCheckbox", function() { return FormlyFieldMultiCheckbox; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/core/select */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core-select.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js");
-/* harmony import */ var _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/material/checkbox */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/checkbox.js");
-
-
-
-
-
-
-
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-
-
-
-function FormlyFieldMultiCheckbox_ng_container_0_Template(rf, ctx) { if (rf & 1) {
-    const _r4 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](1, "mat-checkbox", 1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("change", function FormlyFieldMultiCheckbox_ng_container_0_Template_mat_checkbox_change_1_listener($event) { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r4); const option_r1 = ctx.$implicit; const ctx_r3 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r3.onChange(option_r1.value, $event.checked); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
-} if (rf & 2) {
-    const option_r1 = ctx.$implicit;
-    const i_r2 = ctx.index;
-    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("id", ctx_r0.id + "_" + i_r2)("formlyAttributes", ctx_r0.field)("tabindex", ctx_r0.to.tabindex)("color", ctx_r0.to.color)("labelPosition", ctx_r0.to.labelPosition)("checked", ctx_r0.isChecked(option_r1))("disabled", ctx_r0.formControl.disabled);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", option_r1.label, " ");
-} }
-class FormlyFieldMultiCheckbox extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FieldType"] {
-    constructor() {
-        super(...arguments);
-        this.defaultOptions = {
-            templateOptions: {
-                hideFieldUnderline: true,
-                floatLabel: 'always',
-                options: [],
-                color: 'accent',
-            },
-        };
-    }
-    /**
-     * @param {?} value
-     * @param {?} checked
-     * @return {?}
-     */
-    onChange(value, checked) {
-        if (this.to.type === 'array') {
-            this.formControl.patchValue(checked
-                ? [...(this.formControl.value || []), value]
-                : [...(this.formControl.value || [])].filter((/**
-                 * @param {?} o
-                 * @return {?}
-                 */
-                o => o !== value)));
-        }
-        else {
-            this.formControl.patchValue(Object.assign({}, this.formControl.value, { [value]: checked }));
-        }
-        this.formControl.markAsTouched();
-    }
-    /**
-     * @param {?} event
-     * @return {?}
-     */
-    onContainerClick(event) {
-        if (this.checkboxes.length) {
-            this.checkboxes.first.focus();
-        }
-        super.onContainerClick(event);
-    }
-    /**
-     * @param {?} option
-     * @return {?}
-     */
-    isChecked(option) {
-        /** @type {?} */
-        const value = this.formControl.value;
-        return value && (this.to.type === 'array'
-            ? (value.indexOf(option.value) !== -1)
-            : value[option.value]);
-    }
-}
-FormlyFieldMultiCheckbox.ɵfac = function FormlyFieldMultiCheckbox_Factory(t) { return ɵFormlyFieldMultiCheckbox_BaseFactory(t || FormlyFieldMultiCheckbox); };
-FormlyFieldMultiCheckbox.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: FormlyFieldMultiCheckbox, selectors: [["formly-field-mat-multicheckbox"]], viewQuery: function FormlyFieldMultiCheckbox_Query(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵviewQuery"](_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckbox"], true);
-    } if (rf & 2) {
-        var _t;
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.checkboxes = _t);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]], decls: 3, vars: 6, consts: [[4, "ngFor", "ngForOf"], [3, "id", "formlyAttributes", "tabindex", "color", "labelPosition", "checked", "disabled", "change"]], template: function FormlyFieldMultiCheckbox_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, FormlyFieldMultiCheckbox_ng_container_0_Template, 3, 8, "ng-container", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipe"](1, "async");
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipe"](2, "formlySelectOptions");
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind1"](1, 1, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind2"](2, 3, ctx.to.options, ctx.field)));
-    } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["NgForOf"], _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckbox"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyAttributes"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["AsyncPipe"], _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["ɵa"]], encapsulation: 2 });
-FormlyFieldMultiCheckbox.propDecorators = {
-    checkboxes: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChildren"], args: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckbox"],] }]
-};
-const ɵFormlyFieldMultiCheckbox_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetInheritedFactory"](FormlyFieldMultiCheckbox);
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyFieldMultiCheckbox, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"],
-        args: [{
-                selector: 'formly-field-mat-multicheckbox',
-                template: `
-    <ng-container *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;">
-      <mat-checkbox
-        [id]="id + '_' + i"
-        [formlyAttributes]="field"
-        [tabindex]="to.tabindex"
-        [color]="to.color"
-        [labelPosition]="to.labelPosition"
-        [checked]="isChecked(option)"
-        [disabled]="formControl.disabled"
-        (change)="onChange(option.value, $event.checked)">
-          {{ option.label }}
-      </mat-checkbox>
-    </ng-container>
-  `
-            }]
-    }], null, { checkboxes: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChildren"],
-            args: [_angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckbox"]]
-        }] }); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlyMatMultiCheckboxModule {
-}
-FormlyMatMultiCheckboxModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({ type: FormlyMatMultiCheckboxModule });
-FormlyMatMultiCheckboxModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({ factory: function FormlyMatMultiCheckboxModule_Factory(t) { return new (t || FormlyMatMultiCheckboxModule)(); }, imports: [[
-            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-            _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckboxModule"],
-            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
-            _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"],
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forChild({
-                types: [
-                    {
-                        name: 'multicheckbox',
-                        component: FormlyFieldMultiCheckbox,
-                        wrappers: ['form-field']
-                    },
-                ]
-            }),
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](FormlyMatMultiCheckboxModule, { declarations: function () { return [FormlyFieldMultiCheckbox]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-        _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-        _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckboxModule"],
-        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
-        _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"]]; } }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyMatMultiCheckboxModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["NgModule"],
-        args: [{
-                declarations: [FormlyFieldMultiCheckbox],
-                imports: [
-                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-                    _angular_material_checkbox__WEBPACK_IMPORTED_MODULE_6__["MatCheckboxModule"],
-                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
-                    _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forChild({
-                        types: [
-                            {
-                                name: 'multicheckbox',
-                                component: FormlyFieldMultiCheckbox,
-                                wrappers: ['form-field']
-                            },
-                        ]
-                    }),
-                ]
-            }]
-    }], null, null); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-//# sourceMappingURL=ngx-formly-material-multicheckbox.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-radio.js":
-/*!**********************************************************************************************!*\
-  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-radio.js ***!
-  \**********************************************************************************************/
-/*! exports provided: FormlyMatRadioModule, FormlyFieldRadio */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatRadioModule", function() { return FormlyMatRadioModule; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldRadio", function() { return FormlyFieldRadio; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core/select */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core-select.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js");
-/* harmony import */ var _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/radio */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/radio.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-
-
-
-
-
-
-
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-
-
-
-
-function FormlyFieldRadio_mat_radio_button_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "mat-radio-button", 2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const option_r1 = ctx.$implicit;
-    const i_r2 = ctx.index;
-    const ctx_r0 = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("id", ctx_r0.id + "_" + i_r2)("color", ctx_r0.to.color)("labelPosition", ctx_r0.to.labelPosition)("disabled", option_r1.disabled)("value", option_r1.value);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtextInterpolate1"](" ", option_r1.label, " ");
-} }
-class FormlyFieldRadio extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FieldType"] {
-    constructor() {
-        super(...arguments);
-        this.defaultOptions = {
-            templateOptions: {
-                hideFieldUnderline: true,
-                floatLabel: 'always',
-                options: [],
-                tabindex: -1,
-            },
-        };
-    }
-    /**
-     * @return {?}
-     */
-    ngAfterViewInit() {
-        this.focusObserver = Object(_ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["ɵwrapProperty"])(this.field, 'focus', (/**
-         * @param {?} __0
-         * @return {?}
-         */
-        ({ currentValue }) => {
-            if (this.to.tabindex === -1
-                && currentValue
-                && this.radioGroup._radios.length > 0) {
-                /** @type {?} */
-                const radio = this.radioGroup.selected
-                    ? this.radioGroup.selected
-                    : this.radioGroup._radios.first;
-                radio.focus();
-            }
-        }));
-    }
-    /**
-     * @return {?}
-     */
-    ngOnDestroy() {
-        this.focusObserver && this.focusObserver();
-    }
-}
-FormlyFieldRadio.ɵfac = function FormlyFieldRadio_Factory(t) { return ɵFormlyFieldRadio_BaseFactory(t || FormlyFieldRadio); };
-FormlyFieldRadio.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: FormlyFieldRadio, selectors: [["formly-field-mat-radio"]], viewQuery: function FormlyFieldRadio_Query(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵviewQuery"](_angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioGroup"], true);
-    } if (rf & 2) {
-        var _t;
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵloadQuery"]()) && (ctx.radioGroup = _t.first);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵInheritDefinitionFeature"]], decls: 4, vars: 10, consts: [[3, "formControl", "formlyAttributes", "required", "tabindex"], [3, "id", "color", "labelPosition", "disabled", "value", 4, "ngFor", "ngForOf"], [3, "id", "color", "labelPosition", "disabled", "value"]], template: function FormlyFieldRadio_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "mat-radio-group", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtemplate"](1, FormlyFieldRadio_mat_radio_button_1_Template, 2, 6, "mat-radio-button", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipe"](2, "async");
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipe"](3, "formlySelectOptions");
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("formControl", ctx.formControl)("formlyAttributes", ctx.field)("required", ctx.to.required)("tabindex", ctx.to.tabindex);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("ngForOf", _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipeBind1"](2, 5, _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵpipeBind2"](3, 7, ctx.to.options, ctx.field)));
-    } }, directives: [_angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["FormlyAttributes"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["RequiredValidator"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgForOf"], _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioButton"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["AsyncPipe"], _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__["ɵa"]], encapsulation: 2 });
-FormlyFieldRadio.propDecorators = {
-    radioGroup: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioGroup"],] }]
-};
-const ɵFormlyFieldRadio_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetInheritedFactory"](FormlyFieldRadio);
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyFieldRadio, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"],
-        args: [{
-                selector: 'formly-field-mat-radio',
-                template: `
-    <mat-radio-group
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-      [required]="to.required"
-      [tabindex]="to.tabindex">
-      <mat-radio-button *ngFor="let option of to.options | formlySelectOptions:field | async; let i = index;"
-        [id]="id + '_' + i"
-        [color]="to.color"
-        [labelPosition]="to.labelPosition"
-        [disabled]="option.disabled"
-        [value]="option.value">
-        {{ option.label }}
-      </mat-radio-button>
-    </mat-radio-group>
-  `
-            }]
-    }], null, { radioGroup: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"],
-            args: [_angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioGroup"]]
-        }] }); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlyMatRadioModule {
-}
-FormlyMatRadioModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: FormlyMatRadioModule });
-FormlyMatRadioModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ factory: function FormlyMatRadioModule_Factory(t) { return new (t || FormlyMatRadioModule)(); }, imports: [[
-            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-            _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioModule"],
-            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
-            _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__["FormlySelectModule"],
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["FormlyModule"].forChild({
-                types: [{
-                        name: 'radio',
-                        component: FormlyFieldRadio,
-                        wrappers: ['form-field']
-                    }]
-            }),
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](FormlyMatRadioModule, { declarations: function () { return [FormlyFieldRadio]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-        _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-        _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioModule"],
-        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
-        _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__["FormlySelectModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["FormlyModule"]]; } }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyMatRadioModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"],
-        args: [{
-                declarations: [FormlyFieldRadio],
-                imports: [
-                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-                    _angular_material_radio__WEBPACK_IMPORTED_MODULE_5__["MatRadioModule"],
-                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_4__["FormlyMatFormFieldModule"],
-                    _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_2__["FormlySelectModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_6__["FormlyModule"].forChild({
-                        types: [{
-                                name: 'radio',
-                                component: FormlyFieldRadio,
-                                wrappers: ['form-field']
-                            }]
-                    }),
-                ]
-            }]
-    }], null, null); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-//# sourceMappingURL=ngx-formly-material-radio.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-select.js":
-/*!***********************************************************************************************!*\
-  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-select.js ***!
-  \***********************************************************************************************/
-/*! exports provided: FormlyMatSelectModule, FormlyFieldSelect */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatSelectModule", function() { return FormlyMatSelectModule; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldSelect", function() { return FormlyFieldSelect; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/core/select */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core-select.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_material_select__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/select */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/select.js");
-/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js");
-/* harmony import */ var _angular_material_core__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/material/core */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/core.js");
-
-
-
-
-
-
-
-
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-
-
-
-
-
-function FormlyFieldSelect_ng_template_0_Template(rf, ctx) { if (rf & 1) {
-    const _r5 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetCurrentView"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-option", 3);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("click", function FormlyFieldSelect_ng_template_0_Template_mat_option_click_0_listener() { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵrestoreView"](_r5); const selectOptions_r3 = ctx.selectOptions; const ctx_r4 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"](); return ctx_r4.toggleSelectAll(selectOptions_r3); });
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelement"](1, "mat-pseudo-checkbox", 4);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](2);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const selectOptions_r3 = ctx.selectOptions;
-    const ctx_r1 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("state", ctx_r1.getSelectAllState(selectOptions_r3));
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", ctx_r1.to.selectAllOption, " ");
-} }
-const _c0 = function (a0) { return { selectOptions: a0 }; };
-function FormlyFieldSelect_ng_container_3_ng_container_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainer"](0, 7);
-} if (rf & 2) {
-    const selectOptions_r6 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]().ngIf;
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    const _r0 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵreference"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngTemplateOutlet", _r0)("ngTemplateOutletContext", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpureFunction1"](2, _c0, selectOptions_r6));
-} }
-function FormlyFieldSelect_ng_container_3_ng_container_2_mat_optgroup_1_mat_option_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-option", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const child_r14 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("value", child_r14.value)("disabled", child_r14.disabled);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate1"](" ", child_r14.label, " ");
-} }
-function FormlyFieldSelect_ng_container_3_ng_container_2_mat_optgroup_1_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-optgroup", 10);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyFieldSelect_ng_container_3_ng_container_2_mat_optgroup_1_mat_option_1_Template, 2, 3, "mat-option", 11);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const item_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]().$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("label", item_r10.label);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngForOf", item_r10.group);
-} }
-function FormlyFieldSelect_ng_container_3_ng_container_2_mat_option_2_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](0, "mat-option", 12);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtext"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-} if (rf & 2) {
-    const item_r10 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]().$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("value", item_r10.value)("disabled", item_r10.disabled);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtextInterpolate"](item_r10.label);
-} }
-function FormlyFieldSelect_ng_container_3_ng_container_2_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyFieldSelect_ng_container_3_ng_container_2_mat_optgroup_1_Template, 2, 2, "mat-optgroup", 8);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, FormlyFieldSelect_ng_container_3_ng_container_2_mat_option_2_Template, 2, 3, "mat-option", 9);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
-} if (rf & 2) {
-    const item_r10 = ctx.$implicit;
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", item_r10.group);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", !item_r10.group);
-} }
-function FormlyFieldSelect_ng_container_3_Template(rf, ctx) { if (rf & 1) {
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerStart"](0);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](1, FormlyFieldSelect_ng_container_3_ng_container_1_Template, 1, 4, "ng-container", 5);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](2, FormlyFieldSelect_ng_container_3_ng_container_2_Template, 3, 2, "ng-container", 6);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementContainerEnd"]();
-} if (rf & 2) {
-    const selectOptions_r6 = ctx.ngIf;
-    const ctx_r2 = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵnextContext"]();
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", ctx_r2.to.multiple && ctx_r2.to.selectAllOption);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-    _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngForOf", selectOptions_r6);
-} }
-class FormlyFieldSelect extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__["FieldType"] {
-    constructor() {
-        super(...arguments);
-        this.defaultOptions = {
-            templateOptions: {
-                options: [],
-                /**
-                 * @param {?} o1
-                 * @param {?} o2
-                 * @return {?}
-                 */
-                compareWith(o1, o2) {
-                    return o1 === o2;
-                },
-            },
-        };
-    }
+class FormlySelectOptionsPipe {
     /**
      * @param {?} options
+     * @param {?=} field
      * @return {?}
      */
-    getSelectAllState(options) {
-        if (this.empty || this.value.length === 0) {
-            return '';
+    transform(options, field) {
+        if (!(options instanceof rxjs__WEBPACK_IMPORTED_MODULE_1__["Observable"])) {
+            options = Object(rxjs__WEBPACK_IMPORTED_MODULE_1__["of"])(options);
         }
-        return this.value.length !== this.getSelectAllValue(options).length
-            ? 'indeterminate'
-            : 'checked';
-    }
-    /**
-     * @param {?} options
-     * @return {?}
-     */
-    toggleSelectAll(options) {
-        /** @type {?} */
-        const selectAllValue = this.getSelectAllValue(options);
-        this.formControl.setValue(!this.value || this.value.length !== selectAllValue.length
-            ? selectAllValue
-            : []);
-    }
-    /**
-     * @param {?} $event
-     * @return {?}
-     */
-    change($event) {
-        if (this.to.change) {
-            this.to.change(this.field, $event);
-        }
-    }
-    /**
-     * @return {?}
-     */
-    _getAriaLabelledby() {
-        if (this.to.attributes && this.to.attributes['aria-labelledby']) {
-            return this.to.attributes['aria-labelledby'];
-        }
-        if (this.formField && this.formField._labelId) {
-            return this.formField._labelId;
-        }
-        return null;
+        return ((/** @type {?} */ (options))).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_2__["map"])((/**
+         * @param {?} value
+         * @return {?}
+         */
+        value => this.toOptions(value, field || {}))));
     }
     /**
      * @private
      * @param {?} options
+     * @param {?} field
      * @return {?}
      */
-    getSelectAllValue(options) {
-        if (!this.selectAllValue || options !== this.selectAllValue.options) {
-            /** @type {?} */
-            const flatOptions = [];
-            options.forEach((/**
-             * @param {?} o
-             * @return {?}
-             */
-            o => o.group
-                ? flatOptions.push(...o.group)
-                : flatOptions.push(o)));
-            this.selectAllValue = {
-                options,
-                value: flatOptions.map((/**
-                 * @param {?} o
-                 * @return {?}
-                 */
-                o => o.value)),
-            };
-        }
-        return this.selectAllValue.value;
+    toOptions(options, field) {
+        /** @type {?} */
+        const gOptions = [];
+        /** @type {?} */
+        const groups = {};
+        /** @type {?} */
+        const to = field.templateOptions || {};
+        to._flatOptions = true;
+        options.map((/**
+         * @param {?} option
+         * @return {?}
+         */
+        (option) => {
+            if (!this.getGroupProp(option, to)) {
+                gOptions.push(this.toOption(option, to));
+            }
+            else {
+                to._flatOptions = false;
+                if (!groups[this.getGroupProp(option, to)]) {
+                    groups[this.getGroupProp(option, to)] = [];
+                    gOptions.push({
+                        label: this.getGroupProp(option, to),
+                        group: groups[this.getGroupProp(option, to)],
+                    });
+                }
+                groups[this.getGroupProp(option, to)].push(this.toOption(option, to));
+            }
+        }));
+        return gOptions;
     }
-}
-FormlyFieldSelect.ɵfac = function FormlyFieldSelect_Factory(t) { return ɵFormlyFieldSelect_BaseFactory(t || FormlyFieldSelect); };
-FormlyFieldSelect.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineComponent"]({ type: FormlyFieldSelect, selectors: [["formly-field-mat-select"]], viewQuery: function FormlyFieldSelect_Query(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵstaticViewQuery"](_angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelect"], true);
-    } if (rf & 2) {
-        var _t;
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵloadQuery"]()) && (ctx.formFieldControl = _t.first);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵInheritDefinitionFeature"]], decls: 6, vars: 17, consts: [["selectAll", ""], [3, "id", "formControl", "formlyAttributes", "placeholder", "tabindex", "required", "compareWith", "multiple", "errorStateMatcher", "aria-labelledby", "disableOptionCentering", "selectionChange"], [4, "ngIf"], [3, "click"], [1, "mat-option-pseudo-checkbox", 3, "state"], [3, "ngTemplateOutlet", "ngTemplateOutletContext", 4, "ngIf"], [4, "ngFor", "ngForOf"], [3, "ngTemplateOutlet", "ngTemplateOutletContext"], [3, "label", 4, "ngIf"], [3, "value", "disabled", 4, "ngIf"], [3, "label"], [3, "value", "disabled", 4, "ngFor", "ngForOf"], [3, "value", "disabled"]], template: function FormlyFieldSelect_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](0, FormlyFieldSelect_ng_template_0_Template, 3, 2, "ng-template", null, 0, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplateRefExtractor"]);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementStart"](2, "mat-select", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵlistener"]("selectionChange", function FormlyFieldSelect_Template_mat_select_selectionChange_2_listener($event) { return ctx.change($event); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵtemplate"](3, FormlyFieldSelect_ng_container_3_Template, 3, 2, "ng-container", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipe"](4, "async");
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipe"](5, "formlySelectOptions");
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵelementEnd"]();
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("id", ctx.id)("formControl", ctx.formControl)("formlyAttributes", ctx.field)("placeholder", ctx.to.placeholder)("tabindex", ctx.to.tabindex)("required", ctx.to.required)("compareWith", ctx.to.compareWith)("multiple", ctx.to.multiple)("errorStateMatcher", ctx.errorStateMatcher)("aria-labelledby", ctx._getAriaLabelledby())("disableOptionCentering", ctx.to.disableOptionCentering);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵproperty"]("ngIf", _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind1"](4, 12, _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵpipeBind2"](5, 14, ctx.to.options, ctx.field)));
-    } }, directives: [_angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelect"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyAttributes"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["RequiredValidator"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgIf"], _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatOption"], _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatPseudoCheckbox"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgForOf"], _angular_common__WEBPACK_IMPORTED_MODULE_0__["NgTemplateOutlet"], _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatOptgroup"]], pipes: [_angular_common__WEBPACK_IMPORTED_MODULE_0__["AsyncPipe"], _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["ɵa"]], encapsulation: 2 });
-FormlyFieldSelect.propDecorators = {
-    formFieldControl: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"], args: [_angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelect"], (/** @type {?} */ ({ static: true })),] }]
-};
-const ɵFormlyFieldSelect_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵgetInheritedFactory"](FormlyFieldSelect);
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyFieldSelect, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["Component"],
-        args: [{
-                selector: 'formly-field-mat-select',
-                template: `
-    <ng-template #selectAll let-selectOptions="selectOptions">
-      <mat-option (click)="toggleSelectAll(selectOptions)">
-        <mat-pseudo-checkbox class="mat-option-pseudo-checkbox"
-          [state]="getSelectAllState(selectOptions)">
-        </mat-pseudo-checkbox>
-        {{ to.selectAllOption }}
-      </mat-option>
-    </ng-template>
-
-    <mat-select [id]="id"
-      [formControl]="formControl"
-      [formlyAttributes]="field"
-      [placeholder]="to.placeholder"
-      [tabindex]="to.tabindex"
-      [required]="to.required"
-      [compareWith]="to.compareWith"
-      [multiple]="to.multiple"
-      (selectionChange)="change($event)"
-      [errorStateMatcher]="errorStateMatcher"
-      [aria-labelledby]="_getAriaLabelledby()"
-      [disableOptionCentering]="to.disableOptionCentering"
-      >
-      <ng-container *ngIf="to.options | formlySelectOptions:field | async as selectOptions">
-        <ng-container *ngIf="to.multiple && to.selectAllOption" [ngTemplateOutlet]="selectAll" [ngTemplateOutletContext]="{ selectOptions: selectOptions }">
-        </ng-container>
-        <ng-container *ngFor="let item of selectOptions">
-          <mat-optgroup *ngIf="item.group" [label]="item.label">
-            <mat-option *ngFor="let child of item.group" [value]="child.value" [disabled]="child.disabled">
-              {{ child.label }}
-            </mat-option>
-          </mat-optgroup>
-          <mat-option *ngIf="!item.group" [value]="item.value" [disabled]="item.disabled">{{ item.label }}</mat-option>
-        </ng-container>
-      </ng-container>
-    </mat-select>
-  `
-            }]
-    }], null, { formFieldControl: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["ViewChild"],
-            args: [_angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelect"], ( /** @type {?} */({ static: true }))]
-        }] }); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlyMatSelectModule {
-}
-FormlyMatSelectModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineNgModule"]({ type: FormlyMatSelectModule });
-FormlyMatSelectModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵdefineInjector"]({ factory: function FormlyMatSelectModule_Factory(t) { return new (t || FormlyMatSelectModule)(); }, imports: [[
-            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-            _angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelectModule"],
-            _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatPseudoCheckboxModule"],
-            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__["FormlyMatFormFieldModule"],
-            _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"],
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forChild({
-                types: [{
-                        name: 'select',
-                        component: FormlyFieldSelect,
-                        wrappers: ['form-field']
-                    }]
-            }),
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵɵsetNgModuleScope"](FormlyMatSelectModule, { declarations: function () { return [FormlyFieldSelect]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-        _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-        _angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelectModule"],
-        _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatPseudoCheckboxModule"],
-        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__["FormlyMatFormFieldModule"],
-        _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"]]; } }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_4__["ɵsetClassMetadata"](FormlyMatSelectModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_4__["NgModule"],
-        args: [{
-                declarations: [FormlyFieldSelect],
-                imports: [
-                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_1__["ReactiveFormsModule"],
-                    _angular_material_select__WEBPACK_IMPORTED_MODULE_5__["MatSelectModule"],
-                    _angular_material_core__WEBPACK_IMPORTED_MODULE_7__["MatPseudoCheckboxModule"],
-                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_6__["FormlyMatFormFieldModule"],
-                    _ngx_formly_core_select__WEBPACK_IMPORTED_MODULE_3__["FormlySelectModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forChild({
-                        types: [{
-                                name: 'select',
-                                component: FormlyFieldSelect,
-                                wrappers: ['form-field']
-                            }]
-                    }),
-                ]
-            }]
-    }], null, null); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-//# sourceMappingURL=ngx-formly-material-select.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-textarea.js":
-/*!*************************************************************************************************!*\
-  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-textarea.js ***!
-  \*************************************************************************************************/
-/*! exports provided: FormlyMatTextAreaModule, FormlyFieldTextArea */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMatTextAreaModule", function() { return FormlyMatTextAreaModule; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyFieldTextArea", function() { return FormlyFieldTextArea; });
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_material_input__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/input */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/input.js");
-/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js");
-/* harmony import */ var _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @angular/cdk/text-field */ "./node_modules/@angular/cdk/__ivy_ngcc__/fesm2015/text-field.js");
-
-
-
-
-
-
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-
-
-class FormlyFieldTextArea extends _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FieldType"] {
-    constructor() {
-        super(...arguments);
-        this.defaultOptions = {
-            templateOptions: {
-                cols: 1,
-                rows: 1,
-            },
+    /**
+     * @private
+     * @param {?} item
+     * @param {?} to
+     * @return {?}
+     */
+    toOption(item, to) {
+        return {
+            label: this.getLabelProp(item, to),
+            value: this.getValueProp(item, to),
+            disabled: this.getDisabledProp(item, to) || false,
         };
     }
+    /**
+     * @private
+     * @param {?} item
+     * @param {?} to
+     * @return {?}
+     */
+    getLabelProp(item, to) {
+        if (typeof to.labelProp === 'function') {
+            return to.labelProp(item);
+        }
+        if (this.shouldUseLegacyOption(item, to)) {
+            console.warn(`NgxFormly: legacy select option '{key, value}' is deprecated since v5.5, use '{value, label}' instead.`);
+            return item.value;
+        }
+        return item[to.labelProp || 'label'];
+    }
+    /**
+     * @private
+     * @param {?} item
+     * @param {?} to
+     * @return {?}
+     */
+    getValueProp(item, to) {
+        if (typeof to.valueProp === 'function') {
+            return to.valueProp(item);
+        }
+        if (this.shouldUseLegacyOption(item, to)) {
+            return item.key;
+        }
+        return item[to.valueProp || 'value'];
+    }
+    /**
+     * @private
+     * @param {?} item
+     * @param {?} to
+     * @return {?}
+     */
+    getDisabledProp(item, to) {
+        if (typeof to.disabledProp === 'function') {
+            return to.disabledProp(item);
+        }
+        return item[to.disabledProp || 'disabled'];
+    }
+    /**
+     * @private
+     * @param {?} item
+     * @param {?} to
+     * @return {?}
+     */
+    getGroupProp(item, to) {
+        if (typeof to.groupProp === 'function') {
+            return to.groupProp(item);
+        }
+        return item[to.groupProp || 'group'];
+    }
+    /**
+     * @private
+     * @param {?} item
+     * @param {?} to
+     * @return {?}
+     */
+    shouldUseLegacyOption(item, to) {
+        return !to.valueProp
+            && !to.labelProp
+            && item != null
+            && typeof item === 'object'
+            && 'key' in item
+            && 'value' in item;
+    }
 }
-FormlyFieldTextArea.ɵfac = function FormlyFieldTextArea_Factory(t) { return ɵFormlyFieldTextArea_BaseFactory(t || FormlyFieldTextArea); };
-FormlyFieldTextArea.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineComponent"]({ type: FormlyFieldTextArea, selectors: [["formly-field-mat-textarea"]], viewQuery: function FormlyFieldTextArea_Query(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵstaticViewQuery"](_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], true);
-    } if (rf & 2) {
-        var _t;
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵqueryRefresh"](_t = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵloadQuery"]()) && (ctx.formFieldControl = _t.first);
-    } }, features: [_angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵProvidersFeature"]([
-            // fix for https://github.com/ngx-formly/ngx-formly/issues/1688
-            // rely on formControl value instead of elementRef which return empty value in Firefox.
-            { provide: _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MAT_INPUT_VALUE_ACCESSOR"], useExisting: FormlyFieldTextArea },
-        ]), _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵInheritDefinitionFeature"]], decls: 2, vars: 15, consts: [["matInput", "", 3, "id", "readonly", "required", "formControl", "errorStateMatcher", "cols", "rows", "formlyAttributes", "placeholder", "tabindex", "cdkTextareaAutosize", "cdkAutosizeMinRows", "cdkAutosizeMaxRows"]], template: function FormlyFieldTextArea_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementStart"](0, "textarea", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵtext"](1, "    ");
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵelementEnd"]();
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵclassProp"]("cdk-textarea-autosize", ctx.to.autosize);
-        _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵproperty"]("id", ctx.id)("readonly", ctx.to.readonly)("required", ctx.to.required)("formControl", ctx.formControl)("errorStateMatcher", ctx.errorStateMatcher)("cols", ctx.to.cols)("rows", ctx.to.rows)("formlyAttributes", ctx.field)("placeholder", ctx.to.placeholder)("tabindex", ctx.to.tabindex)("cdkTextareaAutosize", ctx.to.autosize)("cdkAutosizeMinRows", ctx.to.autosizeMinRows)("cdkAutosizeMaxRows", ctx.to.autosizeMaxRows);
-    } }, directives: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["DefaultValueAccessor"], _angular_cdk_text_field__WEBPACK_IMPORTED_MODULE_6__["CdkTextareaAutosize"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["RequiredValidator"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["NgControlStatus"], _angular_forms__WEBPACK_IMPORTED_MODULE_2__["FormControlDirective"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyAttributes"]], encapsulation: 2 });
-FormlyFieldTextArea.propDecorators = {
-    formFieldControl: [{ type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"], args: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], (/** @type {?} */ ({ static: true })),] }]
-};
-const ɵFormlyFieldTextArea_BaseFactory = /*@__PURE__*/ _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵgetInheritedFactory"](FormlyFieldTextArea);
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyFieldTextArea, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["Component"],
-        args: [{
-                selector: 'formly-field-mat-textarea',
-                template: `
-    <textarea matInput
-      [id]="id"
-      [readonly]="to.readonly"
-      [required]="to.required"
-      [formControl]="formControl"
-      [errorStateMatcher]="errorStateMatcher"
-      [cols]="to.cols"
-      [rows]="to.rows"
-      [formlyAttributes]="field"
-      [placeholder]="to.placeholder"
-      [tabindex]="to.tabindex"
-      [cdkTextareaAutosize]="to.autosize"
-      [cdkAutosizeMinRows]="to.autosizeMinRows"
-      [cdkAutosizeMaxRows]="to.autosizeMaxRows"
-      [class.cdk-textarea-autosize]="to.autosize"
-      >
-    </textarea>
-  `,
-                providers: [
-                    // fix for https://github.com/ngx-formly/ngx-formly/issues/1688
-                    // rely on formControl value instead of elementRef which return empty value in Firefox.
-                    { provide: _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MAT_INPUT_VALUE_ACCESSOR"], useExisting: FormlyFieldTextArea },
-                ]
-            }]
-    }], null, { formFieldControl: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["ViewChild"],
-            args: [_angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInput"], ( /** @type {?} */({ static: true }))]
-        }] }); })();
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlyMatTextAreaModule {
-}
-FormlyMatTextAreaModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineNgModule"]({ type: FormlyMatTextAreaModule });
-FormlyMatTextAreaModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵdefineInjector"]({ factory: function FormlyMatTextAreaModule_Factory(t) { return new (t || FormlyMatTextAreaModule)(); }, imports: [[
-            _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-            _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
-            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
-                types: [
-                    {
-                        name: 'textarea',
-                        component: FormlyFieldTextArea,
-                        wrappers: ['form-field']
-                    },
-                ]
-            }),
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵɵsetNgModuleScope"](FormlyMatTextAreaModule, { declarations: function () { return [FormlyFieldTextArea]; }, imports: function () { return [_angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-        _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-        _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
-        _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"]]; } }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_3__["ɵsetClassMetadata"](FormlyMatTextAreaModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_3__["NgModule"],
-        args: [{
-                declarations: [FormlyFieldTextArea],
-                imports: [
-                    _angular_common__WEBPACK_IMPORTED_MODULE_0__["CommonModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_2__["ReactiveFormsModule"],
-                    _angular_material_input__WEBPACK_IMPORTED_MODULE_4__["MatInputModule"],
-                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_5__["FormlyMatFormFieldModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_1__["FormlyModule"].forChild({
-                        types: [
-                            {
-                                name: 'textarea',
-                                component: FormlyFieldTextArea,
-                                wrappers: ['form-field']
-                            },
-                        ]
-                    }),
-                ]
-            }]
+FormlySelectOptionsPipe.ɵfac = function FormlySelectOptionsPipe_Factory(t) { return new (t || FormlySelectOptionsPipe)(); };
+FormlySelectOptionsPipe.ɵpipe = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefinePipe"]({ name: "formlySelectOptions", type: FormlySelectOptionsPipe, pure: true });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](FormlySelectOptionsPipe, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Pipe"],
+        args: [{ name: 'formlySelectOptions' }]
     }], null, null); })();
 
 /**
  * @fileoverview added by tsickle
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-
-
-
-//# sourceMappingURL=ngx-formly-material-textarea.js.map
-
-/***/ }),
-
-/***/ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js":
-/*!****************************************************************************************!*\
-  !*** ./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js ***!
-  \****************************************************************************************/
-/*! exports provided: FieldType, FormlyMaterialModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "FormlyMaterialModule", function() { return FormlyMaterialModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @ngx-formly/material/form-field */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-form-field.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "FieldType", function() { return _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__["FieldType"]; });
-
-/* harmony import */ var _ngx_formly_material_input__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/material/input */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-input.js");
-/* harmony import */ var _ngx_formly_material_textarea__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/material/textarea */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-textarea.js");
-/* harmony import */ var _ngx_formly_material_radio__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @ngx-formly/material/radio */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-radio.js");
-/* harmony import */ var _ngx_formly_material_checkbox__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @ngx-formly/material/checkbox */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-checkbox.js");
-/* harmony import */ var _ngx_formly_material_multicheckbox__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @ngx-formly/material/multicheckbox */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-multicheckbox.js");
-/* harmony import */ var _ngx_formly_material_select__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @ngx-formly/material/select */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material-select.js");
-
-
-
-
-
-
-
-
-
-
-
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
-class FormlyMaterialModule {
+class FormlySelectModule {
 }
-FormlyMaterialModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: FormlyMaterialModule });
-FormlyMaterialModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function FormlyMaterialModule_Factory(t) { return new (t || FormlyMaterialModule)(); }, imports: [[
-            _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__["FormlyMatFormFieldModule"],
-            _ngx_formly_material_input__WEBPACK_IMPORTED_MODULE_2__["FormlyMatInputModule"],
-            _ngx_formly_material_textarea__WEBPACK_IMPORTED_MODULE_3__["FormlyMatTextAreaModule"],
-            _ngx_formly_material_radio__WEBPACK_IMPORTED_MODULE_4__["FormlyMatRadioModule"],
-            _ngx_formly_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["FormlyMatCheckboxModule"],
-            _ngx_formly_material_multicheckbox__WEBPACK_IMPORTED_MODULE_6__["FormlyMatMultiCheckboxModule"],
-            _ngx_formly_material_select__WEBPACK_IMPORTED_MODULE_7__["FormlyMatSelectModule"],
-        ]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](FormlyMaterialModule, { imports: function () { return [_ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__["FormlyMatFormFieldModule"],
-        _ngx_formly_material_input__WEBPACK_IMPORTED_MODULE_2__["FormlyMatInputModule"],
-        _ngx_formly_material_textarea__WEBPACK_IMPORTED_MODULE_3__["FormlyMatTextAreaModule"],
-        _ngx_formly_material_radio__WEBPACK_IMPORTED_MODULE_4__["FormlyMatRadioModule"],
-        _ngx_formly_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["FormlyMatCheckboxModule"],
-        _ngx_formly_material_multicheckbox__WEBPACK_IMPORTED_MODULE_6__["FormlyMatMultiCheckboxModule"],
-        _ngx_formly_material_select__WEBPACK_IMPORTED_MODULE_7__["FormlyMatSelectModule"]]; } }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](FormlyMaterialModule, [{
+FormlySelectModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: FormlySelectModule });
+FormlySelectModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function FormlySelectModule_Factory(t) { return new (t || FormlySelectModule)(); } });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](FormlySelectModule, { declarations: [FormlySelectOptionsPipe], exports: [FormlySelectOptionsPipe] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](FormlySelectModule, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
         args: [{
-                imports: [
-                    _ngx_formly_material_form_field__WEBPACK_IMPORTED_MODULE_1__["FormlyMatFormFieldModule"],
-                    _ngx_formly_material_input__WEBPACK_IMPORTED_MODULE_2__["FormlyMatInputModule"],
-                    _ngx_formly_material_textarea__WEBPACK_IMPORTED_MODULE_3__["FormlyMatTextAreaModule"],
-                    _ngx_formly_material_radio__WEBPACK_IMPORTED_MODULE_4__["FormlyMatRadioModule"],
-                    _ngx_formly_material_checkbox__WEBPACK_IMPORTED_MODULE_5__["FormlyMatCheckboxModule"],
-                    _ngx_formly_material_multicheckbox__WEBPACK_IMPORTED_MODULE_6__["FormlyMatMultiCheckboxModule"],
-                    _ngx_formly_material_select__WEBPACK_IMPORTED_MODULE_7__["FormlyMatSelectModule"],
-                ]
+                declarations: [FormlySelectOptionsPipe],
+                exports: [FormlySelectOptionsPipe]
             }]
     }], null, null); })();
 
@@ -5903,18 +6340,13 @@ FormlyMaterialModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
  * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-/**
- * @fileoverview added by tsickle
- * @suppress {checkTypes,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
- */
 
 
-
-//# sourceMappingURL=ngx-formly-material.js.map
+//# sourceMappingURL=ngx-formly-core-select.js.map
 
 /***/ }),
 
-/***/ "./src/custom/components/pages/login/login-content/login-content.component.ts":
+/***/ "oYRx":
 /*!************************************************************************************!*\
   !*** ./src/custom/components/pages/login/login-content/login-content.component.ts ***!
   \************************************************************************************/
@@ -5924,12 +6356,12 @@ FormlyMaterialModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdef
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginContentComponent", function() { return LoginContentComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.service */ "./src/custom/components/pages/login/login.service.ts");
-/* harmony import */ var _custom_services_auth_service_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/services/auth/service.auth */ "./src/custom/services/auth/service.auth.ts");
-/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/card */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/card.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-form-simple.component */ "./src/custom/components/pages/shared/base/page-simple-formly/page-form-simple.component.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _custom_components_pages_login_login_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.service */ "AKay");
+/* harmony import */ var _custom_services_auth_service_auth__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/services/auth/service.auth */ "Viax");
+/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/card */ "Wp6s");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-form-simple.component */ "xh2B");
 
 
 
@@ -5963,7 +6395,7 @@ LoginContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
     } if (rf & 2) {
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("form", ctx.form)("fields", ctx.loginService.fields)("submitLabel", "Login")("submitIcon", "login");
-    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCardTitle"], _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_5__["PageFormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jdXN0b20vY29tcG9uZW50cy9wYWdlcy9sb2dpbi9sb2dpbi1jb250ZW50L2xvZ2luLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoic3JjL2N1c3RvbS9jb21wb25lbnRzL3BhZ2VzL2xvZ2luL2xvZ2luLWNvbnRlbnQvbG9naW4tY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gICAgcGFkZGluZzogMjRweDtcbn0iXX0= */"] });
+    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_4__["MatCardTitle"], _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_5__["PageFormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcLi5cXGxvZ2luLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoibG9naW4tY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gICAgcGFkZGluZzogMjRweDtcbn0iXX0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginContentComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -5977,338 +6409,7 @@ LoginContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
 
 /***/ }),
 
-/***/ "./src/custom/components/pages/login/login-routing.module.ts":
-/*!*******************************************************************!*\
-  !*** ./src/custom/components/pages/login/login-routing.module.ts ***!
-  \*******************************************************************/
-/*! exports provided: LoginRoutingModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginRoutingModule", function() { return LoginRoutingModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
-/* harmony import */ var _custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.component */ "./src/custom/components/pages/login/login.component.ts");
-
-
-
-
-
-const routes = [
-    {
-        path: '',
-        component: _custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"],
-    },
-    {
-        path: 'register',
-        loadChildren: () => __webpack_require__.e(/*! import() | custom-components-pages-register-register-module */ "custom-components-pages-register-register-module").then(__webpack_require__.bind(null, /*! @custom/components/pages/register/register.module */ "./src/custom/components/pages/register/register.module.ts")).then(m => m.RegisterModule)
-    },
-];
-class LoginRoutingModule {
-}
-LoginRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: LoginRoutingModule });
-LoginRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function LoginRoutingModule_Factory(t) { return new (t || LoginRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](LoginRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginRoutingModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
-        args: [{
-                imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)],
-                exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]]
-            }]
-    }], null, null); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/components/pages/login/login.component.ts":
-/*!**************************************************************!*\
-  !*** ./src/custom/components/pages/login/login.component.ts ***!
-  \**************************************************************/
-/*! exports provided: LoginComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginComponent", function() { return LoginComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple/page-simple.component */ "./src/custom/components/pages/shared/base/page-simple/page-simple.component.ts");
-/* harmony import */ var _custom_components_pages_shared_navs_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/shared/navs/nav-list-simple/nav-list-simple.component */ "./src/custom/components/pages/shared/navs/nav-list-simple/nav-list-simple.component.ts");
-/* harmony import */ var _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/login/login-content/login-content.component */ "./src/custom/components/pages/login/login-content/login-content.component.ts");
-
-
-
-
-
-class LoginComponent {
-    constructor() { }
-    ngOnInit() {
-    }
-}
-LoginComponent.ɵfac = function LoginComponent_Factory(t) { return new (t || LoginComponent)(); };
-LoginComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: LoginComponent, selectors: [["app-login"]], decls: 3, vars: 0, consts: [["nav-list", ""], ["content", ""]], template: function LoginComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "app-page-simple");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-nav-list", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-login-content", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    } }, directives: [_custom_components_pages_shared_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__["PageSimpleComponent"], _custom_components_pages_shared_navs_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__["NavListSimpleComponent"], _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_3__["LoginContentComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvY3VzdG9tL2NvbXBvbmVudHMvcGFnZXMvbG9naW4vbG9naW4uY29tcG9uZW50LnNjc3MifQ== */"] });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginComponent, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
-        args: [{
-                selector: 'app-login',
-                templateUrl: './login.component.html',
-                styleUrls: ['./login.component.scss']
-            }]
-    }], function () { return []; }, null); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/components/pages/login/login.module.ts":
-/*!***********************************************************!*\
-  !*** ./src/custom/components/pages/login/login.module.ts ***!
-  \***********************************************************/
-/*! exports provided: LoginModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginModule", function() { return LoginModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-simple-formly.module */ "./src/custom/components/pages/shared/base/page-simple-formly/page-simple-formly.module.ts");
-/* harmony import */ var _custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/login/login.component */ "./src/custom/components/pages/login/login.component.ts");
-/* harmony import */ var _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/login/login-routing.module */ "./src/custom/components/pages/login/login-routing.module.ts");
-/* harmony import */ var _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @custom/components/pages/login/login-content/login-content.component */ "./src/custom/components/pages/login/login-content/login-content.component.ts");
-
-
-
-
-
-
-class LoginModule {
-}
-LoginModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: LoginModule });
-LoginModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function LoginModule_Factory(t) { return new (t || LoginModule)(); }, imports: [[_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](LoginModule, { declarations: [_custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"], _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__["LoginContentComponent"]], imports: [_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
-        args: [{
-                declarations: [_custom_components_pages_login_login_component__WEBPACK_IMPORTED_MODULE_2__["LoginComponent"], _custom_components_pages_login_login_content_login_content_component__WEBPACK_IMPORTED_MODULE_4__["LoginContentComponent"]],
-                imports: [_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_1__["PageFormlyModule"], _custom_components_pages_login_login_routing_module__WEBPACK_IMPORTED_MODULE_3__["LoginRoutingModule"]],
-                exports: [],
-            }]
-    }], null, null); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/components/pages/login/login.service.ts":
-/*!************************************************************!*\
-  !*** ./src/custom/components/pages/login/login.service.ts ***!
-  \************************************************************/
-/*! exports provided: LoginService */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "LoginService", function() { return LoginService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service */ "./src/custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service.ts");
-
-
-
-class LoginService {
-    constructor(pageFormlyService) {
-        this.pageFormlyService = pageFormlyService;
-        this.fields = [
-            {
-                key: 'email',
-                type: 'input',
-                templateOptions: {
-                    label: 'Email',
-                    placeholder: 'Enter email',
-                    required: true,
-                },
-                validators: {
-                    email: this.pageFormlyService.emailValidator,
-                    required: this.pageFormlyService.requiredValidator,
-                },
-            },
-            {
-                key: 'password',
-                type: 'input',
-                templateOptions: {
-                    label: 'Password',
-                    required: true,
-                },
-                validators: {
-                    minLength: this.pageFormlyService.minLengthValidator(6),
-                    required: this.pageFormlyService.requiredValidator,
-                },
-            },
-        ];
-    }
-}
-LoginService.ɵfac = function LoginService_Factory(t) { return new (t || LoginService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"])); };
-LoginService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: LoginService, factory: LoginService.ɵfac, providedIn: 'root' });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LoginService, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Injectable"],
-        args: [{
-                providedIn: 'root',
-            }]
-    }], function () { return [{ type: _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"] }]; }, null); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/components/pages/shared/base/page-simple-formly/page-form-simple.component.ts":
-/*!**************************************************************************************************!*\
-  !*** ./src/custom/components/pages/shared/base/page-simple-formly/page-form-simple.component.ts ***!
-  \**************************************************************************************************/
-/*! exports provided: PageFormSimpleComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageFormSimpleComponent", function() { return PageFormSimpleComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/card */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/card.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/button */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/button.js");
-/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/icon */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/icon.js");
-
-
-
-
-
-
-
-class PageFormSimpleComponent {
-    constructor() {
-        this.onSubmit = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
-    }
-}
-PageFormSimpleComponent.ɵfac = function PageFormSimpleComponent_Factory(t) { return new (t || PageFormSimpleComponent)(); };
-PageFormSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: PageFormSimpleComponent, selectors: [["app-form-simple"]], inputs: { form: "form", fields: "fields", submitLabel: "submitLabel", submitIcon: "submitIcon" }, outputs: { onSubmit: "onSubmit" }, decls: 9, vars: 6, consts: [[3, "formGroup", "ngSubmit"], ["formDirective", "ngForm"], [3, "form", "fields"], ["mat-flat-button", "", "color", "primary", "type", "submit", 3, "disabled"]], template: function PageFormSimpleComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "form", 0, 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function PageFormSimpleComponent_Template_form_ngSubmit_0_listener() { return ctx.onSubmit.emit(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "mat-card-content");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "formly-form", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "mat-card-actions");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "mat-icon");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](7);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("formGroup", ctx.form);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("form", ctx.form)("fields", ctx.fields);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", !ctx.form.valid);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.submitIcon);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx.submitLabel, " ");
-    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroupDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_2__["MatCardContent"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyForm"], _angular_material_card__WEBPACK_IMPORTED_MODULE_2__["MatCardActions"], _angular_material_button__WEBPACK_IMPORTED_MODULE_4__["MatButton"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_5__["MatIcon"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvY3VzdG9tL2NvbXBvbmVudHMvcGFnZXMvc2hhcmVkL2Jhc2UvcGFnZS1zaW1wbGUtZm9ybWx5L3BhZ2UtZm9ybS1zaW1wbGUuY29tcG9uZW50LnNjc3MifQ== */"] });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageFormSimpleComponent, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
-        args: [{
-                selector: 'app-form-simple',
-                templateUrl: './page-form-simple.component.html',
-                styleUrls: ['./page-form-simple.component.scss']
-            }]
-    }], function () { return []; }, { onSubmit: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
-        }], form: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }], fields: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }], submitLabel: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }], submitIcon: [{
-            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
-        }] }); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/components/pages/shared/base/page-simple-formly/page-simple-formly.module.ts":
-/*!*************************************************************************************************!*\
-  !*** ./src/custom/components/pages/shared/base/page-simple-formly/page-simple-formly.module.ts ***!
-  \*************************************************************************************************/
-/*! exports provided: PageFormlyModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageFormlyModule", function() { return PageFormlyModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @kernel/pages/base/base.form-page.module */ "./src/kernel/pages/base/base.form-page.module.ts");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/material */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple/page-simple.module */ "./src/custom/components/pages/shared/base/page-simple/page-simple.module.ts");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-form-simple.component */ "./src/custom/components/pages/shared/base/page-simple-formly/page-form-simple.component.ts");
-
-
-
-
-
-
-
-
-
-class PageFormlyModule {
-}
-PageFormlyModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: PageFormlyModule });
-PageFormlyModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function PageFormlyModule_Factory(t) { return new (t || PageFormlyModule)(); }, imports: [[
-            _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
-            _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
-            _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"],
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
-            _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
-        ], _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
-        _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"],
-        _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
-        _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageFormlyModule, { declarations: [_custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"]], imports: [_custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
-        _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
-        _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"]], exports: [_angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
-        _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"],
-        _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
-        _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
-        _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageFormlyModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
-        args: [{
-                declarations: [_custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"]],
-                imports: [
-                    _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
-                    _kernel_pages_base_base_form_page_module__WEBPACK_IMPORTED_MODULE_1__["BaseFormPageModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
-                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
-                ],
-                exports: [
-                    _angular_forms__WEBPACK_IMPORTED_MODULE_4__["ReactiveFormsModule"],
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"],
-                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
-                    _custom_components_pages_shared_base_page_simple_page_simple_module__WEBPACK_IMPORTED_MODULE_5__["PageSimpleModule"],
-                    _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"],
-                ],
-            }]
-    }], null, null); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service.ts":
+/***/ "qzCD":
 /*!**************************************************************************************************!*\
   !*** ./src/custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service.ts ***!
   \**************************************************************************************************/
@@ -6318,8 +6419,8 @@ PageFormlyModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineI
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageFormlyService", function() { return PageFormlyService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
 
 
 
@@ -6359,120 +6460,79 @@ PageFormlyService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefin
 
 /***/ }),
 
-/***/ "./src/final/pages/login/page.login-routing.module.ts":
-/*!************************************************************!*\
-  !*** ./src/final/pages/login/page.login-routing.module.ts ***!
-  \************************************************************/
-/*! exports provided: PageLoginRoutingModule */
+/***/ "xh2B":
+/*!**************************************************************************************************!*\
+  !*** ./src/custom/components/pages/shared/base/page-simple-formly/page-form-simple.component.ts ***!
+  \**************************************************************************************************/
+/*! exports provided: PageFormSimpleComponent */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageLoginRoutingModule", function() { return PageLoginRoutingModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageFormSimpleComponent", function() { return PageFormSimpleComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/material/card */ "Wp6s");
+/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/core */ "0FS3");
+/* harmony import */ var _angular_material_button__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/material/button */ "bTqV");
+/* harmony import */ var _angular_material_icon__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/icon */ "NFeN");
 
 
 
 
-const routes = [
-    {
-        path: "",
-        loadChildren: () => Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! @custom/components/pages/login/login.module */ "./src/custom/components/pages/login/login.module.ts")).then(m => m.LoginModule)
-    },
-    {
-        path: "register",
-        loadChildren: () => Promise.resolve(/*! import() */).then(__webpack_require__.bind(null, /*! @custom/components/pages/login/login.module */ "./src/custom/components/pages/login/login.module.ts")).then(m => m.LoginModule)
+
+
+
+class PageFormSimpleComponent {
+    constructor() {
+        this.onSubmit = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
     }
-];
-class PageLoginRoutingModule {
 }
-PageLoginRoutingModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: PageLoginRoutingModule });
-PageLoginRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function PageLoginRoutingModule_Factory(t) { return new (t || PageLoginRoutingModule)(); }, imports: [[_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)], _angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageLoginRoutingModule, { imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]], exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageLoginRoutingModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+PageFormSimpleComponent.ɵfac = function PageFormSimpleComponent_Factory(t) { return new (t || PageFormSimpleComponent)(); };
+PageFormSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: PageFormSimpleComponent, selectors: [["app-form-simple"]], inputs: { form: "form", fields: "fields", submitLabel: "submitLabel", submitIcon: "submitIcon" }, outputs: { onSubmit: "onSubmit" }, decls: 9, vars: 6, consts: [[3, "formGroup", "ngSubmit"], ["formDirective", "ngForm"], [3, "form", "fields"], ["mat-flat-button", "", "color", "primary", "type", "submit", 3, "disabled"]], template: function PageFormSimpleComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "form", 0, 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("ngSubmit", function PageFormSimpleComponent_Template_form_ngSubmit_0_listener() { return ctx.onSubmit.emit(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "mat-card-content");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](3, "formly-form", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "mat-card-actions");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](5, "button", 3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](6, "mat-icon");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](7);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](8);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("formGroup", ctx.form);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](3);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("form", ctx.form)("fields", ctx.fields);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("disabled", !ctx.form.valid);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate"](ctx.submitIcon);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtextInterpolate1"](" ", ctx.submitLabel, " ");
+    } }, directives: [_angular_forms__WEBPACK_IMPORTED_MODULE_1__["ɵangular_packages_forms_forms_y"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["NgControlStatusGroup"], _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroupDirective"], _angular_material_card__WEBPACK_IMPORTED_MODULE_2__["MatCardContent"], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_3__["FormlyForm"], _angular_material_card__WEBPACK_IMPORTED_MODULE_2__["MatCardActions"], _angular_material_button__WEBPACK_IMPORTED_MODULE_4__["MatButton"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_5__["MatIcon"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJwYWdlLWZvcm0tc2ltcGxlLmNvbXBvbmVudC5zY3NzIn0= */"] });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageFormSimpleComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
-                imports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"].forChild(routes)],
-                exports: [_angular_router__WEBPACK_IMPORTED_MODULE_1__["RouterModule"]]
+                selector: 'app-form-simple',
+                templateUrl: './page-form-simple.component.html',
+                styleUrls: ['./page-form-simple.component.scss']
             }]
-    }], null, null); })();
-
-
-/***/ }),
-
-/***/ "./src/final/pages/login/page.login.module.ts":
-/*!****************************************************!*\
-  !*** ./src/final/pages/login/page.login.module.ts ***!
-  \****************************************************/
-/*! exports provided: PageLoginModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PageLoginModule", function() { return PageLoginModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_common__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/common */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/common.js");
-/* harmony import */ var _final_pages_login_page_login_routing_module__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @final/pages/login/page.login-routing.module */ "./src/final/pages/login/page.login-routing.module.ts");
-/* harmony import */ var _custom_components_pages_login_login_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/login/login.module */ "./src/custom/components/pages/login/login.module.ts");
-
-
-
-
-
-class PageLoginModule {
-}
-PageLoginModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: PageLoginModule });
-PageLoginModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function PageLoginModule_Factory(t) { return new (t || PageLoginModule)(); }, imports: [[_custom_components_pages_login_login_module__WEBPACK_IMPORTED_MODULE_3__["LoginModule"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _final_pages_login_page_login_routing_module__WEBPACK_IMPORTED_MODULE_2__["PageLoginRoutingModule"]]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](PageLoginModule, { imports: [_custom_components_pages_login_login_module__WEBPACK_IMPORTED_MODULE_3__["LoginModule"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _final_pages_login_page_login_routing_module__WEBPACK_IMPORTED_MODULE_2__["PageLoginRoutingModule"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](PageLoginModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
-        args: [{
-                imports: [_custom_components_pages_login_login_module__WEBPACK_IMPORTED_MODULE_3__["LoginModule"], _angular_common__WEBPACK_IMPORTED_MODULE_1__["CommonModule"], _final_pages_login_page_login_routing_module__WEBPACK_IMPORTED_MODULE_2__["PageLoginRoutingModule"]],
-            }]
-    }], null, null); })();
-
-
-/***/ }),
-
-/***/ "./src/kernel/pages/base/base.form-page.module.ts":
-/*!********************************************************!*\
-  !*** ./src/kernel/pages/base/base.form-page.module.ts ***!
-  \********************************************************/
-/*! exports provided: BaseFormPageModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "BaseFormPageModule", function() { return BaseFormPageModule; });
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/__ivy_ngcc__/fesm2015/http.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ngx-formly/core */ "./node_modules/@ngx-formly/core/__ivy_ngcc__/fesm2015/ngx-formly-core.js");
-/* harmony import */ var _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @ngx-formly/material */ "./node_modules/@ngx-formly/material/__ivy_ngcc__/fesm2015/ngx-formly-material.js");
-
-
-
-
-
-
-class BaseFormPageModule {
-}
-BaseFormPageModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineNgModule"]({ type: BaseFormPageModule });
-BaseFormPageModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵdefineInjector"]({ factory: function BaseFormPageModule_Factory(t) { return new (t || BaseFormPageModule)(); }, imports: [[
-            _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
-            _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
-        ], _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵɵsetNgModuleScope"](BaseFormPageModule, { imports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"]], exports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_1__["ɵsetClassMetadata"](BaseFormPageModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_1__["NgModule"],
-        args: [{
-                imports: [
-                    _ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"].forRoot({ extras: { lazyRender: true } }),
-                    _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"],
-                ],
-                exports: [_ngx_formly_core__WEBPACK_IMPORTED_MODULE_2__["FormlyModule"], _ngx_formly_material__WEBPACK_IMPORTED_MODULE_3__["FormlyMaterialModule"], _angular_common_http__WEBPACK_IMPORTED_MODULE_0__["HttpClientModule"]],
-            }]
-    }], null, null); })();
+    }], function () { return []; }, { onSubmit: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Output"]
+        }], form: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
+        }], fields: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
+        }], submitLabel: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
+        }], submitIcon: [{
+            type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Input"]
+        }] }); })();
 
 
 /***/ })

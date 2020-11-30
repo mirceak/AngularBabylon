@@ -18,6 +18,7 @@
   },
   "homepage": "https://github.com/mirceak/AngularBabylon#readme",
   "dependencies": {
+    "@angular-devkit/schematics": "^11.0.1",
     "@angular/core": "^11.0.0",
     "@types/node": "^14.14.7",
     "bcryptjs": "^2.4.3",

@@ -1,74 +1,6 @@
 (window["webpackJsonp"] = window["webpackJsonp"] || []).push([["custom-components-pages-register-register-module"],{
 
-/***/ "./src/custom/components/pages/register/register-content/register-content.component.ts":
-/*!*********************************************************************************************!*\
-  !*** ./src/custom/components/pages/register/register-content/register-content.component.ts ***!
-  \*********************************************************************************************/
-/*! exports provided: RegisterContentComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterContentComponent", function() { return RegisterContentComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/__ivy_ngcc__/fesm2015/forms.js");
-/* harmony import */ var _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/register/register.service */ "./src/custom/components/pages/register/register.service.ts");
-/* harmony import */ var _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/entities/user/service/service.user */ "./src/custom/entities/user/service/service.user.ts");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
-/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/card */ "./node_modules/@angular/material/__ivy_ngcc__/fesm2015/card.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-form-simple.component */ "./src/custom/components/pages/shared/base/page-simple-formly/page-form-simple.component.ts");
-
-
-
-
-
-
-
-
-
-class RegisterContentComponent {
-    constructor(registerService, serviceUser, router) {
-        this.registerService = registerService;
-        this.serviceUser = serviceUser;
-        this.router = router;
-        this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({});
-    }
-    register() {
-        this.serviceUser.register(this.form.value).subscribe((res) => {
-            this.router.navigate(['/login']);
-        }, (error) => console.log(error));
-    }
-}
-RegisterContentComponent.ɵfac = function RegisterContentComponent_Factory(t) { return new (t || RegisterContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__["ServiceUser"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"])); };
-RegisterContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: RegisterContentComponent, selectors: [["app-register-content"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]])], decls: 5, vars: 4, consts: [[3, "form", "fields", "submitLabel", "submitIcon", "onSubmit"]], template: function RegisterContentComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-card");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "mat-card-header");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "mat-card-title");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, "Register");
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "app-form-simple", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("onSubmit", function RegisterContentComponent_Template_app_form_simple_onSubmit_4_listener() { return ctx.register(); });
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    } if (rf & 2) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("form", ctx.form)("fields", ctx.registerService.fields)("submitLabel", "Register")("submitIcon", "follow_the_signs");
-    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_5__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_5__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_5__["MatCardTitle"], _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInNyYy9jdXN0b20vY29tcG9uZW50cy9wYWdlcy9yZWdpc3Rlci9yZWdpc3Rlci1jb250ZW50L3JlZ2lzdGVyLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoic3JjL2N1c3RvbS9jb21wb25lbnRzL3BhZ2VzL3JlZ2lzdGVyL3JlZ2lzdGVyLWNvbnRlbnQvcmVnaXN0ZXItY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gICAgcGFkZGluZzogMjRweDtcbn0iXX0= */"] });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](RegisterContentComponent, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
-        args: [{
-                selector: 'app-register-content',
-                templateUrl: './register-content.component.html',
-                styleUrls: ['./register-content.component.scss'],
-                providers: [_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]],
-            }]
-    }], function () { return [{ type: _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"] }, { type: _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__["ServiceUser"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }]; }, null); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/components/pages/register/register-routing.module.ts":
+/***/ "/3Rs":
 /*!*************************************************************************!*\
   !*** ./src/custom/components/pages/register/register-routing.module.ts ***!
   \*************************************************************************/
@@ -78,9 +10,9 @@ RegisterContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵ�
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterRoutingModule", function() { return RegisterRoutingModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/__ivy_ngcc__/fesm2015/router.js");
-/* harmony import */ var _custom_components_pages_register_register_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/register/register.component */ "./src/custom/components/pages/register/register.component.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var _custom_components_pages_register_register_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/register/register.component */ "wNPF");
 
 
 
@@ -108,88 +40,7 @@ RegisterRoutingModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
 
 /***/ }),
 
-/***/ "./src/custom/components/pages/register/register.component.ts":
-/*!********************************************************************!*\
-  !*** ./src/custom/components/pages/register/register.component.ts ***!
-  \********************************************************************/
-/*! exports provided: RegisterComponent */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterComponent", function() { return RegisterComponent; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple/page-simple.component */ "./src/custom/components/pages/shared/base/page-simple/page-simple.component.ts");
-/* harmony import */ var _custom_components_pages_shared_navs_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/shared/navs/nav-list-simple/nav-list-simple.component */ "./src/custom/components/pages/shared/navs/nav-list-simple/nav-list-simple.component.ts");
-/* harmony import */ var _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/register/register-content/register-content.component */ "./src/custom/components/pages/register/register-content/register-content.component.ts");
-
-
-
-
-
-class RegisterComponent {
-    constructor() { }
-    ngOnInit() {
-    }
-}
-RegisterComponent.ɵfac = function RegisterComponent_Factory(t) { return new (t || RegisterComponent)(); };
-RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: RegisterComponent, selectors: [["app-register"]], decls: 3, vars: 0, consts: [["appPageFormly", ""], ["nav-list", ""], ["content", ""]], template: function RegisterComponent_Template(rf, ctx) { if (rf & 1) {
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "app-page-simple", 0);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-nav-list", 1);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-register-content", 2);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
-    } }, directives: [_custom_components_pages_shared_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__["PageSimpleComponent"], _custom_components_pages_shared_navs_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__["NavListSimpleComponent"], _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_3__["RegisterContentComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJzcmMvY3VzdG9tL2NvbXBvbmVudHMvcGFnZXMvcmVnaXN0ZXIvcmVnaXN0ZXIuY29tcG9uZW50LnNjc3MifQ== */"] });
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](RegisterComponent, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
-        args: [{
-                selector: 'app-register',
-                templateUrl: './register.component.html',
-                styleUrls: ['./register.component.scss']
-            }]
-    }], function () { return []; }, null); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/components/pages/register/register.module.ts":
-/*!*****************************************************************!*\
-  !*** ./src/custom/components/pages/register/register.module.ts ***!
-  \*****************************************************************/
-/*! exports provided: RegisterModule */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterModule", function() { return RegisterModule; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _custom_components_pages_register_register_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/register/register.component */ "./src/custom/components/pages/register/register.component.ts");
-/* harmony import */ var _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/register/register-content/register-content.component */ "./src/custom/components/pages/register/register-content/register-content.component.ts");
-/* harmony import */ var _custom_components_pages_register_register_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/register/register-routing.module */ "./src/custom/components/pages/register/register-routing.module.ts");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-simple-formly.module */ "./src/custom/components/pages/shared/base/page-simple-formly/page-simple-formly.module.ts");
-
-
-
-
-
-
-class RegisterModule {
-}
-RegisterModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: RegisterModule });
-RegisterModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function RegisterModule_Factory(t) { return new (t || RegisterModule)(); }, imports: [[_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_4__["PageFormlyModule"], _custom_components_pages_register_register_routing_module__WEBPACK_IMPORTED_MODULE_3__["RegisterRoutingModule"]]] });
-(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](RegisterModule, { declarations: [_custom_components_pages_register_register_component__WEBPACK_IMPORTED_MODULE_1__["RegisterComponent"], _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_2__["RegisterContentComponent"]], imports: [_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_4__["PageFormlyModule"], _custom_components_pages_register_register_routing_module__WEBPACK_IMPORTED_MODULE_3__["RegisterRoutingModule"]] }); })();
-/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](RegisterModule, [{
-        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
-        args: [{
-                declarations: [_custom_components_pages_register_register_component__WEBPACK_IMPORTED_MODULE_1__["RegisterComponent"], _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_2__["RegisterContentComponent"]],
-                imports: [_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_4__["PageFormlyModule"], _custom_components_pages_register_register_routing_module__WEBPACK_IMPORTED_MODULE_3__["RegisterRoutingModule"]],
-                exports: [],
-            }]
-    }], null, null); })();
-
-
-/***/ }),
-
-/***/ "./src/custom/components/pages/register/register.service.ts":
+/***/ "ZwPv":
 /*!******************************************************************!*\
   !*** ./src/custom/components/pages/register/register.service.ts ***!
   \******************************************************************/
@@ -199,8 +50,8 @@ RegisterModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInj
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterService", function() { return RegisterService; });
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/__ivy_ngcc__/fesm2015/core.js");
-/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service */ "./src/custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service.ts");
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_service__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service */ "qzCD");
 
 
 
@@ -287,6 +138,155 @@ RegisterService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineI
                 providedIn: 'root'
             }]
     }], function () { return [{ type: _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_service__WEBPACK_IMPORTED_MODULE_1__["PageFormlyService"] }]; }, null); })();
+
+
+/***/ }),
+
+/***/ "crUX":
+/*!*****************************************************************!*\
+  !*** ./src/custom/components/pages/register/register.module.ts ***!
+  \*****************************************************************/
+/*! exports provided: RegisterModule */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterModule", function() { return RegisterModule; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _custom_components_pages_register_register_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/register/register.component */ "wNPF");
+/* harmony import */ var _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/register/register-content/register-content.component */ "xKp1");
+/* harmony import */ var _custom_components_pages_register_register_routing_module__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/register/register-routing.module */ "/3Rs");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-simple-formly.module */ "XgGm");
+
+
+
+
+
+
+class RegisterModule {
+}
+RegisterModule.ɵmod = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineNgModule"]({ type: RegisterModule });
+RegisterModule.ɵinj = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjector"]({ factory: function RegisterModule_Factory(t) { return new (t || RegisterModule)(); }, imports: [[_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_4__["PageFormlyModule"], _custom_components_pages_register_register_routing_module__WEBPACK_IMPORTED_MODULE_3__["RegisterRoutingModule"]]] });
+(function () { (typeof ngJitMode === "undefined" || ngJitMode) && _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵsetNgModuleScope"](RegisterModule, { declarations: [_custom_components_pages_register_register_component__WEBPACK_IMPORTED_MODULE_1__["RegisterComponent"], _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_2__["RegisterContentComponent"]], imports: [_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_4__["PageFormlyModule"], _custom_components_pages_register_register_routing_module__WEBPACK_IMPORTED_MODULE_3__["RegisterRoutingModule"]] }); })();
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](RegisterModule, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["NgModule"],
+        args: [{
+                declarations: [_custom_components_pages_register_register_component__WEBPACK_IMPORTED_MODULE_1__["RegisterComponent"], _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_2__["RegisterContentComponent"]],
+                imports: [_custom_components_pages_shared_base_page_simple_formly_page_simple_formly_module__WEBPACK_IMPORTED_MODULE_4__["PageFormlyModule"], _custom_components_pages_register_register_routing_module__WEBPACK_IMPORTED_MODULE_3__["RegisterRoutingModule"]],
+                exports: [],
+            }]
+    }], null, null); })();
+
+
+/***/ }),
+
+/***/ "wNPF":
+/*!********************************************************************!*\
+  !*** ./src/custom/components/pages/register/register.component.ts ***!
+  \********************************************************************/
+/*! exports provided: RegisterComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterComponent", function() { return RegisterComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple/page-simple.component */ "aDzp");
+/* harmony import */ var _custom_components_pages_shared_navs_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/shared/navs/nav-list-simple/nav-list-simple.component */ "usSO");
+/* harmony import */ var _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/components/pages/register/register-content/register-content.component */ "xKp1");
+
+
+
+
+
+class RegisterComponent {
+    constructor() { }
+    ngOnInit() {
+    }
+}
+RegisterComponent.ɵfac = function RegisterComponent_Factory(t) { return new (t || RegisterComponent)(); };
+RegisterComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: RegisterComponent, selectors: [["app-register"]], decls: 3, vars: 0, consts: [["appPageFormly", ""], ["nav-list", ""], ["content", ""]], template: function RegisterComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "app-page-simple", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](1, "app-nav-list", 1);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelement"](2, "app-register-content", 2);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    } }, directives: [_custom_components_pages_shared_base_page_simple_page_simple_component__WEBPACK_IMPORTED_MODULE_1__["PageSimpleComponent"], _custom_components_pages_shared_navs_nav_list_simple_nav_list_simple_component__WEBPACK_IMPORTED_MODULE_2__["NavListSimpleComponent"], _custom_components_pages_register_register_content_register_content_component__WEBPACK_IMPORTED_MODULE_3__["RegisterContentComponent"]], styles: ["\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IiIsImZpbGUiOiJyZWdpc3Rlci5jb21wb25lbnQuc2NzcyJ9 */"] });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](RegisterComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+                selector: 'app-register',
+                templateUrl: './register.component.html',
+                styleUrls: ['./register.component.scss']
+            }]
+    }], function () { return []; }, null); })();
+
+
+/***/ }),
+
+/***/ "xKp1":
+/*!*********************************************************************************************!*\
+  !*** ./src/custom/components/pages/register/register-content/register-content.component.ts ***!
+  \*********************************************************************************************/
+/*! exports provided: RegisterContentComponent */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "RegisterContentComponent", function() { return RegisterContentComponent; });
+/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/core */ "fXoL");
+/* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/forms */ "3Pt+");
+/* harmony import */ var _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @custom/components/pages/register/register.service */ "ZwPv");
+/* harmony import */ var _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @custom/entities/user/service/service.user */ "7gpU");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @angular/router */ "tyNb");
+/* harmony import */ var _angular_material_card__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @angular/material/card */ "Wp6s");
+/* harmony import */ var _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @custom/components/pages/shared/base/page-simple-formly/page-form-simple.component */ "xh2B");
+
+
+
+
+
+
+
+
+
+class RegisterContentComponent {
+    constructor(registerService, serviceUser, router) {
+        this.registerService = registerService;
+        this.serviceUser = serviceUser;
+        this.router = router;
+        this.form = new _angular_forms__WEBPACK_IMPORTED_MODULE_1__["FormGroup"]({});
+    }
+    register() {
+        this.serviceUser.register(this.form.value).subscribe((res) => {
+            this.router.navigate(['/login']);
+        }, (error) => console.log(error));
+    }
+}
+RegisterContentComponent.ɵfac = function RegisterContentComponent_Factory(t) { return new (t || RegisterContentComponent)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__["ServiceUser"]), _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdirectiveInject"](_angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"])); };
+RegisterContentComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComponent"]({ type: RegisterContentComponent, selectors: [["app-register-content"]], features: [_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵProvidersFeature"]([_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]])], decls: 5, vars: 4, consts: [[3, "form", "fields", "submitLabel", "submitIcon", "onSubmit"]], template: function RegisterContentComponent_Template(rf, ctx) { if (rf & 1) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](0, "mat-card");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](1, "mat-card-header");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](2, "mat-card-title");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵtext"](3, "Register");
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementStart"](4, "app-form-simple", 0);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵlistener"]("onSubmit", function RegisterContentComponent_Template_app_form_simple_onSubmit_4_listener() { return ctx.register(); });
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵelementEnd"]();
+    } if (rf & 2) {
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("form", ctx.form)("fields", ctx.registerService.fields)("submitLabel", "Register")("submitIcon", "follow_the_signs");
+    } }, directives: [_angular_material_card__WEBPACK_IMPORTED_MODULE_5__["MatCard"], _angular_material_card__WEBPACK_IMPORTED_MODULE_5__["MatCardHeader"], _angular_material_card__WEBPACK_IMPORTED_MODULE_5__["MatCardTitle"], _custom_components_pages_shared_base_page_simple_formly_page_form_simple_component__WEBPACK_IMPORTED_MODULE_6__["PageFormSimpleComponent"]], styles: [".mat-card[_ngcontent-%COMP%] {\n  padding: 24px;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcLi5cXHJlZ2lzdGVyLWNvbnRlbnQuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDSSxhQUFBO0FBQ0oiLCJmaWxlIjoicmVnaXN0ZXItY29udGVudC5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5tYXQtY2FyZCB7XG4gICAgcGFkZGluZzogMjRweDtcbn0iXX0= */"] });
+/*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](RegisterContentComponent, [{
+        type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
+        args: [{
+                selector: 'app-register-content',
+                templateUrl: './register-content.component.html',
+                styleUrls: ['./register-content.component.scss'],
+                providers: [_custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"]],
+            }]
+    }], function () { return [{ type: _custom_components_pages_register_register_service__WEBPACK_IMPORTED_MODULE_2__["RegisterService"] }, { type: _custom_entities_user_service_service_user__WEBPACK_IMPORTED_MODULE_3__["ServiceUser"] }, { type: _angular_router__WEBPACK_IMPORTED_MODULE_4__["Router"] }]; }, null); })();
 
 
 /***/ })
