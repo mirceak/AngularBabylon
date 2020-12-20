@@ -12,9 +12,5 @@
     "target": "ES2020",
     "module": "CommonJS",
     "lib": ["ES2020", "dom"],
-    "paths": {
-      "@kernel/*": ["./client/src/kernel/*"],
-      "@custom/*": ["./client/src/custom/*"]
-    },
   }
 }

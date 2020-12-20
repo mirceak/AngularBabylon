@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ModelUser } from '@custom/entities/user/model/model.user';
 import { ServiceUser } from '@custom/entities/user/service/service.user';
+import { VirtualProcessService } from '@custom/services/vproc/virtual-process.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,8 +18,9 @@ export class ServiceAuth {
 
   constructor(
     private serviceUser: ServiceUser,
+    private virtualProcess: VirtualProcessService,
     private router: Router,
-    private jwtHelper: JwtHelperService
+    private jwtHelper: JwtHelperService,
   ) {
     const token = localStorage.getItem('token');
     if (token) {
@@ -26,6 +28,12 @@ export class ServiceAuth {
       this.setCurrentUser(decodedUser);
       console.log(decodedUser);
     }
+    
+    this.virtualProcess.connect().subscribe(
+      (data) => console.log(111, data),
+      (error) => console.log(222, error),
+      () => console.log('done')
+    );
   }
 
   login(emailAndPassword): void {

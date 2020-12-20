@@ -29,6 +29,7 @@ abstract class BaseController {
 
   // Get all
   getAll = async (req, res) => {
+    console.log(222)
     try {
       const docs = await this.Entity.find({});
       res.status(200).json(docs);

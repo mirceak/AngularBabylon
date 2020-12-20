@@ -14,7 +14,7 @@ export abstract class ServiceEntityBase<Entity> {
   constructor(public http: HttpClient, private options: Options) {}
 
   getEntities(): Observable<Entity[]> {
-    return this.http.get<Entity[]>(`/${this.options.pathName}`);
+    return this.http.get<Entity[]>(`/api/${this.options.pathNamePlural}`);
   }
 
   countEntities(): Observable<number> {

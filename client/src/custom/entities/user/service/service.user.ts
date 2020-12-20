@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-import { ServiceEntityBase } from '@custom/services/entities/base/service.entity.base';
+import { ServiceEntityBase } from '@custom/entities/base/service.entity.base';
 import { ModelUser } from '@custom/entities/user/model/model.user';
 
 @Injectable({
