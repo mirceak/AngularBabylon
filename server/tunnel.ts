@@ -88,7 +88,7 @@ class tunnel {
     '"',
     "'",
     " ",
-    "\ "
+    " ",
   ];
   public originalMap = [...this.letters, ...this.numbers, ...this.characters];
   public scrambledMapLength = (passes) => {
@@ -105,7 +105,7 @@ class tunnel {
     var res = [];
     var current = null;
     while (res.length != this.originalMap.length) {
-      current = tmp.splice(Math.floor(Math.random() * (tmp.length)), 1)[0];
+      current = tmp.splice(Math.floor(Math.random() * tmp.length), 1)[0];
       res.push(current);
     }
     return res;
@@ -117,14 +117,14 @@ class tunnel {
     }
     return lock;
   };
-  public engraveKey = (lock, key, message) => {
+  public engraveKey = (lock, key, message, _offset = 0) => {
     // console.log(lock);
-    var offset = key.length + Math.floor(Math.random() * (message.length / 4));
+    var offset = _offset != 0 ? _offset : Math.floor(Math.random() * (message.length / 4));
     for (var i = offset; i < message.length + offset; i++) {
-      var row = lock[i];
+      var row = lock[i % lock.length];
       var input = key[i % key.length];
       var originalInputIdex = this.originalMap.indexOf(input);
-      if (!row){
+      if (!row) {
         console.log(i, lock.length);
       }
       var output = row[originalInputIdex];
@@ -134,15 +134,33 @@ class tunnel {
         row[originalInputIdex] = messageChar;
       }
     }
-    return lock;
+    return offset;
   };
-  public lockMessage = (message, lock)=> {
-    var locked = '';
-    for (var i=0; i<message.length; i++){
-      locked += lock[i % lock.length][this.originalMap.indexOf(message[i])]
+  public lockMessage = (message, lock) => {
+    var locked = "";
+    for (var i = 0; i < message.length; i++) {
+      locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
     }
-    return locked
-  }
+    return locked;
+  };
+  public unlockMessage = (message, lock) => {
+    var builtLock = [];
+    for (var i = 0; i < lock.length / this.originalMap.length; i++) {
+      builtLock.push([
+        ...lock.substring(
+          i * (this.originalMap.length - 1),
+          (this.originalMap.length - 1) * (i + 1)
+        ),
+      ]);
+    }
+
+    var unlocked = "";
+    for (i = 0; i < message.length; i++) {
+      // console.log(lock[1], message[i])
+      unlocked += this.originalMap[builtLock[i % builtLock.length].indexOf(message[i])];
+    }
+    return unlocked;
+  };
 }
 
 let instance = new tunnel();

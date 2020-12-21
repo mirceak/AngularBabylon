@@ -62,26 +62,42 @@ export class ServiceAuth {
         );
         var result = '';
         for (var i = 0; i < data.lock.length; i++) {
-          var originalInputIdex = data.original.indexOf(
+          var originalInputIdex = tunnel.originalMap.indexOf(
             p1hash[i % p1hash.length]
           );
           result += data.lock[i][originalInputIdex];
         }
         var tempLock = result.substring(
           result.indexOf(p2hash) + p2hash.length,
-          result.indexOf(p3hash)
+          result.indexOf(p3hash) //reuse logic on server
         );
         var serverLock = [];
         for (i = 0; i < tempLock.length / tunnel.originalMap.length; i++) {
           serverLock.push([
-            ...tempLock.substring(i * (tunnel.originalMap.length-1), (tunnel.originalMap.length-1) * (i + 1)),
+            ...tempLock.substring(
+              i * (tunnel.originalMap.length - 1),
+              (tunnel.originalMap.length - 1) * (i + 1)
+            ),
           ]);
         }
-        var clientLock = tunnel
-          .scrambledMapLength(tunnel.originalMap.length)
-        
-        var tunnelLock = tunnel.lockMessage(clientLock.join(''), serverLock)
-        console.log(tunnelLock)
+        var clientMap = tunnel.scrambledMapLength(tunnel.originalMap.length);
+        var clientLock = tunnel.generateLock(clientMap.length);
+
+        var tunnelLock = tunnel.lockMessage(clientMap.join(''), serverLock);
+        tunnel.engraveKey(clientLock, tempLock, tunnelLock);
+        var postData = {
+          lock: clientLock,
+        };
+        this.virtualProcess.lock(postData).subscribe(
+          (data) => {
+            console.log(data.serverMap);
+            // console.log(data.tempLock)
+            // console.log(tempLock);
+            console.log(tempLock);
+          },
+          (error) => console.log(777, error),
+          () => console.log('donez')
+        );
       },
       (error) => console.log(222, error),
       () => console.log('done')

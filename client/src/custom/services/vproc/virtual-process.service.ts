@@ -12,4 +12,7 @@ export class VirtualProcessService {
   connect(): Observable<any> {
     return this.http.get<string>('/utils/tunnel');
   }
+  lock(data): Observable<any> {
+    return this.http.post<string>('/utils/tunnel', data);
+  }
 }

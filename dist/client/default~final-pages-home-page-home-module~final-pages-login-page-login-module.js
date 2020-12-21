@@ -4882,7 +4882,7 @@ class tunnel {
             '"',
             "'",
             " ",
-            "\ "
+            " ",
         ];
         this.originalMap = [...this.letters, ...this.numbers, ...this.characters];
         this.scrambledMapLength = (passes) => {
@@ -4899,7 +4899,7 @@ class tunnel {
             var res = [];
             var current = null;
             while (res.length != this.originalMap.length) {
-                current = tmp.splice(Math.floor(Math.random() * (tmp.length)), 1)[0];
+                current = tmp.splice(Math.floor(Math.random() * tmp.length), 1)[0];
                 res.push(current);
             }
             return res;
@@ -4911,11 +4911,11 @@ class tunnel {
             }
             return lock;
         };
-        this.engraveKey = (lock, key, message) => {
+        this.engraveKey = (lock, key, message, _offset = 0) => {
             // console.log(lock);
-            var offset = key.length + Math.floor(Math.random() * (message.length / 4));
+            var offset = 0;
             for (var i = offset; i < message.length + offset; i++) {
-                var row = lock[i];
+                var row = lock[i % lock.length];
                 var input = key[i % key.length];
                 var originalInputIdex = this.originalMap.indexOf(input);
                 if (!row) {
@@ -4928,14 +4928,28 @@ class tunnel {
                     row[originalInputIdex] = messageChar;
                 }
             }
-            return lock;
+            return offset;
         };
         this.lockMessage = (message, lock) => {
-            var locked = '';
+            var locked = "";
             for (var i = 0; i < message.length; i++) {
                 locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
             }
             return locked;
+        };
+        this.unlockMessage = (message, lock) => {
+            var builtLock = [];
+            for (var i = 0; i < lock.length / this.originalMap.length; i++) {
+                builtLock.push([
+                    ...lock.substring(i * (this.originalMap.length - 1), (this.originalMap.length - 1) * (i + 1)),
+                ]);
+            }
+            var unlocked = "";
+            for (i = 0; i < message.length; i++) {
+                // console.log(lock[1], message[i])
+                unlocked += this.originalMap[builtLock[i % builtLock.length].indexOf(message[i])];
+            }
+            return unlocked;
         };
     }
 }
@@ -30012,6 +30026,9 @@ class VirtualProcessService {
     connect() {
         return this.http.get('/utils/tunnel');
     }
+    lock(data) {
+        return this.http.post('/utils/tunnel', data);
+    }
 }
 VirtualProcessService.ɵfac = function VirtualProcessService_Factory(t) { return new (t || VirtualProcessService)(_angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵinject"](_angular_common_http__WEBPACK_IMPORTED_MODULE_1__["HttpClient"])); };
 VirtualProcessService.ɵprov = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineInjectable"]({ token: VirtualProcessService, factory: VirtualProcessService.ɵfac, providedIn: 'root' });
@@ -30122,20 +30139,30 @@ class ServiceAuth {
             var p3hash = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(crypto_js__WEBPACK_IMPORTED_MODULE_2___default.a.enc.Base64.stringify(crypto_js__WEBPACK_IMPORTED_MODULE_2___default.a.enc.Hex.parse(hmac.finalize().toString())), data.lock);
             var result = '';
             for (var i = 0; i < data.lock.length; i++) {
-                var originalInputIdex = data.original.indexOf(p1hash[i % p1hash.length]);
+                var originalInputIdex = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.indexOf(p1hash[i % p1hash.length]);
                 result += data.lock[i][originalInputIdex];
             }
-            var tempLock = result.substring(result.indexOf(p2hash) + p2hash.length, result.indexOf(p3hash));
+            var tempLock = result.substring(result.indexOf(p2hash) + p2hash.length, result.indexOf(p3hash) //reuse logic on server
+            );
             var serverLock = [];
             for (i = 0; i < tempLock.length / _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.length; i++) {
                 serverLock.push([
                     ...tempLock.substring(i * (_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.length - 1), (_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.length - 1) * (i + 1)),
                 ]);
             }
-            var clientLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"]
-                .scrambledMapLength(_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.length);
-            var tunnelLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(clientLock.join(''), serverLock);
-            console.log(tunnelLock);
+            var clientMap = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].scrambledMapLength(_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.length);
+            var clientLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].generateLock(clientMap.length);
+            var tunnelLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(clientMap.join(''), serverLock);
+            _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].engraveKey(clientLock, tempLock, tunnelLock);
+            var postData = {
+                lock: clientLock,
+            };
+            this.virtualProcess.lock(postData).subscribe((data) => {
+                console.log(data.serverMap);
+                // console.log(data.tempLock)
+                // console.log(tempLock);
+                console.log(tempLock);
+            }, (error) => console.log(777, error), () => console.log('donez'));
         }, (error) => console.log(222, error), () => console.log('done'));
     }
     login(emailAndPassword) {
