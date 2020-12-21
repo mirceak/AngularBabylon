@@ -119,7 +119,7 @@ class tunnel {
   };
   public engraveKey = (lock, key, message, _offset = 0) => {
     // console.log(lock);
-    var offset = _offset ? _offset : Math.floor(Math.random() * (message.length / 4));
+    var offset = _offset != 0 ? _offset : Math.floor(Math.random() * (message.length / 4));
     for (var i = offset; i < message.length + offset; i++) {
       var row = lock[i % lock.length];
       var input = key[i % key.length];

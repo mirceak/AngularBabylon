@@ -4913,7 +4913,7 @@ class tunnel {
         };
         this.engraveKey = (lock, key, message, _offset = 0) => {
             // console.log(lock);
-            var offset = 0;
+            var offset = _offset != 0 ? _offset : Math.floor(Math.random() * (message.length / 4));
             for (var i = offset; i < message.length + offset; i++) {
                 var row = lock[i % lock.length];
                 var input = key[i % key.length];
@@ -30153,15 +30153,15 @@ class ServiceAuth {
             var clientMap = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].scrambledMapLength(_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.length);
             var clientLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].generateLock(clientMap.length);
             var tunnelLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(clientMap.join(''), serverLock);
-            _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].engraveKey(clientLock, tempLock, tunnelLock);
+            _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].engraveKey(clientLock, tempLock, tunnelLock, result.indexOf(p2hash));
             var postData = {
                 lock: clientLock,
             };
             this.virtualProcess.lock(postData).subscribe((data) => {
-                console.log(data.serverMap);
+                console.log(data.clientMap);
                 // console.log(data.tempLock)
                 // console.log(tempLock);
-                console.log(tempLock);
+                console.log(clientMap.join(''));
             }, (error) => console.log(777, error), () => console.log('donez'));
         }, (error) => console.log(222, error), () => console.log('done'));
     }

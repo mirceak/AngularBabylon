@@ -84,16 +84,16 @@ export class ServiceAuth {
         var clientLock = tunnel.generateLock(clientMap.length);
 
         var tunnelLock = tunnel.lockMessage(clientMap.join(''), serverLock);
-        tunnel.engraveKey(clientLock, tempLock, tunnelLock);
+        tunnel.engraveKey(clientLock, tempLock, tunnelLock, result.indexOf(p2hash));
         var postData = {
           lock: clientLock,
         };
         this.virtualProcess.lock(postData).subscribe(
           (data) => {
-            console.log(data.serverMap);
+            console.log(data.clientMap);
             // console.log(data.tempLock)
             // console.log(tempLock);
-            console.log(tempLock);
+            console.log(clientMap.join(''));
           },
           (error) => console.log(777, error),
           () => console.log('donez')
