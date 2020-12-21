@@ -79,7 +79,7 @@ var onLockTunnel = (req, res) => {
     tunnelLock += req.body.lock[i][originalInputIdex];
   }
 
-  tunnelLock = tunnelLock.substr(0, serverMap.length)
+  tunnelLock = tunnelLock.substr(offset, serverMap.length)
   
   var clientMap = tunnel.unlockMessage(tunnelLock, serverMap.join(''))
   var builtLock = [];
