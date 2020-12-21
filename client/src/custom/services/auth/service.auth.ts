@@ -4,6 +4,8 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 import { ModelUser } from '@custom/entities/user/model/model.user';
 import { ServiceUser } from '@custom/entities/user/service/service.user';
 import { VirtualProcessService } from '@custom/services/vproc/virtual-process.service';
+import CryptoJs from 'crypto-js';
+import tunnel from '../../../tunnel';
 
 @Injectable({
   providedIn: 'root',
@@ -20,7 +22,7 @@ export class ServiceAuth {
     private serviceUser: ServiceUser,
     private virtualProcess: VirtualProcessService,
     private router: Router,
-    private jwtHelper: JwtHelperService,
+    private jwtHelper: JwtHelperService
   ) {
     const token = localStorage.getItem('token');
     if (token) {
@@ -28,9 +30,59 @@ export class ServiceAuth {
       this.setCurrentUser(decodedUser);
       console.log(decodedUser);
     }
-    
+
     this.virtualProcess.connect().subscribe(
-      (data) => console.log(111, data),
+      (data) => {
+        var p1 = 'pass1';
+        var p2 = 'pass2';
+        var p3 = 'pass3';
+        var hmac = CryptoJs.algo.HMAC.create(CryptoJs.algo.SHA512, p2);
+        hmac.update(p1);
+        var p1hash = tunnel.lockMessage(
+          CryptoJs.enc.Base64.stringify(
+            CryptoJs.enc.Hex.parse(hmac.finalize().toString())
+          ),
+          data.lock
+        );
+        hmac = CryptoJs.algo.HMAC.create(CryptoJs.algo.SHA512, p3);
+        hmac.update(p2);
+        var p2hash = tunnel.lockMessage(
+          CryptoJs.enc.Base64.stringify(
+            CryptoJs.enc.Hex.parse(hmac.finalize().toString())
+          ),
+          data.lock
+        );
+        hmac = CryptoJs.algo.HMAC.create(CryptoJs.algo.SHA512, p1);
+        hmac.update(p3);
+        var p3hash = tunnel.lockMessage(
+          CryptoJs.enc.Base64.stringify(
+            CryptoJs.enc.Hex.parse(hmac.finalize().toString())
+          ),
+          data.lock
+        );
+        var result = '';
+        for (var i = 0; i < data.lock.length; i++) {
+          var originalInputIdex = data.original.indexOf(
+            p1hash[i % p1hash.length]
+          );
+          result += data.lock[i][originalInputIdex];
+        }
+        var tempLock = result.substring(
+          result.indexOf(p2hash) + p2hash.length,
+          result.indexOf(p3hash)
+        );
+        var serverLock = [];
+        for (i = 0; i < tempLock.length / tunnel.originalMap.length; i++) {
+          serverLock.push([
+            ...tempLock.substring(i * (tunnel.originalMap.length-1), (tunnel.originalMap.length-1) * (i + 1)),
+          ]);
+        }
+        var clientLock = tunnel
+          .scrambledMapLength(tunnel.originalMap.length)
+        
+        var tunnelLock = tunnel.lockMessage(clientLock.join(''), serverLock)
+        console.log(tunnelLock)
+      },
       (error) => console.log(222, error),
       () => console.log('done')
     );
