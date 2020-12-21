@@ -5,7 +5,7 @@ import * as morgan from "morgan";
 import * as crypto from 'crypto';
 
 import setMongo from "./mongo";
-import tunnel from "./tunnel";
+import tunnel from "../client/src/tunnel";
 import BaseController from "./controllers/base/base.controller";
 import Controllers from "./controllers/base/base.controller.index";
 

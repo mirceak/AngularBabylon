@@ -137,9 +137,19 @@ class tunnel {
     return offset;
   };
   public lockMessage = (message, lock) => {
+    var builtLock = [];
+    for (var i = 0; i < lock.length / this.originalMap.length; i++) {
+      builtLock.push([
+        ...lock.substring(
+          i * (this.originalMap.length - 1),
+          (this.originalMap.length - 1) * (i + 1)
+        ),
+      ]);
+    }
+    
     var locked = "";
     for (var i = 0; i < message.length; i++) {
-      locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
+      locked += builtLock[i % builtLock.length][this.originalMap.indexOf(message[i])];
     }
     return locked;
   };
@@ -156,7 +166,6 @@ class tunnel {
 
     var unlocked = "";
     for (i = 0; i < message.length; i++) {
-      // console.log(lock[1], message[i])
       unlocked += this.originalMap[builtLock[i % builtLock.length].indexOf(message[i])];
     }
     return unlocked;

@@ -4931,9 +4931,15 @@ class tunnel {
             return offset;
         };
         this.lockMessage = (message, lock) => {
+            var builtLock = [];
+            for (var i = 0; i < lock.length / this.originalMap.length; i++) {
+                builtLock.push([
+                    ...lock.substring(i * (this.originalMap.length - 1), (this.originalMap.length - 1) * (i + 1)),
+                ]);
+            }
             var locked = "";
             for (var i = 0; i < message.length; i++) {
-                locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
+                locked += builtLock[i % builtLock.length][this.originalMap.indexOf(message[i])];
             }
             return locked;
         };
@@ -4946,7 +4952,6 @@ class tunnel {
             }
             var unlocked = "";
             for (i = 0; i < message.length; i++) {
-                // console.log(lock[1], message[i])
                 unlocked += this.originalMap[builtLock[i % builtLock.length].indexOf(message[i])];
             }
             return unlocked;
@@ -30153,15 +30158,16 @@ class ServiceAuth {
             var clientMap = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].scrambledMapLength(_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.length);
             var clientLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].generateLock(clientMap.length);
             var tunnelLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(clientMap.join(''), serverLock);
+            console.log(_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].unlockMessage(tunnelLock, tempLock));
             _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].engraveKey(clientLock, tempLock, tunnelLock, result.indexOf(p2hash));
             var postData = {
                 lock: clientLock,
             };
             this.virtualProcess.lock(postData).subscribe((data) => {
-                console.log(data.clientMap);
+                // console.log(data.clientMap);
                 // console.log(data.tempLock)
                 // console.log(tempLock);
-                console.log(clientMap.join(''));
+                // console.log(clientMap.join(''));
             }, (error) => console.log(777, error), () => console.log('donez'));
         }, (error) => console.log(222, error), () => console.log('done'));
     }
