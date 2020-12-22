@@ -47,68 +47,15 @@ export class ServiceAuth {
         data.lock = tunnel.fromString(data.lock);
         data.dataLock = tunnel.fromString(data.dataLock);
 
-        var p1hashLocked = tunnel.lockMessage(
-          this.getHash(p2, p1),
-          data.dataLock
-        );
-        var p2hashLocked = tunnel.lockMessage(
-          this.getHash(p3, p2),
-          data.dataLock
-        );
-        var p3hashLocked = tunnel.lockMessage(
-          this.getHash(p1, p3),
-          data.dataLock
-        );
+        var clientLock = tunnel.makeClientLock(this.getHash(p2, p1), this.getHash(p3, p2), this.getHash(p1, p3), data);
 
-        var lockedServerLockMessage = tunnel.unlock(data.lock, p1hashLocked);
-
-        var p2hashLockedTwice = tunnel.lockMessage(p2hashLocked, data.dataLock);
-        var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice);
-
-        var unlockedServerLockMessage = tunnel
-          .unlockMessage(
-            lockedServerLockMessage.substring(p2hashIndex),
-            data.dataLock
-          )
-          .substring(p2hashLockedTwice.length);
-
-        var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked);
-        var serverLockString = unlockedServerLockMessage.substring(
-          0,
-          p3hashIndex
-        );
-
-        var serverLock = tunnel.fromString(serverLockString);
-
-        var clientLockLength =
-          tunnel.originalMap.length + Math.random() * tunnel.randomThreshold;
-        var finalLockLength =
-          this.hashLen * 2 +
-          clientLockLength * clientLockLength +
-          Math.random() * tunnel.randomThreshold +
-          tunnel.offsetThreshold;
-        var dataLockLength =
-          this.hashLen + Math.random() * tunnel.randomThreshold;
-
-        var finalLock = tunnel.generateLock(finalLockLength);
-        var dataLock = tunnel.generateLock(dataLockLength);
-        var clientLock = tunnel.generateLock(clientLockLength);
-
-        p2hashLocked = tunnel.lockMessage(this.getHash(p3, p2), dataLock);
-        p3hashLocked = tunnel.lockMessage(this.getHash(p1, p3), dataLock);
-
-        var lockedFinalLock = tunnel.lockMessage(
-          p2hashLocked + tunnel.toString(clientLock) + p3hashLocked,
-          serverLock
-        );
-        tunnel.engraveKey(finalLock, serverLockString, lockedFinalLock, true);
         var postData = {
-          finalLock: tunnel.toString(finalLock),
-          dataLock: tunnel.toString(dataLock),
+          finalLock: tunnel.toString(clientLock.lock),
+          dataLock: tunnel.toString(clientLock.dataLock),
         };
         this.virtualProcess.lock(postData).subscribe(
           (data) => {
-            console.log(tunnel.unlockMessage(data.encrypted, clientLock));
+            console.log(tunnel.unlockMessage(data.encrypted, clientLock.innerLock));
           },
           (error) => console.log('tunnel post', error)
         );

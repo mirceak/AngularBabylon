@@ -4794,108 +4794,109 @@ __webpack_require__.r(__webpack_exports__);
 class tunnel {
     constructor() {
         this.letters = [
-            "a",
-            "b",
-            "c",
-            "d",
-            "e",
-            "f",
-            "g",
-            "h",
-            "i",
-            "j",
-            "k",
-            "l",
-            "m",
-            "n",
-            "o",
-            "p",
-            "q",
-            "r",
-            "s",
-            "t",
-            "u",
-            "v",
-            "w",
-            "x",
-            "y",
-            "z",
-            "A",
-            "B",
-            "C",
-            "D",
-            "E",
-            "F",
-            "G",
-            "H",
-            "I",
-            "J",
-            "K",
-            "L",
-            "M",
-            "N",
-            "O",
-            "P",
-            "Q",
-            "R",
-            "S",
-            "T",
-            "U",
-            "V",
-            "W",
-            "X",
-            "Y",
-            "Z",
+            'a',
+            'b',
+            'c',
+            'd',
+            'e',
+            'f',
+            'g',
+            'h',
+            'i',
+            'j',
+            'k',
+            'l',
+            'm',
+            'n',
+            'o',
+            'p',
+            'q',
+            'r',
+            's',
+            't',
+            'u',
+            'v',
+            'w',
+            'x',
+            'y',
+            'z',
+            'A',
+            'B',
+            'C',
+            'D',
+            'E',
+            'F',
+            'G',
+            'H',
+            'I',
+            'J',
+            'K',
+            'L',
+            'M',
+            'N',
+            'O',
+            'P',
+            'Q',
+            'R',
+            'S',
+            'T',
+            'U',
+            'V',
+            'W',
+            'X',
+            'Y',
+            'Z',
         ];
         this.numbers = [
-            "0",
-            "1",
-            "2",
-            "3",
-            "4",
-            "5",
-            "6",
-            "7",
-            "8",
-            "9",
+            '0',
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
         ];
         this.characters = [
-            "~",
-            "`",
-            "!",
-            "@",
-            "#",
-            "$",
-            "%",
-            "^",
-            "&",
-            "*",
-            "(",
-            ")",
-            "_",
-            "+",
-            "-",
-            "=",
-            ",",
-            "<",
-            ">",
-            ".",
-            "/",
-            "?",
-            "[",
-            "]",
-            "{",
-            "}",
-            ";",
-            ":",
-            "\\",
-            "|",
+            '~',
+            '`',
+            '!',
+            '@',
+            '#',
+            '$',
+            '%',
+            '^',
+            '&',
+            '*',
+            '(',
+            ')',
+            '_',
+            '+',
+            '-',
+            '=',
+            ',',
+            '<',
+            '>',
+            '.',
+            '/',
+            '?',
+            '[',
+            ']',
+            '{',
+            '}',
+            ';',
+            ':',
+            '\\',
+            '|',
             '"',
             "'",
-            " "
+            ' ',
         ];
         this.randomThreshold = 250;
         this.offsetThreshold = 1000;
+        this.hashLen = 88;
         this.originalMap = [
             ...this.letters,
             ...this.numbers,
@@ -4921,7 +4922,7 @@ class tunnel {
         this.engraveKey = (lock, key, message, _offset = false) => {
             if (message.length > lock.length) {
                 console.log(lock.length, message.length);
-                throw new Error("Lock must be bigger than message");
+                throw new Error('Lock must be bigger than message');
             }
             var offset = _offset == false ? 0 : Math.floor(Math.random() * this.offsetThreshold);
             for (var i = 0; i < message.length; i++) {
@@ -4944,15 +4945,68 @@ class tunnel {
             }
             return unlocked;
         };
+        this.makeClientLock = (p1Hash, p2Hash, p3Hash, serverLock) => {
+            var p1hashLocked = this.lockMessage(p1Hash, serverLock.dataLock);
+            var p2hashLocked = this.lockMessage(p2Hash, serverLock.dataLock);
+            var p3hashLocked = this.lockMessage(p3Hash, serverLock.dataLock);
+            var lockedServerLockMessage = this.unlock(serverLock.lock, p1hashLocked);
+            var p2hashLockedTwice = this.lockMessage(p2hashLocked, serverLock.dataLock);
+            var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice);
+            var unlockedServerLockMessage = this
+                .unlockMessage(lockedServerLockMessage.substring(p2hashIndex), serverLock.dataLock)
+                .substring(p2hashLockedTwice.length);
+            var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked);
+            var serverLockString = unlockedServerLockMessage.substring(0, p3hashIndex);
+            var unlockedServerLock = this.fromString(serverLockString);
+            var clientLockLength = this.originalMap.length + Math.random() * this.randomThreshold;
+            var finalLockLength = this.hashLen * 2 +
+                clientLockLength * clientLockLength +
+                Math.random() * this.randomThreshold +
+                this.offsetThreshold;
+            var dataLockLength = this.hashLen + Math.random() * this.randomThreshold;
+            var finalLock = this.generateLock(finalLockLength);
+            var dataLock = this.generateLock(dataLockLength);
+            var clientLock = this.generateLock(clientLockLength);
+            p2hashLocked = this.lockMessage(p2Hash, dataLock);
+            p3hashLocked = this.lockMessage(p3Hash, dataLock);
+            var lockedFinalLock = this.lockMessage(p2hashLocked + this.toString(clientLock) + p3hashLocked, unlockedServerLock);
+            this.engraveKey(finalLock, serverLockString, lockedFinalLock, true);
+            return {
+                lock: finalLock,
+                dataLock: dataLock,
+                innerLock: clientLock
+            };
+        };
+        this.makeServerLock = (p1Hash, p2Hash, p3Hash) => {
+            var clientLockLength = Math.random() * this.randomThreshold + this.originalMap.length;
+            var dataLockLength = this.hashLen + Math.random() * this.randomThreshold;
+            var lockLength = this.hashLen * 2 +
+                clientLockLength * clientLockLength +
+                Math.random() * this.randomThreshold +
+                this.offsetThreshold;
+            var clientLock = this.generateLock(clientLockLength);
+            var dataLock = this.generateLock(dataLockLength);
+            var lock = this.generateLock(lockLength);
+            var p1hashLocked = this.lockMessage(p1Hash, dataLock);
+            var p2hashLocked = this.lockMessage(p2Hash, dataLock);
+            var p3hashLocked = this.lockMessage(p3Hash, dataLock);
+            var message = this.lockMessage(p2hashLocked + this.toString(clientLock) + p3hashLocked, dataLock);
+            this.engraveKey(lock, p1hashLocked, message, true);
+            return {
+                lock: lock,
+                dataLock: dataLock,
+                innerLock: clientLock,
+            };
+        };
         this.lockMessage = (message, lock) => {
-            var locked = "";
+            var locked = '';
             for (var i = 0; i < message.length; i++) {
                 locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
             }
             return locked;
         };
         this.unlockMessage = (message, lock) => {
-            var unlocked = "";
+            var unlocked = '';
             for (var i = 0; i < message.length; i++) {
                 unlocked += this.originalMap[lock[i % lock.length].indexOf(message[i])];
             }
@@ -4960,16 +5014,16 @@ class tunnel {
         };
         this.toString = (lock) => {
             var result = lock.reduce((total, current) => {
-                total += current.join("");
+                total += current.join('');
                 return total;
-            }, "");
+            }, '');
             return result;
         };
         this.fromString = (string) => {
             var result = [];
             for (var i = 0; i < string.length / this.originalMap.length; i++) {
                 result.push([
-                    ...string.substring(i * (this.originalMap.length), (this.originalMap.length) * (i + 1)),
+                    ...string.substring(i * this.originalMap.length, this.originalMap.length * (i + 1)),
                 ]);
             }
             return result;
@@ -30154,37 +30208,13 @@ class ServiceAuth {
             var p3 = 'pass3';
             data.lock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].fromString(data.lock);
             data.dataLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].fromString(data.dataLock);
-            var p1hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p2, p1), data.dataLock);
-            var p2hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p3, p2), data.dataLock);
-            var p3hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p1, p3), data.dataLock);
-            var lockedServerLockMessage = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].unlock(data.lock, p1hashLocked);
-            var p2hashLockedTwice = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(p2hashLocked, data.dataLock);
-            var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice);
-            var unlockedServerLockMessage = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"]
-                .unlockMessage(lockedServerLockMessage.substring(p2hashIndex), data.dataLock)
-                .substring(p2hashLockedTwice.length);
-            var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked);
-            var serverLockString = unlockedServerLockMessage.substring(0, p3hashIndex);
-            var serverLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].fromString(serverLockString);
-            var clientLockLength = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.length + Math.random() * _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].randomThreshold;
-            var finalLockLength = this.hashLen * 2 +
-                clientLockLength * clientLockLength +
-                Math.random() * _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].randomThreshold +
-                _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].offsetThreshold;
-            var dataLockLength = this.hashLen + Math.random() * _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].randomThreshold;
-            var finalLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].generateLock(finalLockLength);
-            var dataLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].generateLock(dataLockLength);
-            var clientLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].generateLock(clientLockLength);
-            p2hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p3, p2), dataLock);
-            p3hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p1, p3), dataLock);
-            var lockedFinalLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(p2hashLocked + _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(clientLock) + p3hashLocked, serverLock);
-            _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].engraveKey(finalLock, serverLockString, lockedFinalLock, true);
+            var clientLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].makeClientLock(this.getHash(p2, p1), this.getHash(p3, p2), this.getHash(p1, p3), data);
             var postData = {
-                finalLock: _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(finalLock),
-                dataLock: _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(dataLock),
+                finalLock: _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(clientLock.lock),
+                dataLock: _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(clientLock.dataLock),
             };
             this.virtualProcess.lock(postData).subscribe((data) => {
-                console.log(_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].unlockMessage(data.encrypted, clientLock));
+                console.log(_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].unlockMessage(data.encrypted, clientLock.innerLock));
             }, (error) => console.log('tunnel post', error));
         }, (error) => console.log('tunnel get', error));
     }

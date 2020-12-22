@@ -56,36 +56,18 @@ const p2 = "pass2";
 const p3 = "pass3";
 
 var clientLock: string[][];
-var lock: string[][];
 
 var onTunnel = (req, res) => {
-  var clientLockLength = Math.random() * tunnel.randomThreshold + tunnel.originalMap.length;
-  var dataLockLength = hashLen + Math.random() * tunnel.randomThreshold;
-  var lockLength =
-    hashLen * 2 +
-    clientLockLength * clientLockLength +
-    Math.random() * tunnel.randomThreshold +
-    tunnel.offsetThreshold;
-
-  clientLock = tunnel.generateLock(clientLockLength);
-  dataLock = tunnel.generateLock(dataLockLength);
-  lock = tunnel.generateLock(lockLength);
-
-  var dataLock: string[][];
-
-  var p1hashLocked = tunnel.lockMessage(getHash(p2, p1), dataLock);
-  var p2hashLocked = tunnel.lockMessage(getHash(p3, p2), dataLock);
-  var p3hashLocked = tunnel.lockMessage(getHash(p1, p3), dataLock);
-
-  var message = tunnel.lockMessage(
-    p2hashLocked + tunnel.toString(clientLock) + p3hashLocked,
-    dataLock
+  var serverLock = tunnel.makeServerLock(
+    getHash(p2, p1),
+    getHash(p3, p2),
+    getHash(p1, p3)
   );
-  tunnel.engraveKey(lock, p1hashLocked, message, true);
 
+  clientLock = serverLock.innerLock;
   res.send({
-    lock: tunnel.toString(lock),
-    dataLock: tunnel.toString(dataLock),
+    lock: tunnel.toString(serverLock.lock),
+    dataLock: tunnel.toString(serverLock.dataLock),
   });
 };
 
