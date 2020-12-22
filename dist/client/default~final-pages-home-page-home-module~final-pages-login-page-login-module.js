@@ -4794,109 +4794,108 @@ __webpack_require__.r(__webpack_exports__);
 class tunnel {
     constructor() {
         this.letters = [
-            'a',
-            'b',
-            'c',
-            'd',
-            'e',
-            'f',
-            'g',
-            'h',
-            'i',
-            'j',
-            'k',
-            'l',
-            'm',
-            'n',
-            'o',
-            'p',
-            'q',
-            'r',
-            's',
-            't',
-            'u',
-            'v',
-            'w',
-            'x',
-            'y',
-            'z',
-            'A',
-            'B',
-            'C',
-            'D',
-            'E',
-            'F',
-            'G',
-            'H',
-            'I',
-            'J',
-            'K',
-            'L',
-            'M',
-            'N',
-            'O',
-            'P',
-            'Q',
-            'R',
-            'S',
-            'T',
-            'U',
-            'V',
-            'W',
-            'X',
-            'Y',
-            'Z',
+            "a",
+            "b",
+            "c",
+            "d",
+            "e",
+            "f",
+            "g",
+            "h",
+            "i",
+            "j",
+            "k",
+            "l",
+            "m",
+            "n",
+            "o",
+            "p",
+            "q",
+            "r",
+            "s",
+            "t",
+            "u",
+            "v",
+            "w",
+            "x",
+            "y",
+            "z",
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U",
+            "V",
+            "W",
+            "X",
+            "Y",
+            "Z",
         ];
         this.numbers = [
-            '0',
-            '1',
-            '2',
-            '3',
-            '4',
-            '5',
-            '6',
-            '7',
-            '8',
-            '9',
+            "0",
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+            "6",
+            "7",
+            "8",
+            "9",
         ];
         this.characters = [
-            '~',
-            '`',
-            '!',
-            '@',
-            '#',
-            '$',
-            '%',
-            '^',
-            '&',
-            '*',
-            '(',
-            ')',
-            '_',
-            '+',
-            '-',
-            '=',
-            ',',
-            '<',
-            '>',
-            '.',
-            '/',
-            '?',
-            '[',
-            ']',
-            '{',
-            '}',
-            ';',
-            ':',
-            '\\',
-            '|',
+            "~",
+            "`",
+            "!",
+            "@",
+            "#",
+            "$",
+            "%",
+            "^",
+            "&",
+            "*",
+            "(",
+            ")",
+            "_",
+            "+",
+            "-",
+            "=",
+            ",",
+            "<",
+            ">",
+            ".",
+            "/",
+            "?",
+            "[",
+            "]",
+            "{",
+            "}",
+            ";",
+            ":",
+            "\\",
+            "|",
             '"',
             "'",
-            ' ',
+            " "
         ];
         this.randomThreshold = 250;
         this.offsetThreshold = 1000;
-        this.hashLen = 88;
         this.originalMap = [
             ...this.letters,
             ...this.numbers,
@@ -4912,69 +4911,6 @@ class tunnel {
             }
             return res;
         };
-        this.getHash = (key, msg, crypto) => {
-            if (crypto.createHmac) {
-                var hash = crypto.createHmac('sha512', key);
-                hash.update(msg);
-                return hash.digest('base64');
-            }
-            else {
-                var hmac = crypto.algo.HMAC.create(crypto.algo.SHA512, key);
-                hmac.update(msg);
-                return crypto.enc.Base64.stringify(crypto.enc.Hex.parse(hmac.finalize().toString()));
-            }
-        };
-        this.makeClientLock = (p1Hash, p2Hash, p3Hash, lock, dataLock) => {
-            var p1hashLocked = this.lockMessage(p1Hash, dataLock);
-            var p2hashLocked = this.lockMessage(p2Hash, dataLock);
-            var p3hashLocked = this.lockMessage(p3Hash, dataLock);
-            var lockedServerLockMessage = this.unlock(lock, p1hashLocked);
-            var p2hashLockedTwice = this.lockMessage(p2hashLocked, dataLock);
-            var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice);
-            var unlockedServerLockMessage = this.unlockMessage(lockedServerLockMessage.substring(p2hashIndex), dataLock).substring(p2hashLockedTwice.length);
-            var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked);
-            var serverLockString = unlockedServerLockMessage.substring(0, p3hashIndex);
-            var serverLock = this.fromString(serverLockString);
-            var clientLockLength = this.originalMap.length + Math.random() * this.randomThreshold;
-            var finalLockLength = this.hashLen * 2 +
-                clientLockLength * clientLockLength +
-                Math.random() * this.randomThreshold +
-                this.offsetThreshold;
-            var dataLockLength = this.hashLen + Math.random() * this.randomThreshold;
-            var finalLock = this.generateLock(finalLockLength);
-            var newDataLock = this.generateLock(dataLockLength);
-            var clientLock = this.generateLock(clientLockLength);
-            p2hashLocked = this.lockMessage(p2Hash, newDataLock);
-            p3hashLocked = this.lockMessage(p3Hash, newDataLock);
-            var lockedFinalLock = this.lockMessage(p2hashLocked + this.toString(clientLock) + p3hashLocked, serverLock);
-            this.engraveKey(finalLock, serverLockString, lockedFinalLock, true);
-            return {
-                lock: finalLock,
-                dataLock: newDataLock,
-                serverLock: serverLock,
-            };
-        };
-        this.makeServerLock = (p1Hash, p2Hash, p3Hash) => {
-            var clientLockLength = Math.random() * this.randomThreshold + this.originalMap.length;
-            var dataLockLength = this.hashLen + Math.random() * this.randomThreshold;
-            var lockLength = this.hashLen * 2 +
-                clientLockLength * clientLockLength +
-                Math.random() * this.randomThreshold +
-                this.offsetThreshold;
-            var clientLock = this.generateLock(clientLockLength);
-            var dataLock = this.generateLock(dataLockLength);
-            var lock = this.generateLock(lockLength);
-            var p1hashLocked = this.lockMessage(p1Hash, dataLock);
-            var p2hashLocked = this.lockMessage(p2Hash, dataLock);
-            var p3hashLocked = this.lockMessage(p3Hash, dataLock);
-            var message = this.lockMessage(p2hashLocked + this.toString(clientLock) + p3hashLocked, dataLock);
-            this.engraveKey(lock, p1hashLocked, message, true);
-            return {
-                lock: lock,
-                dataLock: dataLock,
-                clientLock: clientLock,
-            };
-        };
         this.generateLock = (size) => {
             var lock = [];
             for (var i = 0; i < size; i++) {
@@ -4985,7 +4921,7 @@ class tunnel {
         this.engraveKey = (lock, key, message, _offset = false) => {
             if (message.length > lock.length) {
                 console.log(lock.length, message.length);
-                throw new Error('Lock must be bigger than message');
+                throw new Error("Lock must be bigger than message");
             }
             var offset = _offset == false ? 0 : Math.floor(Math.random() * this.offsetThreshold);
             for (var i = 0; i < message.length; i++) {
@@ -5009,14 +4945,14 @@ class tunnel {
             return unlocked;
         };
         this.lockMessage = (message, lock) => {
-            var locked = '';
+            var locked = "";
             for (var i = 0; i < message.length; i++) {
                 locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
             }
             return locked;
         };
         this.unlockMessage = (message, lock) => {
-            var unlocked = '';
+            var unlocked = "";
             for (var i = 0; i < message.length; i++) {
                 unlocked += this.originalMap[lock[i % lock.length].indexOf(message[i])];
             }
@@ -5024,16 +4960,16 @@ class tunnel {
         };
         this.toString = (lock) => {
             var result = lock.reduce((total, current) => {
-                total += current.join('');
+                total += current.join("");
                 return total;
-            }, '');
+            }, "");
             return result;
         };
         this.fromString = (string) => {
             var result = [];
             for (var i = 0; i < string.length / this.originalMap.length; i++) {
                 result.push([
-                    ...string.substring(i * this.originalMap.length, this.originalMap.length * (i + 1)),
+                    ...string.substring(i * (this.originalMap.length), (this.originalMap.length) * (i + 1)),
                 ]);
             }
             return result;
@@ -30218,13 +30154,37 @@ class ServiceAuth {
             var p3 = 'pass3';
             data.lock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].fromString(data.lock);
             data.dataLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].fromString(data.dataLock);
-            var keyLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].makeClientLock(this.getHash(p2, p1), this.getHash(p3, p2), this.getHash(p1, p3), data.lock, data.dataLock);
+            var p1hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p2, p1), data.dataLock);
+            var p2hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p3, p2), data.dataLock);
+            var p3hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p1, p3), data.dataLock);
+            var lockedServerLockMessage = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].unlock(data.lock, p1hashLocked);
+            var p2hashLockedTwice = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(p2hashLocked, data.dataLock);
+            var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice);
+            var unlockedServerLockMessage = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"]
+                .unlockMessage(lockedServerLockMessage.substring(p2hashIndex), data.dataLock)
+                .substring(p2hashLockedTwice.length);
+            var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked);
+            var serverLockString = unlockedServerLockMessage.substring(0, p3hashIndex);
+            var serverLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].fromString(serverLockString);
+            var clientLockLength = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].originalMap.length + Math.random() * _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].randomThreshold;
+            var finalLockLength = this.hashLen * 2 +
+                clientLockLength * clientLockLength +
+                Math.random() * _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].randomThreshold +
+                _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].offsetThreshold;
+            var dataLockLength = this.hashLen + Math.random() * _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].randomThreshold;
+            var finalLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].generateLock(finalLockLength);
+            var dataLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].generateLock(dataLockLength);
+            var clientLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].generateLock(clientLockLength);
+            p2hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p3, p2), dataLock);
+            p3hashLocked = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(this.getHash(p1, p3), dataLock);
+            var lockedFinalLock = _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].lockMessage(p2hashLocked + _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(clientLock) + p3hashLocked, serverLock);
+            _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].engraveKey(finalLock, serverLockString, lockedFinalLock, true);
             var postData = {
-                lock: _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(keyLock.lock),
-                dataLock: _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(keyLock.dataLock),
+                finalLock: _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(finalLock),
+                dataLock: _tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].toString(dataLock),
             };
             this.virtualProcess.lock(postData).subscribe((data) => {
-                console.log(_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].unlockMessage(data.encrypted, keyLock.serverLock));
+                console.log(_tunnel__WEBPACK_IMPORTED_MODULE_3__["default"].unlockMessage(data.encrypted, clientLock));
             }, (error) => console.log('tunnel post', error));
         }, (error) => console.log('tunnel get', error));
     }
@@ -54388,7 +54348,7 @@ LayoutSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵde
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵstyleProp"]("margin-top", ctx.mobileQuery.matches ? 56 : 0, "px");
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("mode", ctx.mobileQuery.matches ? "over" : "side")("fixedInViewport", ctx.mobileQuery.matches);
-    } }, directives: [_angular_material_toolbar__WEBPACK_IMPORTED_MODULE_2__["MatToolbar"], _angular_material_button__WEBPACK_IMPORTED_MODULE_3__["MatButton"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_4__["MatIcon"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__["MatSidenavContainer"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__["MatSidenav"], _angular_material_list__WEBPACK_IMPORTED_MODULE_6__["MatNavList"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__["MatSidenavContent"]], styles: [".layout-container[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n}\n\n.mat-list-base[_ngcontent-%COMP%] {\n  height: calc(100% - 8px);\n}\n\n.layout-is-mobile[_ngcontent-%COMP%]   .layout-toolbar[_ngcontent-%COMP%] {\n  position: fixed;\n  \n  z-index: 2;\n}\n\nh1.layout-app-name[_ngcontent-%COMP%] {\n  margin-left: 8px;\n}\n\n.layout-sidenav-container[_ngcontent-%COMP%] {\n  \n  flex: 1;\n}\n\n.layout-is-mobile[_ngcontent-%COMP%]   .layout-sidenav-container[_ngcontent-%COMP%] {\n  \n  flex: 1 0 auto;\n}\n\n.mat-drawer.mat-sidenav[_ngcontent-%COMP%] {\n  min-width: 250px;\n}\n\n.mat-drawer-content[_ngcontent-%COMP%] {\n  height: calc(100%);\n  overflow: auto;\n}\n\n.layout-content[_ngcontent-%COMP%] {\n  max-width: 1024px;\n  margin: 24px auto 24px auto;\n  height: auto;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL2xheW91dC1zaW1wbGUuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxhQUFBO0VBQ0Esc0JBQUE7RUFDQSxrQkFBQTtFQUNBLE1BQUE7RUFDQSxTQUFBO0VBQ0EsT0FBQTtFQUNBLFFBQUE7QUFDRjs7QUFFQTtFQUNFLHdCQUFBO0FBQ0Y7O0FBRUE7RUFDRSxlQUFBO0VBQ0EsOEVBQUE7RUFDQSxVQUFBO0FBQ0Y7O0FBRUE7RUFDRSxnQkFBQTtBQUNGOztBQUVBO0VBQ0U7NEZBQUE7RUFFQSxPQUFBO0FBQ0Y7O0FBRUE7RUFDRTtpRUFBQTtFQUVBLGNBQUE7QUFDRjs7QUFFQTtFQUNFLGdCQUFBO0FBQ0Y7O0FBRUE7RUFDRSxrQkFBQTtFQUNBLGNBQUE7QUFDRjs7QUFFQTtFQUNFLGlCQUFBO0VBQ0EsMkJBQUE7RUFDQSxZQUFBO0FBQ0YiLCJmaWxlIjoibGF5b3V0LXNpbXBsZS5jb21wb25lbnQuc2NzcyIsInNvdXJjZXNDb250ZW50IjpbIi5sYXlvdXQtY29udGFpbmVyIHtcbiAgZGlzcGxheTogZmxleDtcbiAgZmxleC1kaXJlY3Rpb246IGNvbHVtbjtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICB0b3A6IDA7XG4gIGJvdHRvbTogMDtcbiAgbGVmdDogMDtcbiAgcmlnaHQ6IDA7XG59XG5cbi5tYXQtbGlzdC1iYXNlIHtcbiAgaGVpZ2h0OiBjYWxjKDEwMCUgLSA4cHgpO1xufVxuXG4ubGF5b3V0LWlzLW1vYmlsZSAubGF5b3V0LXRvb2xiYXIge1xuICBwb3NpdGlvbjogZml4ZWQ7XG4gIC8qIE1ha2Ugc3VyZSB0aGUgdG9vbGJhciB3aWxsIHN0YXkgb24gdG9wIG9mIHRoZSBjb250ZW50IGFzIGl0IHNjcm9sbHMgcGFzdC4gKi9cbiAgei1pbmRleDogMjtcbn1cblxuaDEubGF5b3V0LWFwcC1uYW1lIHtcbiAgbWFyZ2luLWxlZnQ6IDhweDtcbn1cblxuLmxheW91dC1zaWRlbmF2LWNvbnRhaW5lciB7XG4gIC8qIFdoZW4gdGhlIHNpZGVuYXYgaXMgbm90IGZpeGVkLCBzdHJldGNoIHRoZSBzaWRlbmF2IGNvbnRhaW5lciB0byBmaWxsIHRoZSBhdmFpbGFibGUgc3BhY2UuIFRoaXNcbiAgICAgICBjYXVzZXMgYDxtYXQtc2lkZW5hdi1jb250ZW50PmAgdG8gYWN0IGFzIG91ciBzY3JvbGxpbmcgZWxlbWVudCBmb3IgZGVza3RvcCBsYXlvdXRzLiAqL1xuICBmbGV4OiAxO1xufVxuXG4ubGF5b3V0LWlzLW1vYmlsZSAubGF5b3V0LXNpZGVuYXYtY29udGFpbmVyIHtcbiAgLyogV2hlbiB0aGUgc2lkZW5hdiBpcyBmaXhlZCwgZG9uJ3QgY29uc3RyYWluIHRoZSBoZWlnaHQgb2YgdGhlIHNpZGVuYXYgY29udGFpbmVyLiBUaGlzIGFsbG93cyB0aGVcbiAgICAgICBgPGJvZHk+YCB0byBiZSBvdXIgc2Nyb2xsaW5nIGVsZW1lbnQgZm9yIG1vYmlsZSBsYXlvdXRzLiAqL1xuICBmbGV4OiAxIDAgYXV0bztcbn1cblxuLm1hdC1kcmF3ZXIubWF0LXNpZGVuYXYge1xuICBtaW4td2lkdGg6IDI1MHB4O1xufVxuXG4ubWF0LWRyYXdlci1jb250ZW50IHtcbiAgaGVpZ2h0OiBjYWxjKDEwMCUpO1xuICBvdmVyZmxvdzogYXV0bztcbn1cblxuLmxheW91dC1jb250ZW50IHsgIFxuICBtYXgtd2lkdGg6IDEwMjRweDtcbiAgbWFyZ2luOiAyNHB4IGF1dG8gMjRweCBhdXRvO1xuICBoZWlnaHQ6IGF1dG87XG59XG5cbiJdfQ== */"] });
+    } }, directives: [_angular_material_toolbar__WEBPACK_IMPORTED_MODULE_2__["MatToolbar"], _angular_material_button__WEBPACK_IMPORTED_MODULE_3__["MatButton"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_4__["MatIcon"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__["MatSidenavContainer"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__["MatSidenav"], _angular_material_list__WEBPACK_IMPORTED_MODULE_6__["MatNavList"], _angular_material_sidenav__WEBPACK_IMPORTED_MODULE_5__["MatSidenavContent"]], styles: [".layout-container[_ngcontent-%COMP%] {\n  display: flex;\n  flex-direction: column;\n  position: absolute;\n  top: 0;\n  bottom: 0;\n  left: 0;\n  right: 0;\n}\n\n.mat-list-base[_ngcontent-%COMP%] {\n  height: calc(100% - 8px);\n}\n\n.layout-is-mobile[_ngcontent-%COMP%]   .layout-toolbar[_ngcontent-%COMP%] {\n  position: fixed;\n  \n  z-index: 2;\n}\n\nh1.layout-app-name[_ngcontent-%COMP%] {\n  margin-left: 8px;\n}\n\n.layout-sidenav-container[_ngcontent-%COMP%] {\n  \n  flex: 1;\n}\n\n.layout-is-mobile[_ngcontent-%COMP%]   .layout-sidenav-container[_ngcontent-%COMP%] {\n  \n  flex: 1 0 auto;\n}\n\n.mat-drawer.mat-sidenav[_ngcontent-%COMP%] {\n  min-width: 250px;\n}\n\n.mat-drawer-content[_ngcontent-%COMP%] {\n  height: calc(100%);\n  overflow: auto;\n}\n\n.layout-content[_ngcontent-%COMP%] {\n  max-width: 1024px;\n  margin: 24px auto 24px auto;\n  height: auto;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcLi5cXC4uXFxsYXlvdXQtc2ltcGxlLmNvbXBvbmVudC5zY3NzIl0sIm5hbWVzIjpbXSwibWFwcGluZ3MiOiJBQUFBO0VBQ0UsYUFBQTtFQUNBLHNCQUFBO0VBQ0Esa0JBQUE7RUFDQSxNQUFBO0VBQ0EsU0FBQTtFQUNBLE9BQUE7RUFDQSxRQUFBO0FBQ0Y7O0FBRUE7RUFDRSx3QkFBQTtBQUNGOztBQUVBO0VBQ0UsZUFBQTtFQUNBLDhFQUFBO0VBQ0EsVUFBQTtBQUNGOztBQUVBO0VBQ0UsZ0JBQUE7QUFDRjs7QUFFQTtFQUNFOzRGQUFBO0VBRUEsT0FBQTtBQUNGOztBQUVBO0VBQ0U7aUVBQUE7RUFFQSxjQUFBO0FBQ0Y7O0FBRUE7RUFDRSxnQkFBQTtBQUNGOztBQUVBO0VBQ0Usa0JBQUE7RUFDQSxjQUFBO0FBQ0Y7O0FBRUE7RUFDRSxpQkFBQTtFQUNBLDJCQUFBO0VBQ0EsWUFBQTtBQUNGIiwiZmlsZSI6ImxheW91dC1zaW1wbGUuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubGF5b3V0LWNvbnRhaW5lciB7XG4gIGRpc3BsYXk6IGZsZXg7XG4gIGZsZXgtZGlyZWN0aW9uOiBjb2x1bW47XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgdG9wOiAwO1xuICBib3R0b206IDA7XG4gIGxlZnQ6IDA7XG4gIHJpZ2h0OiAwO1xufVxuXG4ubWF0LWxpc3QtYmFzZSB7XG4gIGhlaWdodDogY2FsYygxMDAlIC0gOHB4KTtcbn1cblxuLmxheW91dC1pcy1tb2JpbGUgLmxheW91dC10b29sYmFyIHtcbiAgcG9zaXRpb246IGZpeGVkO1xuICAvKiBNYWtlIHN1cmUgdGhlIHRvb2xiYXIgd2lsbCBzdGF5IG9uIHRvcCBvZiB0aGUgY29udGVudCBhcyBpdCBzY3JvbGxzIHBhc3QuICovXG4gIHotaW5kZXg6IDI7XG59XG5cbmgxLmxheW91dC1hcHAtbmFtZSB7XG4gIG1hcmdpbi1sZWZ0OiA4cHg7XG59XG5cbi5sYXlvdXQtc2lkZW5hdi1jb250YWluZXIge1xuICAvKiBXaGVuIHRoZSBzaWRlbmF2IGlzIG5vdCBmaXhlZCwgc3RyZXRjaCB0aGUgc2lkZW5hdiBjb250YWluZXIgdG8gZmlsbCB0aGUgYXZhaWxhYmxlIHNwYWNlLiBUaGlzXG4gICAgICAgY2F1c2VzIGA8bWF0LXNpZGVuYXYtY29udGVudD5gIHRvIGFjdCBhcyBvdXIgc2Nyb2xsaW5nIGVsZW1lbnQgZm9yIGRlc2t0b3AgbGF5b3V0cy4gKi9cbiAgZmxleDogMTtcbn1cblxuLmxheW91dC1pcy1tb2JpbGUgLmxheW91dC1zaWRlbmF2LWNvbnRhaW5lciB7XG4gIC8qIFdoZW4gdGhlIHNpZGVuYXYgaXMgZml4ZWQsIGRvbid0IGNvbnN0cmFpbiB0aGUgaGVpZ2h0IG9mIHRoZSBzaWRlbmF2IGNvbnRhaW5lci4gVGhpcyBhbGxvd3MgdGhlXG4gICAgICAgYDxib2R5PmAgdG8gYmUgb3VyIHNjcm9sbGluZyBlbGVtZW50IGZvciBtb2JpbGUgbGF5b3V0cy4gKi9cbiAgZmxleDogMSAwIGF1dG87XG59XG5cbi5tYXQtZHJhd2VyLm1hdC1zaWRlbmF2IHtcbiAgbWluLXdpZHRoOiAyNTBweDtcbn1cblxuLm1hdC1kcmF3ZXItY29udGVudCB7XG4gIGhlaWdodDogY2FsYygxMDAlKTtcbiAgb3ZlcmZsb3c6IGF1dG87XG59XG5cbi5sYXlvdXQtY29udGVudCB7ICBcbiAgbWF4LXdpZHRoOiAxMDI0cHg7XG4gIG1hcmdpbjogMjRweCBhdXRvIDI0cHggYXV0bztcbiAgaGVpZ2h0OiBhdXRvO1xufVxuXG4iXX0= */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](LayoutSimpleComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{
@@ -54461,7 +54421,7 @@ NavListSimpleComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵd
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLinkActiveOptions", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](4, _c0));
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("routerLinkActiveOptions", _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵpureFunction0"](5, _c0));
-    } }, directives: [_angular_material_button__WEBPACK_IMPORTED_MODULE_1__["MatAnchor"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterLinkWithHref"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterLinkActive"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_3__["MatIcon"]], styles: [".mat-button[_ngcontent-%COMP%] {\n  text-align: left;\n  width: 100%;\n}\n\n.split-mat-button[_ngcontent-%COMP%] {\n  width: 50%;\n}\n\n.footer[_ngcontent-%COMP%] {\n  max-height: 52px;\n  width: 100%;\n  position: absolute;\n  bottom: 0px;\n  margin-bottom: 8px;\n}\n\n.active[_ngcontent-%COMP%] {\n  font-weight: bold;\n  color: #3f51b5;\n  background-color: rgba(63, 81, 181, 0.1);\n}\n\n.header[_ngcontent-%COMP%] {\n  height: calc(100% - 52px);\n  overflow: auto;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uLy4uLy4uLy4uLy4uLy4uLy4uL25hdi1saXN0LXNpbXBsZS5jb21wb25lbnQuc2NzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFBO0VBQ0EsV0FBQTtBQUNGOztBQUVBO0VBQ0UsVUFBQTtBQUNGOztBQUVBO0VBQ0UsZ0JBQUE7RUFDQSxXQUFBO0VBQ0Esa0JBQUE7RUFDQSxXQUFBO0VBQ0Esa0JBQUE7QUFDRjs7QUFFQTtFQUNFLGlCQUFBO0VBQ0EsY0FBQTtFQUNBLHdDQUFBO0FBQ0Y7O0FBRUE7RUFDRSx5QkFBQTtFQUNBLGNBQUE7QUFDRiIsImZpbGUiOiJuYXYtbGlzdC1zaW1wbGUuY29tcG9uZW50LnNjc3MiLCJzb3VyY2VzQ29udGVudCI6WyIubWF0LWJ1dHRvbiB7XG4gIHRleHQtYWxpZ246IGxlZnQ7XG4gIHdpZHRoOiAxMDAlO1xufVxuXG4uc3BsaXQtbWF0LWJ1dHRvbiB7XG4gIHdpZHRoOiA1MCU7XG59XG5cbi5mb290ZXIge1xuICBtYXgtaGVpZ2h0OiA1MnB4O1xuICB3aWR0aDogMTAwJTtcbiAgcG9zaXRpb246IGFic29sdXRlO1xuICBib3R0b206IDBweDtcbiAgbWFyZ2luLWJvdHRvbTogOHB4O1xufVxuXG4uYWN0aXZlIHtcbiAgZm9udC13ZWlnaHQ6IGJvbGQ7XG4gIGNvbG9yOiAjM2Y1MWI1O1xuICBiYWNrZ3JvdW5kLWNvbG9yOiByZ2JhKDYzLCA4MSwgMTgxLCAwLjEpO1xufVxuXG4uaGVhZGVyIHtcbiAgaGVpZ2h0OiBjYWxjKDEwMCUgLSA1MnB4KTtcbiAgb3ZlcmZsb3c6IGF1dG87XG59XG4iXX0= */"] });
+    } }, directives: [_angular_material_button__WEBPACK_IMPORTED_MODULE_1__["MatAnchor"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterLinkWithHref"], _angular_router__WEBPACK_IMPORTED_MODULE_2__["RouterLinkActive"], _angular_material_icon__WEBPACK_IMPORTED_MODULE_3__["MatIcon"]], styles: [".mat-button[_ngcontent-%COMP%] {\n  text-align: left;\n  width: 100%;\n}\n\n.split-mat-button[_ngcontent-%COMP%] {\n  width: 50%;\n}\n\n.footer[_ngcontent-%COMP%] {\n  max-height: 52px;\n  width: 100%;\n  position: absolute;\n  bottom: 0px;\n  margin-bottom: 8px;\n}\n\n.active[_ngcontent-%COMP%] {\n  font-weight: bold;\n  color: #3f51b5;\n  background-color: rgba(63, 81, 181, 0.1);\n}\n\n.header[_ngcontent-%COMP%] {\n  height: calc(100% - 52px);\n  overflow: auto;\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbIi4uXFwuLlxcLi5cXC4uXFwuLlxcLi5cXC4uXFxuYXYtbGlzdC1zaW1wbGUuY29tcG9uZW50LnNjc3MiXSwibmFtZXMiOltdLCJtYXBwaW5ncyI6IkFBQUE7RUFDRSxnQkFBQTtFQUNBLFdBQUE7QUFDRjs7QUFFQTtFQUNFLFVBQUE7QUFDRjs7QUFFQTtFQUNFLGdCQUFBO0VBQ0EsV0FBQTtFQUNBLGtCQUFBO0VBQ0EsV0FBQTtFQUNBLGtCQUFBO0FBQ0Y7O0FBRUE7RUFDRSxpQkFBQTtFQUNBLGNBQUE7RUFDQSx3Q0FBQTtBQUNGOztBQUVBO0VBQ0UseUJBQUE7RUFDQSxjQUFBO0FBQ0YiLCJmaWxlIjoibmF2LWxpc3Qtc2ltcGxlLmNvbXBvbmVudC5zY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLm1hdC1idXR0b24ge1xuICB0ZXh0LWFsaWduOiBsZWZ0O1xuICB3aWR0aDogMTAwJTtcbn1cblxuLnNwbGl0LW1hdC1idXR0b24ge1xuICB3aWR0aDogNTAlO1xufVxuXG4uZm9vdGVyIHtcbiAgbWF4LWhlaWdodDogNTJweDtcbiAgd2lkdGg6IDEwMCU7XG4gIHBvc2l0aW9uOiBhYnNvbHV0ZTtcbiAgYm90dG9tOiAwcHg7XG4gIG1hcmdpbi1ib3R0b206IDhweDtcbn1cblxuLmFjdGl2ZSB7XG4gIGZvbnQtd2VpZ2h0OiBib2xkO1xuICBjb2xvcjogIzNmNTFiNTtcbiAgYmFja2dyb3VuZC1jb2xvcjogcmdiYSg2MywgODEsIDE4MSwgMC4xKTtcbn1cblxuLmhlYWRlciB7XG4gIGhlaWdodDogY2FsYygxMDAlIC0gNTJweCk7XG4gIG92ZXJmbG93OiBhdXRvO1xufVxuIl19 */"] });
 /*@__PURE__*/ (function () { _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵsetClassMetadata"](NavListSimpleComponent, [{
         type: _angular_core__WEBPACK_IMPORTED_MODULE_0__["Component"],
         args: [{

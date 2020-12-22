@@ -1,108 +1,107 @@
 class tunnel {
   private letters: Array<string> = [
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'k',
-    'l',
-    'm',
-    'n',
-    'o',
-    'p',
-    'q',
-    'r',
-    's',
-    't',
-    'u',
-    'v',
-    'w',
-    'x',
-    'y',
-    'z',
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z',
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
   ];
   private numbers: Array<string> = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
   ];
   private characters: Array<string> = [
-    '~',
-    '`',
-    '!',
-    '@',
-    '#',
-    '$',
-    '%',
-    '^',
-    '&',
-    '*',
-    '(',
-    ')',
-    '_',
-    '+',
-    '-',
-    '=',
-    ',',
-    '<',
-    '>',
-    '.',
-    '/',
-    '?',
-    '[',
-    ']',
-    '{',
-    '}',
-    ';',
-    ':',
-    '\\',
-    '|',
+    "~",
+    "`",
+    "!",
+    "@",
+    "#",
+    "$",
+    "%",
+    "^",
+    "&",
+    "*",
+    "(",
+    ")",
+    "_",
+    "+",
+    "-",
+    "=",
+    ",",
+    "<",
+    ">",
+    ".",
+    "/",
+    "?",
+    "[",
+    "]",
+    "{",
+    "}",
+    ";",
+    ":",
+    "\\",
+    "|",
     '"',
     "'",
-    ' ',
+    " "
   ];
   public randomThreshold = 250;
   public offsetThreshold = 1000;
-  hashLen = 88;
   public originalMap: string[] = [
     ...this.letters,
     ...this.numbers,
@@ -118,98 +117,6 @@ class tunnel {
     }
     return res;
   };
-
-  getHash = (key, msg, crypto) => {
-    if (crypto.createHmac) {
-      var hash = crypto.createHmac('sha512', key);
-      hash.update(msg);
-      return hash.digest('base64');
-    } else {
-      var hmac = crypto.algo.HMAC.create(crypto.algo.SHA512, key);
-      hmac.update(msg);
-      return crypto.enc.Base64.stringify(
-        crypto.enc.Hex.parse(hmac.finalize().toString())
-      );
-    }
-  };
-  public makeClientLock = (p1Hash, p2Hash, p3Hash, lock, dataLock): any => {
-    var p1hashLocked = this.lockMessage(p1Hash, dataLock);
-    var p2hashLocked = this.lockMessage(p2Hash, dataLock);
-    var p3hashLocked = this.lockMessage(p3Hash, dataLock);
-
-    var lockedServerLockMessage = this.unlock(lock, p1hashLocked);
-
-    var p2hashLockedTwice = this.lockMessage(p2hashLocked, dataLock);
-    var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice);
-
-    var unlockedServerLockMessage = this.unlockMessage(
-      lockedServerLockMessage.substring(p2hashIndex),
-      dataLock
-    ).substring(p2hashLockedTwice.length);
-
-    var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked);
-    var serverLockString = unlockedServerLockMessage.substring(0, p3hashIndex);
-
-    var serverLock = this.fromString(serverLockString);
-
-    var clientLockLength =
-      this.originalMap.length + Math.random() * this.randomThreshold;
-    var finalLockLength =
-      this.hashLen * 2 +
-      clientLockLength * clientLockLength +
-      Math.random() * this.randomThreshold +
-      this.offsetThreshold;
-    var dataLockLength = this.hashLen + Math.random() * this.randomThreshold;
-
-    var finalLock = this.generateLock(finalLockLength);
-    var newDataLock = this.generateLock(dataLockLength);
-    var clientLock = this.generateLock(clientLockLength);
-
-    p2hashLocked = this.lockMessage(p2Hash, newDataLock);
-    p3hashLocked = this.lockMessage(p3Hash, newDataLock);
-
-    var lockedFinalLock = this.lockMessage(
-      p2hashLocked + this.toString(clientLock) + p3hashLocked,
-      serverLock
-    );
-    this.engraveKey(finalLock, serverLockString, lockedFinalLock, true);
-
-    return {
-      lock: finalLock,
-      dataLock: newDataLock,
-      serverLock: serverLock,
-    };
-  };
-  public makeServerLock = (p1Hash, p2Hash, p3Hash): any => {
-    var clientLockLength =
-      Math.random() * this.randomThreshold + this.originalMap.length;
-    var dataLockLength = this.hashLen + Math.random() * this.randomThreshold;
-    var lockLength =
-      this.hashLen * 2 +
-      clientLockLength * clientLockLength +
-      Math.random() * this.randomThreshold +
-      this.offsetThreshold;
-
-    var clientLock = this.generateLock(clientLockLength);
-    var dataLock = this.generateLock(dataLockLength);
-    var lock = this.generateLock(lockLength);
-
-    var p1hashLocked = this.lockMessage(p1Hash, dataLock);
-    var p2hashLocked = this.lockMessage(p2Hash, dataLock);
-    var p3hashLocked = this.lockMessage(p3Hash, dataLock);
-
-    var message = this.lockMessage(
-      p2hashLocked + this.toString(clientLock) + p3hashLocked,
-      dataLock
-    );
-    this.engraveKey(lock, p1hashLocked, message, true);
-
-    return {
-      lock: lock,
-      dataLock: dataLock,
-      clientLock: clientLock,
-    };
-  };
   public generateLock = (size): string[][] => {
     var lock: string[][] = [];
     for (var i = 0; i < size; i++) {
@@ -218,12 +125,11 @@ class tunnel {
     return lock;
   };
   public engraveKey = (lock, key, message, _offset = false) => {
-    if (message.length > lock.length) {
-      console.log(lock.length, message.length);
-      throw new Error('Lock must be bigger than message');
+    if (message.length > lock.length){
+      console.log(lock.length, message.length)
+      throw new Error("Lock must be bigger than message")
     }
-    var offset =
-      _offset == false ? 0 : Math.floor(Math.random() * this.offsetThreshold);
+    var offset = _offset == false ? 0 : Math.floor(Math.random() * this.offsetThreshold);
     for (var i = 0; i < message.length; i++) {
       var row: string[] = lock[i + offset];
       var input: string = key[(i + offset) % key.length];
@@ -236,7 +142,7 @@ class tunnel {
       }
     }
   };
-  public unlock = (lock: string[][], password: string): string => {
+  public unlock = (lock: string[][], password: string): string =>{
     var unlocked = '';
     for (var i = 0; i < lock.length; i++) {
       var originalInputIdex = this.originalMap.indexOf(
@@ -246,16 +152,16 @@ class tunnel {
     }
 
     return unlocked;
-  };
+  }
   public lockMessage = (message: string, lock: string[][]): string => {
-    var locked = '';
+    var locked = "";
     for (var i = 0; i < message.length; i++) {
       locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
     }
     return locked;
   };
   public unlockMessage = (message: string, lock: string[][]): string => {
-    var unlocked = '';
+    var unlocked = "";
     for (var i = 0; i < message.length; i++) {
       unlocked += this.originalMap[lock[i % lock.length].indexOf(message[i])];
     }
@@ -263,9 +169,9 @@ class tunnel {
   };
   public toString = (lock: string[][]): string => {
     var result = lock.reduce((total, current) => {
-      total += current.join('');
+      total += current.join("");
       return total;
-    }, '');
+    }, "");
 
     return result;
   };
@@ -274,8 +180,8 @@ class tunnel {
     for (var i = 0; i < string.length / this.originalMap.length; i++) {
       result.push([
         ...string.substring(
-          i * this.originalMap.length,
-          this.originalMap.length * (i + 1)
+          i * (this.originalMap.length),
+          (this.originalMap.length) * (i + 1)
         ),
       ]);
     }
