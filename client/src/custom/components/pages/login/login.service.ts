@@ -21,10 +21,34 @@ export class LoginService {
       },
     },
     {
-      key: 'password',
+      key: 'password1',
       type: 'input',
       templateOptions: {
-        label: 'Password',
+        label: 'Password 1',
+        required: true,
+      },
+      validators: {
+        minLength: this.pageFormlyService.minLengthValidator(6),
+        required: this.pageFormlyService.requiredValidator,
+      },
+    },
+    {
+      key: 'password2',
+      type: 'input',
+      templateOptions: {
+        label: 'Password 2',
+        required: true,
+      },
+      validators: {
+        minLength: this.pageFormlyService.minLengthValidator(6),
+        required: this.pageFormlyService.requiredValidator,
+      },
+    },
+    {
+      key: 'password3',
+      type: 'input',
+      templateOptions: {
+        label: 'Password 3',
         required: true,
       },
       validators: {

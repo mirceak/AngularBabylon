@@ -2,7 +2,7 @@ import "module-alias/register";
 import * as express from "express";
 import * as path from "path";
 import * as morgan from "morgan";
-import * as crypto from 'crypto';
+import * as crypto from "crypto";
 
 import setMongo from "./mongo";
 import tunnel from "../client/src/tunnel";
@@ -10,9 +10,15 @@ import BaseController from "./controllers/base/base.controller";
 import Controllers from "./controllers/base/base.controller.index";
 
 const app = express();
-var bodyParser = require('body-parser');
-app.use(bodyParser.json({ limit: '15mb' }));
-app.use(bodyParser.urlencoded({ limit: '15mb', extended: true, parameterLimit: 15000 }));
+var bodyParser = require("body-parser");
+app.use(bodyParser.json({ limit: "15mb" }));
+app.use(
+  bodyParser.urlencoded({
+    limit: "15mb",
+    extended: true,
+    parameterLimit: 15000,
+  })
+);
 async function main(): Promise<any> {
   try {
     await setMongo();
@@ -56,61 +62,43 @@ const p2 = "pass2";
 const p3 = "pass3";
 
 var clientLock: string[][];
-var lock: string[][];
 
 var onTunnel = (req, res) => {
-  var clientLockLength = Math.random() * tunnel.randomThreshold + tunnel.originalMap.length;
-  var dataLockLength = hashLen + Math.random() * tunnel.randomThreshold;
-  var lockLength =
-    hashLen * 2 +
-    clientLockLength * clientLockLength +
-    Math.random() * tunnel.randomThreshold +
-    tunnel.offsetThreshold;
-
-  clientLock = tunnel.generateLock(clientLockLength);
-  dataLock = tunnel.generateLock(dataLockLength);
-  lock = tunnel.generateLock(lockLength);
-
-  var dataLock: string[][];
-
-  var p1hashLocked = tunnel.lockMessage(getHash(p2, p1), dataLock);
-  var p2hashLocked = tunnel.lockMessage(getHash(p3, p2), dataLock);
-  var p3hashLocked = tunnel.lockMessage(getHash(p1, p3), dataLock);
-
-  var message = tunnel.lockMessage(
-    p2hashLocked + tunnel.toString(clientLock) + p3hashLocked,
-    dataLock
+  var serverLock = tunnel.makeServerLock(
+    getHash(p2, p1),
+    getHash(p3, p2),
+    getHash(p1, p3)
   );
-  tunnel.engraveKey(lock, p1hashLocked, message, true);
 
+  clientLock = serverLock.clientLock;
   res.send({
-    lock: tunnel.toString(lock),
-    dataLock: tunnel.toString(dataLock),
+    lock: tunnel.toString(serverLock.lock),
+    dataLock: tunnel.toString(serverLock.dataLock),
   });
 };
 
 var onLockTunnel = (req, res) => {
-  var finalLock = tunnel.fromString(req.body.finalLock);
+  var finalLock = tunnel.fromString(req.body.lock);
   var dataLock = tunnel.fromString(req.body.dataLock);
-
   var p2hashLocked = tunnel.lockMessage(getHash(p3, p2), dataLock);
   var p3hashLocked = tunnel.lockMessage(getHash(p1, p3), dataLock);
-
+  
   var lockedClientLockMessage = tunnel.unlock(
     finalLock,
     tunnel.toString(clientLock)
-  );
-
-  var p2hashLockedTwice = tunnel.lockMessage(p2hashLocked, clientLock);
-  var p2hashIndex = lockedClientLockMessage.indexOf(p2hashLockedTwice);
-
-  var partUnlockedClientLockMessage = tunnel
+    );
+    
+    var p2hashLockedTwice = tunnel.lockMessage(p2hashLocked, clientLock);
+    var p2hashIndex = lockedClientLockMessage.indexOf(p2hashLockedTwice);
+    
+    var partUnlockedClientLockMessage = tunnel
     .unlockMessage(lockedClientLockMessage.substring(p2hashIndex), clientLock)
     .substring(p2hashLockedTwice.length);
-
-  var p3hashIndex = partUnlockedClientLockMessage.indexOf(p3hashLocked);
-  var finalLockString = partUnlockedClientLockMessage.substring(0, p3hashIndex);
-
+    
+    var p3hashIndex = partUnlockedClientLockMessage.indexOf(p3hashLocked);
+    var finalLockString = partUnlockedClientLockMessage.substring(0, p3hashIndex);
+    
+    console.log(p2hashIndex, p3hashIndex);
   var finalClientLock = tunnel.fromString(finalLockString);
 
   var encrypted = tunnel.lockMessage(
