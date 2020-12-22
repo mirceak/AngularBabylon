@@ -1,5 +1,5 @@
 class tunnel {
-  private letters = [
+  private letters: Array<string> = [
     "a",
     "b",
     "c",
@@ -53,8 +53,19 @@ class tunnel {
     "Y",
     "Z",
   ];
-  private numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-  private characters = [
+  private numbers: Array<string> = [
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+  ];
+  private characters: Array<string> = [
     "~",
     "`",
     "!",
@@ -87,88 +98,94 @@ class tunnel {
     "|",
     '"',
     "'",
-    " ",
-    " ",
+    " "
   ];
-  public originalMap = [...this.letters, ...this.numbers, ...this.characters];
-  public scrambledMapLength = (passes) => {
-    var result = [];
-    var scrMap;
-    for (var i = 0; i < passes; i++) {
-      scrMap = this.scrambledMap();
-      result.push(...scrMap);
-    }
-    return result;
-  };
-  private scrambledMap = () => {
-    var tmp = this.originalMap.slice(0);
-    var res = [];
-    var current = null;
+  public randomThreshold = 250;
+  public offsetThreshold = 1000;
+  public originalMap: string[] = [
+    ...this.letters,
+    ...this.numbers,
+    ...this.characters,
+  ];
+  private scrambledMap = (): string[] => {
+    var tmp: string[] = this.originalMap.slice(0);
+    var res: string[] = [];
+    var current: string = null;
     while (res.length != this.originalMap.length) {
       current = tmp.splice(Math.floor(Math.random() * tmp.length), 1)[0];
       res.push(current);
     }
     return res;
   };
-  public generateLock = (size) => {
-    var lock = [];
-    for (var i = 0; i < size * 2; i++) {
+  public generateLock = (size): string[][] => {
+    var lock: string[][] = [];
+    for (var i = 0; i < size; i++) {
       lock.push(this.scrambledMap());
     }
     return lock;
   };
-  public engraveKey = (lock, key, message, _offset = 0) => {
-    // console.log(lock);
-    var offset = _offset != 0 ? _offset : Math.floor(Math.random() * (message.length / 4));
-    for (var i = offset; i < message.length + offset; i++) {
-      var row = lock[i % lock.length];
-      var input = key[i % key.length];
-      var originalInputIdex = this.originalMap.indexOf(input);
-      if (!row) {
-        console.log(i, lock.length);
-      }
-      var output = row[originalInputIdex];
-      var messageChar = message[i - offset];
+  public engraveKey = (lock, key, message, _offset = false) => {
+    if (message.length > lock.length){
+      console.log(lock.length, message.length)
+      throw new Error("Lock must be bigger than message")
+    }
+    var offset = _offset == false ? 0 : Math.floor(Math.random() * this.offsetThreshold);
+    for (var i = 0; i < message.length; i++) {
+      var row: string[] = lock[i + offset];
+      var input: string = key[(i + offset) % key.length];
+      var originalInputIdex: number = this.originalMap.indexOf(input);
+      var output: string = row[originalInputIdex];
+      var messageChar: string = message[i];
       if (output != messageChar) {
         row[row.indexOf(messageChar)] = output;
         row[originalInputIdex] = messageChar;
       }
     }
-    return offset;
   };
-  public lockMessage = (message, lock) => {
-    var builtLock = [];
-    for (var i = 0; i < lock.length / this.originalMap.length; i++) {
-      builtLock.push([
-        ...lock.substring(
-          i * (this.originalMap.length - 1),
-          (this.originalMap.length - 1) * (i + 1)
-        ),
-      ]);
+  public unlock = (lock: string[][], password: string): string =>{
+    var unlocked = '';
+    for (var i = 0; i < lock.length; i++) {
+      var originalInputIdex = this.originalMap.indexOf(
+        password[i % password.length]
+      );
+      unlocked += lock[i][originalInputIdex];
     }
-    
+
+    return unlocked;
+  }
+  public lockMessage = (message: string, lock: string[][]): string => {
     var locked = "";
     for (var i = 0; i < message.length; i++) {
-      locked += builtLock[i % builtLock.length][this.originalMap.indexOf(message[i])];
+      locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
     }
     return locked;
   };
-  public unlockMessage = (message, lock) => {
-    var builtLock = [];
-    for (var i = 0; i < lock.length / this.originalMap.length; i++) {
-      builtLock.push([
-        ...lock.substring(
-          i * (this.originalMap.length - 1),
-          (this.originalMap.length - 1) * (i + 1)
+  public unlockMessage = (message: string, lock: string[][]): string => {
+    var unlocked = "";
+    for (var i = 0; i < message.length; i++) {
+      unlocked += this.originalMap[lock[i % lock.length].indexOf(message[i])];
+    }
+    return unlocked;
+  };
+  public toString = (lock: string[][]): string => {
+    var result = lock.reduce((total, current) => {
+      total += current.join("");
+      return total;
+    }, "");
+
+    return result;
+  };
+  public fromString = (string: string): string[][] => {
+    var result = [];
+    for (var i = 0; i < string.length / this.originalMap.length; i++) {
+      result.push([
+        ...string.substring(
+          i * (this.originalMap.length),
+          (this.originalMap.length) * (i + 1)
         ),
       ]);
     }
-
-    var unlocked = "";
-    for (i = 0; i < message.length; i++) {
-      unlocked += this.originalMap[builtLock[i % builtLock.length].indexOf(message[i])];
-    }
-    return unlocked;
+    return result;
   };
 }
 

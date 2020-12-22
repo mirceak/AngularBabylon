@@ -17,7 +17,15 @@ export class ServiceAuth {
   };
 
   currentUser: ModelUser = new ModelUser();
+  hashLen = 88;
 
+  getHash(key, msg) {
+    var hmac = CryptoJs.algo.HMAC.create(CryptoJs.algo.SHA512, key);
+    hmac.update(msg);
+    return CryptoJs.enc.Base64.stringify(
+      CryptoJs.enc.Hex.parse(hmac.finalize().toString())
+    );
+  }
   constructor(
     private serviceUser: ServiceUser,
     private virtualProcess: VirtualProcessService,
@@ -36,72 +44,76 @@ export class ServiceAuth {
         var p1 = 'pass1';
         var p2 = 'pass2';
         var p3 = 'pass3';
-        var hmac = CryptoJs.algo.HMAC.create(CryptoJs.algo.SHA512, p2);
-        hmac.update(p1);
-        var p1hash = tunnel.lockMessage(
-          CryptoJs.enc.Base64.stringify(
-            CryptoJs.enc.Hex.parse(hmac.finalize().toString())
-          ),
-          data.lock
-        );
-        hmac = CryptoJs.algo.HMAC.create(CryptoJs.algo.SHA512, p3);
-        hmac.update(p2);
-        var p2hash = tunnel.lockMessage(
-          CryptoJs.enc.Base64.stringify(
-            CryptoJs.enc.Hex.parse(hmac.finalize().toString())
-          ),
-          data.lock
-        );
-        hmac = CryptoJs.algo.HMAC.create(CryptoJs.algo.SHA512, p1);
-        hmac.update(p3);
-        var p3hash = tunnel.lockMessage(
-          CryptoJs.enc.Base64.stringify(
-            CryptoJs.enc.Hex.parse(hmac.finalize().toString())
-          ),
-          data.lock
-        );
-        var result = '';
-        for (var i = 0; i < data.lock.length; i++) {
-          var originalInputIdex = tunnel.originalMap.indexOf(
-            p1hash[i % p1hash.length]
-          );
-          result += data.lock[i][originalInputIdex];
-        }
-        var tempLock = result.substring(
-          result.indexOf(p2hash) + p2hash.length,
-          result.indexOf(p3hash) //reuse logic on server
-        );
-        var serverLock = [];
-        for (i = 0; i < tempLock.length / tunnel.originalMap.length; i++) {
-          serverLock.push([
-            ...tempLock.substring(
-              i * (tunnel.originalMap.length - 1),
-              (tunnel.originalMap.length - 1) * (i + 1)
-            ),
-          ]);
-        }
-        var clientMap = tunnel.scrambledMapLength(tunnel.originalMap.length);
-        var clientLock = tunnel.generateLock(clientMap.length);
+        data.lock = tunnel.fromString(data.lock);
+        data.dataLock = tunnel.fromString(data.dataLock);
 
-        var tunnelLock = tunnel.lockMessage(clientMap.join(''), serverLock);
-        console.log(tunnel.unlockMessage(tunnelLock, tempLock))
-        tunnel.engraveKey(clientLock, tempLock, tunnelLock, result.indexOf(p2hash));
+        var p1hashLocked = tunnel.lockMessage(
+          this.getHash(p2, p1),
+          data.dataLock
+        );
+        var p2hashLocked = tunnel.lockMessage(
+          this.getHash(p3, p2),
+          data.dataLock
+        );
+        var p3hashLocked = tunnel.lockMessage(
+          this.getHash(p1, p3),
+          data.dataLock
+        );
+
+        var lockedServerLockMessage = tunnel.unlock(data.lock, p1hashLocked);
+
+        var p2hashLockedTwice = tunnel.lockMessage(p2hashLocked, data.dataLock);
+        var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice);
+
+        var unlockedServerLockMessage = tunnel
+          .unlockMessage(
+            lockedServerLockMessage.substring(p2hashIndex),
+            data.dataLock
+          )
+          .substring(p2hashLockedTwice.length);
+
+        var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked);
+        var serverLockString = unlockedServerLockMessage.substring(
+          0,
+          p3hashIndex
+        );
+
+        var serverLock = tunnel.fromString(serverLockString);
+
+        var clientLockLength =
+          tunnel.originalMap.length + Math.random() * tunnel.randomThreshold;
+        var finalLockLength =
+          this.hashLen * 2 +
+          clientLockLength * clientLockLength +
+          Math.random() * tunnel.randomThreshold +
+          tunnel.offsetThreshold;
+        var dataLockLength =
+          this.hashLen + Math.random() * tunnel.randomThreshold;
+
+        var finalLock = tunnel.generateLock(finalLockLength);
+        var dataLock = tunnel.generateLock(dataLockLength);
+        var clientLock = tunnel.generateLock(clientLockLength);
+
+        p2hashLocked = tunnel.lockMessage(this.getHash(p3, p2), dataLock);
+        p3hashLocked = tunnel.lockMessage(this.getHash(p1, p3), dataLock);
+
+        var lockedFinalLock = tunnel.lockMessage(
+          p2hashLocked + tunnel.toString(clientLock) + p3hashLocked,
+          serverLock
+        );
+        tunnel.engraveKey(finalLock, serverLockString, lockedFinalLock, true);
         var postData = {
-          lock: clientLock,
+          finalLock: tunnel.toString(finalLock),
+          dataLock: tunnel.toString(dataLock),
         };
         this.virtualProcess.lock(postData).subscribe(
           (data) => {
-            // console.log(data.clientMap);
-            // console.log(data.tempLock)
-            // console.log(tempLock);
-            // console.log(clientMap.join(''));
+            console.log(tunnel.unlockMessage(data.encrypted, clientLock));
           },
-          (error) => console.log(777, error),
-          () => console.log('donez')
+          (error) => console.log('tunnel post', error)
         );
       },
-      (error) => console.log(222, error),
-      () => console.log('done')
+      (error) => console.log('tunnel get', error)
     );
   }
 
