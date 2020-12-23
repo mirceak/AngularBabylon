@@ -155,71 +155,98 @@ class tunnel {
 
     return unlocked;
   };
-  public makeClientLock = (p1Hash, p2Hash, p3Hash, serverLock): any => {
-    var p1hashLocked = this.lockMessage(p1Hash, serverLock.dataLock)
-    var p2hashLocked = this.lockMessage(p2Hash, serverLock.dataLock)
-    var p3hashLocked = this.lockMessage(p3Hash, serverLock.dataLock)
+  extractClientInnerLock = (
+    p2Hash,
+    p3Hash,
+    clientLock,
+    serverInnerLock
+  ): string[][] => {
+    var p2hashLocked = this.lockMessage(p2Hash, clientLock.dataLock);
+    var p3hashLocked = this.lockMessage(p3Hash, clientLock.dataLock);
+
+    var lockedClientLockMessage = this.unlock(
+      clientLock.lock,
+      this.toString(serverInnerLock)
+    );
+
+    var p2hashLockedTwice = this.lockMessage(p2hashLocked, serverInnerLock);
+    var p2hashIndex = lockedClientLockMessage.indexOf(p2hashLockedTwice);
+
+    var partUnlockedClientLockMessage = this.unlockMessage(
+      lockedClientLockMessage.substring(p2hashIndex),
+      serverInnerLock
+    ).substring(p2hashLockedTwice.length);
+
+    var p3hashIndex = partUnlockedClientLockMessage.indexOf(p3hashLocked);
+    var finalLockString = partUnlockedClientLockMessage.substring(
+      0,
+      p3hashIndex
+    );
+
+    var finalClientLock = this.fromString(finalLockString);
+    return finalClientLock;
+  };
+  extractServerInnerLock = (p1Hash, p2Hash, p3Hash, serverLock): string[][] => {
+    var p1hashLocked = this.lockMessage(p1Hash, serverLock.dataLock);
+    var p2hashLocked = this.lockMessage(p2Hash, serverLock.dataLock);
+    var p3hashLocked = this.lockMessage(p3Hash, serverLock.dataLock);
 
     var lockedServerLockMessage = this.unlock(serverLock.lock, p1hashLocked);
 
     var p2hashLockedTwice = this.lockMessage(p2hashLocked, serverLock.dataLock);
     var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice);
 
-    var unlockedServerLockMessage = this
-      .unlockMessage(
-        lockedServerLockMessage.substring(p2hashIndex),
-        serverLock.dataLock
-      )
-      .substring(p2hashLockedTwice.length);
+    var unlockedServerLockMessage = this.unlockMessage(
+      lockedServerLockMessage.substring(p2hashIndex),
+      serverLock.dataLock
+    ).substring(p2hashLockedTwice.length);
 
     var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked);
-    var serverLockString = unlockedServerLockMessage.substring(
-      0,
-      p3hashIndex
-    );
+    var serverLockString = unlockedServerLockMessage.substring(0, p3hashIndex);
 
     var unlockedServerLock = this.fromString(serverLockString);
-
-    var clientLockLength =
-    this.originalMap.length + Math.random() * this.randomThreshold;
-    var finalLockLength =
-      this.hashLen * 2 +
-      clientLockLength * clientLockLength +
-      Math.random() * this.randomThreshold +
-      this.offsetThreshold;
-    var dataLockLength =
-      this.hashLen + Math.random() * this.randomThreshold;
-
-    var finalLock = this.generateLock(finalLockLength);
-    var dataLock = this.generateLock(dataLockLength);
-    var clientLock = this.generateLock(clientLockLength);
-
-    p2hashLocked = this.lockMessage(p2Hash, dataLock);
-    p3hashLocked = this.lockMessage(p3Hash, dataLock);
-
-    var lockedFinalLock = this.lockMessage(
-      p2hashLocked + this.toString(clientLock) + p3hashLocked,
-      unlockedServerLock
+    return unlockedServerLock;
+  };
+  public makeClientLock = (p1Hash, p2Hash, p3Hash, serverLock): any => {
+    var serverInnerLock = this.extractServerInnerLock(
+      p1Hash,
+      p2Hash,
+      p3Hash,
+      serverLock
     );
-    this.engraveKey(finalLock, serverLockString, lockedFinalLock, true);
+
+    var lockPieces = this.makeLockPieces(p1Hash, p2Hash, p3Hash);
+    var lockedFinalLock = this.lockMessage(
+      lockPieces.p2hashLocked +
+        this.toString(lockPieces.innerLock) +
+        lockPieces.p3hashLocked,
+      serverInnerLock
+    );
+    this.engraveKey(
+      lockPieces.lock,
+      this.toString(serverInnerLock),
+      lockedFinalLock,
+      true
+    );
 
     return {
-      lock: finalLock,
-      dataLock: dataLock,
-      innerLock: clientLock
-    }
-  }
-  public makeServerLock = (p1Hash, p2Hash, p3Hash): any => {
-    var clientLockLength =
+      lock: lockPieces.lock,
+      dataLock: lockPieces.dataLock,
+      innerLock: lockPieces.innerLock,
+      serverInnerLock: serverInnerLock,
+    };
+  };
+  makeLockPieces = (p1Hash, p2Hash, p3Hash): any => {
+    var innerLockLength =
       Math.random() * this.randomThreshold + this.originalMap.length;
     var dataLockLength = this.hashLen + Math.random() * this.randomThreshold;
     var lockLength =
       this.hashLen * 2 +
-      clientLockLength * clientLockLength +
+      innerLockLength * innerLockLength +
       Math.random() * this.randomThreshold +
       this.offsetThreshold;
 
-    var clientLock = this.generateLock(clientLockLength);
+    var innerLock = this.generateLock(innerLockLength);
     var dataLock = this.generateLock(dataLockLength);
     var lock = this.generateLock(lockLength);
 
@@ -227,16 +254,30 @@ class tunnel {
     var p2hashLocked = this.lockMessage(p2Hash, dataLock);
     var p3hashLocked = this.lockMessage(p3Hash, dataLock);
 
+    return {
+      lock,
+      dataLock,
+      innerLock,
+      p1hashLocked,
+      p2hashLocked,
+      p3hashLocked,
+    };
+  };
+  public makeServerLock = (p1Hash, p2Hash, p3Hash): any => {
+    var lockPieces = this.makeLockPieces(p1Hash, p2Hash, p3Hash);
+
     var message = this.lockMessage(
-      p2hashLocked + this.toString(clientLock) + p3hashLocked,
-      dataLock
+      lockPieces.p2hashLocked +
+        this.toString(lockPieces.innerLock) +
+        lockPieces.p3hashLocked,
+      lockPieces.dataLock
     );
-    this.engraveKey(lock, p1hashLocked, message, true);
+    this.engraveKey(lockPieces.lock, lockPieces.p1hashLocked, message, true);
 
     return {
-      lock: lock,
-      dataLock: dataLock,
-      innerLock: clientLock,
+      lock: lockPieces.lock,
+      dataLock: lockPieces.dataLock,
+      innerLock: lockPieces.innerLock,
     };
   };
   public lockMessage = (message: string, lock: string[][]): string => {

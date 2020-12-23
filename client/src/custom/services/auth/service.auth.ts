@@ -47,15 +47,27 @@ export class ServiceAuth {
         data.lock = tunnel.fromString(data.lock);
         data.dataLock = tunnel.fromString(data.dataLock);
 
-        var clientLock = tunnel.makeClientLock(this.getHash(p2, p1), this.getHash(p3, p2), this.getHash(p1, p3), data);
+        var clientLock = tunnel.makeClientLock(
+          this.getHash(p2, p1),
+          this.getHash(p3, p2),
+          this.getHash(p1, p3),
+          data
+        );
 
         var postData = {
+          encrypted: tunnel.lockMessage(
+            'what is uuuup?',
+            clientLock.serverInnerLock
+          ),
           finalLock: tunnel.toString(clientLock.lock),
           dataLock: tunnel.toString(clientLock.dataLock),
         };
         this.virtualProcess.lock(postData).subscribe(
           (data) => {
-            console.log(tunnel.unlockMessage(data.encrypted, clientLock.innerLock));
+            console.log(data.decrypted);
+            console.log(
+              tunnel.unlockMessage(data.encrypted, clientLock.innerLock)
+            );
           },
           (error) => console.log('tunnel post', error)
         );
