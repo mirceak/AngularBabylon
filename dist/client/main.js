@@ -7,7 +7,7 @@
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! C:\Users\mirce\Desktop\AngularBabylon\client\src\main.ts */"zUnb");
+module.exports = __webpack_require__(/*! /Users/mircea.bereveanu/Documents/woerk/AngularBabylon-master/client/src/main.ts */"zUnb");
 
 
 /***/ }),

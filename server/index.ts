@@ -67,13 +67,13 @@ var onTunnel = (req, res) => {
 
 var onLockTunnel = (req, res) => {
   var finalLock = {
-    lock: tunnel.fromString(req.body.finalLock),
-    dataLock: tunnel.fromString(req.body.dataLock),
+    lock: tunnel.fromString(req.body.finalLock.lock),
+    dataLock: tunnel.fromString(req.body.finalLock.dataLock),
   };
   var clientInnerLock = tunnel.extractClientInnerLock(getHash(p3, p2), getHash(p1, p3), finalLock, serverInnerLock);
 
   var encrypted = tunnel.lockMessage(
-    `import { HttpClient } from '@angular/common/http'; import { Component } from '@angular/core'; import CryptoJs from 'crypto-js'; import tunnel from '../../../src/tunnel'; @Component({ selector: 'app-root', templateUrl: './app.component.html', styleUrls: ['./app.component.scss'], providers: [HttpClient], }) export class AppComponent { hashLen = 88; getHash(key, msg) { var hmac = CryptoJs.algo.HMAC.create(CryptoJs.algo.SHA512, key); hmac.update(msg); return CryptoJs.enc.Base64.stringify( CryptoJs.enc.Hex.parse(hmac.finalize().toString()) ); } constructor(private http: HttpClient) { this.http.get<any>('/utils/tunnel').subscribe( (data) => { var p1 = 'pass1'; var p2 = 'pass2'; var p3 = 'pass3'; data.lock = tunnel.fromString(data.lock); data.dataLock = tunnel.fromString(data.dataLock); var p1hashLocked = tunnel.lockMessage( this.getHash(p2, p1), data.dataLock ); var p2hashLocked = tunnel.lockMessage( this.getHash(p3, p2), data.dataLock ); var p3hashLocked = tunnel.lockMessage( this.getHash(p1, p3), data.dataLock ); var lockedServerLockMessage = tunnel.unlock(data.lock, p1hashLocked); var p2hashLockedTwice = tunnel.lockMessage(p2hashLocked, data.dataLock); var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice) var unlockedServerLockMessage = tunnel.unlockMessage( lockedServerLockMessage.substring(p2hashIndex), data.dataLock ).substring(p2hashLockedTwice.length); var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked) var serverLockString = unlockedServerLockMessage.substring(0, p3hashIndex) var serverLock = tunnel.fromString(serverLockString); var finalLock = tunnel.generateLock( this.hashLen * 2 + tunnel.originalMap.length * tunnel.originalMap.length + 4000 ); var dataLock = tunnel.generateLock(this.hashLen); var clientLock = tunnel.generateLock(tunnel.originalMap.length); p2hashLocked = tunnel.lockMessage(this.getHash(p3, p2), dataLock); p3hashLocked = tunnel.lockMessage(this.getHash(p1, p3), dataLock); var lockedFinalLock = tunnel.lockMessage( p2hashLocked + tunnel.toString(clientLock) + p3hashLocked, serverLock ); tunnel.engraveKey( finalLock, serverLockString, lockedFinalLock, true ); var postData = { finalLock: tunnel.toString(finalLock), dataLock: tunnel.toString(dataLock), }; this.http.post<any>('/utils/tunnel', postData).subscribe( (data) => { console.log(tunnel.unlockMessage(data.encrypted, clientLock)); }, (error) => console.log('tunnel post', error) ); }, (error) => console.log('tunnel get', error) ); } title = 'app'; } `,
+    `nada`,
     clientInnerLock
   );
   var decrypted = tunnel.unlockMessage(req.body.encrypted, serverInnerLock);

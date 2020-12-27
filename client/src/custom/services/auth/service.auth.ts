@@ -54,13 +54,18 @@ export class ServiceAuth {
           data
         );
 
-        var postData = {
-          encrypted: tunnel.lockMessage(
-            'what is uuuup?',
-            clientLock.serverInnerLock
-          ),
-          finalLock: tunnel.toString(clientLock.lock),
+        var finalLock = {
+          lock: tunnel.toString(clientLock.lock),
           dataLock: tunnel.toString(clientLock.dataLock),
+        }
+
+        var encrypted = tunnel.lockMessage(
+          'what is uuuup?',
+          clientLock.serverInnerLock
+        )
+        var postData = {
+          encrypted,
+          finalLock,
         };
         this.virtualProcess.lock(postData).subscribe(
           (data) => {
