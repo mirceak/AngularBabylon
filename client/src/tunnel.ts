@@ -274,11 +274,7 @@ class tunnel {
     );
     this.engraveKey(lockPieces.lock, lockPieces.p1hashLocked, message, true);
 
-    return {
-      lock: lockPieces.lock,
-      dataLock: lockPieces.dataLock,
-      innerLock: lockPieces.innerLock,
-    };
+    return lockPieces;
   };
   public lockMessage = (message: string, lock: string[][]): string => {
     var locked = '';

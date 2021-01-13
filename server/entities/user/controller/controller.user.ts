@@ -7,9 +7,9 @@ class ControllerUser extends BaseController {
   Entity = SchemaUser;  
 
   login = (req, res) => {   
-    this.Entity.findOne({ email: req.body.email }, (err, user) => {
+    SchemaUser.findOne({ email: req.body.email }, (err, user) => {
       if (!user) { return res.sendStatus(403); }
-      user.comparePassword(req.body.password, (error, isMatch) => {
+      user.comparePassword(req.body.password, req.body.user, (error, isMatch) => {
         if (!isMatch) { return res.sendStatus(403); }
         const token = jwt.sign({ user }, "SECRET_TOKEN");
         res.status(200).json({ token });

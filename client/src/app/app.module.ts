@@ -8,20 +8,18 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
-    HttpClientModule,   
+    HttpClientModule,
     JwtModule.forRoot({
       config: {
-        tokenGetter: (): string => localStorage.getItem('token')
-      }
-    })
+        tokenGetter: (): string => localStorage.getItem('token'),
+      },
+    }),
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

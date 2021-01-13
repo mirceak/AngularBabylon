@@ -3645,10 +3645,10 @@ class LoginService {
                 },
             },
             {
-                key: 'password1',
+                key: 'username',
                 type: 'input',
                 templateOptions: {
-                    label: 'Password 1',
+                    label: 'Username',
                     required: true,
                 },
                 validators: {
@@ -3657,22 +3657,10 @@ class LoginService {
                 },
             },
             {
-                key: 'password2',
+                key: 'password',
                 type: 'input',
                 templateOptions: {
-                    label: 'Password 2',
-                    required: true,
-                },
-                validators: {
-                    minLength: this.pageFormlyService.minLengthValidator(6),
-                    required: this.pageFormlyService.requiredValidator,
-                },
-            },
-            {
-                key: 'password3',
-                type: 'input',
-                templateOptions: {
-                    label: 'Password 3',
+                    label: 'Password',
                     required: true,
                 },
                 validators: {

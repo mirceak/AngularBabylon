@@ -9,6 +9,84 @@ import tunnel from '../client/src/tunnel';
 import BaseController from './controllers/base/base.controller';
 import Controllers from './controllers/base/base.controller.index';
 
+import { createServer } from 'http';
+import { Server, Socket } from 'socket.io';
+
+import SchemaUser from './entities/user/schema/schema.user';
+
+const httpServer = createServer();
+const io = new Server(httpServer, {
+  cors: {
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+});
+const getHash = (key, msg) => {
+  var hash = crypto.createHmac('sha512', key);
+  hash.update(msg);
+  return hash.digest('base64');
+}; 
+ 
+io.on('connection', (socket: Socket) => {
+  console.log('client connected to socket');
+  var p1;
+  var p2;
+  var p3;
+  var ph1;
+  var ph2;
+  var ph3;
+
+  socket.on('startSession', (data) => {
+    p1 = data.email;
+    SchemaUser.findOne({ email: p1 }, (err, user) => {
+      if (!user) {
+        socket.disconnect();
+        return err;
+      }
+      p2 = user.username;
+      p3 = user.password;
+      ph1 = getHash(p2, p1);
+      ph2 = getHash(p3, p2);
+      ph3 = getHash(p1, p3);
+
+      console.log(p1,p2,p3)
+    });
+  });
+
+  socket.on('injectCodeInServer', (data) => {
+    socket.emit('injectCodeInClient', { a: 'helow' });
+  });
+
+  socket.on('disconnect', (data) => {
+    console.log('disconnected')
+  });
+});
+
+var p1;
+var p2;
+var p3;
+var ph1;
+var ph2;
+var ph3;
+var onTunnel = (req, res) => {
+  p1 = req.body.email;
+  p2 = req.body.email;
+  p3 = req.body.email;
+
+  ph1 = getHash(p2, p1);
+  ph2 = getHash(p3, p2);
+  ph3 = getHash(p1, p3);
+  var serverLock = tunnel.makeServerLock(ph1, ph2, ph3);
+
+  res.send({
+    lock: tunnel.toString(serverLock.lock),
+    dataLock: tunnel.toString(serverLock.dataLock),
+  });
+};
+
+httpServer.listen(3030);
+
 const app = express();
 var bodyParser = require('body-parser');
 app.use(bodyParser.json({ limit: '15mb' }));
@@ -31,7 +109,6 @@ async function main(): Promise<any> {
     controllerParser(Controllers);
 
     app.get('/utils/tunnel', onTunnel);
-    app.post('/utils/tunnel', onLockTunnel);
 
     app.get('/*', (req, res) => {
       res.sendFile(path.join(__dirname, '../../client/index.html'));
@@ -41,46 +118,5 @@ async function main(): Promise<any> {
     console.error(err);
   }
 }
-
-var getHash = (key, msg) => {
-  var hash = crypto.createHmac('sha512', key);
-  hash.update(msg);
-  return hash.digest('base64');
-};
-
-const hashLen = 88;
-const p1 = 'pass1';
-const p2 = 'pass2';
-const p3 = 'pass3';
-
-var serverInnerLock: string[][];
-
-var onTunnel = (req, res) => {
-  var serverLock = tunnel.makeServerLock(getHash(p2, p1), getHash(p3, p2), getHash(p1, p3));
-
-  serverInnerLock = serverLock.innerLock;
-  res.send({
-    lock: tunnel.toString(serverLock.lock),
-    dataLock: tunnel.toString(serverLock.dataLock),
-  });
-};
-
-var onLockTunnel = (req, res) => {
-  var finalLock = {
-    lock: tunnel.fromString(req.body.finalLock.lock),
-    dataLock: tunnel.fromString(req.body.finalLock.dataLock),
-  };
-  var clientInnerLock = tunnel.extractClientInnerLock(getHash(p3, p2), getHash(p1, p3), finalLock, serverInnerLock);
-
-  var encrypted = tunnel.lockMessage(
-    `nada`,
-    clientInnerLock
-  );
-  var decrypted = tunnel.unlockMessage(req.body.encrypted, serverInnerLock);
-  res.send({
-    decrypted,
-    encrypted,
-  });
-};
 
 main();
