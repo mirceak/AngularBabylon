@@ -3,106 +3,217 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
 import tunnel from '../../../tunnel';
-import CryptoJs from 'crypto-js';
+import SEAL from 'node-seal'
 import * as socketIO from 'socket.io-client';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceTunnel {
-  private hmac;
   private socket;
   private p1;
   private p2;
   private p3;
-  private ph1;
   private ph2;
   private ph3;
+  private subtle = window.crypto.subtle;
+  private getRandomValues = window.crypto.getRandomValues;
+  private publicExponent = new Uint8Array([1, 0, 1]);
+  private td = new TextDecoder();
+  private te = new TextEncoder();
 
   constructor(private http: HttpClient) {}
+  async getHash(input) {
+    var buffer = new TextEncoder().encode(input);
+    var hash_buffer = await this.subtle.digest('SHA-512', buffer);
+    let hash_array = Array.from(new Uint32Array(hash_buffer));
+    let hash_hex_str = hash_array
+      .map((byte) => ('00' + byte.toString(32)).slice(-2))
+      .join('');
+    return hash_hex_str;
+  }
 
-  getHash(key, msg) {
-    this.hmac = CryptoJs.algo.HMAC.create(CryptoJs.algo.SHA512, key);
-    this.hmac.update(msg);
-    return CryptoJs.enc.Base64.stringify(
-      CryptoJs.enc.Hex.parse(this.hmac.finalize().toString())
+  // async connect(postData) {
+  //   this.p2 = postData.username;
+  //   this.p3 = postData.password;
+
+  //   this.p1 = postData.email;
+  //   this.ph2 = await this.getHash(this.p2);
+  
+  //   this.socket = socketIO.io('http://localhost:3030');
+
+  //   this.socket.on('connect', () => {
+  //     console.log('connected to tunnel socket:', this.socket.id);
+  //   });
+  //   this.socket.on('injectCodeInClient', (data) => {
+  //     //do checks for code and emit random calls
+  //     this.socket.emit('injectCodeInServer', 'tst');
+  //   });
+  //   //initiate the session by requesting code for the account of @email
+  //   this.socket.emit('startSession', { email: this.p1 });
+  // }
+
+  async tunnel(data) {
+
+    (async ()=>{
+      const seal = await SEAL()
+      const schemeType = seal.SchemeType.bfv;
+      const securityLevel = seal.SecurityLevel.tc128;
+      const polyModulusDegree = 4096;
+      const bitSizes = [36, 36, 37];
+      const bitSize = 20;
+      const parms = seal.EncryptionParameters(schemeType);
+      // Set the PolyModulusDegree
+      parms.setPolyModulusDegree(polyModulusDegree);
+      // Create a suitable set of CoeffModulus primes
+      parms.setCoeffModulus(seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes)));
+      // Set the PlainModulus to a prime of bitSize 20.
+      parms.setPlainModulus(seal.PlainModulus.Batching(polyModulusDegree, bitSize));
+      const context = seal.Context(
+        parms, // Encryption Parameters
+        true, // ExpandModChain
+        securityLevel // Enforce a security level
+      );
+      if (!context.parametersSet()) {
+        throw new Error('Could not set the parameters in the given context. Please try different encryption parameters.');
+      }
+      const encoder: any = seal.BatchEncoder(context);
+      const keyGenerator = seal.KeyGenerator(context);
+      const publicKey = keyGenerator.createPublicKey();
+      const secretKey = keyGenerator.secretKey();
+      const encryptor = seal.Encryptor(context, publicKey);
+      const decryptor = seal.Decryptor(context, secretKey);
+      const evaluator = seal.Evaluator(context);
+      // Create data to be encrypted
+      const array = Int32Array.from([1, 2, 3, 4, 5]);
+      // Encode the Array
+      const plainText: any = encoder.encode(array);
+      const array1 = Int32Array.from([1]);
+      // Encode the Array
+      const plainText1: any = encoder.encode(array1);
+      // console.log(encoder.decode(plainText));
+      // Encrypt the PlainText
+      const cipherText: any = encryptor.encrypt(plainText);
+      // console.log(cipherText.save());
+      // Add the CipherText to itself and store it in the destination parameter (itself)
+      evaluator.addPlain(cipherText, plainText1, cipherText); // Op (A), Op (B), Op (Dest)
+      // Or create return a new cipher with the result (omitting destination parameter)
+      // const cipher2x = evaluator.add(cipherText, cipherText)
+      // Decrypt the CipherText
+      const decryptedPlainText = decryptor.decrypt(cipherText);
+      // Decode the PlainText
+      const decodedArray = encoder.decode(decryptedPlainText);
+      console.log('decodedArray', decodedArray);
+    
+    })()
+
+    var keys = await this.generateRsaKeys();
+    var pubkData = await this.subtle.exportKey('jwk', keys.publicKey);
+
+    data.pubkData = pubkData;
+
+    this.http.post<any>('/utils/tunnel', data).subscribe(async (response) => {
+      var lock = response.lock;
+      var offset = 64;
+      // var decr = await this.decrypt(this.toArrayBuffer(response.encrypted), keys.privateKey, 'test')
+      var str = tunnel.unlockMessage(
+        tunnel
+          .unlockMessage(tunnel.unlock(lock.lock, data.email), lock.dataLock)
+          .substring(offset, lock.lock.length - offset),
+        lock.dataLock
+      );
+      var key: any = await this.decrypt(
+        this.toArrayBuffer(str.split(',')),
+        keys.privateKey,
+        'test'
+      );
+      key = await this.importRsaKey(JSON.parse(key));
+
+      var newKeys = await this.generateRsaKeys();
+      var newPubkData = await this.subtle.exportKey('jwk', newKeys.publicKey);
+
+      var encrypted = await this.encrypt('testing something cooweltesting something cooweltesting something coowel', key);
+      var lock = null; //await tunnel.makeLock(data.email, new Uint16Array(encrypted.ciphertext).join(','));
+      var postData = {
+        lock: lock,
+        email: data.email,
+        newPubkData: encrypted,
+      };
+      this.http.post<any>('/utils/onLock', postData).subscribe(async (response) => {
+        console.log(response)
+      })
+    });
+  }
+
+  async importRsaKey(keyData, format = 'jwk', hash = 'SHA-512') {
+    const key = await this.subtle.importKey(
+      format,
+      keyData,
+      {
+        name: 'RSA-OAEP',
+        hash,
+      },
+      true,
+      ['encrypt']
     );
+
+    return key;
   }
 
-  connect(postData): void {
-    this.p1 = postData.email;
-    this.p2 = postData.username;
-    this.p3 = postData.password;
-
-    this.ph1 = this.getHash(this.p2, this.p1);
-    this.ph2 = this.getHash(this.p3, this.p2);
-    this.ph3 = this.getHash(this.p1, this.p3);
-
-    this.socket = socketIO.io('http://localhost:3030');
-
-    this.socket.on('connect', () => {
-      console.log('connected to tunnel socket:', this.socket.id);
-    });
-    this.socket.on('injectCodeInClient', (data) => {
-      //do checks for code and emit random calls
-      this.socket.emit('injectCodeInServer', 'tst');
-    });
-    //initiate the session by requesting code for the account of @email
-    this.socket.emit('startSession', { email: this.p1 });
+  toArrayBuffer(arr) {
+    var buf = new ArrayBuffer(arr.length * 2);
+    var bufView = new Uint16Array(buf);
+    for (var i = 0, strLen = arr.length; i < strLen; i++) {
+      bufView[i] = arr[i];
+    }
+    return buf;
   }
 
-  tunnel(data, p1, p2, p3): void {
-    data.lock = tunnel.fromString(data.lock);
-    data.dataLock = tunnel.fromString(data.dataLock);
+  async encrypt(plaintext, key) {
+    const iv: any = 'test';
 
-    var clientLock = tunnel.makeClientLock(this.p1, this.p2, this.p3, data);
+    const ciphertext = await this.subtle.encrypt(
+      {
+        name: 'RSA-OAEP',
+        iv,
+      },
+      key,
+      this.te.encode(plaintext)
+    );
+
+    return {
+      iv,
+      ciphertext,
+    };
+  }
+
+  async decrypt(ciphertext, key, iv) {
+    const plaintext = await this.subtle.decrypt(
+      {
+        name: 'RSA-OAEP',
+        iv,
+      },
+      key,
+      ciphertext
+    );
+
+    return this.td.decode(plaintext);
+  }
+
+  async generateRsaKeys() {
+    const { publicKey, privateKey } = await this.subtle.generateKey(
+      {
+        name: 'RSA-OAEP',
+        modulusLength: 4480,
+        publicExponent: this.publicExponent,
+        hash: {
+          name: 'SHA-512',
+        },
+      },
+      true,
+      ['encrypt', 'decrypt']
+    );
+
+    return { publicKey, privateKey };
   }
 }
-
-
-//send lock alongside visible character map to be used with the unlocked code
-//keep executing blocks of code on the client
-//expose a list of methods the server's code can access
-//make sure server can inject code that reaches back to it by injecting string in the next request's var
-// 1. make first locks with actual code
-// 2. make a first continuous system that generates two new passwords
-// 	//if (pass[3]=='c') { result.push('d'); } else { result.push('x'); }
-// 	//start shifting secondary passwords when they reach the length of the actual passwords
-// 	//keep a list of future passwords for step 8
-// 3. use new passwords as secondary key pair so that we can remove the offsetting
-// 4. make sure outcome pattern matches other password inputs as well
-// 5. make secondary continuous system that creates a dynamic lock by running random code like above
-// 	//all it has to do is move chars around on every row of the lock ex: a-b 2-4 a3-4x etc random
-// 	//make sure outcome pattern matches other password inputs as well
-// 	//send [] and ((()=>{})()) map each time
-// 6. add everything to the server as well
-// 7. make third system that randomly tries to access methods on the server and on the client if any //instead of url stubs
-// 	//base of off secondary system's output
-// 	//send [] and ((()=>{})()) map each time
-// 	//make sure outcome pattern matches other password inputs as well
-// 	//send random answer if the api method returns an error from parameters or whatever
-// 	//send random answer if no call is made as well
-// 8. enlock response with a future key pair
-// 	//send response through the secondary system's output //it has to be a lock
-// 	//client keeps trying to unlock valid requests with incoming passwords and the original passwords
-// 	//server sends correct passwords for each request at some point
-// 	//response with the passwords the request was made with
-
-
-
-
-
-
-// client generates a key pair
-
-// sends request with email and key pair
-
-// starts getting lock encoded and locked with the public key alongside one generated password
-// client keeps track of both tracks unlocks separately with username then with password
-
-// client keeps looking for a hash containing the public key it sent and the current keys and both passwords
-// the next message will be a public key from the server to start communicating.
-
-
-// to use multiple passwords on a single lock
-// engrave with the last password and then permutate between last password inputed and the next

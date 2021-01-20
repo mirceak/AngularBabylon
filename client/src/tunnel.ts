@@ -100,15 +100,17 @@ class tunnel {
     "'",
     ' ',
   ];
-  public randomThreshold = 250;
-  public offsetThreshold = 1000;
-  hashLen = 88;
-  public originalMap: string[] = [
+
+  private randomThreshold = 250;
+  private publicExponent = new Uint8Array([1, 0, 1]);
+  private originalMap: string[] = [
     ...this.letters,
     ...this.numbers,
     ...this.characters,
   ];
-  private scrambledMap = (): string[] => {
+  private td = new TextDecoder();
+  private te = new TextEncoder();
+  private scrambledMap(): string[] {
     var tmp: string[] = this.originalMap.slice(0);
     var res: string[] = [];
     var current: string = null;
@@ -117,33 +119,32 @@ class tunnel {
       res.push(current);
     }
     return res;
-  };
-  public generateLock = (size): string[][] => {
+  }
+  private generateLock(size): string[][] {
     var lock: string[][] = [];
     for (var i = 0; i < size; i++) {
       lock.push(this.scrambledMap());
     }
     return lock;
-  };
-  public engraveKey = (lock, key, message, _offset = false) => {
+  }
+  private engraveData(lock, key, message) {
+    // console.log(message, message.length, lock.length)
     if (message.length > lock.length) {
-      console.log(lock.length, message.length);
+      console.log(lock.length, message.length, message);
       throw new Error('Lock must be bigger than message');
     }
-    var offset =
-      _offset == false ? 0 : Math.floor(Math.random() * this.offsetThreshold);
     for (var i = 0; i < message.length; i++) {
-      var row: string[] = lock[i + offset];
-      var input: string = key[(i + offset) % key.length];
+      var row: string[] = lock[i];
+      var input: string = key[i % key.length];
       var originalInputIdex: number = this.originalMap.indexOf(input);
       var output: string = row[originalInputIdex];
-      var messageChar: string = message[i];
+      var messageChar: string = message[i % message.length];
       if (output != messageChar) {
         row[row.indexOf(messageChar)] = output;
         row[originalInputIdex] = messageChar;
       }
     }
-  };
+  }
   public unlock = (lock: string[][], password: string): string => {
     var unlocked = '';
     for (var i = 0; i < lock.length; i++) {
@@ -152,137 +153,44 @@ class tunnel {
       );
       unlocked += lock[i][originalInputIdex];
     }
-
     return unlocked;
   };
-  extractClientInnerLock = (
-    p2Hash,
-    p3Hash,
-    clientLock,
-    serverInnerLock
-  ): string[][] => {
-    var p2hashLocked = this.lockMessage(p2Hash, clientLock.dataLock);
-    var p3hashLocked = this.lockMessage(p3Hash, clientLock.dataLock);
-
-    var lockedClientLockMessage = this.unlock(
-      clientLock.lock,
-      this.toString(serverInnerLock)
-    );
-
-    var p2hashLockedTwice = this.lockMessage(p2hashLocked, serverInnerLock);
-    var p2hashIndex = lockedClientLockMessage.indexOf(p2hashLockedTwice);
-
-    var partUnlockedClientLockMessage = this.unlockMessage(
-      lockedClientLockMessage.substring(p2hashIndex),
-      serverInnerLock
-    ).substring(p2hashLockedTwice.length);
-
-    var p3hashIndex = partUnlockedClientLockMessage.indexOf(p3hashLocked);
-    var finalLockString = partUnlockedClientLockMessage.substring(
-      0,
-      p3hashIndex
-    );
-
-    var finalClientLock = this.fromString(finalLockString);
-    return finalClientLock;
-  };
-  extractServerInnerLock = (p1Hash, p2Hash, p3Hash, serverLock): string[][] => {
-    var p1hashLocked = this.lockMessage(p1Hash, serverLock.dataLock);
-    var p2hashLocked = this.lockMessage(p2Hash, serverLock.dataLock);
-    var p3hashLocked = this.lockMessage(p3Hash, serverLock.dataLock);
-
-    var lockedServerLockMessage = this.unlock(serverLock.lock, p1hashLocked);
-
-    var p2hashLockedTwice = this.lockMessage(p2hashLocked, serverLock.dataLock);
-    var p2hashIndex = lockedServerLockMessage.indexOf(p2hashLockedTwice);
-
-    var unlockedServerLockMessage = this.unlockMessage(
-      lockedServerLockMessage.substring(p2hashIndex),
-      serverLock.dataLock
-    ).substring(p2hashLockedTwice.length);
-
-    var p3hashIndex = unlockedServerLockMessage.indexOf(p3hashLocked);
-    var serverLockString = unlockedServerLockMessage.substring(0, p3hashIndex);
-
-    var unlockedServerLock = this.fromString(serverLockString);
-    return unlockedServerLock;
-  };
-  public makeClientLock = (p1Hash, p2Hash, p3Hash, serverLock): any => {
-    var serverInnerLock = this.extractServerInnerLock(
-      p1Hash,
-      p2Hash,
-      p3Hash,
-      serverLock
-    );
-
-    var lockPieces = this.makeLockPieces(p1Hash, p2Hash, p3Hash);
-    var lockedFinalLock = this.lockMessage(
-      lockPieces.p2hashLocked +
-        this.toString(lockPieces.innerLock) +
-        lockPieces.p3hashLocked,
-      serverInnerLock
-    );
-    this.engraveKey(
-      lockPieces.lock,
-      this.toString(serverInnerLock),
-      lockedFinalLock,
-      true
-    );
-
-    return {
-      lock: lockPieces.lock,
-      dataLock: lockPieces.dataLock,
-      innerLock: lockPieces.innerLock,
-      serverInnerLock: serverInnerLock,
-    };
-  };
-  makeLockPieces = (p1Hash, p2Hash, p3Hash): any => {
-    var innerLockLength =
-      Math.random() * this.randomThreshold + this.originalMap.length;
-    var dataLockLength = this.hashLen + Math.random() * this.randomThreshold;
-    var lockLength =
-      this.hashLen * 2 +
-      innerLockLength * innerLockLength +
-      Math.random() * this.randomThreshold +
-      this.offsetThreshold;
-
-    var innerLock = this.generateLock(innerLockLength);
+  private makeLockPieces(messageLen): any {
+    var dataLockLength = Math.random() * this.randomThreshold;
     var dataLock = this.generateLock(dataLockLength);
-    var lock = this.generateLock(lockLength);
-
-    var p1hashLocked = this.lockMessage(p1Hash, dataLock);
-    var p2hashLocked = this.lockMessage(p2Hash, dataLock);
-    var p3hashLocked = this.lockMessage(p3Hash, dataLock);
-
+    var lock = this.generateLock(messageLen);
     return {
       lock,
       dataLock,
-      innerLock,
-      p1hashLocked,
-      p2hashLocked,
-      p3hashLocked,
     };
-  };
-  public makeServerLock = (p1Hash, p2Hash, p3Hash): any => {
-    var lockPieces = this.makeLockPieces(p1Hash, p2Hash, p3Hash);
-
-    var message = this.lockMessage(
-      lockPieces.p2hashLocked +
-        this.toString(lockPieces.innerLock) +
-        lockPieces.p3hashLocked,
-      lockPieces.dataLock
-    );
-    this.engraveKey(lockPieces.lock, lockPieces.p1hashLocked, message, true);
+  }
+  private makeLock(password, message): any {
+    var lockPieces = this.makeLockPieces(message.length);
+    message = this.lockMessage(message, lockPieces.dataLock);
+    this.engraveData(lockPieces.lock, password, message);
 
     return lockPieces;
+  }
+  public makePubkLock = async (password, pubkData, subtle): Promise<any> => {
+    var responsePubk = await this.importRsaKey(subtle, pubkData);
+    var rsaKey = await this.generateRsaKeys(subtle);
+    var jsonKey = JSON.stringify(
+      await subtle.exportKey('jwk', rsaKey.publicKey)
+    );
+    var encrypted = await this.rsaEncrypt(subtle, jsonKey, responsePubk);
+    var lock = this.makeLock(password, encrypted);
+    return {
+      rsaKey,
+      lock,
+    };
   };
-  public lockMessage = (message: string, lock: string[][]): string => {
+  private lockMessage(message: string, lock: string[][]): string {
     var locked = '';
     for (var i = 0; i < message.length; i++) {
       locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
     }
     return locked;
-  };
+  }
   public unlockMessage = (message: string, lock: string[][]): string => {
     var unlocked = '';
     for (var i = 0; i < message.length; i++) {
@@ -290,7 +198,7 @@ class tunnel {
     }
     return unlocked;
   };
-  public toString = (lock: string[][]): string => {
+  private toString = (lock: string[][]): string => {
     var result = lock.reduce((total, current) => {
       total += current.join('');
       return total;
@@ -298,7 +206,7 @@ class tunnel {
 
     return result;
   };
-  public fromString = (string: string): string[][] => {
+  private fromString = (string: string): string[][] => {
     var result = [];
     for (var i = 0; i < string.length / this.originalMap.length; i++) {
       result.push([
@@ -310,6 +218,108 @@ class tunnel {
     }
     return result;
   };
+  private async getShaHash(subtle, msg) {
+    let digest: any = await subtle.digest('SHA-512', this.te.encode(msg));
+    return digest;
+  }
+  private async rsaEncrypt(subtle, plaintext, key) {
+    const encrypted = await subtle.encrypt(
+      {
+        name: 'RSA-OAEP',
+      },
+      key,
+      this.te.encode(plaintext)
+    );
+
+    return new Uint16Array(encrypted.ciphertext).join(',');
+  }
+  private async aesEncrypt(subtle, plaintext, key, iv = 'testing testing testing testing testing testing testing ') {
+    const ciphertext = await subtle.encrypt(
+      {
+        name: 'AES-GCM',
+        iv,
+      },
+      key,
+      this.te.encode(plaintext)
+    );
+    return {
+      iv,
+      ciphertext,
+    };
+  }
+  private async rsaDecrypt(subtle, ciphertext, key) {
+    const plaintext = await subtle.decrypt(
+      {
+        name: 'RSA-OAEP',
+      },
+      key,
+      ciphertext
+    );
+    return this.td.decode(plaintext);
+  }
+  private async aesDecrypt(subtle, ciphertext, key, iv) {
+    const plaintext = await subtle.decrypt(
+      {
+        name: 'RSA-OAEP',
+        iv,
+      },
+      key,
+      ciphertext
+    );
+    return this.td.decode(plaintext);
+  }
+  private async generateRsaKeys(subtle) {
+    const { publicKey, privateKey } = await subtle.generateKey(
+      {
+        name: 'RSA-OAEP',
+        modulusLength: 2048,
+        publicExponent: this.publicExponent,
+        hash: {
+          name: 'SHA-512',
+        },
+      },
+      true,
+      ['encrypt', 'decrypt']
+    );
+    return { publicKey, privateKey };
+  }
+  private async generateAesKeys(subtle) {
+    const key = await subtle.generateKey(
+      {
+        name: 'AES-GCM',
+        length: 256
+      },
+      true,
+      ['encrypt', 'decrypt']
+    );
+    return key;
+  }
+  private async importRsaKey(subtle, keyData, format = 'jwk', hash = 'SHA-512') {
+    const key = await subtle.importKey(
+      format,
+      keyData,
+      {
+        name: 'RSA-OAEP',
+        hash,
+      },
+      true,
+      ['encrypt']
+    );
+    return key;
+  }
+  private async importAesKey(subtle, keyData, length, format = 'jwk') {
+    const key = await subtle.importKey(
+      format,
+      keyData,
+      {
+        name: 'AES-GCM',
+        length,
+      },
+      true,
+      ['encrypt']
+    );
+    return key;
+  }
 }
 
 let instance = new tunnel();

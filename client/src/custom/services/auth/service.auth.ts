@@ -1,3 +1,4 @@
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -17,20 +18,26 @@ export class ServiceAuth {
   currentUser: ModelUser = new ModelUser();
 
   constructor(
-    private serviceUser: ServiceUser,
     private serviceTunnel: ServiceTunnel,
     private router: Router,
-    private jwtHelper: JwtHelperService
+    private jwtHelper: JwtHelperService,
+    private http: HttpClient
   ) {
     const token = localStorage.getItem('token');
     if (token) {
       const decodedUser = this.decodeUserFromToken(token);
       this.setCurrentUser(decodedUser);
     }
+    this.login({
+      email: 'mircea.bereveanu@gmail.com',
+      username: 'mircea',
+      password: 'qweqwe'
+    })
   }
 
   login(postData): void {
-    this.serviceTunnel.connect(postData);
+    // this.serviceTunnel.connect(postData)
+    this.serviceTunnel.tunnel(postData);
   }
 
   logout(): void {
