@@ -10,7 +10,7 @@ import Controllers from './controllers/base/base.controller.index';
 import { createServer } from 'http';
 import { Server, Socket } from 'socket.io';
 
-import SchemaUser from './entities/user/schema/schema.user';
+import * as User from './entities/user/schema/schema.user';
 
 import * as SEAL from 'node-seal'
 
@@ -28,7 +28,7 @@ const io = new Server(httpServer, {
   const schemeType = seal.SchemeType.bfv;
   const securityLevel = seal.SecurityLevel.tc128;
   const polyModulusDegree = 4096;
-  const bitSizes = [28, 28, 37];
+  const bitSizes = [36, 36, 37];
   const bitSize = 20;
   const parms = seal.EncryptionParameters(schemeType);
   // Set the PolyModulusDegree
@@ -110,7 +110,7 @@ var password;
 var pubkLock;
 var onTunnel = async (req, res) => {
   email = req.body.email;
-  await SchemaUser.findOne({ email: email }, async (err, user) => {
+  await User.default.SchemaUser.findOne({ email: email }, async (err, user) => {
     if (!user) {
       res.send({
         error: 'no user found',

@@ -12,7 +12,7 @@ const userSchema = new mongoose.Schema({
 
 // Before saving the user, hash the password
 userSchema.pre('save', function (next): void {
-  const user = this;
+  const user: any = this;
   console.log(user);
   if (!user.isModified('password')) {
     return next();
@@ -33,7 +33,7 @@ userSchema.methods.comparePassword = function (candidatePassword, candidateUsern
   var ph3: any = crypto.createHmac('sha512', candidateUsername);
   ph3.update(candidatePassword);
   ph3 = ph3.digest('base64');
-  if (ph3 === this.password && ph2 === this.username) {
+  if (ph3 === (this as any).password && ph2 === (this as any).username) {
     callback(null, true);
     return;
   }
@@ -51,9 +51,11 @@ userSchema.set('toJSON', {
 });
 
 const SchemaUser = mongoose.model(EntityName, userSchema);
-SchemaUser.apiPaths = {
-  pathNamePlural: mongoose.pluralize()(EntityName),
-  pathName: EntityName.toLowerCase(),
-};
 
-export default SchemaUser;
+export default {
+  SchemaUser,
+  apiPaths: {
+    pathNamePlural: mongoose.pluralize()(EntityName),
+    pathName: EntityName.toLowerCase(),
+  }
+};

@@ -1,13 +1,13 @@
 import * as jwt from 'jsonwebtoken';
 import BaseController from '../../../controllers/base/base.controller';
 
-import SchemaUser from '../../../entities/user/schema/schema.user';
+import * as SchemaUser from '../../../entities/user/schema/schema.user';
 
 class ControllerUser extends BaseController {
-  Entity = SchemaUser;  
+  Entity = SchemaUser.default;  
 
   login = (req, res) => {   
-    SchemaUser.findOne({ email: req.body.email }, (err, user) => {
+    SchemaUser.default.SchemaUser.findOne({ email: req.body.email }, (err, user) => {
       if (!user) { return res.sendStatus(403); }
       user.comparePassword(req.body.password, req.body.user, (error, isMatch) => {
         if (!isMatch) { return res.sendStatus(403); }
