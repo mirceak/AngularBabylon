@@ -2,7 +2,6 @@ import * as mongoose from 'mongoose';
 
 async function setMongo(): Promise<any> {
   let mongodbURI = "mongodb://localhost:27017/db";
-  // mongoose.Promise = global.Promise;
   mongoose.set('useCreateIndex', true);
   mongoose.set('useNewUrlParser', true);
   mongoose.set('useFindAndModify', false);

@@ -1,3 +1,5 @@
+import * as SEAL from 'node-seal';
+import { encode } from 'punycode';
 class tunnel {
   private letters: Array<string> = [
     'a',
@@ -100,6 +102,99 @@ class tunnel {
     "'",
     ' ',
   ];
+  private homoSeal = (async () => {
+    /* @ts-ignore fuyck yaaya fuyck you seal sheit call*/
+    const seal = await SEAL();
+    const schemeType = seal.SchemeType.bfv;
+    const securityLevel = seal.SecurityLevel.tc128;
+    const polyModulusDegree = 4096;
+    const bitSizes = [36, 36, 37];
+    const bitSize = 20;
+    const parms = seal.EncryptionParameters(schemeType);
+    // Set the PolyModulusDegree
+    parms.setPolyModulusDegree(polyModulusDegree);
+    // Create a suitable set of CoeffModulus primes
+    parms.setCoeffModulus(
+      seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes))
+    );
+    // Set the PlainModulus to a prime of bitSize 20.
+    parms.setPlainModulus(
+      seal.PlainModulus.Batching(polyModulusDegree, bitSize)
+    );
+    const context = seal.Context(
+      parms, // Encryption Parameters
+      true, // ExpandModChain
+      securityLevel // Enforce a security level
+    );
+    if (!context.parametersSet()) {
+      throw new Error(
+        'Could not set the parameters in the given context. Please try different encryption parameters.'
+      );
+    }
+    const encoder: any = seal.BatchEncoder(context);
+    const keyGenerator = seal.KeyGenerator(context);
+    const evaluator = seal.Evaluator(context);
+
+    // const publicKey = keyGenerator.createPublicKey();
+    // const secretKey = keyGenerator.secretKey();
+    // const encryptor = seal.Encryptor(context, publicKey);
+    // const decryptor = seal.Decryptor(context, secretKey);
+    // // Create data to be encrypted
+    // const array = new Int32Array(4096).map((current) => {
+    //   return Math.random() * 20000 - 10000;
+    // });
+    // const plainText: any = encoder.encode(array);
+    // const array1 = new Int32Array(4096).map((current) => {
+    //   return Math.random() * 20000 - 10000;
+    // });
+    // const plainText1: any = encoder.encode(array1);
+    // const cipherText: any = encryptor.encrypt(plainText);
+
+    // evaluator.addPlain(cipherText, plainText1, cipherText);
+    // const decryptedPlainText = decryptor.decrypt(cipherText);
+    // const decodedArray = encoder.decode(decryptedPlainText);
+    // console.log('decodedArray', decodedArray);
+
+    return {
+      seal: seal,
+      context: context,
+      encoder: encoder,
+      keyGenerator: keyGenerator,
+      evaluator: evaluator,
+    };
+  })();
+
+  public async homoDecrypt(keys, cipherText) {
+    var homoSeal = await this.homoSeal;
+    const decryptor = homoSeal.seal.Decryptor(homoSeal.context, keys.privateKey);
+    const encryptor = homoSeal.seal.Encryptor(homoSeal.context, keys.publicKey);
+    const cipher = encryptor.encrypt(homoSeal.encoder.encode(Int32Array.from([])))
+    cipher.load(homoSeal.context, this.te.encode(cipherText));
+    const decryptedPlainText: any = decryptor.decrypt(cipher);
+    const decryptedText = homoSeal.encoder.decode(decryptedPlainText);
+    return decryptedText;
+  }
+
+  public async homoEncrypt(pubkData, plainText) {
+    var homoSeal = await this.homoSeal;
+    var publicKey = homoSeal.keyGenerator.createPublicKey();
+    publicKey.load(homoSeal.context, this.te.encode(pubkData));
+    const encryptor = homoSeal.seal.Encryptor(homoSeal.context, publicKey);
+    plainText = homoSeal.encoder.encode(Int32Array.from(this.te.encode(plainText)));
+    const cipherText: any = encryptor.encrypt(plainText);
+    return cipherText.save();
+  }
+
+  public async generateHomoKeys() {
+    const publicKey = (await this.homoSeal).keyGenerator.createPublicKey();
+    const privateKey = (await this.homoSeal).keyGenerator.secretKey();
+
+    return {
+      publicKey: publicKey,
+      privateKey: privateKey,
+      pubkData: publicKey.save(),
+    };
+  }
 
   private randomThreshold = 250;
   private publicExponent = new Uint8Array([1, 0, 1]);
@@ -198,6 +293,14 @@ class tunnel {
     }
     return unlocked;
   };
+  private toArrayBuffer = (arr) => {
+    var buf = new ArrayBuffer(arr.length * 2);
+    var bufView = new Uint16Array(buf);
+    for (var i = 0, strLen = arr.length; i < strLen; i++) {
+      bufView[i] = arr[i];
+    }
+    return buf;
+  };
   private toString = (lock: string[][]): string => {
     var result = lock.reduce((total, current) => {
       total += current.join('');
@@ -218,11 +321,14 @@ class tunnel {
     }
     return result;
   };
-  private async getShaHash(subtle, msg) {
-    let digest: any = await subtle.digest('SHA-512', this.te.encode(msg));
-    return digest;
+  public async getShaHash(subtle, msg) {
+    return Array.from(
+      new Uint32Array(await subtle.digest('SHA-512', this.te.encode(msg)))
+    )
+      .map((byte) => ('00' + byte.toString(32)).slice(-2))
+      .join('');
   }
-  private async rsaEncrypt(subtle, plaintext, key) {
+  public async rsaEncrypt(subtle, plaintext, key) {
     const encrypted = await subtle.encrypt(
       {
         name: 'RSA-OAEP',
@@ -230,14 +336,18 @@ class tunnel {
       key,
       this.te.encode(plaintext)
     );
-
-    return new Uint16Array(encrypted.ciphertext).join(',');
+    return encrypted;
   }
-  private async aesEncrypt(subtle, plaintext, key, iv = 'testing testing testing testing testing testing testing ') {
+  public async aesEncrypt(
+    subtle,
+    plaintext,
+    key,
+    iv = 'someRandomIvThatNeedsChaning'
+  ) {
     const ciphertext = await subtle.encrypt(
       {
         name: 'AES-GCM',
-        iv,
+        iv: this.te.encode(iv),
       },
       key,
       this.te.encode(plaintext)
@@ -247,7 +357,7 @@ class tunnel {
       ciphertext,
     };
   }
-  private async rsaDecrypt(subtle, ciphertext, key) {
+  public async rsaDecrypt(subtle, ciphertext, key) {
     const plaintext = await subtle.decrypt(
       {
         name: 'RSA-OAEP',
@@ -257,18 +367,18 @@ class tunnel {
     );
     return this.td.decode(plaintext);
   }
-  private async aesDecrypt(subtle, ciphertext, key, iv) {
+  public async aesDecrypt(subtle, ciphertext, key, iv) {
     const plaintext = await subtle.decrypt(
       {
-        name: 'RSA-OAEP',
-        iv,
+        name: 'AES-GCM',
+        iv: this.te.encode(iv),
       },
       key,
       ciphertext
     );
     return this.td.decode(plaintext);
   }
-  private async generateRsaKeys(subtle) {
+  public async generateRsaKeys(subtle) {
     const { publicKey, privateKey } = await subtle.generateKey(
       {
         name: 'RSA-OAEP',
@@ -281,23 +391,38 @@ class tunnel {
       true,
       ['encrypt', 'decrypt']
     );
-    return { publicKey, privateKey };
+    return {
+      publicKey: publicKey,
+      privateKey: privateKey,
+      pubkData: (await subtle.exportKey('jwk', publicKey)).n,
+    };
   }
-  private async generateAesKeys(subtle) {
+  public async generateAesKey(subtle) {
     const key = await subtle.generateKey(
       {
         name: 'AES-GCM',
-        length: 256
+        length: 256,
       },
       true,
       ['encrypt', 'decrypt']
     );
-    return key;
+    return {
+      publicKey: key,
+      privateKey: key,
+      pubkData: (await subtle.exportKey('jwk', key)).k,
+    };
   }
-  private async importRsaKey(subtle, keyData, format = 'jwk', hash = 'SHA-512') {
+  public async importRsaKey(subtle, keyData, format = 'jwk', hash = 'SHA-512') {
     const key = await subtle.importKey(
       format,
-      keyData,
+      {
+        alg: 'RSA-OAEP-512',
+        e: 'AQAB',
+        ext: true,
+        key_ops: ['encrypt', 'decrypt'],
+        kty: 'RSA',
+        n: keyData,
+      },
       {
         name: 'RSA-OAEP',
         hash,
@@ -307,18 +432,39 @@ class tunnel {
     );
     return key;
   }
-  private async importAesKey(subtle, keyData, length, format = 'jwk') {
+  public async importAesKey(subtle, keyData, format = 'jwk') {
     const key = await subtle.importKey(
       format,
-      keyData,
+      {
+        key_ops: ['encrypt', 'decrypt'],
+        ext: true,
+        kty: 'oct',
+        k: keyData,
+        alg: 'A256GCM',
+      },
       {
         name: 'AES-GCM',
-        length,
+        length: 256,
       },
       true,
-      ['encrypt']
+      ['encrypt', 'decrypt']
     );
     return key;
+  }
+  public async getRsaEncryptedAesKey(subtle, rsaPubkData) {
+    var rsaPublicKey = await this.importRsaKey(subtle, rsaPubkData);
+    var aesKey = await this.generateAesKey(subtle);
+    var rsaEncryptedAes = await this.rsaEncrypt(
+      subtle,
+      aesKey.pubkData,
+      rsaPublicKey
+    );
+    return {
+      rsaEncryptedAes,
+      rsaPublicKey: rsaPublicKey,
+      aesKey: aesKey.privateKey,
+      aesPubkData: aesKey.pubkData,
+    };
   }
 }
 
