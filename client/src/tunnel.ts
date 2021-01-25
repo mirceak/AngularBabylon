@@ -1,3 +1,5 @@
+import { isDefined } from '@angular/compiler/src/util';
+import { isUndefined } from '@ngx-formly/core/lib/utils';
 import * as SEAL from 'node-seal';
 import { encode } from 'punycode';
 class tunnel {
@@ -102,100 +104,89 @@ class tunnel {
     "'",
     ' ',
   ];
-  private homoSeal = (async () => {
+  private hCrypt = (async () => {
     /* @ts-ignore fuyck yaaya fuyck you seal sheit call*/
     const seal = await SEAL();
     const schemeType = seal.SchemeType.bfv;
     const securityLevel = seal.SecurityLevel.tc128;
-    const polyModulusDegree = 4096;
-    const bitSizes = [36, 36, 37];
-    const bitSize = 20;
+    const polyModulusDegree = 1024;
+    const bitSizes = [24];
+    const bitSize = 14;
     const parms = seal.EncryptionParameters(schemeType);
-    // Set the PolyModulusDegree
     parms.setPolyModulusDegree(polyModulusDegree);
-    // Create a suitable set of CoeffModulus primes
     parms.setCoeffModulus(
       seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes))
     );
-    // Set the PlainModulus to a prime of bitSize 20.
     parms.setPlainModulus(
       seal.PlainModulus.Batching(polyModulusDegree, bitSize)
     );
-    const context = seal.Context(
-      parms, // Encryption Parameters
-      true, // ExpandModChain
-      securityLevel // Enforce a security level
-    );
+    const context = seal.Context(parms, true, securityLevel);
     if (!context.parametersSet()) {
       throw new Error(
         'Could not set the parameters in the given context. Please try different encryption parameters.'
       );
     }
     const encoder: any = seal.BatchEncoder(context);
-    const keyGenerator = seal.KeyGenerator(context);
     const evaluator = seal.Evaluator(context);
-
-    // const publicKey = keyGenerator.createPublicKey();
-    // const secretKey = keyGenerator.secretKey();
-    // const encryptor = seal.Encryptor(context, publicKey);
-    // const decryptor = seal.Decryptor(context, secretKey);
-    // // Create data to be encrypted
-    // const array = new Int32Array(4096).map((current) => {
-    //   return Math.random() * 20000 - 10000;
-    // });
-    // const plainText: any = encoder.encode(array);
-    // const array1 = new Int32Array(4096).map((current) => {
-    //   return Math.random() * 20000 - 10000;
-    // });
-    // const plainText1: any = encoder.encode(array1);
-    // const cipherText: any = encryptor.encrypt(plainText);
-
-    // evaluator.addPlain(cipherText, plainText1, cipherText);
-    // const decryptedPlainText = decryptor.decrypt(cipherText);
-    // const decodedArray = encoder.decode(decryptedPlainText);
-    // console.log('decodedArray', decodedArray);
-
     return {
       seal: seal,
-      context: context,
       encoder: encoder,
-      keyGenerator: keyGenerator,
       evaluator: evaluator,
+      context: context,
     };
   })();
-
-  public async homoDecrypt(keys, cipherText) {
-    var homoSeal = await this.homoSeal;
-    const decryptor = homoSeal.seal.Decryptor(homoSeal.context, keys.privateKey);
-    const encryptor = homoSeal.seal.Encryptor(homoSeal.context, keys.publicKey);
-    const cipher = encryptor.encrypt(homoSeal.encoder.encode(Int32Array.from([])))
-    cipher.load(homoSeal.context, this.te.encode(cipherText));
+  public async generateCipher(pubkData, data) {
+    var hCrypt = await this.hCrypt;
+    const keyGenerator = hCrypt.seal.KeyGenerator(hCrypt.context);
+    const publicKey = keyGenerator.createPublicKey();
+    publicKey.load(hCrypt.context, this.te.encode(pubkData));
+    const encryptor = hCrypt.seal.Encryptor(hCrypt.context, publicKey);
+    const cipher = encryptor.encrypt(
+      hCrypt.encoder.encode(Int32Array.from(data))
+    );
+    return cipher.save();
+  }
+  public async hCryptAdd(pubkData, cipherData, data) {
+    var hCrypt = await this.hCrypt;
+    const keyGenerator = hCrypt.seal.KeyGenerator(hCrypt.context);
+    const publicKey = keyGenerator.createPublicKey();
+    publicKey.load(hCrypt.context, this.te.encode(pubkData));
+    const encryptor = hCrypt.seal.Encryptor(hCrypt.context, publicKey);
+    const cipherAdd = encryptor.encrypt(
+      hCrypt.encoder.encode(Int32Array.from(this.te.encode(data)))
+    );
+    const cipher = encryptor.encrypt(
+      hCrypt.encoder.encode(Int32Array.from([]))
+    );
+    cipher.load(hCrypt.context, this.te.encode(cipherData));
+    hCrypt.evaluator.add(cipher, cipherAdd, cipherAdd);
+    return cipherAdd.save();
+  }
+  public async hCryptDecrypt(keys, cipherText) {
+    var hCrypt = await this.hCrypt;
+    const decryptor = hCrypt.seal.Decryptor(hCrypt.context, keys.privateKey);
+    const encryptor = hCrypt.seal.Encryptor(hCrypt.context, keys.publicKey);
+    const cipher = encryptor.encrypt(
+      hCrypt.encoder.encode(Int32Array.from([]))
+    );
+    cipher.load(hCrypt.context, this.te.encode(cipherText));
     const decryptedPlainText: any = decryptor.decrypt(cipher);
-    const decryptedText = homoSeal.encoder.decode(decryptedPlainText);
+    const decryptedText = hCrypt.encoder.decode(decryptedPlainText);
     return decryptedText;
   }
-
-  public async homoEncrypt(pubkData, plainText) {
-    var homoSeal = await this.homoSeal;
-    var publicKey = homoSeal.keyGenerator.createPublicKey();
-    publicKey.load(homoSeal.context, this.te.encode(pubkData));
-    const encryptor = homoSeal.seal.Encryptor(homoSeal.context, publicKey);
-    plainText = homoSeal.encoder.encode(Int32Array.from(this.te.encode(plainText)));
-    const cipherText: any = encryptor.encrypt(plainText);
-    return cipherText.save();
-  }
-
-  public async generateHomoKeys() {
-    const publicKey = (await this.homoSeal).keyGenerator.createPublicKey();
-    const privateKey = (await this.homoSeal).keyGenerator.secretKey();
-
+  public async generateHCryptKeys() {
+    var hCrypt = await this.hCrypt;
+    const keyGenerator = hCrypt.seal.KeyGenerator(hCrypt.context);
+    const publicKey = keyGenerator.createPublicKey();
+    const privateKey = keyGenerator.secretKey();
     return {
       publicKey: publicKey,
       privateKey: privateKey,
       pubkData: publicKey.save(),
     };
   }
-
+  private shaHash: string;
+  private shaBytes: Array<any>;
   private randomThreshold = 250;
   private publicExponent = new Uint8Array([1, 0, 1]);
   private originalMap: string[] = [
@@ -240,17 +231,19 @@ class tunnel {
       }
     }
   }
-  public unlock = (lock: string[][], password: string): string => {
+  public unlock = (tunnel: any, passwords): string => {
     var unlocked = '';
-    for (var i = 0; i < lock.length; i++) {
+    var password = passwords[0];
+    this.unShiftElements(tunnel.lock, passwords);
+    for (var i = 0; i < tunnel.lock.length; i++) {
       var originalInputIdex = this.originalMap.indexOf(
         password[i % password.length]
       );
-      unlocked += lock[i][originalInputIdex];
+      unlocked += tunnel.lock[i][originalInputIdex];
     }
-    return unlocked;
+    return this.unlockMessage(unlocked, tunnel.dataLock);
   };
-  private makeLockPieces(messageLen): any {
+  private makeTunnelPieces(messageLen): any {
     var dataLockLength = Math.random() * this.randomThreshold;
     var dataLock = this.generateLock(dataLockLength);
     var lock = this.generateLock(messageLen);
@@ -259,24 +252,44 @@ class tunnel {
       dataLock,
     };
   }
-  private makeLock(password, message): any {
-    var lockPieces = this.makeLockPieces(message.length);
-    message = this.lockMessage(message, lockPieces.dataLock);
-    this.engraveData(lockPieces.lock, password, message);
+  public shiftElements(lock, passwords) {
+    var password;
+    while (passwords.lenth) {
+      password = passwords.shift();
 
-    return lockPieces;
+      for (var i = 0; i < lock.length; i++) {
+        lock[i].push.apply(
+          lock[i],
+          lock[i].splice(0, password.charCodeAt(i % password.length))
+        );
+      }
+    }
   }
-  public makePubkLock = async (password, pubkData, subtle): Promise<any> => {
-    var responsePubk = await this.importRsaKey(subtle, pubkData);
-    var rsaKey = await this.generateRsaKeys(subtle);
-    var jsonKey = JSON.stringify(
-      await subtle.exportKey('jwk', rsaKey.publicKey)
-    );
-    var encrypted = await this.rsaEncrypt(subtle, jsonKey, responsePubk);
-    var lock = this.makeLock(password, encrypted);
+  public unShiftElements(lock, passwords) {
+    var password;
+    while (passwords.lenth) {
+      password = passwords.pop();
+
+      for (var i = 0; i < lock.length; i++) {
+        lock[i].unshift.apply(
+          lock[i],
+          lock[i].splice(
+            lock[i].length,
+            password.charCodeAt(i % password.length)
+          )
+        );
+      }
+    }
+  }
+  public makeTunnel = async (passwords, data): Promise<any> => {
+    var tunnel = this.makeTunnelPieces(data.length);
+    data = this.lockMessage(data, tunnel.dataLock);
+    this.engraveData(tunnel.lock, passwords[0], data);
+    var a = this.toString(tunnel.lock)
+    this.shiftElements(tunnel.lock, passwords);
     return {
-      rsaKey,
-      lock,
+      lock: this.toString(tunnel.lock),
+      dataLock: this.toString(tunnel.dataLock),
     };
   };
   private lockMessage(message: string, lock: string[][]): string {
@@ -293,23 +306,25 @@ class tunnel {
     }
     return unlocked;
   };
-  private toArrayBuffer = (arr) => {
-    var buf = new ArrayBuffer(arr.length * 2);
-    var bufView = new Uint16Array(buf);
-    for (var i = 0, strLen = arr.length; i < strLen; i++) {
-      bufView[i] = arr[i];
-    }
-    return buf;
-  };
+  public async getShaHash(subtle, msg) {
+    this.shaBytes = Array.from(
+      new Uint32Array(await subtle.digest('SHA-512', this.te.encode(msg)))
+    );
+    this.shaBytes = this.shaBytes.map((byte) => {
+      return ('00' + byte.toString(32)).slice(-2);
+    });
+    this.shaHash = this.shaBytes.join('');
+    // this.shaHash = this.shaHash.substr(0, 5);
+    return this.shaHash;
+  }
   private toString = (lock: string[][]): string => {
     var result = lock.reduce((total, current) => {
       total += current.join('');
       return total;
     }, '');
-
     return result;
   };
-  private fromString = (string: string): string[][] => {
+  public fromString = (string: string): string[][] => {
     var result = [];
     for (var i = 0; i < string.length / this.originalMap.length; i++) {
       result.push([
@@ -321,13 +336,6 @@ class tunnel {
     }
     return result;
   };
-  public async getShaHash(subtle, msg) {
-    return Array.from(
-      new Uint32Array(await subtle.digest('SHA-512', this.te.encode(msg)))
-    )
-      .map((byte) => ('00' + byte.toString(32)).slice(-2))
-      .join('');
-  }
   public async rsaEncrypt(subtle, plaintext, key) {
     const encrypted = await subtle.encrypt(
       {
