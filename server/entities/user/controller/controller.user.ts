@@ -1,4 +1,4 @@
-import * as jwt from 'jsonwebtoken';
+// import * as jwt from 'jsonwebtoken';
 import BaseController from '../../../controllers/base/base.controller';
 
 import * as SchemaUser from '../../../entities/user/schema/schema.user';
@@ -11,8 +11,8 @@ class ControllerUser extends BaseController {
       if (!user) { return res.sendStatus(403); }
       user.comparePassword(req.body.password, req.body.user, (error, isMatch) => {
         if (!isMatch) { return res.sendStatus(403); }
-        const token = jwt.sign({ user }, "SECRET_TOKEN");
-        res.status(200).json({ token });
+        // const token = jwt.sign({ user }, "SECRET_TOKEN");
+        // res.status(200).json({ token });
       });
     });
   }

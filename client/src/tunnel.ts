@@ -1,7 +1,4 @@
-import { isDefined } from '@angular/compiler/src/util';
-import { isUndefined } from '@ngx-formly/core/lib/utils';
 import * as SEAL from 'node-seal';
-import { encode } from 'punycode';
 class tunnel {
   private letters: Array<string> = [
     'a',
@@ -104,86 +101,134 @@ class tunnel {
     "'",
     ' ',
   ];
-  private hCrypt = (async () => {
-    /* @ts-ignore fuyck yaaya fuyck you seal sheit call*/
-    const seal = await SEAL();
-    const schemeType = seal.SchemeType.bfv;
-    const securityLevel = seal.SecurityLevel.tc128;
-    const polyModulusDegree = 1024;
-    const bitSizes = [24];
-    const bitSize = 14;
-    const parms = seal.EncryptionParameters(schemeType);
-    parms.setPolyModulusDegree(polyModulusDegree);
-    parms.setCoeffModulus(
-      seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes))
-    );
-    parms.setPlainModulus(
-      seal.PlainModulus.Batching(polyModulusDegree, bitSize)
-    );
-    const context = seal.Context(parms, true, securityLevel);
-    if (!context.parametersSet()) {
-      throw new Error(
-        'Could not set the parameters in the given context. Please try different encryption parameters.'
+  private hCrypt = null;
+  private _hCrypt = (async () => {
+    if (!this.hCrypt){
+      /* @ts-ignore fuyck yaaya fuyck you seal sheit call*/
+      const seal = await SEAL();
+      const schemeType = seal.SchemeType.bfv;
+      const securityLevel = seal.SecurityLevel.tc128;
+      const polyModulusDegree = 1024;
+      const bitSizes = [24];
+      const bitSize = 14;
+      const parms = seal.EncryptionParameters(schemeType);
+      parms.setPolyModulusDegree(polyModulusDegree);
+      parms.setCoeffModulus(
+        seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes))
       );
+      parms.setPlainModulus(
+        seal.PlainModulus.Batching(polyModulusDegree, bitSize)
+      );
+      this.hCrypt = {
+        securityLevel: securityLevel,
+        parms: parms,
+        seal: seal
+      };
     }
-    const encoder: any = seal.BatchEncoder(context);
-    const evaluator = seal.Evaluator(context);
-    return {
-      seal: seal,
-      encoder: encoder,
-      evaluator: evaluator,
-      context: context,
-    };
   })();
   public async generateCipher(pubkData, data) {
     var hCrypt = await this.hCrypt;
-    const keyGenerator = hCrypt.seal.KeyGenerator(hCrypt.context);
+    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
+    const encoder: any = hCrypt.seal.BatchEncoder(context);
+    const keyGenerator = hCrypt.seal.KeyGenerator(context);
     const publicKey = keyGenerator.createPublicKey();
-    publicKey.load(hCrypt.context, this.te.encode(pubkData));
-    const encryptor = hCrypt.seal.Encryptor(hCrypt.context, publicKey);
+    publicKey.load(context, this.te.encode(pubkData));
+    const encryptor = hCrypt.seal.Encryptor(context, publicKey);
     const cipher = encryptor.encrypt(
-      hCrypt.encoder.encode(Int32Array.from(data))
+      encoder.encode(Int32Array.from(data))
     );
-    return cipher.save();
+    var result = cipher.save();
+    context.delete();
+    encoder.delete();
+    keyGenerator.delete();
+    publicKey.delete();
+    encryptor.delete();
+    cipher.delete();
+    return result;
   }
   public async hCryptAdd(pubkData, cipherData, data) {
     var hCrypt = await this.hCrypt;
-    const keyGenerator = hCrypt.seal.KeyGenerator(hCrypt.context);
+    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
+    const encoder: any = hCrypt.seal.BatchEncoder(context);
+    const evaluator = hCrypt.seal.Evaluator(context);
+    const keyGenerator = hCrypt.seal.KeyGenerator(context);
     const publicKey = keyGenerator.createPublicKey();
-    publicKey.load(hCrypt.context, this.te.encode(pubkData));
-    const encryptor = hCrypt.seal.Encryptor(hCrypt.context, publicKey);
+    publicKey.load(context, this.te.encode(pubkData));
+    const encryptor = hCrypt.seal.Encryptor(context, publicKey);
     const cipherAdd = encryptor.encrypt(
-      hCrypt.encoder.encode(Int32Array.from(this.te.encode(data)))
+      encoder.encode(Int32Array.from(this.te.encode(data)))
     );
     const cipher = encryptor.encrypt(
-      hCrypt.encoder.encode(Int32Array.from([]))
+      encoder.encode(Int32Array.from([]))
     );
-    cipher.load(hCrypt.context, this.te.encode(cipherData));
-    hCrypt.evaluator.add(cipher, cipherAdd, cipherAdd);
-    return cipherAdd.save();
+    cipher.load(context, this.te.encode(cipherData));
+    evaluator.add(cipher, cipherAdd, cipherAdd);
+    var result = cipherAdd.save();
+    context.delete();
+    encoder.delete();
+    evaluator.delete();
+    keyGenerator.delete();
+    publicKey.delete();
+    encryptor.delete();
+    cipherAdd.delete();
+    cipher.delete();
+    return result;
   }
   public async hCryptDecrypt(keys, cipherText) {
     var hCrypt = await this.hCrypt;
-    const decryptor = hCrypt.seal.Decryptor(hCrypt.context, keys.privateKey);
-    const encryptor = hCrypt.seal.Encryptor(hCrypt.context, keys.publicKey);
+    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
+    const encoder: any = hCrypt.seal.BatchEncoder(context);
+    keys = await this.hCryptLoadKeys(keys);
+    const decryptor = hCrypt.seal.Decryptor(context, keys.privateKey);
+    const encryptor = hCrypt.seal.Encryptor(context, keys.publicKey);
     const cipher = encryptor.encrypt(
-      hCrypt.encoder.encode(Int32Array.from([]))
+      encoder.encode(Int32Array.from([]))
     );
-    cipher.load(hCrypt.context, this.te.encode(cipherText));
+    cipher.load(context, this.te.encode(cipherText));
     const decryptedPlainText: any = decryptor.decrypt(cipher);
-    const decryptedText = hCrypt.encoder.decode(decryptedPlainText);
-    return decryptedText;
+    const decryptedText = encoder.decode(decryptedPlainText);
+    var result = this.td
+      .decode(decryptedText)
+      .replace(new RegExp(String.fromCharCode(0), 'g'), '');
+    context.delete();
+    encoder.delete();
+    decryptor.delete();
+    encryptor.delete();
+    cipher.delete();
+    decryptedPlainText.delete();
+    keys.publicKey.delete();
+    keys.privateKey.delete();
+    return JSON.parse(result);
+  }
+  public async hCryptLoadKeys(keys) {
+    var hCrypt = await this.hCrypt;
+    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
+    const keyGenerator = hCrypt.seal.KeyGenerator(context);
+    const publicKey = keyGenerator.createPublicKey();
+    const privateKey = keyGenerator.secretKey();
+    privateKey.load(context, keys.privkData);
+    publicKey.load(context, keys.pubkData);
+    keys.privateKey = privateKey;
+    keys.publicKey = publicKey;
+    context.delete();
+    keyGenerator.delete();
+    return keys;
   }
   public async generateHCryptKeys() {
     var hCrypt = await this.hCrypt;
-    const keyGenerator = hCrypt.seal.KeyGenerator(hCrypt.context);
+    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
+    const keyGenerator = hCrypt.seal.KeyGenerator(context);
     const publicKey = keyGenerator.createPublicKey();
     const privateKey = keyGenerator.secretKey();
-    return {
-      publicKey: publicKey,
-      privateKey: privateKey,
+    context.delete();
+    var result = {
       pubkData: publicKey.save(),
+      privkData: privateKey.save(),
     };
+    keyGenerator.delete();
+    publicKey.delete();
+    privateKey.delete();
+    return result;
   }
   private shaHash: string;
   private shaBytes: Array<any>;
@@ -254,38 +299,42 @@ class tunnel {
   }
   public shiftElements(lock, passwords) {
     var password;
-    while (passwords.lenth) {
+    while (passwords.length) {
       password = passwords.shift();
 
       for (var i = 0; i < lock.length; i++) {
-        lock[i].push.apply(
+        lock[i] = this.shift(
           lock[i],
-          lock[i].splice(0, password.charCodeAt(i % password.length))
+          0,
+          Math.floor(password.charCodeAt(i % password.length) / 3)
         );
       }
     }
   }
   public unShiftElements(lock, passwords) {
     var password;
-    while (passwords.lenth) {
+    while (passwords.length) {
       password = passwords.pop();
 
-      for (var i = 0; i < lock.length; i++) {
-        lock[i].unshift.apply(
+      for (var i = lock.length - 1; i >= 0; i--) {
+        lock[i] = this.shift(
           lock[i],
-          lock[i].splice(
-            lock[i].length,
-            password.charCodeAt(i % password.length)
-          )
+          1,
+          Math.floor(password.charCodeAt(i % password.length) / 3)
         );
       }
     }
+  }
+  public shift(arr, direction, n) {
+    var times = n > arr.length ? n % arr.length : n;
+    return arr.concat(
+      arr.splice(0, direction > 0 ? arr.length - times : times)
+    );
   }
   public makeTunnel = async (passwords, data): Promise<any> => {
     var tunnel = this.makeTunnelPieces(data.length);
     data = this.lockMessage(data, tunnel.dataLock);
     this.engraveData(tunnel.lock, passwords[0], data);
-    var a = this.toString(tunnel.lock)
     this.shiftElements(tunnel.lock, passwords);
     return {
       lock: this.toString(tunnel.lock),
@@ -386,7 +435,7 @@ class tunnel {
     );
     return this.td.decode(plaintext);
   }
-  public async generateRsaKeys(subtle) {
+  public async generateRsaKeys(subtle, format) {
     const { publicKey, privateKey } = await subtle.generateKey(
       {
         name: 'RSA-OAEP',
@@ -402,8 +451,35 @@ class tunnel {
     return {
       publicKey: publicKey,
       privateKey: privateKey,
-      pubkData: (await subtle.exportKey('jwk', publicKey)).n,
+      pubkData: JSON.stringify(await subtle.exportKey(format, publicKey)),
+      privkData: JSON.stringify(await subtle.exportKey(format, privateKey)),
     };
+  }
+  public async generateElipticKey(subtle) {
+    const { privateKey } = await subtle.generateKey(
+      {
+        name: 'ECDSA',
+        namedCurve: 'P-521',
+      },
+      true,
+      ['sign', 'verify']
+    );
+    return {
+      privkData: JSON.stringify(await subtle.exportKey('jwk', privateKey)),
+    };
+  }
+  public async importElipticKey(subtle, data, pub = false) {
+    var key = await subtle.importKey(
+      'jwk',
+      JSON.parse(data),
+      {
+        name: 'ECDSA',
+        namedCurve: 'P-521',
+      },
+      true,
+      [pub ? 'verify' : 'sign']
+    );
+    return await subtle.exportKey('node.keyObject', key);
   }
   public async generateAesKey(subtle) {
     const key = await subtle.generateKey(
@@ -420,23 +496,16 @@ class tunnel {
       pubkData: (await subtle.exportKey('jwk', key)).k,
     };
   }
-  public async importRsaKey(subtle, keyData, format = 'jwk', hash = 'SHA-512') {
+  public async importRsaKey(subtle, keyData, pub = false) {
     const key = await subtle.importKey(
-      format,
-      {
-        alg: 'RSA-OAEP-512',
-        e: 'AQAB',
-        ext: true,
-        key_ops: ['encrypt', 'decrypt'],
-        kty: 'RSA',
-        n: keyData,
-      },
+      'jwk',
+      JSON.parse(keyData),
       {
         name: 'RSA-OAEP',
-        hash,
+        hash: 'SHA-512',
       },
       true,
-      ['encrypt']
+      [pub ? 'encrypt' : 'decrypt']
     );
     return key;
   }
@@ -460,7 +529,7 @@ class tunnel {
     return key;
   }
   public async getRsaEncryptedAesKey(subtle, rsaPubkData) {
-    var rsaPublicKey = await this.importRsaKey(subtle, rsaPubkData);
+    var rsaPublicKey = await this.importRsaKey(subtle, rsaPubkData, true);
     var aesKey = await this.generateAesKey(subtle);
     var rsaEncryptedAes = await this.rsaEncrypt(
       subtle,

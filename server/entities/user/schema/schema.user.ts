@@ -1,7 +1,8 @@
 import * as bcrypt from 'bcryptjs';
 import * as mongoose from 'mongoose';
-import * as crypto from 'crypto';
+import tunnel from '../../../../client/src/tunnel';
 
+const { subtle, getRandomValues } = require('crypto').webcrypto;
 const EntityName = 'User';
 const userSchema = new mongoose.Schema({
   username: String,
@@ -11,28 +12,22 @@ const userSchema = new mongoose.Schema({
 });
 
 // Before saving the user, hash the password
-userSchema.pre('save', function (next): void {
+userSchema.pre('save', async function (next): Promise<any> {
   const user: any = this;
   console.log(user);
   if (!user.isModified('password')) {
     return next();
   }
 
-  var hash = crypto.createHmac('sha512', user.username);
-  hash.update(user.password);
-  user.password = hash.digest('base64');
-  hash = crypto.createHmac('sha512', user.password);
-  hash.update(user.username);
-  user.username = hash.digest('base64');
+  var hash = await tunnel.getShaHash(subtle, user.password);
+  user.password = hash;
+  hash = await tunnel.getShaHash(subtle, user.username);
+  user.username = hash;
 });
 
-userSchema.methods.comparePassword = function (candidatePassword, candidateUsername, callback): void {
-  var ph2: any = crypto.createHmac('sha512', candidatePassword);
-  ph2.update(candidateUsername);
-  ph2 = ph2.digest('base64');
-  var ph3: any = crypto.createHmac('sha512', candidateUsername);
-  ph3.update(candidatePassword);
-  ph3 = ph3.digest('base64');
+userSchema.methods.comparePassword = async function (candidatePassword, candidateUsername, callback): Promise<any> {
+  var ph2: any = await tunnel.getShaHash(subtle, candidateUsername);
+  var ph3: any = await tunnel.getShaHash(subtle, candidatePassword);
   if (ph3 === (this as any).password && ph2 === (this as any).username) {
     callback(null, true);
     return;
@@ -57,5 +52,5 @@ export default {
   apiPaths: {
     pathNamePlural: mongoose.pluralize()(EntityName),
     pathName: EntityName.toLowerCase(),
-  }
+  },
 };
