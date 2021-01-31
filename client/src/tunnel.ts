@@ -150,7 +150,7 @@ class tunnel {
   public unlock = (tunnel: any, passwords): string => {
     var unlocked = '';
     var password = passwords[0];
-    this.unShiftElements(tunnel.lock, passwords);
+    tunnel.lock = this.unShiftElements(tunnel.lock, tunnel.dataLock, passwords);
     for (var i = 0; i < tunnel.lock.length; i++) {
       var originalInputIdex = this.originalMap.indexOf(
         password[i % password.length]
@@ -168,37 +168,57 @@ class tunnel {
       dataLock,
     };
   }
-  public shiftElements(lock, passwords) {
+  public shiftElements(lock, dataLock, passwords) {
+    var columnPassword;
+    var lockLen = lock.length;
     passwords.forEach((password, index) => {
-      for (var i = 0; i < lock.length; i++) {
-        lock[i] = this.shift(
-          lock[i],
+      columnPassword = passwords[passwords.length - (index + 1)];
+      for (var i = 0; i < columnPassword.length; i++) {
+        lock = this.shift(
+          lock,
           0,
-          password.charCodeAt(i % password.length)
+          columnPassword.charCodeAt(i % columnPassword.length)
         );
-      }
-      password = passwords[passwords.length - (index + 1)];
-      for (i = 0; i < password.length; i++) {
-        lock = this.shift(lock, 0, password.charCodeAt(i % password.length));
+        for (var j = 0; j < lockLen; j++) {
+          lock[j] = this.shift(
+            lock[j],
+            0,
+            password.charCodeAt(j % password.length)
+          );
+        }
+        lock = this.toString(lock);
+        lock = this.lockMessage(lock, dataLock);
+        lock = this.fromString(lock);
       }
     });
+    return lock;
   }
-  public unShiftElements(lock, passwords) {
+  public unShiftElements(lock, dataLock, passwords) {
+    var columnPassword;
+    var lockLen = lock.length;
     passwords.reverse();
     passwords.forEach((password, index) => {
-      password = passwords[passwords.length - 1 - index];
-      for (var i = password.length - 1; i >= 0; i--) {
-        lock = this.shift(lock, 1, password.charCodeAt(i % password.length));
-      }
-      password = passwords[index];
-      for (var i = lock.length - 1; i >= 0; i--) {
-        lock[i] = this.shift(
-          lock[i],
+      columnPassword = passwords[passwords.length - 1 - index];
+      for (var i = columnPassword.length - 1; i >= 0; i--) {
+        lock = this.toString(lock);
+        lock = this.unlockMessage(lock, dataLock);
+        lock = this.fromString(lock);
+        for (var j = lockLen - 1; j >= 0; j--) {
+          lock[j] = this.shift(
+            lock[j],
+            1,
+            password.charCodeAt(j % password.length)
+          );
+        }
+        lock = this.shift(
+          lock,
           1,
-          password.charCodeAt(i % password.length)
+          columnPassword.charCodeAt(i % columnPassword.length)
         );
       }
     });
+    passwords.reverse();
+    return lock;
   }
   public shift(arr, direction, n) {
     var times = n > arr.length ? n % arr.length : n;
@@ -216,9 +236,7 @@ class tunnel {
     var tunnel = this.makeTunnelPieces(data.length);
     data = this.lockMessage(data, tunnel.dataLock);
     this.engraveData(tunnel.lock, passwords[0], data);
-    console.log(111, tunnel.lock.length);
-    this.shiftElements(tunnel.lock, passwords);
-    console.log(222, tunnel.lock.length);
+    tunnel.lock = this.shiftElements(tunnel.lock, tunnel.dataLock, passwords);
     return {
       lock: this.toString(tunnel.lock),
       dataLock: this.toString(tunnel.dataLock),
@@ -260,10 +278,11 @@ class tunnel {
     var result = [];
     for (var i = 0; i < string.length / this.originalMap.length; i++) {
       result.push([
-        ...string.substring(
-          i * this.originalMap.length,
-          this.originalMap.length * (i + 1)
-        ),
+        ...string
+          .substring(
+            i * this.originalMap.length,
+            this.originalMap.length * (i + 1)
+          ),
       ]);
     }
     return result;
