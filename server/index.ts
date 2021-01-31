@@ -100,7 +100,6 @@ io.on('connection', async (socket: Socket) => {
       const ph2 = user.username;
       const ph3 = user.password;
 
-      const hCryptKeys = await tunnel.generateHCryptKeys();
       const rsaPubkData = data.rsaPubkData;
       const rsaKeys_0 = await tunnel.generateRsaKeys(subtle, 'jwk');
       const rsaEncryptedAesKey = await tunnel.getRsaEncryptedAesKey(subtle, rsaPubkData);
@@ -110,12 +109,6 @@ io.on('connection', async (socket: Socket) => {
           initialRsaPubkData: data.rsaPubkData,
           initialAesPubkData: rsaEncryptedAesKey.aesPubkData,
         })
-      );
-      var aesEncrypted = await tunnel.aesEncrypt(
-        subtle,
-        JSON.stringify({ rsaPubkData: rsaKeys_0.pubkData, hCryptPubkData: hCryptKeys.pubkData }),
-        rsaEncryptedAesKey.aesKey,
-        userHash
       );
       var fullHash = await tunnel.getShaHash(
         subtle,
@@ -129,15 +122,31 @@ io.on('connection', async (socket: Socket) => {
           }).substr(0, 6)
         )
       );
+      var totalHash = await tunnel.getShaHash(
+        subtle,
+        await tunnel.getShaHash(
+          subtle,
+          JSON.stringify({
+            userHash: userHash,
+            fullHash: fullHash,
+          })
+        )
+      );
+      var aesEncrypted = await tunnel.aesEncrypt(
+        subtle,
+        JSON.stringify({ rsaPubkData: rsaKeys_0.pubkData }),
+        rsaEncryptedAesKey.aesKey,
+        totalHash
+      );
       var jwtToken = await jwt.sign(
         {
           user: {
             email: p1,
           },
+          totalHash: totalHash,
           fullHash: fullHash,
           userHash: userHash,
           rsaKeys_0: rsaKeys_0.privkData,
-          hCryptKeys: hCryptKeys,
         },
         jwtSessionTokenElipticKey,
         { algorithm: 'ES512' }
@@ -157,16 +166,16 @@ io.on('connection', async (socket: Socket) => {
   });
 
   socket.on('sendHomomorphic', async (data) => {
-    console.log(1)
     var jwtToken = data.jwt;
     jwtToken.rsaIv = await tunnel.rsaDecrypt(subtle, jwtToken.rsaIv, jwtSessionTokenRsaKeys.privateKey);
     jwtToken.data = await tunnel.aesDecrypt(subtle, jwtToken.aesToken, jwtSessionTokenAesKey, jwtToken.rsaIv);
     jwtToken.data = await jwt.verify(jwtToken.data, jwtSessionTokenElipticKey, { algorithms: ['ES512'] });
 
     jwtToken.data.rsaKeys_0 = await tunnel.importRsaKey(subtle, jwtToken.data.rsaKeys_0);
-    var totalHash = await tunnel.getShaHash(
+    var finalHash = await tunnel.getShaHash(
       subtle,
       JSON.stringify({
+        totalHash: jwtToken.data.totalHash,
         fullHash: jwtToken.data.fullHash,
         userHash: jwtToken.data.userHash,
         rsaPubkData: data.rsaPubkData,
@@ -175,16 +184,16 @@ io.on('connection', async (socket: Socket) => {
     );
     var rsaDecryptedAesKey = await tunnel.rsaDecrypt(subtle, data.rsaEncryptedAesKey, jwtToken.data.rsaKeys_0);
     var aesKey = await tunnel.importAesKey(subtle, rsaDecryptedAesKey);
-    var aesDecrypted = await tunnel.aesDecrypt(subtle, data.aesEncrypted, aesKey, totalHash);
+    var aesDecrypted = await tunnel.aesDecrypt(subtle, data.aesEncrypted, aesKey, finalHash);
     var _tunnel = JSON.parse(aesDecrypted);
     _tunnel = {
       lock: tunnel.fromString(_tunnel.tunnelLock),
       dataLock: tunnel.fromString(_tunnel.tunnelDataLock),
     };
     var rsaEncryptedAesKeyHash = await tunnel.getShaHash(subtle, new TextDecoder().decode(data.rsaEncryptedAesKey));
-    var hCryptCipherData = tunnel.unlock(_tunnel, [jwtToken.data.userHash, jwtToken.data.fullHash, rsaEncryptedAesKeyHash, totalHash]);
-    var json: any = await tunnel.hCryptDecrypt(jwtToken.data.hCryptKeys, hCryptCipherData);
-   
+    var cipherData = tunnel.unlock(_tunnel, [jwtToken.data.userHash, jwtToken.data.fullHash, rsaEncryptedAesKeyHash, finalHash]);
+    var json: any = JSON.parse(cipherData);
+
     await User.SchemaUser.findOne({ email: jwtToken.data.user.email }, async (err, user) => {
       user.comparePassword(json.password, json.username, async (error, isMatch) => {
         socket.emit(

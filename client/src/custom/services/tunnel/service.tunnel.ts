@@ -53,18 +53,6 @@ export class ServiceTunnel {
           initialAesPubkData: rsaDecryptedAesKey,
         })
       );
-      var decryptedAes = JSON.parse(
-        await tunnel.aesDecrypt(
-          this.subtle,
-          data.aesEncrypted,
-          aesKey,
-          userHash
-        )
-      );
-      var rsaEncryptedAesKey = await tunnel.getRsaEncryptedAesKey(
-        this.subtle,
-        decryptedAes.rsaPubkData
-      );
       var fullHash = await tunnel.getShaHash(
         this.subtle,
         await tunnel.getShaHash(
@@ -79,7 +67,30 @@ export class ServiceTunnel {
       );
       var totalHash = await tunnel.getShaHash(
         this.subtle,
+        await tunnel.getShaHash(
+          this.subtle,
+          JSON.stringify({
+            userHash: userHash,
+            fullHash: fullHash,
+          })
+        )
+      );
+      var decryptedAes = JSON.parse(
+        await tunnel.aesDecrypt(
+          this.subtle,
+          data.aesEncrypted,
+          aesKey,
+          totalHash
+        )
+      );
+      var rsaEncryptedAesKey = await tunnel.getRsaEncryptedAesKey(
+        this.subtle,
+        decryptedAes.rsaPubkData
+      );
+      var finalHash = await tunnel.getShaHash(
+        this.subtle,
         JSON.stringify({
+          totalHash: totalHash,
           fullHash: fullHash,
           userHash: userHash,
           rsaPubkData: rsaKeys_1.pubkData,
@@ -92,18 +103,9 @@ export class ServiceTunnel {
         this.subtle,
         new TextDecoder().decode(rsaEncryptedAesKey.rsaEncryptedAes)
       );
-      var hCryptCipher = await tunnel.generateCipher(
-        decryptedAes.hCryptPubkData,
-        []
-      );
-      var homoEncrypted = await tunnel.hCryptAdd(
-        decryptedAes.hCryptPubkData,
-        hCryptCipher,
-        JSON.stringify({ username: this.p2, password: this.p3 })
-      );
       var _tunnel = await tunnel.makeTunnel(
-        [userHash, fullHash, rsaEncryptedAesKeyHash, totalHash],
-        homoEncrypted
+        [userHash, fullHash, rsaEncryptedAesKeyHash, finalHash],
+        JSON.stringify({ username: this.p2, password: this.p3 })
       );
       var aesEncrypted = await tunnel.aesEncrypt(
         this.subtle,
@@ -112,7 +114,7 @@ export class ServiceTunnel {
           tunnelDataLock: _tunnel.dataLock,
         }),
         rsaEncryptedAesKey.aesKey,
-        totalHash
+        finalHash
       );
       this.socket.emit('sendHomomorphic', {
         jwt: data.jwt,

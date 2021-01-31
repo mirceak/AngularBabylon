@@ -1,4 +1,3 @@
-import * as SEAL from 'node-seal';
 class tunnel {
   private letters: Array<string> = [
     'a',
@@ -101,135 +100,7 @@ class tunnel {
     "'",
     ' ',
   ];
-  private hCrypt = null;
-  private _hCrypt = (async () => {
-    if (!this.hCrypt){
-      /* @ts-ignore fuyck yaaya fuyck you seal sheit call*/
-      const seal = await SEAL();
-      const schemeType = seal.SchemeType.bfv;
-      const securityLevel = seal.SecurityLevel.tc128;
-      const polyModulusDegree = 1024;
-      const bitSizes = [24];
-      const bitSize = 14;
-      const parms = seal.EncryptionParameters(schemeType);
-      parms.setPolyModulusDegree(polyModulusDegree);
-      parms.setCoeffModulus(
-        seal.CoeffModulus.Create(polyModulusDegree, Int32Array.from(bitSizes))
-      );
-      parms.setPlainModulus(
-        seal.PlainModulus.Batching(polyModulusDegree, bitSize)
-      );
-      this.hCrypt = {
-        securityLevel: securityLevel,
-        parms: parms,
-        seal: seal
-      };
-    }
-  })();
-  public async generateCipher(pubkData, data) {
-    var hCrypt = await this.hCrypt;
-    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
-    const encoder: any = hCrypt.seal.BatchEncoder(context);
-    const keyGenerator = hCrypt.seal.KeyGenerator(context);
-    const publicKey = keyGenerator.createPublicKey();
-    publicKey.load(context, this.te.encode(pubkData));
-    const encryptor = hCrypt.seal.Encryptor(context, publicKey);
-    const cipher = encryptor.encrypt(
-      encoder.encode(Int32Array.from(data))
-    );
-    var result = cipher.save();
-    context.delete();
-    encoder.delete();
-    keyGenerator.delete();
-    publicKey.delete();
-    encryptor.delete();
-    cipher.delete();
-    return result;
-  }
-  public async hCryptAdd(pubkData, cipherData, data) {
-    var hCrypt = await this.hCrypt;
-    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
-    const encoder: any = hCrypt.seal.BatchEncoder(context);
-    const evaluator = hCrypt.seal.Evaluator(context);
-    const keyGenerator = hCrypt.seal.KeyGenerator(context);
-    const publicKey = keyGenerator.createPublicKey();
-    publicKey.load(context, this.te.encode(pubkData));
-    const encryptor = hCrypt.seal.Encryptor(context, publicKey);
-    const cipherAdd = encryptor.encrypt(
-      encoder.encode(Int32Array.from(this.te.encode(data)))
-    );
-    const cipher = encryptor.encrypt(
-      encoder.encode(Int32Array.from([]))
-    );
-    cipher.load(context, this.te.encode(cipherData));
-    evaluator.add(cipher, cipherAdd, cipherAdd);
-    var result = cipherAdd.save();
-    context.delete();
-    encoder.delete();
-    evaluator.delete();
-    keyGenerator.delete();
-    publicKey.delete();
-    encryptor.delete();
-    cipherAdd.delete();
-    cipher.delete();
-    return result;
-  }
-  public async hCryptDecrypt(keys, cipherText) {
-    var hCrypt = await this.hCrypt;
-    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
-    const encoder: any = hCrypt.seal.BatchEncoder(context);
-    keys = await this.hCryptLoadKeys(keys);
-    const decryptor = hCrypt.seal.Decryptor(context, keys.privateKey);
-    const encryptor = hCrypt.seal.Encryptor(context, keys.publicKey);
-    const cipher = encryptor.encrypt(
-      encoder.encode(Int32Array.from([]))
-    );
-    cipher.load(context, this.te.encode(cipherText));
-    const decryptedPlainText: any = decryptor.decrypt(cipher);
-    const decryptedText = encoder.decode(decryptedPlainText);
-    var result = this.td
-      .decode(decryptedText)
-      .replace(new RegExp(String.fromCharCode(0), 'g'), '');
-    context.delete();
-    encoder.delete();
-    decryptor.delete();
-    encryptor.delete();
-    cipher.delete();
-    decryptedPlainText.delete();
-    keys.publicKey.delete();
-    keys.privateKey.delete();
-    return JSON.parse(result);
-  }
-  public async hCryptLoadKeys(keys) {
-    var hCrypt = await this.hCrypt;
-    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
-    const keyGenerator = hCrypt.seal.KeyGenerator(context);
-    const publicKey = keyGenerator.createPublicKey();
-    const privateKey = keyGenerator.secretKey();
-    privateKey.load(context, keys.privkData);
-    publicKey.load(context, keys.pubkData);
-    keys.privateKey = privateKey;
-    keys.publicKey = publicKey;
-    context.delete();
-    keyGenerator.delete();
-    return keys;
-  }
-  public async generateHCryptKeys() {
-    var hCrypt = await this.hCrypt;
-    const context = hCrypt.seal.Context(hCrypt.parms, true, hCrypt.securityLevel);
-    const keyGenerator = hCrypt.seal.KeyGenerator(context);
-    const publicKey = keyGenerator.createPublicKey();
-    const privateKey = keyGenerator.secretKey();
-    context.delete();
-    var result = {
-      pubkData: publicKey.save(),
-      privkData: privateKey.save(),
-    };
-    keyGenerator.delete();
-    publicKey.delete();
-    privateKey.delete();
-    return result;
-  }
+
   private shaHash: string;
   private shaBytes: Array<any>;
   private randomThreshold = 250;
@@ -298,44 +169,56 @@ class tunnel {
     };
   }
   public shiftElements(lock, passwords) {
-    var password;
-    while (passwords.length) {
-      password = passwords.shift();
-
+    passwords.forEach((password, index) => {
       for (var i = 0; i < lock.length; i++) {
         lock[i] = this.shift(
           lock[i],
           0,
-          Math.floor(password.charCodeAt(i % password.length) / 3)
+          password.charCodeAt(i % password.length)
         );
       }
-    }
+      password = passwords[passwords.length - (index + 1)];
+      for (i = 0; i < password.length; i++) {
+        lock = this.shift(lock, 0, password.charCodeAt(i % password.length));
+      }
+    });
   }
   public unShiftElements(lock, passwords) {
-    var password;
-    while (passwords.length) {
-      password = passwords.pop();
-
+    passwords.reverse();
+    passwords.forEach((password, index) => {
+      password = passwords[passwords.length - 1 - index];
+      for (var i = password.length - 1; i >= 0; i--) {
+        lock = this.shift(lock, 1, password.charCodeAt(i % password.length));
+      }
+      password = passwords[index];
       for (var i = lock.length - 1; i >= 0; i--) {
         lock[i] = this.shift(
           lock[i],
           1,
-          Math.floor(password.charCodeAt(i % password.length) / 3)
+          password.charCodeAt(i % password.length)
         );
       }
-    }
+    });
   }
   public shift(arr, direction, n) {
     var times = n > arr.length ? n % arr.length : n;
-    return arr.concat(
-      arr.splice(0, direction > 0 ? arr.length - times : times)
-    );
+    while (times != 0) {
+      if (direction) {
+        arr.push(arr.shift());
+      } else {
+        arr.unshift(arr.pop());
+      }
+      times--;
+    }
+    return arr;
   }
   public makeTunnel = async (passwords, data): Promise<any> => {
     var tunnel = this.makeTunnelPieces(data.length);
     data = this.lockMessage(data, tunnel.dataLock);
     this.engraveData(tunnel.lock, passwords[0], data);
+    console.log(111, tunnel.lock.length);
     this.shiftElements(tunnel.lock, passwords);
+    console.log(222, tunnel.lock.length);
     return {
       lock: this.toString(tunnel.lock),
       dataLock: this.toString(tunnel.dataLock),
