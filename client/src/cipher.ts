@@ -1,4 +1,4 @@
-class tunnel {
+class cipher {
   private letters: Array<string> = [
     'a',
     'b',
@@ -100,11 +100,6 @@ class tunnel {
     "'",
     ' ',
   ];
-
-  private shaHash: string;
-  private shaBytes: Array<any>;
-  private randomThreshold = 250;
-  private publicExponent = new Uint8Array([1, 0, 1]);
   private originalMap: string[] = [
     ...this.letters,
     ...this.numbers,
@@ -112,6 +107,11 @@ class tunnel {
   ];
   private td = new TextDecoder();
   private te = new TextEncoder();
+
+  private randomThreshold = 250;
+
+  private shaHash: string;
+  private shaBytes: Array<any>;
   private scrambledMap(
     tmp = this.originalMap.slice(0),
     res = [],
@@ -153,23 +153,23 @@ class tunnel {
     }
   }
   public unlock = (
-    tunnel: any,
+    cipher: any,
     passwords,
     unlocked = '',
     password = passwords[0],
     i = 0,
     originalInputIndex = 0
   ): string => {
-    tunnel.lock = this.unShiftElements(tunnel.lock, tunnel.dataLock, passwords);
-    for (i = 0; i < tunnel.lock.length; i++) {
+    cipher.lock = this.unShiftElements(cipher.lock, cipher.dataLock, passwords);
+    for (i = 0; i < cipher.lock.length; i++) {
       originalInputIndex = this.originalMap.indexOf(
         password[i % password.length]
       );
-      unlocked += tunnel.lock[i][originalInputIndex];
+      unlocked += cipher.lock[i][originalInputIndex];
     }
-    return this.unlockMessage(unlocked, tunnel.dataLock);
+    return this.unlockMessage(unlocked, cipher.dataLock);
   };
-  private makeTunnelPieces(
+  private makeCipherPieces(
     messageLen,
     dataLockLength = 0,
     dataLock = null,
@@ -255,17 +255,17 @@ class tunnel {
     }
     return arr;
   }
-  public makeTunnel = async (
+  public makeCipher = async (
     passwords,
     data,
-    tunnel = this.makeTunnelPieces(data.length)
+    cipher = this.makeCipherPieces(data.length)
   ): Promise<any> => {
-    data = this.lockMessage(data, tunnel.dataLock);
-    this.engraveData(tunnel.lock, passwords[0], data);
-    tunnel.lock = this.shiftElements(tunnel.lock, tunnel.dataLock, passwords);
+    data = this.lockMessage(data, cipher.dataLock);
+    this.engraveData(cipher.lock, passwords[0], data);
+    cipher.lock = this.shiftElements(cipher.lock, cipher.dataLock, passwords);
     return {
-      lock: this.toString(tunnel.lock),
-      dataLock: this.toString(tunnel.dataLock),
+      lock: this.toString(cipher.lock),
+      dataLock: this.toString(cipher.dataLock),
     };
   };
   private lockMessage(
@@ -398,7 +398,7 @@ class tunnel {
       {
         name: 'RSA-OAEP',
         modulusLength: 2048,
-        publicExponent: this.publicExponent,
+        publicExponent: new Uint8Array([1, 0, 1]),
         hash: {
           name: 'SHA-512',
         },
@@ -511,6 +511,6 @@ class tunnel {
   }
 }
 
-let instance = new tunnel();
+let instance = new cipher();
 
 export default instance;

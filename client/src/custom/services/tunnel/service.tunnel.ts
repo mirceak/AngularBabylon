@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
-import tunnel from '../../../tunnel';
+import cipher from '../../../cipher';
 import * as socketIO from 'socket.io-client';
 import { JwtHelperService } from '@auth0/angular-jwt';
 
@@ -23,13 +23,13 @@ export class ServiceTunnel {
   }
 
   async connect(postData) {
-    var rsaKeys_0 = await tunnel.generateRsaKeys(this.subtle, 'jwk');
-    var rsaKeys_1 = await tunnel.generateRsaKeys(this.subtle, 'jwk');
+    var rsaKeys_0 = await cipher.generateRsaKeys(this.subtle, 'jwk');
+    var rsaKeys_1 = await cipher.generateRsaKeys(this.subtle, 'jwk');
     this.p2 = postData.username;
     this.p3 = postData.password;
     this.p1 = postData.email;
-    this.ph2 = await tunnel.getShaHash(this.subtle, this.p2);
-    this.ph3 = await tunnel.getShaHash(this.subtle, this.p3);
+    this.ph2 = await cipher.getShaHash(this.subtle, this.p2);
+    this.ph3 = await cipher.getShaHash(this.subtle, this.p3);
     this.socket = socketIO.io('https://talky.ro:3030');
     this.socket.on('connect', () => {
       console.log('connect');
@@ -38,24 +38,24 @@ export class ServiceTunnel {
       console.log('login');
       console.log(this.jwtHelper.decodeToken(data));
     });
-    this.socket.on('requestHomomorphic', async (data) => {
-      console.log('requestHomomorphic');
-      var rsaDecryptedAesKey = await tunnel.rsaDecrypt(
+    this.socket.on('preLogin', async (data) => {
+      console.log('preLogin');
+      var rsaDecryptedAesKey = await cipher.rsaDecrypt(
         this.subtle,
         data.rsaEncryptedAesKey,
         rsaKeys_0.privateKey
       );
-      var aesKey = await tunnel.importAesKey(this.subtle, rsaDecryptedAesKey);
-      var userHash = await tunnel.getShaHash(
+      var aesKey = await cipher.importAesKey(this.subtle, rsaDecryptedAesKey);
+      var userHash = await cipher.getShaHash(
         this.subtle,
         JSON.stringify({
           initialRsaPubkData: rsaKeys_0.pubkData,
           initialAesPubkData: rsaDecryptedAesKey,
         })
       );
-      var fullHash = await tunnel.getShaHash(
+      var fullHash = await cipher.getShaHash(
         this.subtle,
-        await tunnel.getShaHash(
+        await cipher.getShaHash(
           this.subtle,
           JSON.stringify({
             username: this.ph2,
@@ -65,9 +65,9 @@ export class ServiceTunnel {
           }).substr(0, 6)
         )
       );
-      var totalHash = await tunnel.getShaHash(
+      var totalHash = await cipher.getShaHash(
         this.subtle,
-        await tunnel.getShaHash(
+        await cipher.getShaHash(
           this.subtle,
           JSON.stringify({
             userHash: userHash,
@@ -76,18 +76,18 @@ export class ServiceTunnel {
         )
       );
       var decryptedAes = JSON.parse(
-        await tunnel.aesDecrypt(
+        await cipher.aesDecrypt(
           this.subtle,
           data.aesEncrypted,
           aesKey,
           totalHash
         )
       );
-      var rsaEncryptedAesKey = await tunnel.getRsaEncryptedAesKey(
+      var rsaEncryptedAesKey = await cipher.getRsaEncryptedAesKey(
         this.subtle,
         decryptedAes.rsaPubkData
       );
-      var finalHash = await tunnel.getShaHash(
+      var finalHash = await cipher.getShaHash(
         this.subtle,
         JSON.stringify({
           totalHash: totalHash,
@@ -99,26 +99,27 @@ export class ServiceTunnel {
           ),
         })
       );
-      var rsaEncryptedAesKeyHash = await tunnel.getShaHash(
+      var rsaEncryptedAesKeyHash = await cipher.getShaHash(
         this.subtle,
         new TextDecoder().decode(rsaEncryptedAesKey.rsaEncryptedAes)
       );
       var delta = new Date().getMilliseconds();
-      var _tunnel = await tunnel.makeTunnel(
+      var _cipher = await cipher.makeCipher(
         [userHash, fullHash, rsaEncryptedAesKeyHash, finalHash],
-        JSON.stringify([{ username: this.p2, password: this.p3 },{ username: this.p2, password: this.p3 },{ username: this.p2, password: this.p3 },{ username: this.p2, password: this.p3 },{ username: this.p2, password: this.p3 },])
+        JSON.stringify({ username: this.p2, password: this.p3 })
       );
-      console.log(new Date().getMilliseconds() - delta)
-      var aesEncrypted = await tunnel.aesEncrypt(
+      delta = new Date().getMilliseconds() - delta
+      console.log(delta)
+      var aesEncrypted = await cipher.aesEncrypt(
         this.subtle,
         JSON.stringify({
-          tunnelLock: _tunnel.lock,
-          tunnelDataLock: _tunnel.dataLock,
+          cipherLock: _cipher.lock,
+          cipherDataLock: _cipher.dataLock,
         }),
         rsaEncryptedAesKey.aesKey,
         finalHash
       );
-      this.socket.emit('sendHomomorphic', {
+      this.socket.emit('login', {
         jwt: data.jwt,
         aesEncrypted: aesEncrypted.ciphertext,
         rsaEncryptedAesKey: rsaEncryptedAesKey.rsaEncryptedAes,

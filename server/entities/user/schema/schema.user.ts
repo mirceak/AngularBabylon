@@ -1,6 +1,5 @@
-import * as bcrypt from 'bcryptjs';
 import * as mongoose from 'mongoose';
-import tunnel from '../../../../client/src/tunnel';
+import tunnel from '../../../../client/src/cipher';
 
 const { subtle, getRandomValues } = require('crypto').webcrypto;
 const EntityName = 'User';

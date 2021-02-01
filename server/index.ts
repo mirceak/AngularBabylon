@@ -4,7 +4,7 @@ import * as morgan from 'morgan';
 import * as jwt from 'jsonwebtoken';
 
 import setMongo from './mongo';
-import tunnel from '../client/src/tunnel';
+import cipher from '../client/src/cipher';
 import BaseController from './controllers/base/base.controller';
 import Controllers from './controllers/base/base.controller.index';
 
@@ -32,7 +32,7 @@ const { subtle, getRandomValues } = require('crypto').webcrypto;
 
 var jwtSessionTokenAesKey;
 var generateAesKey = async () => {
-  jwtSessionTokenAesKey = await tunnel.generateAesKey(subtle);
+  jwtSessionTokenAesKey = await cipher.generateAesKey(subtle);
   writeFileSync('./server/certs/jwtSessionTokenAesKey.json', Buffer.from(new TextEncoder().encode(jwtSessionTokenAesKey.pubkData)));
 };
 try {
@@ -43,12 +43,12 @@ try {
     await generateAesKey();
   }
   jwtSessionTokenAesKey = readFileSync('./server/certs/jwtSessionTokenAesKey.json', 'utf-8');
-  jwtSessionTokenAesKey = await tunnel.importAesKey(subtle, jwtSessionTokenAesKey);
+  jwtSessionTokenAesKey = await cipher.importAesKey(subtle, jwtSessionTokenAesKey);
 })();
 
 var jwtSessionTokenElipticKey;
 var generateElipticKey = async () => {
-  jwtSessionTokenElipticKey = await tunnel.generateElipticKey(subtle);
+  jwtSessionTokenElipticKey = await cipher.generateElipticKey(subtle);
   writeFileSync(
     './server/certs/jwtSessionTokenElipticKey.json',
     Buffer.from(new TextEncoder().encode(jwtSessionTokenElipticKey.privkData))
@@ -62,12 +62,12 @@ try {
     await generateElipticKey();
   }
   jwtSessionTokenElipticKey = readFileSync('./server/certs/jwtSessionTokenElipticKey.json', 'utf-8');
-  jwtSessionTokenElipticKey = await tunnel.importElipticKey(subtle, jwtSessionTokenElipticKey);
+  jwtSessionTokenElipticKey = await cipher.importElipticKey(subtle, jwtSessionTokenElipticKey);
 })();
 
 var jwtSessionTokenRsaKeys;
 var generateRsaKey = async () => {
-  jwtSessionTokenRsaKeys = await tunnel.generateRsaKeys(subtle, 'jwk');
+  jwtSessionTokenRsaKeys = await cipher.generateRsaKeys(subtle, 'jwk');
   writeFileSync(
     './server/certs/jwtSessionTokenRsaKeys.json',
     Buffer.from(
@@ -84,8 +84,8 @@ try {
   }
   jwtSessionTokenRsaKeys = readFileSync('./server/certs/jwtSessionTokenRsaKeys.json', 'utf-8');
   jwtSessionTokenRsaKeys = JSON.parse(jwtSessionTokenRsaKeys);
-  jwtSessionTokenRsaKeys.publicKey = await tunnel.importRsaKey(subtle, jwtSessionTokenRsaKeys.pubkData, true);
-  jwtSessionTokenRsaKeys.privateKey = await tunnel.importRsaKey(subtle, jwtSessionTokenRsaKeys.privkData);
+  jwtSessionTokenRsaKeys.publicKey = await cipher.importRsaKey(subtle, jwtSessionTokenRsaKeys.pubkData, true);
+  jwtSessionTokenRsaKeys.privateKey = await cipher.importRsaKey(subtle, jwtSessionTokenRsaKeys.privkData);
 })();
 io.on('connection', async (socket: Socket) => {
   console.log('client connected to socket');
@@ -101,18 +101,18 @@ io.on('connection', async (socket: Socket) => {
       const ph3 = user.password;
 
       const rsaPubkData = data.rsaPubkData;
-      const rsaKeys_0 = await tunnel.generateRsaKeys(subtle, 'jwk');
-      const rsaEncryptedAesKey = await tunnel.getRsaEncryptedAesKey(subtle, rsaPubkData);
-      const userHash = await tunnel.getShaHash(
+      const rsaKeys_0 = await cipher.generateRsaKeys(subtle, 'jwk');
+      const rsaEncryptedAesKey = await cipher.getRsaEncryptedAesKey(subtle, rsaPubkData);
+      const userHash = await cipher.getShaHash(
         subtle,
         JSON.stringify({
           initialRsaPubkData: data.rsaPubkData,
           initialAesPubkData: rsaEncryptedAesKey.aesPubkData,
         })
       );
-      var fullHash = await tunnel.getShaHash(
+      var fullHash = await cipher.getShaHash(
         subtle,
-        await tunnel.getShaHash(
+        await cipher.getShaHash(
           subtle,
           JSON.stringify({
             username: ph2,
@@ -122,9 +122,9 @@ io.on('connection', async (socket: Socket) => {
           }).substr(0, 6)
         )
       );
-      var totalHash = await tunnel.getShaHash(
+      var totalHash = await cipher.getShaHash(
         subtle,
-        await tunnel.getShaHash(
+        await cipher.getShaHash(
           subtle,
           JSON.stringify({
             userHash: userHash,
@@ -132,7 +132,7 @@ io.on('connection', async (socket: Socket) => {
           })
         )
       );
-      var aesEncrypted = await tunnel.aesEncrypt(
+      var aesEncrypted = await cipher.aesEncrypt(
         subtle,
         JSON.stringify({ rsaPubkData: rsaKeys_0.pubkData }),
         rsaEncryptedAesKey.aesKey,
@@ -152,9 +152,9 @@ io.on('connection', async (socket: Socket) => {
         { algorithm: 'ES512' }
       );
       var aesIv = new TextDecoder().decode(getRandomValues(new Uint32Array(12)));
-      var rsaEncryptedAesIv = await tunnel.rsaEncrypt(subtle, aesIv, jwtSessionTokenRsaKeys.publicKey);
-      var aesEncryptedJwtToken = await tunnel.aesEncrypt(subtle, jwtToken, jwtSessionTokenAesKey, aesIv);
-      socket.emit('requestHomomorphic', {
+      var rsaEncryptedAesIv = await cipher.rsaEncrypt(subtle, aesIv, jwtSessionTokenRsaKeys.publicKey);
+      var aesEncryptedJwtToken = await cipher.aesEncrypt(subtle, jwtToken, jwtSessionTokenAesKey, aesIv);
+      socket.emit('preLogin', {
         jwt: {
           aesToken: aesEncryptedJwtToken.ciphertext,
           rsaIv: rsaEncryptedAesIv,
@@ -165,14 +165,14 @@ io.on('connection', async (socket: Socket) => {
     });
   });
 
-  socket.on('sendHomomorphic', async (data) => {
+  socket.on('login', async (data) => {
     var jwtToken = data.jwt;
-    jwtToken.rsaIv = await tunnel.rsaDecrypt(subtle, jwtToken.rsaIv, jwtSessionTokenRsaKeys.privateKey);
-    jwtToken.data = await tunnel.aesDecrypt(subtle, jwtToken.aesToken, jwtSessionTokenAesKey, jwtToken.rsaIv);
+    jwtToken.rsaIv = await cipher.rsaDecrypt(subtle, jwtToken.rsaIv, jwtSessionTokenRsaKeys.privateKey);
+    jwtToken.data = await cipher.aesDecrypt(subtle, jwtToken.aesToken, jwtSessionTokenAesKey, jwtToken.rsaIv);
     jwtToken.data = await jwt.verify(jwtToken.data, jwtSessionTokenElipticKey, { algorithms: ['ES512'] });
 
-    jwtToken.data.rsaKeys_0 = await tunnel.importRsaKey(subtle, jwtToken.data.rsaKeys_0);
-    var finalHash = await tunnel.getShaHash(
+    jwtToken.data.rsaKeys_0 = await cipher.importRsaKey(subtle, jwtToken.data.rsaKeys_0);
+    var finalHash = await cipher.getShaHash(
       subtle,
       JSON.stringify({
         totalHash: jwtToken.data.totalHash,
@@ -182,16 +182,16 @@ io.on('connection', async (socket: Socket) => {
         rsaEncryptedAesKey: new TextDecoder().decode(data.rsaEncryptedAesKey),
       })
     );
-    var rsaDecryptedAesKey = await tunnel.rsaDecrypt(subtle, data.rsaEncryptedAesKey, jwtToken.data.rsaKeys_0);
-    var aesKey = await tunnel.importAesKey(subtle, rsaDecryptedAesKey);
-    var aesDecrypted = await tunnel.aesDecrypt(subtle, data.aesEncrypted, aesKey, finalHash);
-    var _tunnel = JSON.parse(aesDecrypted);
-    _tunnel = {
-      lock: tunnel.fromString(_tunnel.tunnelLock),
-      dataLock: tunnel.fromString(_tunnel.tunnelDataLock),
+    var rsaDecryptedAesKey = await cipher.rsaDecrypt(subtle, data.rsaEncryptedAesKey, jwtToken.data.rsaKeys_0);
+    var aesKey = await cipher.importAesKey(subtle, rsaDecryptedAesKey);
+    var aesDecrypted = await cipher.aesDecrypt(subtle, data.aesEncrypted, aesKey, finalHash);
+    var _cipher = JSON.parse(aesDecrypted);
+    _cipher = {
+      lock: cipher.fromString(_cipher.cipherLock),
+      dataLock: cipher.fromString(_cipher.cipherDataLock),
     };
-    var rsaEncryptedAesKeyHash = await tunnel.getShaHash(subtle, new TextDecoder().decode(data.rsaEncryptedAesKey));
-    var cipherData = tunnel.unlock(_tunnel, [jwtToken.data.userHash, jwtToken.data.fullHash, rsaEncryptedAesKeyHash, finalHash]);
+    var rsaEncryptedAesKeyHash = await cipher.getShaHash(subtle, new TextDecoder().decode(data.rsaEncryptedAesKey));
+    var cipherData = cipher.unlock(_cipher, [jwtToken.data.userHash, jwtToken.data.fullHash, rsaEncryptedAesKeyHash, finalHash]);
     var json: any = JSON.parse(cipherData);
 
     await User.SchemaUser.findOne({ email: jwtToken.data.user.email }, async (err, user) => {
