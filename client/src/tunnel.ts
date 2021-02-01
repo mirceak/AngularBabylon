@@ -112,98 +112,121 @@ class tunnel {
   ];
   private td = new TextDecoder();
   private te = new TextEncoder();
-  private scrambledMap(): string[] {
-    var tmp: string[] = this.originalMap.slice(0);
-    var res: string[] = [];
-    var current: string = null;
+  private scrambledMap(
+    tmp = this.originalMap.slice(0),
+    res = [],
+    current = null
+  ): string[] {
     while (res.length != this.originalMap.length) {
       current = tmp.splice(Math.floor(Math.random() * tmp.length), 1)[0];
       res.push(current);
     }
     return res;
   }
-  private generateLock(size): string[][] {
-    var lock: string[][] = [];
-    for (var i = 0; i < size; i++) {
+  private generateLock(size, lock = [], i = 0): string[][] {
+    for (i = 0; i < size; i++) {
       lock.push(this.scrambledMap());
     }
     return lock;
   }
-  private engraveData(lock, key, message) {
-    // console.log(message, message.length, lock.length)
-    if (message.length > lock.length) {
-      console.log(lock.length, message.length, message);
-      throw new Error('Lock must be bigger than message');
-    }
-    for (var i = 0; i < message.length; i++) {
-      var row: string[] = lock[i];
-      var input: string = key[i % key.length];
-      var originalInputIdex: number = this.originalMap.indexOf(input);
-      var output: string = row[originalInputIdex];
-      var messageChar: string = message[i % message.length];
+  private engraveData(
+    lock,
+    key,
+    message,
+    i = 0,
+    row = null,
+    input = null,
+    originalInputIdex = 0,
+    output = null,
+    messageChar = null
+  ) {
+    for (i = 0; i < message.length; i++) {
+      row = lock[i];
+      input = key[i % key.length];
+      originalInputIdex = this.originalMap.indexOf(input);
+      output = row[originalInputIdex];
+      messageChar = message[i % message.length];
       if (output != messageChar) {
         row[row.indexOf(messageChar)] = output;
         row[originalInputIdex] = messageChar;
       }
     }
   }
-  public unlock = (tunnel: any, passwords): string => {
-    var unlocked = '';
-    var password = passwords[0];
+  public unlock = (
+    tunnel: any,
+    passwords,
+    unlocked = '',
+    password = passwords[0],
+    i = 0,
+    originalInputIndex = 0
+  ): string => {
     tunnel.lock = this.unShiftElements(tunnel.lock, tunnel.dataLock, passwords);
-    for (var i = 0; i < tunnel.lock.length; i++) {
-      var originalInputIdex = this.originalMap.indexOf(
+    for (i = 0; i < tunnel.lock.length; i++) {
+      originalInputIndex = this.originalMap.indexOf(
         password[i % password.length]
       );
-      unlocked += tunnel.lock[i][originalInputIdex];
+      unlocked += tunnel.lock[i][originalInputIndex];
     }
     return this.unlockMessage(unlocked, tunnel.dataLock);
   };
-  private makeTunnelPieces(messageLen): any {
-    var dataLockLength = Math.random() * this.randomThreshold;
-    var dataLock = this.generateLock(dataLockLength);
-    var lock = this.generateLock(messageLen);
+  private makeTunnelPieces(
+    messageLen,
+    dataLockLength = 0,
+    dataLock = null,
+    lock = null
+  ): any {
+    dataLockLength = Math.random() * this.randomThreshold;
+    dataLock = this.generateLock(dataLockLength);
+    lock = this.generateLock(messageLen);
     return {
       lock,
       dataLock,
     };
   }
-  public shiftElements(lock, dataLock, passwords) {
-    var columnPassword;
-    var lockLen = lock.length;
+  public shiftElements(
+    lock,
+    dataLock,
+    passwords,
+    columnPassword = null,
+    lockLen = lock.length,
+    i = 0,
+    j = 0
+  ) {
     passwords.forEach((password, index) => {
       columnPassword = passwords[passwords.length - (index + 1)];
-      for (var i = 0; i < columnPassword.length; i++) {
+      for (i = 0; i < columnPassword.length; i++) {
         lock = this.shift(
           lock,
           0,
           columnPassword.charCodeAt(i % columnPassword.length)
         );
-        for (var j = 0; j < lockLen; j++) {
+        for (j = 0; j < lockLen; j++) {
           lock[j] = this.shift(
             lock[j],
             0,
             password.charCodeAt(j % password.length)
           );
         }
-        lock = this.toString(lock);
-        lock = this.lockMessage(lock, dataLock);
-        lock = this.fromString(lock);
+        lock = this.lockMap(lock, dataLock);
       }
     });
     return lock;
   }
-  public unShiftElements(lock, dataLock, passwords) {
-    var columnPassword;
-    var lockLen = lock.length;
+  public unShiftElements(
+    lock,
+    dataLock,
+    passwords,
+    columnPassword = null,
+    lockLen = lock.length,
+    i = 0,
+    j = 0
+  ) {
     passwords.reverse();
     passwords.forEach((password, index) => {
       columnPassword = passwords[passwords.length - 1 - index];
-      for (var i = columnPassword.length - 1; i >= 0; i--) {
-        lock = this.toString(lock);
-        lock = this.unlockMessage(lock, dataLock);
-        lock = this.fromString(lock);
-        for (var j = lockLen - 1; j >= 0; j--) {
+      for (i = columnPassword.length - 1; i >= 0; i--) {
+        lock = this.unlockMap(lock, dataLock);
+        for (j = lockLen - 1; j >= 0; j--) {
           lock[j] = this.shift(
             lock[j],
             1,
@@ -220,8 +243,8 @@ class tunnel {
     passwords.reverse();
     return lock;
   }
-  public shift(arr, direction, n) {
-    var times = n > arr.length ? n % arr.length : n;
+  public shift(arr, direction, n, times = 0) {
+    times = n > arr.length ? n % arr.length : n;
     while (times != 0) {
       if (direction) {
         arr.push(arr.shift());
@@ -232,8 +255,11 @@ class tunnel {
     }
     return arr;
   }
-  public makeTunnel = async (passwords, data): Promise<any> => {
-    var tunnel = this.makeTunnelPieces(data.length);
+  public makeTunnel = async (
+    passwords,
+    data,
+    tunnel = this.makeTunnelPieces(data.length)
+  ): Promise<any> => {
     data = this.lockMessage(data, tunnel.dataLock);
     this.engraveData(tunnel.lock, passwords[0], data);
     tunnel.lock = this.shiftElements(tunnel.lock, tunnel.dataLock, passwords);
@@ -242,19 +268,51 @@ class tunnel {
       dataLock: this.toString(tunnel.dataLock),
     };
   };
-  private lockMessage(message: string, lock: string[][]): string {
-    var locked = '';
-    for (var i = 0; i < message.length; i++) {
+  private lockMessage(
+    message: string,
+    lock: string[][],
+    locked = '',
+    i = 0
+  ): string {
+    for (i = 0; i < message.length; i++) {
       locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
     }
     return locked;
   }
-  public unlockMessage = (message: string, lock: string[][]): string => {
-    var unlocked = '';
-    for (var i = 0; i < message.length; i++) {
+  public unlockMessage = (
+    message: string,
+    lock: string[][],
+    unlocked = '',
+    i = 0
+  ): string => {
+    for (i = 0; i < message.length; i++) {
       unlocked += this.originalMap[lock[i % lock.length].indexOf(message[i])];
     }
     return unlocked;
+  };
+  public lockMap(map: string[][], lock: string[][], i = 0, j = 0): string[][] {
+    for (i = 0; i < map.length; i++) {
+      for (j = 0; j < map[i].length; j++) {
+        map[i][j] =
+          lock[(i * j + j) % lock.length][this.originalMap.indexOf(map[i][j])];
+      }
+    }
+    return map;
+  }
+  public unlockMap = (
+    map: string[][],
+    lock: string[][],
+    i = 0,
+    j = 0
+  ): string[][] => {
+    for (i = 0; i < map.length; i++) {
+      for (j = 0; j < map[i].length; j++) {
+        map[i][j] = this.originalMap[
+          lock[(i * j + j) % lock.length].indexOf(map[i][j])
+        ];
+      }
+    }
+    return map;
   };
   public async getShaHash(subtle, msg) {
     this.shaBytes = Array.from(
@@ -264,31 +322,28 @@ class tunnel {
       return ('00' + byte.toString(32)).slice(-2);
     });
     this.shaHash = this.shaBytes.join('');
-    // this.shaHash = this.shaHash.substr(0, 5);
     return this.shaHash;
   }
-  private toString = (lock: string[][]): string => {
-    var result = lock.reduce((total, current) => {
+  public toString = (lock: string[][], result = null): string => {
+    result = lock.reduce((total, current) => {
       total += current.join('');
       return total;
     }, '');
     return result;
   };
-  public fromString = (string: string): string[][] => {
-    var result = [];
-    for (var i = 0; i < string.length / this.originalMap.length; i++) {
+  public fromString = (string: string, result = [], i = 0): string[][] => {
+    for (i = 0; i < string.length / this.originalMap.length; i++) {
       result.push([
-        ...string
-          .substring(
-            i * this.originalMap.length,
-            this.originalMap.length * (i + 1)
-          ),
+        ...string.substring(
+          i * this.originalMap.length,
+          this.originalMap.length * (i + 1)
+        ),
       ]);
     }
     return result;
   };
-  public async rsaEncrypt(subtle, plaintext, key) {
-    const encrypted = await subtle.encrypt(
+  public async rsaEncrypt(subtle, plaintext, key, encrypted = null) {
+    encrypted = await subtle.encrypt(
       {
         name: 'RSA-OAEP',
       },
@@ -301,9 +356,10 @@ class tunnel {
     subtle,
     plaintext,
     key,
-    iv = 'someRandomIvThatNeedsChaning'
+    iv = 'someRandomIvThatNeedsChaning',
+    ciphertext = null
   ) {
-    const ciphertext = await subtle.encrypt(
+    ciphertext = await subtle.encrypt(
       {
         name: 'AES-GCM',
         iv: this.te.encode(iv),
@@ -316,8 +372,8 @@ class tunnel {
       ciphertext,
     };
   }
-  public async rsaDecrypt(subtle, ciphertext, key) {
-    const plaintext = await subtle.decrypt(
+  public async rsaDecrypt(subtle, ciphertext, key, plaintext = null) {
+    plaintext = await subtle.decrypt(
       {
         name: 'RSA-OAEP',
       },
@@ -326,8 +382,8 @@ class tunnel {
     );
     return this.td.decode(plaintext);
   }
-  public async aesDecrypt(subtle, ciphertext, key, iv) {
-    const plaintext = await subtle.decrypt(
+  public async aesDecrypt(subtle, ciphertext, key, iv, plaintext = null) {
+    plaintext = await subtle.decrypt(
       {
         name: 'AES-GCM',
         iv: this.te.encode(iv),
@@ -337,8 +393,8 @@ class tunnel {
     );
     return this.td.decode(plaintext);
   }
-  public async generateRsaKeys(subtle, format) {
-    const { publicKey, privateKey } = await subtle.generateKey(
+  public async generateRsaKeys(subtle, format, keys = null) {
+    keys = await subtle.generateKey(
       {
         name: 'RSA-OAEP',
         modulusLength: 2048,
@@ -351,14 +407,16 @@ class tunnel {
       ['encrypt', 'decrypt']
     );
     return {
-      publicKey: publicKey,
-      privateKey: privateKey,
-      pubkData: JSON.stringify(await subtle.exportKey(format, publicKey)),
-      privkData: JSON.stringify(await subtle.exportKey(format, privateKey)),
+      publicKey: keys.publicKey,
+      privateKey: keys.privateKey,
+      pubkData: JSON.stringify(await subtle.exportKey(format, keys.publicKey)),
+      privkData: JSON.stringify(
+        await subtle.exportKey(format, keys.privateKey)
+      ),
     };
   }
-  public async generateElipticKey(subtle) {
-    const { privateKey } = await subtle.generateKey(
+  public async generateElipticKey(subtle, privateKey = null) {
+    privateKey = await subtle.generateKey(
       {
         name: 'ECDSA',
         namedCurve: 'P-521',
@@ -370,8 +428,8 @@ class tunnel {
       privkData: JSON.stringify(await subtle.exportKey('jwk', privateKey)),
     };
   }
-  public async importElipticKey(subtle, data, pub = false) {
-    var key = await subtle.importKey(
+  public async importElipticKey(subtle, data, pub = false, key = null) {
+    key = await subtle.importKey(
       'jwk',
       JSON.parse(data),
       {
@@ -383,8 +441,8 @@ class tunnel {
     );
     return await subtle.exportKey('node.keyObject', key);
   }
-  public async generateAesKey(subtle) {
-    const key = await subtle.generateKey(
+  public async generateAesKey(subtle, key = null) {
+    key = await subtle.generateKey(
       {
         name: 'AES-GCM',
         length: 256,
@@ -398,8 +456,8 @@ class tunnel {
       pubkData: (await subtle.exportKey('jwk', key)).k,
     };
   }
-  public async importRsaKey(subtle, keyData, pub = false) {
-    const key = await subtle.importKey(
+  public async importRsaKey(subtle, keyData, pub = false, key = null) {
+    key = await subtle.importKey(
       'jwk',
       JSON.parse(keyData),
       {
@@ -411,8 +469,8 @@ class tunnel {
     );
     return key;
   }
-  public async importAesKey(subtle, keyData, format = 'jwk') {
-    const key = await subtle.importKey(
+  public async importAesKey(subtle, keyData, format = 'jwk', key = null) {
+    key = await subtle.importKey(
       format,
       {
         key_ops: ['encrypt', 'decrypt'],
@@ -430,10 +488,16 @@ class tunnel {
     );
     return key;
   }
-  public async getRsaEncryptedAesKey(subtle, rsaPubkData) {
-    var rsaPublicKey = await this.importRsaKey(subtle, rsaPubkData, true);
-    var aesKey = await this.generateAesKey(subtle);
-    var rsaEncryptedAes = await this.rsaEncrypt(
+  public async getRsaEncryptedAesKey(
+    subtle,
+    rsaPubkData,
+    rsaPublicKey = null,
+    aesKey = null,
+    rsaEncryptedAes = null
+  ) {
+    rsaPublicKey = await this.importRsaKey(subtle, rsaPubkData, true);
+    aesKey = await this.generateAesKey(subtle);
+    rsaEncryptedAes = await this.rsaEncrypt(
       subtle,
       aesKey.pubkData,
       rsaPublicKey

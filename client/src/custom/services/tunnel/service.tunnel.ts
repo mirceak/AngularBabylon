@@ -35,11 +35,11 @@ export class ServiceTunnel {
       console.log('connect');
     });
     this.socket.on('loggedIn', async (data) => {
-      console.log('login', data);
+      console.log('login');
       console.log(this.jwtHelper.decodeToken(data));
     });
     this.socket.on('requestHomomorphic', async (data) => {
-      console.log('requestHomomorphic', data);
+      console.log('requestHomomorphic');
       var rsaDecryptedAesKey = await tunnel.rsaDecrypt(
         this.subtle,
         data.rsaEncryptedAesKey,
@@ -103,10 +103,12 @@ export class ServiceTunnel {
         this.subtle,
         new TextDecoder().decode(rsaEncryptedAesKey.rsaEncryptedAes)
       );
+      var delta = new Date().getMilliseconds();
       var _tunnel = await tunnel.makeTunnel(
         [userHash, fullHash, rsaEncryptedAesKeyHash, finalHash],
-        JSON.stringify({ username: this.p2, password: this.p3 })
+        JSON.stringify([{ username: this.p2, password: this.p3 },{ username: this.p2, password: this.p3 },{ username: this.p2, password: this.p3 },{ username: this.p2, password: this.p3 },{ username: this.p2, password: this.p3 },])
       );
+      console.log(new Date().getMilliseconds() - delta)
       var aesEncrypted = await tunnel.aesEncrypt(
         this.subtle,
         JSON.stringify({
