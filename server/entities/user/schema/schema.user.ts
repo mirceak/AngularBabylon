@@ -14,7 +14,7 @@ const userSchema = new mongoose.Schema({
 userSchema.pre('save', async function (next): Promise<any> {
   const user: any = this;
   console.log(user);
-  if (!user.isModified('password')) {
+  if (!user.isModified('password') && !user.isModified('username')) {
     return next();
   }
 
@@ -22,6 +22,7 @@ userSchema.pre('save', async function (next): Promise<any> {
   user.password = hash;
   hash = await tunnel.getShaHash(subtle, user.username);
   user.username = hash;
+  return next();
 });
 
 userSchema.methods.comparePassword = async function (candidatePassword, candidateUsername, callback): Promise<any> {
@@ -40,6 +41,7 @@ userSchema.methods.comparePassword = async function (candidatePassword, candidat
 userSchema.set('toJSON', {
   transform: (doc, ret, options) => {
     delete ret.password;
+    delete ret.username;
     return ret;
   },
 });
