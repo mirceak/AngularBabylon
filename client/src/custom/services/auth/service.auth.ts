@@ -51,7 +51,7 @@ export class ServiceAuth {
     }
     return buf;
   }
-  
+
   async login(postData): Promise<any> {
     var rsaKeys_0 = await cipher.generateRsaKeys(this.subtle, 'jwk');
     var rsaKeys_1 = await cipher.generateRsaKeys(this.subtle, 'jwk');
@@ -126,14 +126,18 @@ export class ServiceAuth {
           fullHash: fullHash,
           userHash: userHash,
           rsaPubkData: rsaKeys_1.pubkData,
-          rsaEncryptedAesKey: new TextDecoder().decode(
-            rsaEncryptedAesKey.rsaEncryptedAes
+          rsaEncryptedAesKey: String.fromCharCode.apply(
+            null,
+            new Uint8Array(rsaEncryptedAesKey.rsaEncryptedAes)
           ),
         })
       );
       var rsaEncryptedAesKeyHash = await cipher.getShaHash(
         this.subtle,
-        new TextDecoder().decode(rsaEncryptedAesKey.rsaEncryptedAes)
+        String.fromCharCode.apply(
+          null,
+          new Uint8Array(rsaEncryptedAesKey.rsaEncryptedAes)
+        )
       );
       var _cipher = await cipher.makeCipher(
         [userHash, fullHash, rsaEncryptedAesKeyHash, finalHash],

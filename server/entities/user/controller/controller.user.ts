@@ -136,7 +136,7 @@ class ControllerUser extends BaseController {
         jwtSessionTokenElipticKey,
         { algorithm: 'ES512' }
       );
-      var aesIv = new TextDecoder().decode(getRandomValues(new Uint8Array(12)));
+      var aesIv = String.fromCharCode.apply(null, new Uint8Array(getRandomValues(new Uint8Array(12))));
       var rsaEncryptedAesIv = await cipher.rsaEncrypt(subtle, aesIv, jwtSessionTokenRsaKeys.publicKey);
       var aesEncryptedJwtToken = await cipher.aesEncrypt(subtle, jwtToken, jwtSessionTokenAesKey, aesIv);
       res.send({
@@ -174,7 +174,7 @@ class ControllerUser extends BaseController {
         fullHash: jwtToken.data.fullHash,
         userHash: jwtToken.data.userHash,
         rsaPubkData: req.body.rsaPubkData,
-        rsaEncryptedAesKey: new TextDecoder().decode(req.body.rsaEncryptedAesKey),
+        rsaEncryptedAesKey: String.fromCharCode.apply(null, new Uint8Array(req.body.rsaEncryptedAesKey)),
       })
     );
     var rsaDecryptedAesKey = await cipher.rsaDecrypt(subtle, req.body.rsaEncryptedAesKey, jwtToken.data.rsaKeys_0);
@@ -185,21 +185,26 @@ class ControllerUser extends BaseController {
       lock: cipher.fromString(_cipher.cipherLock),
       dataLock: cipher.fromString(_cipher.cipherDataLock),
     };
-    var rsaEncryptedAesKeyHash = await cipher.getShaHash(subtle, new TextDecoder().decode(req.body.rsaEncryptedAesKey));
+    var rsaEncryptedAesKeyHash = await cipher.getShaHash(
+      subtle,
+      String.fromCharCode.apply(null, new Uint8Array(req.body.rsaEncryptedAesKey))
+    );
     var cipherData = cipher.unlock(_cipher, [jwtToken.data.userHash, jwtToken.data.fullHash, rsaEncryptedAesKeyHash, finalHash]);
     var json: any = JSON.parse(cipherData);
 
     await User.SchemaUser.findOne({ email: jwtToken.data.user.email }, async (err, user) => {
       user.comparePassword(json.password, json.username, async (error, isMatch) => {
-        res.send({
-          token: await jwt.sign(
-            {
-              loggedIn: true,
-            },
-            jwtSessionTokenElipticKey,
-            { algorithm: 'ES512' }
-          ),
-        });
+        if (isMatch) {
+          res.send({
+            token: await jwt.sign(
+              {
+                loggedIn: true,
+              },
+              jwtSessionTokenElipticKey,
+              { algorithm: 'ES512' }
+            ),
+          });
+        }
       });
     });
   };
