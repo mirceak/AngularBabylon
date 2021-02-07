@@ -26,7 +26,6 @@
     "@ngx-formly/core": "^5.10.11",
     "@ngx-formly/material": "^5.10.11",
     "@ngx-formly/schematics": "^5.10.11",
-    "ngx-cookie-service": "^11.0.2",
     "rxjs": "~6.6.3",
     "socket.io-client": "^3.1.0",
     "tslib": "^2.1.0",

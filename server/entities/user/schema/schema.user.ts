@@ -1,7 +1,8 @@
 import * as mongoose from 'mongoose';
-import tunnel from '../../../../client/src/cipher';
+import _Cryptography from '../../../../client/src/cryptography';
 
-const { subtle, getRandomValues } = require('crypto').webcrypto;
+const webcrypto = require('crypto').webcrypto;
+var Cryptography = new _Cryptography(webcrypto)
 const EntityName = 'User';
 const userSchema = new mongoose.Schema({
   username: String,
@@ -18,24 +19,12 @@ userSchema.pre('save', async function (next): Promise<any> {
     return next();
   }
 
-  var hash = await tunnel.getShaHash(subtle, user.password);
+  var hash = await Cryptography.getShaHash(user.password);
   user.password = hash;
-  hash = await tunnel.getShaHash(subtle, user.username);
+  hash = await Cryptography.getShaHash(user.username);
   user.username = hash;
   return next();
 });
-
-userSchema.methods.comparePassword = async function (candidatePassword, candidateUsername, callback): Promise<any> {
-  var ph2: any = await tunnel.getShaHash(subtle, candidateUsername);
-  var ph3: any = await tunnel.getShaHash(subtle, candidatePassword);
-  if (ph3 === (this as any).password && ph2 === (this as any).username) {
-    callback(null, true);
-    return;
-  }
-  callback({
-    error: 'bad password',
-  });
-};
 
 // Omit the password when returning a user
 userSchema.set('toJSON', {

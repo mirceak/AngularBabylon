@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Component({
   selector: 'app-nav-list',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavListSimpleComponent implements OnInit {
 
-  constructor() { }
+  constructor(public serviceAuth: ServiceAuth) { }
 
   ngOnInit(): void {
   }

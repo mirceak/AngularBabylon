@@ -52,6 +52,7 @@ async function main(): Promise<any> {
       if (req.headers.host.includes('www.')) {
         return res.redirect('https://' + req.headers.host.replaceAll(/www./g, '') + req.url);
       }
+      res.set('pageHash', 'someHash');
       res.sendFile(path.join(__dirname, '../../client/index.html'));
     });
   } catch (err) {

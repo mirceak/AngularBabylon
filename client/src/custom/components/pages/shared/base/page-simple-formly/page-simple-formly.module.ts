@@ -21,6 +21,6 @@ import { PageFormSimpleComponent } from '@custom/components/pages/shared/base/pa
     FormlyMaterialModule,
     PageSimpleModule,
     PageFormSimpleComponent,
-  ],
+  ]
 })
 export class PageFormlyModule {}

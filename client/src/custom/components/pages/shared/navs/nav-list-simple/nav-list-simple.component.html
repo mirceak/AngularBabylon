@@ -13,6 +13,7 @@
 </div>
 <div class="footer">
   <a
+    *ngIf="!serviceAuth.currentUser"
     mat-button
     class="split-mat-button"
     routerLink="/login"
@@ -21,11 +22,18 @@
     ><mat-icon>login</mat-icon> Login</a
   >
   <a
+    *ngIf="!serviceAuth.currentUser"
     mat-button
     class="split-mat-button"
     routerLink="/login/register"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }"
     ><mat-icon>follow_the_signs</mat-icon> Register</a
+  >
+  <a
+    *ngIf="serviceAuth.currentUser"
+    mat-button
+    (click)="serviceAuth.logout()"
+    ><mat-icon>logout</mat-icon> Logout</a
   >
 </div>

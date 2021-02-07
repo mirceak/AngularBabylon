@@ -4,13 +4,16 @@ import { Injectable } from '@angular/core';
 @Injectable({
   providedIn: 'root',
 })
-export class ServiceTunnel {
+export class ServiceCryptography {
   constructor(private http: HttpClient) {}
 
-  async requestLogin(postData) {
+  requestLogin(postData) {
     return this.http.post('api/preLogin', postData);
   }
-  async login(postData) {
+  login(postData) {
     return this.http.post('api/login', postData);
+  }
+  reqSignup(postData) {
+    return this.http.post('api/reqSignup', postData);
   }
 }
