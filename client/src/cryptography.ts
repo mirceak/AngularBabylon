@@ -264,6 +264,101 @@ class Cryptography {
     }
     return arr;
   }
+  public async signRegisterSessionData(
+    postData,
+    options = {
+      sessionJwt: postData.sessionJwt,
+      rsaEncryptedAesKey: this.str2ab(postData.rsaEncryptedAesKey),
+      aesEncrypted: this.str2ab(postData.aesEncrypted),
+      referralEmail: postData.referralEmail,
+      referralCode: postData.referralCode,
+      username: postData.username,
+      password: postData.password,
+      email: postData.email,
+    },
+    rsaKeys_1 = null,
+    rsaDecryptedAesKey = null,
+    aesKey = null,
+    userHash = null,
+    fullHash = null,
+    totalHash = null,
+    decryptedAes = null,
+    rsaEncryptedAesKey = null,
+    finalHash = null,
+    rsaEncryptedAesKeyHash = null,
+    cipherMap = null,
+    aesEncrypted = null
+  ) {
+    rsaKeys_1 = await this.generateRsaKeys('jwk');
+    rsaDecryptedAesKey = await this.rsaDecrypt(
+      options.rsaEncryptedAesKey,
+      postData.rsaKeys_0.privateKey
+    );
+    aesKey = await this.importAesKey(rsaDecryptedAesKey);
+    userHash = await this.getShaHash(
+      JSON.stringify({
+        initialRsaPubkData: postData.rsaKeys_0.pubkData,
+        initialAesPubkData: rsaDecryptedAesKey,
+      })
+    );
+    fullHash = await this.getShaHash(
+      await this.getShaHash(
+        JSON.stringify({
+          referralEmail: options.referralEmail,
+          referralCode: options.referralCode,
+          initialRsaPubkData: postData.rsaKeys_0.pubkData,
+          initialAesPubkData: rsaDecryptedAesKey,
+        }).substr(0, 6)
+      )
+    );
+    totalHash = await this.getShaHash(
+      await this.getShaHash(
+        JSON.stringify({
+          userHash: userHash,
+          fullHash: fullHash,
+        })
+      )
+    );
+    decryptedAes = JSON.parse(
+      await this.aesDecrypt(options.aesEncrypted, aesKey, totalHash)
+    );
+    rsaEncryptedAesKey = await this.getRsaEncryptedAesKey(
+      decryptedAes.rsaPubkData
+    );
+    finalHash = await this.getShaHash(
+      JSON.stringify({
+        totalHash: totalHash,
+        fullHash: fullHash,
+        userHash: userHash,
+        rsaPubkData: rsaKeys_1.pubkData,
+        rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes),
+      })
+    );
+    rsaEncryptedAesKeyHash = await this.getShaHash(
+      this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes)
+    );
+    cipherMap = await this.makeCipherMap(
+      [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
+      JSON.stringify({
+        username: options.username,
+        password: options.password,
+      })
+    );
+    aesEncrypted = await this.aesEncrypt(
+      JSON.stringify({
+        cipherLock: cipherMap.lock,
+        cipherDataLock: cipherMap.dataLock,
+      }),
+      rsaEncryptedAesKey.aesKey,
+      finalHash
+    );
+    return {
+      sessionJwt: options.sessionJwt,
+      aesEncrypted: this.ab2str(aesEncrypted.ciphertext),
+      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes),
+      rsaPubkData: rsaKeys_1.pubkData,
+    };
+  }
   public async signLoginSessionData(
     postData,
     ph2 = null,
@@ -362,7 +457,7 @@ class Cryptography {
       rsaPubkData: rsaKeys_1.pubkData,
     };
   }
-  async parseJwtSessionToken(sessionJwt, jwtSessionToken, jwt) {
+  public async parseJwtSessionToken(sessionJwt, jwtSessionToken, jwt) {
     sessionJwt = {
       aesToken: this.str2ab(sessionJwt.aesToken),
       rsaIv: this.str2ab(sessionJwt.rsaIv),
@@ -381,6 +476,82 @@ class Cryptography {
       jwtSessionToken.jwtSessionTokenElipticKey,
       { algorithms: ['ES512'] }
     );
+  }
+  public async validateRegisterSessionData(
+    jwtSessionToken,
+    postData,
+    jwt,
+    finalHash = null,
+    rsaDecryptedAesKey = null,
+    aesKey = null,
+    aesDecrypted = null,
+    cipherMap = null,
+    rsaEncryptedAesKeyHash = null,
+    cipherData = null,
+    json = null
+  ) {
+    postData.aesEncrypted = this.str2ab(postData.aesEncrypted);
+    postData.rsaEncryptedAesKey = this.str2ab(postData.rsaEncryptedAesKey);
+    postData.sessionJwt = await this.parseJwtSessionToken(
+      postData.sessionJwt,
+      jwtSessionToken,
+      jwt
+    );
+    postData.sessionJwt.rsaKeys_0 = await this.importRsaKey(
+      postData.sessionJwt.rsaKeys_0
+    );
+    finalHash = await this.getShaHash(
+      JSON.stringify({
+        totalHash: postData.sessionJwt.totalHash,
+        fullHash: postData.sessionJwt.fullHash,
+        userHash: postData.sessionJwt.userHash,
+        rsaPubkData: postData.rsaPubkData,
+        rsaEncryptedAesKey: this.ab2str(postData.rsaEncryptedAesKey),
+      })
+    );
+    rsaDecryptedAesKey = await this.rsaDecrypt(
+      postData.rsaEncryptedAesKey,
+      postData.sessionJwt.rsaKeys_0
+    );
+    aesKey = await this.importAesKey(rsaDecryptedAesKey);
+    aesDecrypted = await this.aesDecrypt(
+      postData.aesEncrypted,
+      aesKey,
+      finalHash
+    );
+    cipherMap = JSON.parse(aesDecrypted);
+    cipherMap = {
+      lock: this.fromString(cipherMap.cipherLock),
+      dataLock: this.fromString(cipherMap.cipherDataLock),
+    };
+    rsaEncryptedAesKeyHash = await this.getShaHash(
+      this.ab2str(postData.rsaEncryptedAesKey)
+    );
+    cipherData = this.unlock(cipherMap, [
+      finalHash,
+      postData.sessionJwt.userHash,
+      postData.sessionJwt.fullHash,
+      postData.sessionJwt.totalHash,
+      rsaEncryptedAesKeyHash,
+    ]);
+    json = JSON.parse(cipherData);
+    return {
+      json: json,
+      sessionJwt: await this.signJwtSessionToken(
+        {
+          email: postData.sessionJwt.email,
+          referrals: postData.sessionJwt.referrals,
+          username: postData.sessionJwt.username,
+          password: postData.sessionJwt.password,
+          totalHash: postData.sessionJwt.totalHash,
+          fullHash: postData.sessionJwt.fullHash,
+          userHash: postData.sessionJwt.userHash,
+          rsaKeys_0: postData.sessionJwt.rsaKeys_0.privkData,
+        },
+        jwtSessionToken,
+        jwt
+      ),
+    };
   }
   public async validateLoginSessionData(
     jwtSessionToken,
@@ -453,10 +624,12 @@ class Cryptography {
           {
             user: {
               email: postData.sessionJwt.email,
+              referrals: postData.sessionJwt.referrals,
             },
             sessionJwt: await this.signJwtSessionToken(
               {
                 email: postData.sessionJwt.email,
+                referrals: postData.sessionJwt.referrals,
                 username: postData.sessionJwt.username,
                 password: postData.sessionJwt.password,
                 totalHash: postData.sessionJwt.totalHash,
@@ -473,6 +646,67 @@ class Cryptography {
         ),
       };
     }
+  }
+  public async generateRegisterSessionData(
+    jwtSessionToken,
+    postData,
+    jwt,
+    rsaPubkData = postData.rsaPubkData,
+    rsaKeys_0 = null,
+    rsaEncryptedAesKey = null,
+    userHash = null,
+    fullHash = null,
+    totalHash = null,
+    aesEncrypted = null
+  ) {
+    rsaKeys_0 = await this.generateRsaKeys('jwk');
+    rsaEncryptedAesKey = await this.getRsaEncryptedAesKey(rsaPubkData);
+    userHash = await this.getShaHash(
+      JSON.stringify({
+        initialRsaPubkData: rsaPubkData,
+        initialAesPubkData: rsaEncryptedAesKey.aesPubkData,
+      })
+    );
+    fullHash = await this.getShaHash(
+      await this.getShaHash(
+        JSON.stringify({
+          referralEmail: postData.referralEmail,
+          referralCode: postData.referralCode,
+          initialRsaPubkData: rsaPubkData,
+          initialAesPubkData: rsaEncryptedAesKey.aesPubkData,
+        }).substr(0, 6)
+      )
+    );
+    totalHash = await this.getShaHash(
+      await this.getShaHash(
+        JSON.stringify({
+          userHash: userHash,
+          fullHash: fullHash,
+        })
+      )
+    );
+    aesEncrypted = await this.aesEncrypt(
+      JSON.stringify({ rsaPubkData: rsaKeys_0.pubkData }),
+      rsaEncryptedAesKey.aesKey,
+      totalHash
+    );
+    return {
+      sessionJwt: await this.signJwtSessionToken(
+        {
+          email: postData.email,
+          referralEmail: postData.referralEmail,
+          referralCode: postData.referralCode,
+          totalHash: totalHash,
+          fullHash: fullHash,
+          userHash: userHash,
+          rsaKeys_0: rsaKeys_0.privkData,
+        },
+        jwtSessionToken,
+        jwt
+      ),
+      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes),
+      aesEncrypted: this.ab2str(aesEncrypted.ciphertext),
+    };
   }
   public async generateLoginSessionData(
     jwtSessionToken,
@@ -521,6 +755,7 @@ class Cryptography {
       sessionJwt: await this.signJwtSessionToken(
         {
           email: postData.user.email,
+          referrals: postData.user.referrals,
           username: postData.user.username,
           password: postData.user.password,
           totalHash: totalHash,
@@ -535,7 +770,7 @@ class Cryptography {
       aesEncrypted: this.ab2str(aesEncrypted.ciphertext),
     };
   }
-  async signJwtSessionToken(
+  public async signJwtSessionToken(
     postData,
     jwtSessionToken,
     jwt,

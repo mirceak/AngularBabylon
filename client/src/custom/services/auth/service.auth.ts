@@ -2,7 +2,7 @@ import { Injectable, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ModelUser } from '@custom/entities/user/model/model.user';
-import { ServiceCryptography } from '@custom/services/tunnel/service.cryptography';
+import { ServiceCryptography } from '@custom/services/cryptography/service.cryptography';
 import _Cryptography from '../../../cryptography';
 
 @Injectable({
@@ -10,10 +10,9 @@ import _Cryptography from '../../../cryptography';
 })
 export class ServiceAuth {
   private Cryptography: _Cryptography = new _Cryptography(window.crypto);
+  private token: any;
+  public referrals: any;
   loggedIn = false;
-  roles: any = {
-    guest: true,
-  };
   currentUser: ModelUser = null;
   constructor(
     private ServiceCryptography: ServiceCryptography,
@@ -21,33 +20,34 @@ export class ServiceAuth {
     private jwtHelper: JwtHelperService,
     private zone: NgZone
   ) {
-    const token = localStorage.getItem('token');
-    if (token) {
-      const decodedToken = this.jwtHelper.decodeToken(token);
-      this.setCurrentUser(decodedToken);
+    this.token = localStorage.getItem('token');
+    if (this.token) {
+      this.token = this.jwtHelper.decodeToken(this.token);
+      this.setCurrentUser(this.token);
+      this.referrals = this.token.user.referrals;
       return;
     }
   }
 
   async login(postData): Promise<any> {
     var rsaKeys_0 = await this.Cryptography.generateRsaKeys('jwk');
-    this.ServiceCryptography
-      .requestLogin({
-        email: postData.email,
-        rsaPubkData: rsaKeys_0.pubkData,
-      })
-      .subscribe(async (response: any) => {
-        postData = Object.assign(postData, response, { rsaKeys_0: rsaKeys_0 });
-        this.ServiceCryptography
-          .login(await this.Cryptography.signLoginSessionData(postData))
-          .subscribe(async (data: any) => {
-            localStorage.setItem('token', data.token);
-            this.setCurrentUser(this.jwtHelper.decodeToken(data.token));
-            this.zone.run(() => {
-              this.router.navigate(['/']);
-            });
-          });
+    this.ServiceCryptography.requestLogin({
+      email: postData.email,
+      rsaPubkData: rsaKeys_0.pubkData,
+    }).subscribe(async (response: any) => {
+      postData = Object.assign(postData, response, { rsaKeys_0: rsaKeys_0 });
+      this.ServiceCryptography.login(
+        await this.Cryptography.signLoginSessionData(postData)
+      ).subscribe(async (data: any) => {
+        localStorage.setItem('token', data.token);
+        this.token = this.jwtHelper.decodeToken(data.token);
+        this.referrals = this.token.user.referrals;
+        this.setCurrentUser(this.token);
+        this.zone.run(() => {
+          this.router.navigate(['/']);
+        });
       });
+    });
   }
 
   logout(): void {
@@ -57,8 +57,37 @@ export class ServiceAuth {
     this.router.navigate(['/login']);
   }
 
-  reqSignup(): void {
+  async register(postData): Promise<any> {
+    var rsaKeys_0 = await this.Cryptography.generateRsaKeys('jwk');
+    this.ServiceCryptography.requestRegister({
+      email: postData.email,
+      referralEmail: postData.referralEmail,
+      rsaPubkData: rsaKeys_0.pubkData,
+    }).subscribe(async (response: any) => {
+      postData = Object.assign(postData, response, { rsaKeys_0: rsaKeys_0 });
+      this.ServiceCryptography.register(
+        await this.Cryptography.signRegisterSessionData(postData)
+      ).subscribe(async (data: any) => {
+        localStorage.setItem('token', data.token);
+        this.token = this.jwtHelper.decodeToken(data.token);
+        this.referrals = this.token.user.referrals;
+        this.setCurrentUser(this.token);
+        this.zone.run(() => {
+          this.router.navigate(['/']);
+        });
+      });
+    });
+  }
 
+  async reqSignup(postData): Promise<any> {
+    postData = Object.assign(postData, this.token);
+    this.ServiceCryptography.reqSignup(postData).subscribe(
+      async (data: any) => {
+        localStorage.setItem('token', data.token);
+        Object.assign(this.token, this.jwtHelper.decodeToken(data.token));
+        this.referrals = this.token.user.referrals;
+      }
+    );
   }
 
   setCurrentUser(decodedToken): void {

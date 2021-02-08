@@ -26,6 +26,7 @@ export class LoginService {
       templateOptions: {
         label: 'Username',
         required: true,
+        type: 'password',
       },
       validators: {
         minLength: this.pageFormlyService.minLengthValidator(6),
@@ -38,6 +39,7 @@ export class LoginService {
       templateOptions: {
         label: 'Password',
         required: true,
+        type: 'password',
       },
       validators: {
         minLength: this.pageFormlyService.minLengthValidator(6),

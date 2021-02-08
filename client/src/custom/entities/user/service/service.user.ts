@@ -15,12 +15,4 @@ export class ServiceUser extends ServiceEntityBase<ModelUser> {
       pathName: 'user',
     });
   }
-
-  register(user: ModelUser): Observable<ModelUser> {
-    return this.http.post<ModelUser>('/api/user', user);
-  }
-
-  login(credentials): Observable<any> {
-    return this.http.post('/api/login', credentials);
-  }
 }

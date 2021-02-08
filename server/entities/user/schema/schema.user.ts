@@ -2,23 +2,21 @@ import * as mongoose from 'mongoose';
 import _Cryptography from '../../../../client/src/cryptography';
 
 const webcrypto = require('crypto').webcrypto;
-var Cryptography = new _Cryptography(webcrypto)
+var Cryptography = new _Cryptography(webcrypto);
 const EntityName = 'User';
 const userSchema = new mongoose.Schema({
   username: String,
   email: { type: String, unique: true, lowercase: true, trim: true },
   password: String,
-  role: String,
+  referrals: Array,
 });
 
 // Before saving the user, hash the password
 userSchema.pre('save', async function (next): Promise<any> {
   const user: any = this;
-  console.log(user);
   if (!user.isModified('password') && !user.isModified('username')) {
     return next();
   }
-
   var hash = await Cryptography.getShaHash(user.password);
   user.password = hash;
   hash = await Cryptography.getShaHash(user.username);

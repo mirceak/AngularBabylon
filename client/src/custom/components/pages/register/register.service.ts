@@ -3,24 +3,11 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 import { PageFormlyService } from '@custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class RegisterService {
   constructor(private pageFormlyService: PageFormlyService) {}
   fields = [
-    {
-      key: 'username',
-      type: 'input',
-      templateOptions: {
-        label: 'Username',
-        placeholder: 'Enter username',
-        required: true,
-      },
-      validators: {
-        minLength: this.pageFormlyService.minLengthValidator(6),
-        required: this.pageFormlyService.requiredValidator,
-      },
-    },
     {
       key: 'email',
       type: 'input',
@@ -35,11 +22,13 @@ export class RegisterService {
       },
     },
     {
-      key: 'password',
+      key: 'username',
       type: 'input',
       templateOptions: {
-        label: 'Password',
+        label: 'Username',
+        placeholder: 'Enter username',
         required: true,
+        type: 'password',
       },
       validators: {
         minLength: this.pageFormlyService.minLengthValidator(6),
@@ -47,32 +36,42 @@ export class RegisterService {
       },
     },
     {
-      key: 'role',
-      type: 'select',
+      key: 'password',
+      type: 'input',
       templateOptions: {
-        label: 'Role',
+        label: 'Password',
+        placeholder: 'Enter Password',
         required: true,
-      },
-      hooks: {
-        onInit: (field?: FormlyFieldConfig) => {
-          field.templateOptions.options = [
-            {
-              value: null,
-              label: 'Select',
-            },
-            {
-              value: 'admin',
-              label: 'Admin',
-            },
-            {
-              value: 'user',
-              label: 'User',
-            },
-          ];
-        },
+        type: 'password',
       },
       validators: {
-        min: this.pageFormlyService.minValidator(1),
+        minLength: this.pageFormlyService.minLengthValidator(6),
+        required: this.pageFormlyService.requiredValidator,
+      },
+    },
+    {
+      key: 'referralEmail',
+      type: 'input',
+      templateOptions: {
+        label: 'Referral Email',
+        placeholder: 'Enter email',
+        required: true,
+      },
+      validators: {
+        email: this.pageFormlyService.emailValidator,
+        required: this.pageFormlyService.requiredValidator,
+      },
+    },
+    {
+      key: 'referralCode',
+      type: 'input',
+      templateOptions: {
+        label: 'Referral Code',
+        placeholder: 'Enter Code',
+        required: true,
+      },
+      validators: {
+        minLength: this.pageFormlyService.minLengthValidator(20),
         required: this.pageFormlyService.requiredValidator,
       },
     },
