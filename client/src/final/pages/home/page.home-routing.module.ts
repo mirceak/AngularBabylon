@@ -6,10 +6,6 @@ const routes: Routes = [
     path: '',
     loadChildren: () => import ('@custom/components/pages/home/home.module').then(m => m.HomeModule)
   },
-  {
-    path: 'referral',
-    loadChildren: () => import ('@custom/components/pages/home/home.module').then(m => m.HomeModule)
-  },
 ];
 
 @NgModule({

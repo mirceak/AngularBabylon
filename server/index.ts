@@ -9,6 +9,32 @@ import Controllers from './controllers/base/base.controller.index';
 import * as https from 'https';
 import { readFileSync } from 'fs';
 
+import { Server, Socket } from 'socket.io';
+
+const httpsSocketServer = https
+  .createServer({
+    key: readFileSync('./server/certs/https.key', 'utf-8'),
+    cert: readFileSync('./server/certs/https.cert', 'utf-8'),
+  })
+  .listen(3030, () => {
+    console.log('Listening for socket requests...');
+  });
+const io = new Server(httpsSocketServer, {
+  transports: ['websocket', 'polling'],
+  cors: {
+    origin: ['https://talky.ro', 'https://www.talky.ro'],
+    methods: ['GET', 'POST'],
+    credentials: true,
+  },
+});
+io.on('connection', async (socket: Socket) => {
+  console.log('client connected to socket');
+
+  socket.on('disconnect', (data) => {
+    console.log('disconnected', data);
+  });
+});
+
 const httpApp = express();
 httpApp.set('port', 80);
 httpApp.use(express.json());
@@ -47,8 +73,8 @@ async function main(): Promise<any> {
     };
     controllerParser(Controllers);
 
-    app.use('/', express.static(path.join(__dirname, '../../client')));
-    app.get('/*', (req, res) => {
+    app.use('', express.static(path.join(__dirname, '../../client')));
+    app.get('*', (req, res) => {
       if (req.headers.host.includes('www.')) {
         return res.redirect('https://' + req.headers.host.replaceAll(/www./g, '') + req.url);
       }

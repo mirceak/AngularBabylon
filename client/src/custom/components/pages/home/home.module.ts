@@ -5,11 +5,17 @@ import { HomeRoutingModule } from '@custom/components/pages/home/home-routing.mo
 import { HomeContentComponent } from '@custom/components/pages/home/home-content/home-content.component';
 import { ReferralContentComponent } from './referral-content/referral-content.component';
 import { PageFormlyModule } from '../shared/base/page-simple-formly/page-simple-formly.module';
+import { ContactsContentComponent } from './contacts-content/contacts-content.component';
 
 @NgModule({
-  declarations: [HomeComponent, HomeContentComponent, ReferralContentComponent],
+  declarations: [
+    HomeComponent,
+    HomeContentComponent,
+    ReferralContentComponent,
+    ContactsContentComponent,
+  ],
   imports: [PageFormlyModule, HomeRoutingModule],
   exports: [],
-  providers: []
+  providers: [],
 })
 export class HomeModule {}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from '@custom/components/pages/home/home.component';
+import { ContactsContentComponent } from './contacts-content/contacts-content.component';
 import { HomeContentComponent } from './home-content/home-content.component';
 import { ReferralContentComponent } from './referral-content/referral-content.component';
 
@@ -15,8 +16,12 @@ const routes: Routes = [
       },
       {
         path: 'referral',
-        component: ReferralContentComponent
-      }
+        component: ReferralContentComponent,
+      },
+      {
+        path: 'contacts',
+        component: ContactsContentComponent,
+      },
     ],
   },
 ];

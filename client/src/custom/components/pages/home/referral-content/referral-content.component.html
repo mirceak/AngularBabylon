@@ -8,10 +8,10 @@
 <br />
 <mat-divider></mat-divider>
 <mat-list *ngFor="let referral of serviceAuth.referrals">
-  <mat-list-item
-    ><h2>
-      <u>{{ referral.email }}</u>
-    </h2>
-    <h1>: {{ referral.code }}</h1>
-  </mat-list-item>
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ referral.email }}</mat-card-title>
+      <mat-card-subtitle>Secret: {{ referral.code }}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
 </mat-list>
