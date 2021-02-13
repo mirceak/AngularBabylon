@@ -1,6 +1,5 @@
 import { MediaMatcher } from '@angular/cdk/layout';
 import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
-import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Component({
   selector: 'app-layout-simple',

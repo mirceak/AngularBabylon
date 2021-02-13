@@ -1,7 +1,8 @@
 import BaseController from '../../../controllers/base/base.controller';
 import User from '../schema/schema.user';
 import Referral from '../../referral/schema/schema.referral';
-import Contact from '../../contact/schema/schema.contact';
+import MailBox from '../../mailBox/schema/schema.mailBox';
+import Identity from '../../identity/schema/schema.identity';
 import { jwtSessionToken, Cryptography, jwt } from '../../../certs/jwtSessionToken/jwtSessionToken';
 
 class ControllerUser extends BaseController {
@@ -18,7 +19,11 @@ class ControllerUser extends BaseController {
   };
 
   login = async (req, res) => {
-    var identity = 2;//
+    var identity: any = await Identity.SchemaIdentity.create({
+      secret: [...Array(128)].map((i) => (~~(Math.random() * 36)).toString(36)).join(''),
+      mailBox: [],
+    });
+    req.body.identity = identity;
     var validatedSessionData = await Cryptography.validateLoginSessionData(jwtSessionToken, req.body, jwt);
     var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(validatedSessionData.nextRsa);
     var aesEncrypted = await Cryptography.aesEncrypt(validatedSessionData.token, rsaEncryptedAes.aesKey, validatedSessionData.nextRsa);
@@ -60,9 +65,6 @@ class ControllerUser extends BaseController {
         await jwt.sign(
           {
             nextRsa: req.body.nextRsa.pubkData,
-            user: {
-              email: req.body.sessionJwt.email,
-            },
             sessionJwt: validatedSessionData.sessionJwt,
           },
           jwtSessionToken.jwtSessionTokenElipticKey,
@@ -78,7 +80,7 @@ class ControllerUser extends BaseController {
     });
   };
 
-  getContactData = async (req, res) => {
+  getMailBoxData = async (req, res) => {
     var sessionJwt = await Cryptography.parseJwtSessionToken(req.body.sessionJwt, jwtSessionToken, jwt);
     req.body.rsaEncryptedAes = Cryptography.str2ab(req.body.rsaEncryptedAes);
     req.body.aesEncrypted = Cryptography.str2ab(req.body.aesEncrypted);
@@ -86,29 +88,26 @@ class ControllerUser extends BaseController {
     var decryptedAes = await Cryptography.rsaDecrypt(req.body.rsaEncryptedAes, jwtRsaKey);
     var aesKey = await Cryptography.importAesKey(decryptedAes);
     var decryptedData: any = JSON.parse(await Cryptography.aesDecrypt(req.body.aesEncrypted, aesKey, sessionJwt.rsaKeyPub));
-    var contact: any = await Contact.SchemaContact.findOne({
+    var mailBox: any = await MailBox.SchemaMailBox.findOne({
       _id: decryptedData.data.secret1,
       secret: decryptedData.data.secret2,
     });
+    if (req.body.save) {
+      var identity: any = await Identity.SchemaIdentity.findOne({ _id: sessionJwt.identity._id, secret: sessionJwt.identity.secret });
+      identity.mailBox.push(mailBox);
+      identity.save();
+    }
     var nextRsa = await Cryptography.generateRsaKeys('jwk');
     var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(decryptedData.nextRsa);
     var aesEncrypted = await Cryptography.aesEncrypt(
       JSON.stringify({
-        data: contact,
+        data: mailBox,
         token: await jwt.sign(
           {
             nextRsa: nextRsa.pubkData,
-            user: {
-              email: decryptedData.data.email,
-            },
             sessionJwt: await Cryptography.signJwtSessionToken(
               {
-                email: sessionJwt.email,
-                username: sessionJwt.username,
-                password: sessionJwt.password,
-                totalHash: sessionJwt.totalHash,
-                fullHash: sessionJwt.fullHash,
-                userHash: sessionJwt.userHash,
+                identity: sessionJwt.identity,
                 rsaKeyPriv: nextRsa.privkData,
                 rsaKeyPub: nextRsa.pubkData,
               },
@@ -129,7 +128,7 @@ class ControllerUser extends BaseController {
     });
   };
 
-  setContactData = async (req, res) => {
+  setMailBoxData = async (req, res) => {
     var sessionJwt = await Cryptography.parseJwtSessionToken(req.body.sessionJwt, jwtSessionToken, jwt);
     req.body.rsaEncryptedAes = Cryptography.str2ab(req.body.rsaEncryptedAes);
     req.body.aesEncrypted = Cryptography.str2ab(req.body.aesEncrypted);
@@ -137,31 +136,23 @@ class ControllerUser extends BaseController {
     var decryptedAes = await Cryptography.rsaDecrypt(req.body.rsaEncryptedAes, jwtRsaKey);
     var aesKey = await Cryptography.importAesKey(decryptedAes);
     var decryptedData: any = JSON.parse(await Cryptography.aesDecrypt(req.body.aesEncrypted, aesKey, sessionJwt.rsaKeyPub));
-    var contact: any = await Contact.SchemaContact.findOne({
+    var mailBox: any = await MailBox.SchemaMailBox.findOne({
       _id: decryptedData.data.secret1,
       secret: decryptedData.data.secret2,
     });
-    contact.messages = decryptedData.data.messages;
-    contact.save();
+    mailBox.messages = decryptedData.data.messages;
+    mailBox.save();
     var nextRsa = await Cryptography.generateRsaKeys('jwk');
     var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(decryptedData.nextRsa);
     var aesEncrypted = await Cryptography.aesEncrypt(
       JSON.stringify({
-        data: contact,
+        data: mailBox,
         token: await jwt.sign(
           {
             nextRsa: nextRsa.pubkData,
-            user: {
-              email: decryptedData.data.email,
-            },
             sessionJwt: await Cryptography.signJwtSessionToken(
               {
-                email: sessionJwt.email,
-                username: sessionJwt.username,
-                password: sessionJwt.password,
-                totalHash: sessionJwt.totalHash,
-                fullHash: sessionJwt.fullHash,
-                userHash: sessionJwt.userHash,
+                identity: sessionJwt.identity,
                 rsaKeyPriv: nextRsa.privkData,
                 rsaKeyPub: nextRsa.pubkData,
               },
@@ -182,7 +173,7 @@ class ControllerUser extends BaseController {
     });
   };
 
-  requestContactData = async (req, res) => {
+  requestMailBoxData = async (req, res) => {
     var sessionJwt = await Cryptography.parseJwtSessionToken(req.body.sessionJwt, jwtSessionToken, jwt);
     req.body.rsaEncryptedAes = Cryptography.str2ab(req.body.rsaEncryptedAes);
     req.body.aesEncrypted = Cryptography.str2ab(req.body.aesEncrypted);
@@ -190,30 +181,25 @@ class ControllerUser extends BaseController {
     var decryptedAes = await Cryptography.rsaDecrypt(req.body.rsaEncryptedAes, jwtRsaKey);
     var aesKey = await Cryptography.importAesKey(decryptedAes);
     var decryptedData: any = JSON.parse(await Cryptography.aesDecrypt(req.body.aesEncrypted, aesKey, sessionJwt.rsaKeyPub));
-    var contact: any = await Contact.SchemaContact.create({
+    var mailBox: any = await MailBox.SchemaMailBox.create({
       secret: [...Array(20)].map((i) => (~~(Math.random() * 36)).toString(36)).join(''),
     });
-    contact.set('messages.local', [decryptedData.data.message]);
-    contact.save();
+    mailBox.set('messages.local', [decryptedData.data.message]);
+    mailBox.save();
+    var identity: any = await Identity.SchemaIdentity.findOne({ _id: sessionJwt.identity._id, secret: sessionJwt.identity.secret });
+    identity.mailBox.push(mailBox);
+    identity.save();
     var nextRsa = await Cryptography.generateRsaKeys('jwk');
     var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(decryptedData.nextRsa);
     var aesEncrypted = await Cryptography.aesEncrypt(
       JSON.stringify({
-        data: contact.toObject(),
+        data: mailBox.toObject(),
         token: await jwt.sign(
           {
             nextRsa: nextRsa.pubkData,
-            user: {
-              email: decryptedData.data.email,
-            },
             sessionJwt: await Cryptography.signJwtSessionToken(
               {
-                email: sessionJwt.email,
-                username: sessionJwt.username,
-                password: sessionJwt.password,
-                totalHash: sessionJwt.totalHash,
-                fullHash: sessionJwt.fullHash,
-                userHash: sessionJwt.userHash,
+                identity: sessionJwt.identity,
                 rsaKeyPriv: nextRsa.privkData,
                 rsaKeyPub: nextRsa.pubkData,
               },
@@ -258,17 +244,9 @@ class ControllerUser extends BaseController {
             token: await jwt.sign(
               {
                 nextRsa: nextRsa.pubkData,
-                user: {
-                  email: decryptedData.data.email,
-                },
                 sessionJwt: await Cryptography.signJwtSessionToken(
                   {
-                    email: sessionJwt.email,
-                    username: sessionJwt.username,
-                    password: sessionJwt.password,
-                    totalHash: sessionJwt.totalHash,
-                    fullHash: sessionJwt.fullHash,
-                    userHash: sessionJwt.userHash,
+                    identity: sessionJwt.identity,
                     rsaKeyPriv: nextRsa.privkData,
                     rsaKeyPub: nextRsa.pubkData,
                   },
@@ -296,9 +274,9 @@ class ControllerUser extends BaseController {
     router.route('/preLogin').post(this.preLogin);
     router.route('/login').post(this.login);
     router.route('/reqSignup').post(this.requestSignupData);
-    router.route('/setContact').post(this.setContactData);
-    router.route('/getContact').post(this.getContactData);
-    router.route('/reqContact').post(this.requestContactData);
+    router.route('/setMailBox').post(this.setMailBoxData);
+    router.route('/getMailBox').post(this.getMailBoxData);
+    router.route('/reqMailBox').post(this.requestMailBoxData);
     router.route('/preRegister').post(this.preRegister);
     router.route('/register').post(this.register);
     return router;

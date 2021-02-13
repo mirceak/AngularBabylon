@@ -100,6 +100,20 @@ class Cryptography {
     "'",
     ' ',
   ];
+  private fakeCharacters: Array<string> = [
+    '♈',
+    '♉',
+    '♊',
+    '♋',
+    '♌',
+    '♍',
+    '♎',
+    '♏',
+    '♐',
+    '♑',
+    '♒',
+    '♓',
+  ];
 
   constructor(private webcrypto: any) {}
 
@@ -107,11 +121,12 @@ class Cryptography {
     ...this.letters,
     ...this.numbers,
     ...this.characters,
+    ...this.fakeCharacters,
   ];
   private td = new TextDecoder();
   private te = new TextEncoder();
 
-  private randomThreshold = 250;
+  private randomThreshold = 128;
 
   private shaHash: string;
   private shaBytes: Array<any>;
@@ -181,7 +196,13 @@ class Cryptography {
       );
       unlocked += cipher.lock[i][originalInputIndex];
     }
-    return this.unlockMessage(unlocked, cipher.dataLock);
+    unlocked = this.unlockMessage(unlocked, cipher.dataLock);
+    return unlocked
+      .split('')
+      .filter((current) => {
+        return this.fakeCharacters.indexOf(current) == -1;
+      })
+      .join('');
   };
   private makeCipherPieces(
     messageLen,
@@ -189,7 +210,7 @@ class Cryptography {
     dataLock = null,
     lock = null
   ): any {
-    dataLockLength = Math.random() * this.randomThreshold;
+    dataLockLength = this.randomThreshold + Math.random() * this.randomThreshold;
     dataLock = this.generateLock(dataLockLength);
     lock = this.generateLock(messageLen);
     return {
@@ -269,6 +290,88 @@ class Cryptography {
     }
     return arr;
   }
+  public makeCipherMap = async (
+    passwords,
+    data: string,
+    cipher = null
+  ): Promise<any> => {
+    data = data
+      .split('')
+      .map((current) => {
+        return (
+          current +
+          ((Math.random() < 0.2 && Math.random() % 2 == 0) ||
+          (Math.random() > 0.8 && Math.random() % 3 == 0) ||
+          (Math.random() > 0.4 && Math.random() < 0.6)
+            ? this.fakeCharacters[
+                Math.floor(Math.random() * (this.fakeCharacters.length - 1))
+              ]
+            : '')
+        );
+      })
+      .join('');
+    cipher = this.makeCipherPieces(data.length);
+    data = this.lockMessage(data, cipher.dataLock);
+    this.engraveData(cipher.lock, passwords[0], data);
+    cipher.dataLock = this.shiftElements(
+      cipher.dataLock,
+      cipher.lock,
+      passwords
+    );
+    cipher.lock = this.shiftElements(cipher.lock, cipher.dataLock, passwords);
+    cipher.dataLock = this.shiftElements(
+      cipher.dataLock,
+      cipher.lock,
+      passwords
+    );
+    return {
+      lock: this.toString(cipher.lock),
+      dataLock: this.toString(cipher.dataLock),
+    };
+  };
+  private lockMessage(
+    message: string,
+    lock: string[][],
+    locked = '',
+    i = 0
+  ): string {
+    for (i = 0; i < message.length; i++) {
+      locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
+    }
+    return locked;
+  }
+  public unlockMessage = (
+    message: string,
+    lock: string[][],
+    unlocked = '',
+    i = 0
+  ): string => {
+    for (i = 0; i < message.length; i++) {
+      unlocked += this.originalMap[lock[i % lock.length].indexOf(message[i])];
+    }
+    return unlocked;
+  };
+  public lockMap(map: string[][], lock: string[][], i = 0, j = 0): string[][] {
+    for (i = 0; i < map.length; i++) {
+      for (j = 0; j < map[i].length; j++) {
+        map[i][j] = lock[i % lock.length][this.originalMap.indexOf(map[i][j])];
+      }
+    }
+    return map;
+  }
+  public unlockMap = (
+    map: string[][],
+    lock: string[][],
+    i = 0,
+    j = 0
+  ): string[][] => {
+    for (i = 0; i < map.length; i++) {
+      for (j = 0; j < map[i].length; j++) {
+        map[i][j] = this.originalMap[lock[i % lock.length].indexOf(map[i][j])];
+      }
+    }
+    return map;
+  };
   public async signRegisterSessionData(
     postData,
     options = {
@@ -536,12 +639,7 @@ class Cryptography {
       json: json,
       sessionJwt: await this.signJwtSessionToken(
         {
-          email: postData.sessionJwt.email,
-          username: postData.sessionJwt.username,
-          password: postData.sessionJwt.password,
-          totalHash: postData.sessionJwt.totalHash,
-          fullHash: postData.sessionJwt.fullHash,
-          userHash: postData.sessionJwt.userHash,
+          identity: postData.identity,
           rsaKeyPriv: nextRsa.privkData,
           rsaKeyPub: nextRsa.pubkData,
         },
@@ -625,7 +723,7 @@ class Cryptography {
             nextRsa: nextRsa.pubkData,
             sessionJwt: await this.signJwtSessionToken(
               {
-                identity: [...Array(20)].map((i) => (~~(Math.random() * 36)).toString(36)).join(''),
+                identity: postData.identity,
                 rsaKeyPriv: nextRsa.privkData,
                 rsaKeyPub: nextRsa.pubkData,
               },
@@ -790,72 +888,6 @@ class Cryptography {
       rsaIv: this.ab2str(rsaEncryptedAesIv),
     };
   }
-  public makeCipherMap = async (
-    passwords,
-    data,
-    cipher = this.makeCipherPieces(data.length)
-  ): Promise<any> => {
-    data = this.lockMessage(data, cipher.dataLock);
-    this.engraveData(cipher.lock, passwords[0], data);
-    cipher.dataLock = this.shiftElements(
-      cipher.dataLock,
-      cipher.lock,
-      passwords
-    );
-    cipher.lock = this.shiftElements(cipher.lock, cipher.dataLock, passwords);
-    cipher.dataLock = this.shiftElements(
-      cipher.dataLock,
-      cipher.lock,
-      passwords
-    );
-    return {
-      lock: this.toString(cipher.lock),
-      dataLock: this.toString(cipher.dataLock),
-    };
-  };
-  private lockMessage(
-    message: string,
-    lock: string[][],
-    locked = '',
-    i = 0
-  ): string {
-    for (i = 0; i < message.length; i++) {
-      locked += lock[i % lock.length][this.originalMap.indexOf(message[i])];
-    }
-    return locked;
-  }
-  public unlockMessage = (
-    message: string,
-    lock: string[][],
-    unlocked = '',
-    i = 0
-  ): string => {
-    for (i = 0; i < message.length; i++) {
-      unlocked += this.originalMap[lock[i % lock.length].indexOf(message[i])];
-    }
-    return unlocked;
-  };
-  public lockMap(map: string[][], lock: string[][], i = 0, j = 0): string[][] {
-    for (i = 0; i < map.length; i++) {
-      for (j = 0; j < map[i].length; j++) {
-        map[i][j] = lock[i % lock.length][this.originalMap.indexOf(map[i][j])];
-      }
-    }
-    return map;
-  }
-  public unlockMap = (
-    map: string[][],
-    lock: string[][],
-    i = 0,
-    j = 0
-  ): string[][] => {
-    for (i = 0; i < map.length; i++) {
-      for (j = 0; j < map[i].length; j++) {
-        map[i][j] = this.originalMap[lock[i % lock.length].indexOf(map[i][j])];
-      }
-    }
-    return map;
-  };
   public async getShaHash(msg) {
     this.shaBytes = Array.from(
       new Uint32Array(
@@ -1062,7 +1094,11 @@ class Cryptography {
   }
 
   public ab2str(str) {
-    return String.fromCharCode.apply(null, new Uint8Array(str));
+    return [...new Uint8Array(str)]
+      .map((curent) => {
+        return String.fromCharCode(curent);
+      })
+      .join('');
   }
 }
 

@@ -4,14 +4,14 @@ import { PageFormlyService } from '@custom/components/pages/shared/base/page-sim
 @Injectable({
   providedIn: 'root',
 })
-export class ContactsContentService {
+export class MailBoxContentService {
   constructor(private pageFormlyService: PageFormlyService) {}
   fields = [
     {
       key: 'name',
       type: 'input',
       templateOptions: {
-        label: "Contact's Name",
+        label: "MailBox's Name",
         placeholder: 'Enter name',
         required: true,
       },
@@ -25,7 +25,7 @@ export class ContactsContentService {
       key: 'name',
       type: 'input',
       templateOptions: {
-        label: "Contact's Name",
+        label: "MailBox's Name",
         placeholder: 'Enter name',
         required: true,
       },

@@ -14,14 +14,14 @@ export class ServiceCryptography {
   login(postData) {
     return this.http.post('api/login', postData);
   }
-  reqContact(postData) {
-    return this.http.post('api/reqContact', postData);
+  reqMailBox(postData) {
+    return this.http.post('api/reqMailBox', postData);
   }
-  getContact(postData) {
-    return this.http.post('api/getContact', postData);
+  getMailBox(postData) {
+    return this.http.post('api/getMailBox', postData);
   }
-  setContact(postData) {
-    return this.http.post('api/setContact', postData);
+  setMailBox(postData) {
+    return this.http.post('api/setMailBox', postData);
   }
   reqSignup(postData) {
     return this.http.post('api/reqSignup', postData);

@@ -1,0 +1,28 @@
+<div>
+  <app-form-simple
+    [form]="form"
+    [fields]="mailBoxContentService.fields"
+    [submitLabel]="'Add New MailBox'"
+    [submitIcon]="'follow_the_signs'"
+    (onSubmit)="addMailBox()"
+  ></app-form-simple>
+  <app-form-simple
+    [form]="acceptForm"
+    [fields]="mailBoxContentService.acceptFields"
+    [submitLabel]="'Accept MailBox Invitation'"
+    [submitIcon]="'follow_the_signs'"
+    (onSubmit)="acceptMailBox()"
+  ></app-form-simple>
+</div>
+
+<br />
+<mat-divider></mat-divider>
+<mat-list *ngFor="let mailBox of serviceAuth.mailBoxes">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>{{ mailBox.name }}</mat-card-title>
+      <mat-card-subtitle>Secret 1: {{ mailBox._id }}</mat-card-subtitle>
+      <mat-card-subtitle>Secret 2: {{ mailBox.secret }}</mat-card-subtitle>
+    </mat-card-header>
+  </mat-card>
+</mat-list>

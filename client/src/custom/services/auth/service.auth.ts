@@ -14,7 +14,7 @@ export class ServiceAuth {
   private token: any;
   private socket;
   public referrals: any;
-  public contacts: any;
+  public mailBoxes: any;
   loggedIn = false;
   currentUser: ModelUser = null;
   constructor(
@@ -25,7 +25,7 @@ export class ServiceAuth {
   ) {
     this.token = localStorage.getItem('token');
     this.referrals = localStorage.getItem('referrals');
-    this.contacts = localStorage.getItem('contacts');
+    this.mailBoxes = localStorage.getItem('mailBoxes');
     if (this.token) {
       this.token = this.jwtHelper.decodeToken(this.token);
       this.setCurrentUser(this.token);
@@ -34,13 +34,13 @@ export class ServiceAuth {
       this.referrals = '[]';
       localStorage.setItem('referrals', this.referrals);
     }
-    if (!this.contacts) {
-      this.contacts = '[]';
-      localStorage.setItem('contacts', this.contacts);
+    if (!this.mailBoxes) {
+      this.mailBoxes = '[]';
+      localStorage.setItem('mailBoxes', this.mailBoxes);
     }
 
     this.referrals = JSON.parse(this.referrals);
-    this.contacts = JSON.parse(this.contacts);
+    this.mailBoxes = JSON.parse(this.mailBoxes);
   }
 
   async login(postData): Promise<any> {
@@ -86,7 +86,7 @@ export class ServiceAuth {
     this.socket.disconnect();
     this.socket = null;
     this.referrals = [];
-    this.contacts = [];
+    this.mailBoxes = [];
   }
 
   async register(postData): Promise<any> {
@@ -123,7 +123,7 @@ export class ServiceAuth {
       });
     });
   }
-  async accContact(postData): Promise<any> {
+  async accMailBox(postData): Promise<any> {
     var nextRsa = await this.Cryptography.generateRsaKeys('jwk');
     var rsaEncryptedAes = await this.Cryptography.getRsaEncryptedAesKey(
       this.token.nextRsa
@@ -133,7 +133,8 @@ export class ServiceAuth {
       rsaEncryptedAes.aesKey,
       this.token.nextRsa
     );
-    this.ServiceCryptography.getContact({
+    this.ServiceCryptography.getMailBox({
+      save: true,
       sessionJwt: this.token.sessionJwt,
       rsaEncryptedAes: await this.Cryptography.ab2str(
         rsaEncryptedAes.rsaEncryptedAes
@@ -188,7 +189,7 @@ export class ServiceAuth {
         rsaEncryptedAes.aesKey,
         this.token.nextRsa
       );
-      this.ServiceCryptography.setContact({
+      this.ServiceCryptography.setMailBox({
         sessionJwt: this.token.sessionJwt,
         rsaEncryptedAes: await this.Cryptography.ab2str(
           rsaEncryptedAes.rsaEncryptedAes
@@ -215,15 +216,15 @@ export class ServiceAuth {
           this.jwtHelper.decodeToken(decryptedData.token)
         );
         decryptedData.data.name = postData.name;
-        this.zone.run(() => this.contacts.push(decryptedData.data));
-        localStorage.setItem('contacts', JSON.stringify(this.contacts));
+        this.zone.run(() => this.mailBoxes.push(decryptedData.data));
+        localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
       });
     });
   }
-  async reqContact(postData): Promise<any> {
+  async reqMailBox(postData): Promise<any> {
     var nextRsa = await this.Cryptography.generateRsaKeys('jwk');
-    var contactRsa = await this.Cryptography.generateRsaKeys('jwk');
-    postData.message = contactRsa.pubkData;
+    var mailBoxRsa = await this.Cryptography.generateRsaKeys('jwk');
+    postData.message = mailBoxRsa.pubkData;
     var rsaEncryptedAes = await this.Cryptography.getRsaEncryptedAesKey(
       this.token.nextRsa
     );
@@ -232,7 +233,7 @@ export class ServiceAuth {
       rsaEncryptedAes.aesKey,
       this.token.nextRsa
     );
-    this.ServiceCryptography.reqContact({
+    this.ServiceCryptography.reqMailBox({
       sessionJwt: this.token.sessionJwt,
       rsaEncryptedAes: await this.Cryptography.ab2str(
         rsaEncryptedAes.rsaEncryptedAes
@@ -259,8 +260,8 @@ export class ServiceAuth {
         this.jwtHelper.decodeToken(decryptedData.token)
       );
       decryptedData.data.name = postData.name;
-      this.zone.run(() => this.contacts.push(decryptedData.data));
-      localStorage.setItem('contacts', JSON.stringify(this.contacts));
+      this.zone.run(() => this.mailBoxes.push(decryptedData.data));
+      localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
     });
   }
 
@@ -306,9 +307,9 @@ export class ServiceAuth {
   }
 
   setCurrentUser(decodedToken): void {
+    console.log(decodedToken)
     this.currentUser = new ModelUser();
     this.loggedIn = true;
-    this.currentUser.email = decodedToken.user.email;
     this.socket = socketIO.io('https://talky.ro:3030', {
       transports: ['websocket', 'polling'],
     });
