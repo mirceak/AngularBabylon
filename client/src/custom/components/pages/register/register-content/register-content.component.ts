@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { RegisterService } from '@custom/components/pages/register/register.service';
-import { ServiceUser } from '@custom/entities/user/service/service.user';
+import { RegisterService } from '@custom/components/pages/register/services/register.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Component({
@@ -16,7 +15,6 @@ export class RegisterContentComponent {
   constructor(
     public registerService: RegisterService,
     private serviceAuth: ServiceAuth,
-    private serviceUser: ServiceUser,
   ) {}
 
   register() {

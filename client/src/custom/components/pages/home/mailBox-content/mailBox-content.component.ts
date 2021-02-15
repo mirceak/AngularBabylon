@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MailBoxContentService } from '@custom/components/pages/home/mailBox-content.service';
+import { MailBoxContentService } from '@custom/components/pages/home/services/mailBox-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Component({

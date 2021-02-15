@@ -1,11 +1,14 @@
-<div>
+<mat-card>
   <app-form-simple
     [form]="form"
     [fields]="mailBoxContentService.fields"
     [submitLabel]="'Add New MailBox'"
     [submitIcon]="'follow_the_signs'"
     (onSubmit)="addMailBox()"
-  ></app-form-simple>
+  ></app-form-simple
+></mat-card>
+<mat-divider></mat-divider>
+<mat-card>
   <app-form-simple
     [form]="acceptForm"
     [fields]="mailBoxContentService.acceptFields"
@@ -13,16 +16,26 @@
     [submitIcon]="'follow_the_signs'"
     (onSubmit)="acceptMailBox()"
   ></app-form-simple>
-</div>
-
-<br />
+</mat-card>
 <mat-divider></mat-divider>
-<mat-list *ngFor="let mailBox of serviceAuth.mailBoxes">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>{{ mailBox.name }}</mat-card-title>
-      <mat-card-subtitle>Secret 1: {{ mailBox._id }}</mat-card-subtitle>
-      <mat-card-subtitle>Secret 2: {{ mailBox.secret }}</mat-card-subtitle>
-    </mat-card-header>
-  </mat-card>
-</mat-list>
+<mat-card *ngFor="let mailBox of serviceAuth.mailBoxes" class='mailBox'>
+  <mat-card-header>
+    <mat-card-title
+      >{{ mailBox.name }}
+      {{ mailBox.messages.remote == null ? "(Free)" : "" }}</mat-card-title
+    >
+    <mat-card-subtitle>
+      <p>Secret 1: {{ mailBox._id }}</p>
+      <p>Secret 2: {{ mailBox.secret }}</p>
+    </mat-card-subtitle>
+  </mat-card-header>
+  <mat-card-actions>
+    <button
+      [disabled]="mailBox.messages.remote == null"
+      mat-flat-button
+      color="primary"
+    >
+      Talk
+    </button>
+  </mat-card-actions>
+</mat-card>

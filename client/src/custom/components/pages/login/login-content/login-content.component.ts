@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { LoginService } from '@custom/components/pages/login/login.service';
+import { LoginService } from '@custom/components/pages/login/services/login.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Component({

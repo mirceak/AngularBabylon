@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { ReferralContentService } from '@custom/components/pages/home/referral-content.service';
+import { ReferralContentService } from '@custom/components/pages/home/services/referral-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Component({

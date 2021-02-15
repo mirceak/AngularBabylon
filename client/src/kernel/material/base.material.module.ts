@@ -30,6 +30,7 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatTableModule } from '@angular/material/table';
 import { MatSortModule } from '@angular/material/sort';
+import { MatBadgeModule } from '@angular/material/badge';
 import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
@@ -37,6 +38,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatCheckboxModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatBadgeModule,
     MatInputModule,
     MatAutocompleteModule,
     MatDatepickerModule,
@@ -71,6 +73,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatCheckboxModule,
     MatCheckboxModule,
     MatButtonModule,
+    MatBadgeModule,
     MatInputModule,
     MatAutocompleteModule,
     MatDatepickerModule,

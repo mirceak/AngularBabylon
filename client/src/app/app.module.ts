@@ -6,10 +6,13 @@ import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 @NgModule({
   declarations: [AppComponent],
   imports: [
+    OverlayModule,
     AppRoutingModule,
     BrowserModule,
     BrowserAnimationsModule,
@@ -21,5 +24,6 @@ import { JwtModule } from '@auth0/angular-jwt';
     }),
   ],
   bootstrap: [AppComponent],
+  providers: [MatSnackBar]
 })
 export class AppModule {}

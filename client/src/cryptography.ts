@@ -210,7 +210,8 @@ class Cryptography {
     dataLock = null,
     lock = null
   ): any {
-    dataLockLength = this.randomThreshold + Math.random() * this.randomThreshold;
+    dataLockLength =
+      this.randomThreshold + Math.random() * this.randomThreshold;
     dataLock = this.generateLock(dataLockLength);
     lock = this.generateLock(messageLen);
     return {
@@ -402,27 +403,15 @@ class Cryptography {
     );
     aesKey = await this.importAesKey(rsaDecryptedAesKey);
     userHash = await this.getShaHash(
-      JSON.stringify({
-        initialRsaPubkData: postData.firstRsaKeys.pubkData,
-        initialAesPubkData: rsaDecryptedAesKey,
-      })
+      postData.firstRsaKeys.pubkData + rsaDecryptedAesKey
     );
     fullHash = await this.getShaHash(
-      JSON.stringify({
-        referralEmail: options.referralEmail,
-        referralCode: options.referralCode,
-        initialRsaPubkData: postData.firstRsaKeys.pubkData,
-        initialAesPubkData: rsaDecryptedAesKey,
-      })
+      (await this.getShaHash(options.referralEmail)) +
+        (await this.getShaHash(options.referralCode)) +
+        postData.firstRsaKeys.pubkData +
+        rsaDecryptedAesKey
     );
-    totalHash = await this.getShaHash(
-      await this.getShaHash(
-        JSON.stringify({
-          userHash: userHash,
-          fullHash: fullHash,
-        })
-      )
-    );
+    totalHash = await this.getShaHash(fullHash + userHash);
     decryptedAes = JSON.parse(
       await this.aesDecrypt(options.aesEncrypted, aesKey, totalHash)
     );
@@ -430,13 +419,11 @@ class Cryptography {
       decryptedAes.secondRsaPubkData
     );
     finalHash = await this.getShaHash(
-      JSON.stringify({
-        totalHash: totalHash,
-        fullHash: fullHash,
-        userHash: userHash,
-        rsaPubkData: decryptedAes.secondRsaPubkData,
-        rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes),
-      })
+      totalHash +
+        fullHash +
+        userHash +
+        decryptedAes.secondRsaPubkData +
+        this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes)
     );
     rsaEncryptedAesKeyHash = await this.getShaHash(
       this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes)
@@ -494,27 +481,15 @@ class Cryptography {
     );
     aesKey = await this.importAesKey(rsaDecryptedAesKey);
     userHash = await this.getShaHash(
-      JSON.stringify({
-        initialRsaPubkData: postData.firstRsaKeys.pubkData,
-        initialAesPubkData: rsaDecryptedAesKey,
-      })
+      postData.firstRsaKeys.pubkData + rsaDecryptedAesKey
     );
     fullHash = await this.getShaHash(
-      JSON.stringify({
-        username: options.p2,
-        password: options.p3,
-        initialRsaPubkData: postData.firstRsaKeys.pubkData,
-        initialAesPubkData: rsaDecryptedAesKey,
-      })
+      (await this.getShaHash(options.p2)) +
+        (await this.getShaHash(options.p3)) +
+        postData.firstRsaKeys.pubkData +
+        rsaDecryptedAesKey
     );
-    totalHash = await this.getShaHash(
-      await this.getShaHash(
-        JSON.stringify({
-          userHash: userHash,
-          fullHash: fullHash,
-        })
-      )
-    );
+    totalHash = await this.getShaHash(fullHash + userHash);
     decryptedAes = JSON.parse(
       await this.aesDecrypt(options.aesEncrypted, aesKey, totalHash)
     );
@@ -522,13 +497,11 @@ class Cryptography {
       decryptedAes.secondRsaPubkData
     );
     finalHash = await this.getShaHash(
-      JSON.stringify({
-        totalHash: totalHash,
-        fullHash: fullHash,
-        userHash: userHash,
-        rsaPubkData: decryptedAes.secondRsaPubkData,
-        rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes),
-      })
+      totalHash +
+        fullHash +
+        userHash +
+        decryptedAes.secondRsaPubkData +
+        this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes)
     );
     rsaEncryptedAesKeyHash = await this.getShaHash(
       this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes)
@@ -600,13 +573,11 @@ class Cryptography {
       postData.sessionJwt.rsaKeyPriv
     );
     finalHash = await this.getShaHash(
-      JSON.stringify({
-        totalHash: postData.sessionJwt.totalHash,
-        fullHash: postData.sessionJwt.fullHash,
-        userHash: postData.sessionJwt.userHash,
-        rsaPubkData: postData.sessionJwt.rsaKeyPub,
-        rsaEncryptedAesKey: this.ab2str(postData.rsaEncryptedAesKey),
-      })
+      postData.sessionJwt.totalHash +
+        postData.sessionJwt.fullHash +
+        postData.sessionJwt.userHash +
+        postData.sessionJwt.rsaKeyPub +
+        this.ab2str(postData.rsaEncryptedAesKey)
     );
     rsaDecryptedAesKey = await this.rsaDecrypt(
       postData.rsaEncryptedAesKey,
@@ -676,13 +647,11 @@ class Cryptography {
       postData.sessionJwt.rsaKeyPriv
     );
     finalHash = await this.getShaHash(
-      JSON.stringify({
-        totalHash: postData.sessionJwt.totalHash,
-        fullHash: postData.sessionJwt.fullHash,
-        userHash: postData.sessionJwt.userHash,
-        rsaPubkData: postData.sessionJwt.rsaKeyPub,
-        rsaEncryptedAesKey: this.ab2str(postData.rsaEncryptedAesKey),
-      })
+      postData.sessionJwt.totalHash +
+        postData.sessionJwt.fullHash +
+        postData.sessionJwt.userHash +
+        postData.sessionJwt.rsaKeyPub +
+        this.ab2str(postData.rsaEncryptedAesKey)
     );
     rsaDecryptedAesKey = await this.rsaDecrypt(
       postData.rsaEncryptedAesKey,
@@ -752,27 +721,15 @@ class Cryptography {
     nextRsa = await this.generateRsaKeys('jwk');
     rsaEncryptedAesKey = await this.getRsaEncryptedAesKey(rsaPubkData);
     userHash = await this.getShaHash(
-      JSON.stringify({
-        initialRsaPubkData: rsaPubkData,
-        initialAesPubkData: rsaEncryptedAesKey.aesPubkData,
-      })
+      rsaPubkData + rsaEncryptedAesKey.aesPubkData
     );
     fullHash = await this.getShaHash(
-      JSON.stringify({
-        referralEmail: postData.referralEmail,
-        referralCode: postData.referral.code,
-        initialRsaPubkData: rsaPubkData,
-        initialAesPubkData: rsaEncryptedAesKey.aesPubkData,
-      })
+      (await this.getShaHash(postData.referralEmail)) +
+        (await this.getShaHash(postData.referral.code)) +
+        rsaPubkData +
+        rsaEncryptedAesKey.aesPubkData
     );
-    totalHash = await this.getShaHash(
-      await this.getShaHash(
-        JSON.stringify({
-          userHash: userHash,
-          fullHash: fullHash,
-        })
-      )
-    );
+    totalHash = await this.getShaHash(fullHash + userHash);
     aesEncrypted = await this.aesEncrypt(
       JSON.stringify({
         secondRsaPubkData: nextRsa.pubkData,
@@ -812,27 +769,15 @@ class Cryptography {
     nextRsa = await this.generateRsaKeys('jwk');
     rsaEncryptedAesKey = await this.getRsaEncryptedAesKey(rsaPubkData);
     userHash = await this.getShaHash(
-      JSON.stringify({
-        initialRsaPubkData: rsaPubkData,
-        initialAesPubkData: rsaEncryptedAesKey.aesPubkData,
-      })
+      rsaPubkData + rsaEncryptedAesKey.aesPubkData
     );
     fullHash = await this.getShaHash(
-      JSON.stringify({
-        username: postData.user.username,
-        password: postData.user.password,
-        initialRsaPubkData: rsaPubkData,
-        initialAesPubkData: rsaEncryptedAesKey.aesPubkData,
-      })
+      (await this.getShaHash(postData.user.username)) +
+        (await this.getShaHash(postData.user.password)) +
+        rsaPubkData +
+        rsaEncryptedAesKey.aesPubkData
     );
-    totalHash = await this.getShaHash(
-      await this.getShaHash(
-        JSON.stringify({
-          userHash: userHash,
-          fullHash: fullHash,
-        })
-      )
-    );
+    totalHash = await this.getShaHash(fullHash + userHash);
     aesEncrypted = await this.aesEncrypt(
       JSON.stringify({
         secondRsaPubkData: nextRsa.pubkData,
