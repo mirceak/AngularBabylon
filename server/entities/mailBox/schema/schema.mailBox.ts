@@ -5,7 +5,7 @@ const mailBoxSchema = new mongoose.Schema({
   secret: String,
   messages: {
     type: Map,
-    of: [String],
+    of: [Object],
   },
 });
 
@@ -23,7 +23,10 @@ mailBoxSchema.pre('remove', function (next) {
 
 const SchemaMailBox = mongoose.model(EntityName, mailBoxSchema);
 
+var sockets = [];
+
 export default {
+  sockets,
   SchemaMailBox,
   apiPaths: {
     pathNamePlural: mongoose.pluralize()(EntityName),

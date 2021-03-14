@@ -13,13 +13,22 @@ const userSchema = new mongoose.Schema({
 // Before saving the user, hash the passwords
 userSchema.pre('save', async function (next): Promise<any> {
   const user: any = this;
-  if (!user.isModified('password') && !user.isModified('username')) {
+  var hash;
+  if (!user.isModified('password') && !user.isModified('username') && !user.isModified('email')) {
     return next();
   }
-  var hash = await Cryptography.getShaHash(user.password);
-  user.password = hash;
-  hash = await Cryptography.getShaHash(user.username);
-  user.username = hash;
+  if (user.isModified('email')) {
+    hash = await Cryptography.getShaHash(user.email);
+    user.email = hash;
+  }
+  if (user.isModified('password')) {
+    hash = await Cryptography.getShaHash(user.password);
+    user.password = hash;
+  }
+  if (user.isModified('username')) {
+    hash = await Cryptography.getShaHash(user.username);
+    user.username = hash;
+  }
   return next();
 });
 
@@ -28,6 +37,7 @@ userSchema.set('toJSON', {
   transform: (doc, ret, options) => {
     delete ret.password;
     delete ret.username;
+    delete ret.email;
     return ret;
   },
 });

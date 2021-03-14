@@ -6,6 +6,7 @@ import { HomeContentComponent } from '@custom/components/pages/home/home-content
 import { ReferralContentComponent } from './referral-content/referral-content.component';
 import { PageFormlyModule } from '../shared/base/page-simple-formly/page-simple-formly.module';
 import { MailBoxContentComponent } from './mailBox-content/mailBox-content.component';
+import { ChatContentComponent } from './chat-content/chat-content.component';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { MailBoxContentComponent } from './mailBox-content/mailBox-content.compo
     HomeContentComponent,
     ReferralContentComponent,
     MailBoxContentComponent,
+    ChatContentComponent,
   ],
   imports: [PageFormlyModule, HomeRoutingModule],
   exports: [],

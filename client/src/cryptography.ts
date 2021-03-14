@@ -423,10 +423,10 @@ class Cryptography {
         fullHash +
         userHash +
         decryptedAes.secondRsaPubkData +
-        this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes)
+        this.ab2str(rsaEncryptedAesKey.encryptedAes)
     );
     rsaEncryptedAesKeyHash = await this.getShaHash(
-      this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes)
+      this.ab2str(rsaEncryptedAesKey.encryptedAes)
     );
     cipherMap = await this.makeCipherMap(
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
@@ -447,7 +447,7 @@ class Cryptography {
     return {
       sessionJwt: decryptedAes.sessionJwt,
       aesEncrypted: this.ab2str(aesEncrypted.ciphertext),
-      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes),
+      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.encryptedAes),
     };
   }
   public async signLoginSessionData(
@@ -501,10 +501,10 @@ class Cryptography {
         fullHash +
         userHash +
         decryptedAes.secondRsaPubkData +
-        this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes)
+        this.ab2str(rsaEncryptedAesKey.encryptedAes)
     );
     rsaEncryptedAesKeyHash = await this.getShaHash(
-      this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes)
+      this.ab2str(rsaEncryptedAesKey.encryptedAes)
     );
     cipherMap = await this.makeCipherMap(
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
@@ -525,7 +525,7 @@ class Cryptography {
     return {
       sessionJwt: decryptedAes.sessionJwt,
       aesEncrypted: this.ab2str(aesEncrypted.ciphertext),
-      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes),
+      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.encryptedAes),
     };
   }
   public async parseJwtSessionToken(sessionJwt, jwtSessionToken, jwt) {
@@ -750,7 +750,7 @@ class Cryptography {
       totalHash
     );
     return {
-      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes),
+      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.encryptedAes),
       aesEncrypted: this.ab2str(aesEncrypted.ciphertext),
     };
   }
@@ -800,7 +800,7 @@ class Cryptography {
       totalHash
     );
     return {
-      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.rsaEncryptedAes),
+      rsaEncryptedAesKey: this.ab2str(rsaEncryptedAesKey.encryptedAes),
       aesEncrypted: this.ab2str(aesEncrypted.ciphertext),
     };
   }
@@ -876,7 +876,7 @@ class Cryptography {
   public async aesEncrypt(
     plaintext,
     key,
-    iv = 'someRandomIvThatNeedsChaning',
+    iv = 'someRandomIvThatNeedsChanging',
     ciphertext = null
   ) {
     ciphertext = await this.webcrypto.subtle.encrypt(
@@ -1016,13 +1016,13 @@ class Cryptography {
     rsaPubkData,
     rsaPublicKey = null,
     aesKey = null,
-    rsaEncryptedAes = null
+    encryptedAes = null
   ) {
     rsaPublicKey = await this.importRsaKey(rsaPubkData, true);
     aesKey = await this.generateAesKey();
-    rsaEncryptedAes = await this.rsaEncrypt(aesKey.pubkData, rsaPublicKey);
+    encryptedAes = await this.rsaEncrypt(aesKey.pubkData, rsaPublicKey);
     return {
-      rsaEncryptedAes,
+      encryptedAes: encryptedAes,
       rsaPublicKey: rsaPublicKey,
       aesKey: aesKey.privateKey,
       aesPubkData: aesKey.pubkData,

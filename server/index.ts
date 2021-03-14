@@ -6,35 +6,10 @@ import setMongo from './mongo';
 import BaseController from './controllers/base/base.controller';
 import Controllers from './controllers/base/base.controller.index';
 
-import * as https from 'https';
 import { readFileSync } from 'fs';
+import * as https from 'https';
 
-import { Server, Socket } from 'socket.io';
-
-const httpsSocketServer = https
-  .createServer({
-    key: readFileSync('./server/certs/https.key', 'utf-8'),
-    cert: readFileSync('./server/certs/https.cert', 'utf-8'),
-  })
-  .listen(3030, () => {
-    console.log('Listening for socket requests...');
-  });
-const io = new Server(httpsSocketServer, {
-  transports: ['websocket', 'polling'],
-  cors: {
-    origin: ['https://talky.ro', 'https://www.talky.ro'],
-    methods: ['GET', 'POST'],
-    credentials: true,
-  },
-});
-io.on('connection', async (socket: Socket) => {
-  console.log('client connected to socket');
-
-  socket.on('disconnect', (data) => {
-    console.log('disconnected', data);
-  });
-});
-
+var socketApp = require('./socket.io');
 const httpApp = express();
 httpApp.set('port', 80);
 httpApp.use(express.json());
@@ -65,14 +40,10 @@ async function main(): Promise<any> {
     app.use(morgan('dev'));
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
-    const controllerParser = (controllers: any[]) => {
-      Object.keys(controllers).map((key) => {
-        let ctrl: BaseController = new controllers[key]();
-        app.use('/api', ctrl.getRouter());
-      });
-    };
-    controllerParser(Controllers);
-
+    Object.keys(Controllers).map((key) => {
+      let ctrl: BaseController = new Controllers[key]();
+      app.use('/api', ctrl.getRouter());
+    });
     app.use('', express.static(path.join(__dirname, '../../client')));
     app.get('*', (req, res) => {
       if (req.headers.host.includes('www.')) {

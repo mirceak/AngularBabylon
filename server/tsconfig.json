@@ -11,6 +11,6 @@
     "importHelpers": true,
     "target": "ESNext",
     "module": "CommonJS",
-    "lib": ["ESNext", "dom"]
+    "lib": ["ESNext", "ES2015", "dom"]
   }
 }

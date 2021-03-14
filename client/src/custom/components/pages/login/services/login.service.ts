@@ -16,6 +16,7 @@ export class LoginService {
         required: true,
       },
       validators: {
+        minLength: this.pageFormlyService.minLengthValidator(6),
         email: this.pageFormlyService.emailValidator,
         required: this.pageFormlyService.requiredValidator,
       },

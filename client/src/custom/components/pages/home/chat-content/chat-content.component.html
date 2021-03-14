@@ -1,0 +1,18 @@
+<mat-card class="chat-content">
+  <mat-card
+    *ngFor="
+      let message of (mailBox.messages.local.concat(mailBox.messages.remote)).sort(mailBoxSorter)
+    "
+  >
+    {{ message?.content }}
+  </mat-card>
+</mat-card>
+<mat-card class="message-box">
+  <app-form-simple
+    [form]="form"
+    [fields]="chatContentService.fields"
+    [submitLabel]="'Send'"
+    [submitIcon]="'send'"
+    (onSubmit)="send()"
+  ></app-form-simple>
+</mat-card>

@@ -4,6 +4,54 @@ import Referral from '../../referral/schema/schema.referral';
 import MailBox from '../../mailBox/schema/schema.mailBox';
 import Identity from '../../identity/schema/schema.identity';
 import { jwtSessionToken, Cryptography, jwt } from '../../../certs/jwtSessionToken/jwtSessionToken';
+import * as mongoose from 'mongoose';
+import socketApp from '../../../socket.io';
+
+var getRequestData = async (data) => {
+  var sessionJwt = await Cryptography.parseJwtSessionToken(data.sessionJwt, jwtSessionToken, jwt);
+  data.rsaEncryptedAes = Cryptography.str2ab(data.rsaEncryptedAes);
+  data.aesEncrypted = Cryptography.str2ab(data.aesEncrypted);
+  var jwtRsaKey = await Cryptography.importRsaKey(sessionJwt.rsaKeyPriv);
+  var decryptedAes = await Cryptography.rsaDecrypt(data.rsaEncryptedAes, jwtRsaKey);
+  var aesKey = await Cryptography.importAesKey(decryptedAes);
+  var decryptedData: any = JSON.parse(await Cryptography.aesDecrypt(data.aesEncrypted, aesKey, sessionJwt.rsaKeyPub));
+  return {
+    sessionJwt: sessionJwt,
+    decryptedData: decryptedData,
+  };
+};
+
+var encryptResponseData = async (reqData, data) => {
+  var nextRsa = await Cryptography.generateRsaKeys('jwk');
+  var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(reqData.decryptedData.nextRsa);
+  var aesEncrypted = await Cryptography.aesEncrypt(
+    JSON.stringify({
+      data: data,
+      token: await jwt.sign(
+        {
+          nextRsa: nextRsa.pubkData,
+          sessionJwt: await Cryptography.signJwtSessionToken(
+            {
+              identity: reqData.sessionJwt.identity,
+              rsaKeyPriv: nextRsa.privkData,
+              rsaKeyPub: nextRsa.pubkData,
+            },
+            jwtSessionToken,
+            jwt
+          ),
+        },
+        jwtSessionToken.jwtSessionTokenElipticKey,
+        { algorithm: 'ES512' }
+      ),
+    }),
+    rsaEncryptedAes.aesKey,
+    reqData.decryptedData.nextRsa
+  );
+  return {
+    rsaEncryptedAes: await Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
+    aesEncrypted: await Cryptography.ab2str(aesEncrypted.ciphertext),
+  };
+};
 
 class ControllerUser extends BaseController {
   Entity = User;
@@ -28,7 +76,7 @@ class ControllerUser extends BaseController {
     var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(validatedSessionData.nextRsa);
     var aesEncrypted = await Cryptography.aesEncrypt(validatedSessionData.token, rsaEncryptedAes.aesKey, validatedSessionData.nextRsa);
     res.send({
-      rsaEncryptedAes: await Cryptography.ab2str(rsaEncryptedAes.rsaEncryptedAes),
+      rsaEncryptedAes: await Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
       aesEncrypted: await Cryptography.ab2str(aesEncrypted.ciphertext),
     });
   };
@@ -79,7 +127,7 @@ class ControllerUser extends BaseController {
         validatedSessionData.nextRsa
       );
       res.send({
-        rsaEncryptedAes: await Cryptography.ab2str(rsaEncryptedAes.rsaEncryptedAes),
+        rsaEncryptedAes: await Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
         aesEncrypted: await Cryptography.ab2str(aesEncrypted.ciphertext),
       });
     });
@@ -91,7 +139,10 @@ class ControllerUser extends BaseController {
       secret: req.decryptedData.data.secret2,
     });
     if (req.body.save) {
-      var identity: any = await Identity.SchemaIdentity.findOne({ _id: req.sessionJwt.identity._id, secret: req.sessionJwt.identity.secret });
+      var identity: any = await Identity.SchemaIdentity.findOne({
+        _id: req.sessionJwt.identity._id,
+        secret: req.sessionJwt.identity.secret,
+      });
       identity.mailBox.push(mailBox);
       identity.save();
     }
@@ -103,20 +154,39 @@ class ControllerUser extends BaseController {
       _id: req.decryptedData.data.secret1,
       secret: req.decryptedData.data.secret2,
     });
-    mailBox.messages = req.decryptedData.data.messages;
+
+    if (req.decryptedData.data.messages) {
+      mailBox.messages = req.decryptedData.data.messages;
+    } else {
+      mailBox.messages.forEach((current, key) => {
+        if (key == 'local' && req.decryptedData.data.message.remote) {
+          current.push(req.decryptedData.data.message);
+        } else if (key == 'remote' && req.decryptedData.data.message.remote === false) {
+          current.push(req.decryptedData.data.message);
+        }
+      });
+    }
     mailBox.save();
+    Identity.SchemaIdentity.find({ mailBox: mongoose.Types.ObjectId(mailBox._id) }, (err, identities) => {
+      identities.map((currentIdentity) => {
+        if (currentIdentity._id != req.sessionJwt.identity._id) {
+          socketApp.registerMessage(currentIdentity, mailBox);
+        }
+        return currentIdentity;
+      });
+    });
     req.send(mailBox, res);
   };
 
   requestMailBoxData = async (req, res) => {
     var mailBox: any = await MailBox.SchemaMailBox.create({
-      secret: [...Array(20)].map((i) => (~~(Math.random() * 36)).toString(36)).join(''),
+      secret: req.decryptedData.data.secret,
     });
     mailBox.set('messages.local', [req.decryptedData.data.message]);
-    mailBox.save();
     var identity: any = await Identity.SchemaIdentity.findOne({ _id: req.sessionJwt.identity._id, secret: req.sessionJwt.identity.secret });
     identity.mailBox.push(mailBox);
     identity.save();
+    mailBox.save();
     req.send(mailBox, res);
   };
 
@@ -137,46 +207,16 @@ class ControllerUser extends BaseController {
   getRouter() {
     let router = super.getRouter();
     router.use(['/reqSignup', '/setMailBox', '/getMailBox', '/reqMailBox'], async (req, res, next) => {
-      var sessionJwt = await Cryptography.parseJwtSessionToken(req.body.sessionJwt, jwtSessionToken, jwt);
-      req.body.rsaEncryptedAes = Cryptography.str2ab(req.body.rsaEncryptedAes);
-      req.body.aesEncrypted = Cryptography.str2ab(req.body.aesEncrypted);
-      var jwtRsaKey = await Cryptography.importRsaKey(sessionJwt.rsaKeyPriv);
-      var decryptedAes = await Cryptography.rsaDecrypt(req.body.rsaEncryptedAes, jwtRsaKey);
-      var aesKey = await Cryptography.importAesKey(decryptedAes);
-      var decryptedData: any = JSON.parse(await Cryptography.aesDecrypt(req.body.aesEncrypted, aesKey, sessionJwt.rsaKeyPub));
-      req.decryptedData = decryptedData;
-      req.sessionJwt = sessionJwt;
-      req.send = async (data, res)=>{
-        var nextRsa = await Cryptography.generateRsaKeys('jwk');
-        var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(req.decryptedData.nextRsa);
-        var aesEncrypted = await Cryptography.aesEncrypt(
-          JSON.stringify({
-            data: data,
-            token: await jwt.sign(
-              {
-                nextRsa: nextRsa.pubkData,
-                sessionJwt: await Cryptography.signJwtSessionToken(
-                  {
-                    identity: req.sessionJwt.identity,
-                    rsaKeyPriv: nextRsa.privkData,
-                    rsaKeyPub: nextRsa.pubkData,
-                  },
-                  jwtSessionToken,
-                  jwt
-                ),
-              },
-              jwtSessionToken.jwtSessionTokenElipticKey,
-              { algorithm: 'ES512' }
-            ),
-          }),
-          rsaEncryptedAes.aesKey,
-          req.decryptedData.nextRsa
-        );
+      var reqData: any = await getRequestData(req.body);
+      req.decryptedData = reqData.decryptedData;
+      req.sessionJwt = reqData.sessionJwt;
+      req.send = async (data, res) => {
+        var encryptedResponse = await encryptResponseData(reqData, data);
         res.send({
-          rsaEncryptedAes: await Cryptography.ab2str(rsaEncryptedAes.rsaEncryptedAes),
-          aesEncrypted: await Cryptography.ab2str(aesEncrypted.ciphertext),
+          rsaEncryptedAes: encryptedResponse.rsaEncryptedAes,
+          aesEncrypted: encryptedResponse.aesEncrypted,
         });
-      }
+      };
       next();
     });
     router.route('/preLogin').post(this.preLogin);
@@ -191,4 +231,8 @@ class ControllerUser extends BaseController {
   }
 }
 
-export default ControllerUser;
+export default {
+  ControllerUser,
+  getRequestData,
+  encryptResponseData,
+};

@@ -22,18 +22,19 @@
   <mat-card-header>
     <mat-card-title
       >{{ mailBox.name }}
-      {{ mailBox.messages.remote == null ? "(Free)" : "" }}</mat-card-title
+      {{ mailBox.secret3 == null ? "(Free)" : "" }}</mat-card-title
     >
-    <mat-card-subtitle>
+    <mat-card-subtitle *ngIf="mailBox.secret3 == null">
       <p>Secret 1: {{ mailBox._id }}</p>
       <p>Secret 2: {{ mailBox.secret }}</p>
     </mat-card-subtitle>
   </mat-card-header>
   <mat-card-actions>
     <button
-      [disabled]="mailBox.messages.remote == null"
+      [disabled]="mailBox.secret3 == null"
       mat-flat-button
       color="primary"
+      [routerLink]="'/mailBoxes/chat/' + mailBox._id"
     >
       Talk
     </button>

@@ -1,3 +1,3 @@
-import ControllerUser from '../../entities/user/controller/controller.user';
+import * as UserController from '../../entities/user/controller/controller.user';
 
-export default [ControllerUser]
+export default [UserController.default.ControllerUser]

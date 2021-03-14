@@ -15,8 +15,10 @@ export class RegisterService {
         label: 'Email',
         placeholder: 'Enter email',
         required: true,
+        type: 'password',
       },
       validators: {
+        minLength: this.pageFormlyService.minLengthValidator(6),
         email: this.pageFormlyService.emailValidator,
         required: this.pageFormlyService.requiredValidator,
       },
@@ -56,6 +58,7 @@ export class RegisterService {
         label: 'Secret',
         placeholder: 'Enter Code',
         required: true,
+        type: 'password',
       },
       validators: {
         minLength: this.pageFormlyService.minLengthValidator(20),

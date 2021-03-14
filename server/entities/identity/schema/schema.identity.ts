@@ -8,6 +8,7 @@ const identitySchema = new mongoose.Schema({
 
 const SchemaIdentity = mongoose.model(EntityName, identitySchema);
 
+
 export default {
   SchemaIdentity,
   apiPaths: {

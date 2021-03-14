@@ -5,6 +5,7 @@ import { MailBoxContentComponent } from './mailBox-content/mailBox-content.compo
 import { HomeContentComponent } from './home-content/home-content.component';
 import { ReferralContentComponent } from './referral-content/referral-content.component';
 import { AuthGuardService } from '@custom/services/auth/guards/auth.guard.service'
+import { ChatContentComponent } from './chat-content/chat-content.component';
 
 const routes: Routes = [
   {
@@ -22,7 +23,16 @@ const routes: Routes = [
       },
       {
         path: 'mailBoxes',
-        component: MailBoxContentComponent,
+        children: [
+          {
+            path: '',
+            component: MailBoxContentComponent,
+          },
+          {
+            path: 'chat/:_id',
+            component: ChatContentComponent
+          }
+        ]
       },
     ],
   },

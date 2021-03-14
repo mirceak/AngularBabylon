@@ -1,0 +1,6 @@
+.message-box {
+    height: 140px;
+}
+.chat-content {
+    height: calc(100% - 140px/*chatBox*/ - 64px/*header*/);
+}
