@@ -21,7 +21,7 @@ export class ServiceCryptography {
     return this.http.post('api/getMailBox', postData);
   }
   setMailBox(postData) {
-    return this.http.post('api/setMailBox', postData);
+    return this.http.post('/api/setMailBox', postData);
   }
   reqSignup(postData) {
     return this.http.post('api/reqSignup', postData);

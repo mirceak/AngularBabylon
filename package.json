@@ -5,7 +5,7 @@
   "main": "server/index.ts",
   "scripts": {
     "tst": "tsc -w -p server",
-    "dev": "concurrently \"mongod\" \"cd client && npm run build --watch\" \"tsc -w -p server\" \"nodemon dist/server/server/index.js\""
+    "dev": "concurrently \"mongod\" \"cd client && yarn start\" \"cd spa && yarn start\" \"tsc -w -p server\" \"nodemon dist/server/server/index.js\""
   },
   "repository": {
     "type": "git",
