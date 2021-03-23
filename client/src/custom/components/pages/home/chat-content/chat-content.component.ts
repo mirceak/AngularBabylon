@@ -5,6 +5,7 @@ import { ChatContentService } from '@custom/components/pages/home/services/chat-
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { mountRootParcel } from 'single-spa';
 import { loadRemoteModule } from '@angular-architects/module-federation';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-chat-content',
@@ -45,7 +46,8 @@ export class ChatContentComponent implements OnInit {
     return a.timeStamp<b.timeStamp
   }
 
-  send(): void {
-    this.serviceAuth.sendMessage(this.form.value, this.mailBox);
+  async send(): Promise<any> {
+    await this.serviceAuth.sendMessage(this.form.value, this.mailBox);
+    this.form.reset();
   }
 }

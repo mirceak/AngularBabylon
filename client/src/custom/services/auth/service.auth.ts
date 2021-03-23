@@ -259,6 +259,11 @@ export class ServiceAuth {
       });
       this.zone.run(() => {
         Object.assign(this.mailBoxes[mailBoxIndex], {messages: decryptedData.decryptedToken.data.messages});
+        if (this.mailBoxes[mailBoxIndex].reactiveCallbacks && this.mailBoxes[mailBoxIndex].reactiveCallbacks.length){
+          this.mailBoxes[mailBoxIndex].reactiveCallbacks.forEach(callback => {
+            callback();
+          });
+        }
         localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
       });
     });
@@ -327,6 +332,11 @@ export class ServiceAuth {
         return mailBox._id == decryptedData.decryptedToken.data.mailBox._id;
       });
       var mailBox = this.mailBoxes[mailBoxIndex];
+      if (mailBox.reactiveCallbacks && mailBox.reactiveCallbacks.length){
+        mailBox.reactiveCallbacks.forEach(callback => {
+          callback();
+        });
+      }
       mailBox.messages =
         decryptedData.decryptedToken.data.mailBox.messages || mailBox.messages;
       if (

@@ -16,6 +16,7 @@
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
+  max-height: 56px;
 }
 
 h1.layout-app-name {
@@ -44,7 +45,6 @@ h1.layout-app-name {
 }
 
 .layout-content {  
-  max-width: 1024px;
   margin: 0 auto 0 auto;
   height: 100%;
 }

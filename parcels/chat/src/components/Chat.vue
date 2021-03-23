@@ -2,9 +2,8 @@
   <div>
     <div
       v-for="message in messages"
-      v-bind:key="message.timeStamp"
-      class="card"
-      style="width: 18rem"
+      :key="message.timeStamp"
+      :class="{ local: message.remote == false, card: true }"
     >
       <div class="card-body">
         <p class="card-text">
@@ -16,39 +15,44 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive } from "vue";
+import { defineComponent, nextTick } from "vue";
 
 export default defineComponent({
   name: "Chat",
   props: {
     mailBox: Object,
   },
-  watch: {
-    mailBox: {
-    immediate: true,
-      deep: true,
-      handler(val){
-        console.log('The list of colours has changed!', val);
-      }
-    }
+  data() {
+    return {
+      messages: [],
+    };
   },
-  computed: {
-    tMessages(){
-      return reactive(this.mailBox.messages);
-    },
-    tMessagesLocal(){
-      return reactive(this.tMessages.local);
-    },
-    tMessagesRemote(){
-      return reactive(this.tMessages.remote);
-    },
-    messages() {
-      return this.tMessagesLocal
-        .concat(this.tMessagesRemote)
+  mounted() {
+    this.mailBox.reactiveCallbacks = [
+      () => {
+        this.show = false;
+        this.messages.splice(0);
+        nextTick(() => {
+          this.messages.push(
+            ...this.mailBox.messages.local
+              .concat(this.mailBox.messages.remote)
+              .sort((a, b) => {
+                return a.timeStamp - b.timeStamp;
+              })
+          );
+          this.show = true;
+          this.$emit("update");
+        });
+      },
+    ];
+    this.messages.push(
+      ...this.mailBox.messages.local
+        .concat(this.mailBox.messages.remote)
         .sort((a, b) => {
           return a.timeStamp - b.timeStamp;
-        });
-    },
+        })
+    );
+    this.$emit("update");
   },
 });
 </script>
@@ -68,5 +72,11 @@ li {
 }
 a {
   color: #42b983;
+}
+.card {
+  width: 40%;
+  &.local {
+    left: 60%;
+  }
 }
 </style>

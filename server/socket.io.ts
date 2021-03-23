@@ -66,6 +66,9 @@ export default {
     var socket = sockets.filter((currentSocket) => {
       return currentSocket.identity == identity._id;
     })[0];
+    if (!socket){
+      return;
+    }
     registeredMessages.push({ socket: socket, mailBox: mailBox });
     socket.emit('verification', {});
   },
