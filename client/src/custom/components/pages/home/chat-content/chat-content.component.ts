@@ -3,6 +3,8 @@ import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ChatContentService } from '@custom/components/pages/home/services/chat-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
+import { mountRootParcel } from 'single-spa';
+import { loadRemoteModule } from '@angular-architects/module-federation';
 
 @Component({
   selector: 'app-chat-content',
@@ -13,6 +15,8 @@ export class ChatContentComponent implements OnInit {
   form = new FormGroup({});
   mailBox = null;
 
+  config;
+  mountRootParcel;
   constructor(
     public chatContentService: ChatContentService,
     private serviceAuth: ServiceAuth,
@@ -23,7 +27,18 @@ export class ChatContentComponent implements OnInit {
     this.mailBox = this.serviceAuth.mailBoxes.filter((current) => {
       return current._id == this.route.snapshot.params._id;
     })[0];
-    console.log(this.mailBox);
+    this.config = loadRemoteModule({
+      remoteEntry: 'https://talky.ro/chat/remoteEntry.js',
+      remoteName: 'chat',
+      exposedModule: './AppModule',
+    }).then((m) => {
+      return m;
+    });
+    this.mountRootParcel = (config, props) => {
+      props.mailBox = this.mailBox;
+      var parcel = mountRootParcel(config, props);
+      return parcel;
+    };
   }
 
   mailBoxSorter(a, b) {

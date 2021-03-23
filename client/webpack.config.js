@@ -41,11 +41,17 @@ module.exports = [{
       { test: /\.ts$/, loader: '@ngtools/webpack' },
       {
         test: /\.scss$/,
+        exclude: /styles.scss/,
         use: [
           'raw-loader',
           "sass-loader"
         ],
-
+      },
+      {
+        test: /styles.scss/,
+        use: [
+          'style-loader', 'css-loader', 'sass-loader'
+        ],
       },
       { test: /\.css$/, loader: 'raw-loader' },
       { test: /\.html$/, loader: 'raw-loader' }

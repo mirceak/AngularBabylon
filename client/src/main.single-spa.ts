@@ -15,6 +15,8 @@ if (environment.production) {
   enableProdMode();
 }
 
+import './styles.scss'
+
 const lifecycles = singleSpaAngular({
   bootstrapFunction: singleSpaProps => {
     singleSpaPropsSubject.next(singleSpaProps);
