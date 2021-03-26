@@ -49,8 +49,7 @@ module.exports = {
       filename: 'remoteEntry.js',
       remotes: {
         spa: 'spa',
-      },
-      shared: ["@angular/core", "@angular/common", "@angular/router"]
+      }
     }),
     new HtmlWebpackPlugin({
       template: './public/index.html'
