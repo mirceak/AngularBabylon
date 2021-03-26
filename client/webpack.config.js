@@ -71,8 +71,7 @@ module.exports = [{
       },
       remotes: {
         home: 'home',
-      },
-      shared: ["@angular/core", "@angular/common", "@angular/router"]
+      }
     }),
     new AotPlugin({
       skipCodeGeneration: false,

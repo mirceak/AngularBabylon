@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { BaseMaterialModule } from '@kernel/material/base.material.module';
 
 @NgModule({
   declarations: [
@@ -17,7 +16,6 @@ import { BaseMaterialModule } from '@kernel/material/base.material.module';
     AppComponent
   ],
   imports: [
-    BaseMaterialModule,
     OverlayModule,
     AppRoutingModule,
     BrowserModule,

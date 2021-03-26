@@ -40,7 +40,14 @@
     "url-loader": "^4.1.1",
     "vue-cli-plugin-style-resources-loader": "~0.1.5",
     "vue-loader": "^16.1.2",
-    "webpack": "^5.27.2",
+    "webpack": "^5.28.0",
     "webpack-cli": "^4.5.0"
+<<<<<<< Updated upstream
+=======
+  },
+  "resolutions": {
+    "webpack": "5.28.0",
+    "webpack-cli": "4.5.0"
+>>>>>>> Stashed changes
   }
 }
