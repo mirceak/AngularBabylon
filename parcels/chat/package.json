@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "start": "webpack --watch",
     "serve": "serve dist -p 4201",
     "build": "webpack --mode production",
     "test:unit": "vue-cli-service test:unit",
     "test:e2e": "vue-cli-service test:e2e",
     "lint": "vue-cli-service lint",
-    "serve:standalone": "vue-cli-service serve --mode standalone",
-    "start": "webpack --watch"
+    "serve:standalone": "vue-cli-service serve --mode standalone"
   },
   "resolutions": {
     "webpack": "5.27.2",

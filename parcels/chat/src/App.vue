@@ -29,10 +29,8 @@ export default defineComponent({
           a.substr(0, 4)
         )
       )
-       this.isMobile = true
-    }).bind(this)(
-      navigator.userAgent || navigator.vendor || this.window.opera
-    );
+        this.isMobile = true;
+    }.bind(this)(navigator.userAgent || navigator.vendor || this.window.opera));
   },
   setup() {
     let chat = ref();
@@ -63,10 +61,11 @@ export default defineComponent({
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  height: calc(100vh - 212px);
-  &.mobile {
-    height: calc(100vh - 258px);
-  }
+  position: absolute;
+  top: 0;
+  bottom: 142px;
+  width: 100%;
+  min-height: unset;
   overflow-y: scroll;
 }
 </style>
