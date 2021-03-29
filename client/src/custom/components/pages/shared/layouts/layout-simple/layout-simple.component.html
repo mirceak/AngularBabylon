@@ -16,11 +16,11 @@
       [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56"
       aria-expanded="true"
-      [opened]="!mobileQuery.matches || router.url.split('/')[1]===''"
+      [opened]="!mobileQuery.matches || (!this.startedSession && router.url.split('/')[1]==='')"
     >
       <mat-nav-list>
         <app-nav-list
-          (changedNav)="mobileQuery.matches && snav.toggle()"
+          (changedNav)="changedNav(snav)"
           nav-list
           select="[nav-list]"
         ></app-nav-list>

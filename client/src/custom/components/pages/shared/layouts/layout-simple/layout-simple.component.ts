@@ -7,9 +7,9 @@ import { Router } from '@angular/router';
   templateUrl: './layout-simple.component.html',
   styleUrls: ['./layout-simple.component.scss'],
 })
-export class LayoutSimpleComponent implements OnDestroy, AfterViewChecked {
+export class LayoutSimpleComponent implements OnDestroy {
   mobileQuery: MediaQueryList;
-  startedSession = true;
+  startedSession = false;
 
   private _mobileQueryListener: () => void;
 
@@ -19,8 +19,9 @@ export class LayoutSimpleComponent implements OnDestroy, AfterViewChecked {
     this.mobileQuery.addEventListener("change", this._mobileQueryListener);
   }
 
-  ngAfterViewChecked(): void {
+  changedNav(snav) {
     this.startedSession = true;
+    snav.toggle();
   }
 
   ngOnDestroy(): void {
