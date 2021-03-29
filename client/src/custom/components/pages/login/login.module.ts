@@ -4,9 +4,10 @@ import { PageFormlyModule } from '@custom/components/pages/shared/base/page-simp
 import { LoginComponent } from '@custom/components/pages/login/login.component';
 import { LoginRoutingModule } from '@custom/components/pages/login/login-routing.module';
 import { LoginContentComponent } from '@custom/components/pages/login/login-content/login-content.component';
+import { RegisterContentComponent } from '@custom/components/pages/login/register-content/register-content.component';
 
 @NgModule({
-  declarations: [LoginComponent, LoginContentComponent],
+  declarations: [LoginComponent, LoginContentComponent, RegisterContentComponent],
   imports: [PageFormlyModule, LoginRoutingModule],
   exports: [],
 })
