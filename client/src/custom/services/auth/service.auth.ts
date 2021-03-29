@@ -333,9 +333,31 @@ export class ServiceAuth {
       });
       var message = this.messageQueue.splice(messageIndex, 1)[0];
       var decryptedData = await this.decryptServerData(data, message.rsa);
-      var mailBoxIndex = this.mailBoxes.findIndex((mailBox) => {
-        return mailBox._id == decryptedData.decryptedToken.data.mailBox._id;
-      });
+      var mailBoxIndex;
+      if (decryptedData.decryptedToken.data.mailBox) {
+        mailBoxIndex = this.mailBoxes.findIndex((mailBox) => {
+          return mailBox._id == decryptedData.decryptedToken.data.mailBox._id;
+        });
+      } else if (decryptedData.decryptedToken.data.mailBoxes) {
+        decryptedData.decryptedToken.data.mailBoxes.forEach((mailBox) => {
+          Object.assign(
+            this.mailBoxes[
+              this.mailBoxes.findIndex((_mailBox) => {
+                return (
+                  _mailBox._id == mailBox._id
+                );
+              })
+            ],
+            { messages: mailBox.messages }
+          );
+        });
+        this.zone.run(() => {
+          Object.assign(this.mailBoxes, {});
+        });
+        localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
+        return;
+      }
+
       var mailBox = this.mailBoxes[mailBoxIndex];
       if (mailBox.reactiveCallbacks && mailBox.reactiveCallbacks.length) {
         mailBox.reactiveCallbacks.forEach((callback) => {

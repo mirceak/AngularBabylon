@@ -4,6 +4,8 @@ import * as https from 'https';
 import { jwtSessionToken, Cryptography, jwt } from './certs/jwtSessionToken/jwtSessionToken';
 import { Server } from 'socket.io';
 import * as UserController from './entities/user/controller/controller.user';
+import Identity from './entities/identity/schema/schema.identity';
+import MailBox from './entities/mailBox/schema/schema.mailBox';
 
 var sockets = [];
 var registeredMessages = [];
@@ -31,7 +33,15 @@ io.on('connection', async (socket: any) => {
     var sessionJwt = await jwt.verify(data.sessionJwt, jwtSessionToken.jwtSessionTokenElipticKey, { algorithms: ['ES512'] });
     sessionJwt = await Cryptography.parseJwtSessionToken(sessionJwt.sessionJwt, jwtSessionToken, jwt);
     socket.identity = sessionJwt.identity._id;
+    var user:any = await Identity.SchemaIdentity.findOne({
+      _id: socket.identity
+    }).then((user)=>user);
+    var mailBoxes: any = await MailBox.SchemaMailBox.find({
+      _id: {$in: user.mailBox}
+    });
     sockets.push(socket);
+    registeredMessages.push({ socket: socket, mailBoxes: mailBoxes });
+    socket.emit('verification', {});
   });
 
   socket.on('verify', async (data) => {
@@ -40,9 +50,16 @@ io.on('connection', async (socket: any) => {
       return socket.identity == msg.socket.identity;
     });
     var regMessage = registeredMessages.splice(regMessageIndex, 1)[0];
-    var encryptedResponse: any = await UserController.default.encryptResponseData(reqData, {
-      mailBox: regMessage.mailBox,
-    });
+    var encryptedResponse: any;
+    if (regMessage.mailBox){
+      encryptedResponse = await UserController.default.encryptResponseData(reqData, {
+        mailBox: regMessage.mailBox,
+      });
+    }else{
+      encryptedResponse = await UserController.default.encryptResponseData(reqData, {
+        mailBoxes: regMessage.mailBoxes,
+      });
+    }
     encryptedResponse.clientMsgId = reqData.decryptedData.data.clientMsgId;
     socket.emit('updateMailBox', encryptedResponse);
   });
@@ -61,15 +78,17 @@ io.on('connection', async (socket: any) => {
   });
 });
 
+var registerMessage = (identity, mailBox) => {
+  var socket = sockets.filter((currentSocket) => {
+    return currentSocket.identity == identity._id;
+  })[0];
+  if (!socket){
+    return;
+  }
+  registeredMessages.push({ socket: socket, mailBox: mailBox });
+  socket.emit('verification', {});
+}
+
 export default {
-  registerMessage: (identity, mailBox) => {
-    var socket = sockets.filter((currentSocket) => {
-      return currentSocket.identity == identity._id;
-    })[0];
-    if (!socket){
-      return;
-    }
-    registeredMessages.push({ socket: socket, mailBox: mailBox });
-    socket.emit('verification', {});
-  },
+  registerMessage
 };
