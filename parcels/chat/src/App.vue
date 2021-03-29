@@ -46,7 +46,8 @@ export default defineComponent({
   methods: {
     onUpdate() {
       nextTick(() => {
-        this.$refs.chat.scrollTop = this.$refs.chat.scrollHeight;
+        if (this.$refs.chat)
+          this.$refs.chat.scrollTop = this.$refs.chat.scrollHeight;
       });
     },
   },

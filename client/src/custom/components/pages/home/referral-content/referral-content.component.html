@@ -1,20 +1,28 @@
 <mat-card>
   <mat-card-header>
-    <h3>Create Referral</h3>
+    <mat-card-title>
+      <h3>Create Referral</h3>
+    </mat-card-title>
   </mat-card-header>
-  <app-form-simple
-    [form]="form"
-    [fields]="referralContentService.fields"
-    [submitLabel]="'Refer'"
-    [submitIcon]="'follow_the_signs'"
-    (onSubmit)="referr()"
-  ></app-form-simple>
+  <mat-card-content>
+    <app-form-simple
+      [form]="form"
+      [fields]="referralContentService.fields"
+      [submitLabel]="'Refer'"
+      [submitIcon]="'follow_the_signs'"
+      (onSubmit)="referr()"
+    ></app-form-simple>
+  </mat-card-content>
 </mat-card>
 <mat-list *ngFor="let referral of serviceAuth.referrals">
   <mat-card>
     <mat-card-header>
       <mat-card-title>{{ referral.email }}</mat-card-title>
-      <mat-card-subtitle>Secret: {{ referral.code }}</mat-card-subtitle>
+      <mat-card-subtitle
+        >Share secrets piece by piece on multiple commuincation
+        channels.</mat-card-subtitle
+      >
     </mat-card-header>
+    <mat-card-content> Secret: {{ referral.code }} </mat-card-content>
   </mat-card>
 </mat-list>

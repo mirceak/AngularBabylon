@@ -258,10 +258,15 @@ export class ServiceAuth {
         return mailBox._id == decryptedData.decryptedToken.data._id;
       });
       this.zone.run(() => {
-        Object.assign(this.mailBoxes[mailBoxIndex], {messages: decryptedData.decryptedToken.data.messages});
-        if (this.mailBoxes[mailBoxIndex].reactiveCallbacks && this.mailBoxes[mailBoxIndex].reactiveCallbacks.length){
-          this.mailBoxes[mailBoxIndex].reactiveCallbacks.forEach(callback => {
-            callback();
+        Object.assign(this.mailBoxes[mailBoxIndex], {
+          messages: decryptedData.decryptedToken.data.messages,
+        });
+        if (
+          this.mailBoxes[mailBoxIndex].reactiveCallbacks &&
+          this.mailBoxes[mailBoxIndex].reactiveCallbacks.length
+        ) {
+          this.mailBoxes[mailBoxIndex].reactiveCallbacks.forEach((callback) => {
+            if (callback) callback();
           });
         }
         localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
@@ -332,9 +337,9 @@ export class ServiceAuth {
         return mailBox._id == decryptedData.decryptedToken.data.mailBox._id;
       });
       var mailBox = this.mailBoxes[mailBoxIndex];
-      if (mailBox.reactiveCallbacks && mailBox.reactiveCallbacks.length){
-        mailBox.reactiveCallbacks.forEach(callback => {
-          callback();
+      if (mailBox.reactiveCallbacks && mailBox.reactiveCallbacks.length) {
+        mailBox.reactiveCallbacks.forEach((callback) => {
+          if (callback) callback();
         });
       }
       mailBox.messages =
