@@ -340,16 +340,22 @@ export class ServiceAuth {
         });
       } else if (decryptedData.decryptedToken.data.mailBoxes) {
         decryptedData.decryptedToken.data.mailBoxes.forEach((mailBox) => {
-          Object.assign(
-            this.mailBoxes[
-              this.mailBoxes.findIndex((_mailBox) => {
-                return (
-                  _mailBox._id == mailBox._id
-                );
-              })
-            ],
-            { messages: mailBox.messages }
-          );
+          var localMailbox = this.mailBoxes[
+            this.mailBoxes.findIndex((_mailBox) => {
+              return _mailBox._id == mailBox._id;
+            })
+          ];
+          if (
+            localMailbox.reactiveCallbacks &&
+            localMailbox.reactiveCallbacks.length
+          ) {
+            localMailbox.reactiveCallbacks.forEach(
+              (callback) => {
+                if (callback) callback();
+              }
+            );
+          }
+          Object.assign(localMailbox, { messages: mailBox.messages });
         });
         this.zone.run(() => {
           Object.assign(this.mailBoxes, {});

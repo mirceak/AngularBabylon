@@ -20,7 +20,7 @@
     >
       <mat-nav-list>
         <app-nav-list
-          (changedNav)="changedNav(snav)"
+          (changedNav)="mobileQuery.matches && changedNav(snav)"
           nav-list
           select="[nav-list]"
         ></app-nav-list>
