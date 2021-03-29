@@ -126,7 +126,7 @@ export class ServiceAuth {
     this.socket = null;
     this.referrals.length = 0;
     this.mailBoxes.length = 0;
-    this.router.navigate(['/login']);
+    this.router.navigate(['/auth/login']);
   }
 
   async register(postData): Promise<any> {

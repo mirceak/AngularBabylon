@@ -21,7 +21,7 @@ export class AuthGuardService implements CanActivate {
     state: RouterStateSnapshot
   ): boolean {
     if (!this.serviceAuth.loggedIn) {      
-      this.router.navigate(['/login']);
+      this.router.navigate(['/auth/login']);
       this._snackBar.open('Must Be Logged In!', 'Close', {
         duration: 2000,
       });

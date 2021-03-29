@@ -7,7 +7,7 @@
       mat-flat-button
       color="primary"
       type="submit"
-      [disabled]="!form.valid"
+      [disabled]="submitDisabled || !form.valid"
     >
       <mat-icon>{{ submitIcon }}</mat-icon> {{ submitLabel }}
     </button>

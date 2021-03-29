@@ -31,18 +31,20 @@
 <div class="footer">
   <a
     *ngIf="!serviceAuth.currentUser"
+    (click)="onChangeNav()"
     mat-button
     class="split-mat-button"
-    routerLink="/login"
+    routerLink="/auth/login"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }"
     ><mat-icon>login</mat-icon> Login</a
   >
   <a
     *ngIf="!serviceAuth.currentUser"
+    (click)="onChangeNav()"
     mat-button
     class="split-mat-button"
-    routerLink="/login/register"
+    routerLink="/auth/register"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }"
     ><mat-icon>follow_the_signs</mat-icon> Register</a

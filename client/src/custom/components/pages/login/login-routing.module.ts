@@ -12,22 +12,15 @@ const routes: Routes = [
     canActivate: [GuestGuardService],
     children: [
       {
-        path: '',
+        path: 'login',
         component: LoginContentComponent,
-      }
-    ],
-  },
-  {
-    path: 'register',
-    component: LoginComponent,
-    canActivate: [GuestGuardService],
-    children: [
+      },
       {
-        path: '',
+        path: 'register',
         component: RegisterContentComponent,
       }
     ],
-  },
+  }
 ];
 
 @NgModule({

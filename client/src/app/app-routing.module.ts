@@ -9,7 +9,7 @@ const routes: Routes = [
     loadChildren: () => import ('@final/pages/home/page.home.module').then(m => m.PageHomeModule)
   },
   {
-    path: "login",
+    path: "auth",
     loadChildren: () => import ('@final/pages/login/page.login.module').then(m => m.PageLoginModule)
   },
   { path: '**', component: EmptyRouteComponent }

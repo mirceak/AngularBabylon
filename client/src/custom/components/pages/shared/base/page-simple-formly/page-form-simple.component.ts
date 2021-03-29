@@ -13,6 +13,7 @@ export class PageFormSimpleComponent {
   @Input() fields: [FormlyFieldConfig];
   @Input() submitLabel: string;
   @Input() submitIcon: string;
+  @Input() submitDisabled: boolean;
 
   constructor() {}
 
