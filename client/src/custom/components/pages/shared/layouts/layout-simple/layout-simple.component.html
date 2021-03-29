@@ -16,10 +16,14 @@
       [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56"
       aria-expanded="true"
-      [opened]="true"
+      [opened]="!mobileQuery.matches || router.url.split('/')[1]===''"
     >
       <mat-nav-list>
-        <ng-content select="[nav-list]"></ng-content>
+        <app-nav-list
+          (changedNav)="mobileQuery.matches && snav.toggle()"
+          nav-list
+          select="[nav-list]"
+        ></app-nav-list>
       </mat-nav-list>
     </mat-sidenav>
 
