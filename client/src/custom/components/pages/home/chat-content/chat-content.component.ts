@@ -48,6 +48,6 @@ export class ChatContentComponent implements OnInit {
 
   async send(): Promise<any> {
     await this.serviceAuth.sendMessage(this.form.value, this.mailBox);
-    this.form.reset();
+    this.form.reset({});
   }
 }

@@ -1,20 +1,29 @@
 import { MediaMatcher } from '@angular/cdk/layout';
-import { ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { AfterContentInit, AfterViewChecked, ChangeDetectorRef, Component, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-layout-simple',
   templateUrl: './layout-simple.component.html',
   styleUrls: ['./layout-simple.component.scss'],
 })
-export class LayoutSimpleComponent implements OnDestroy {
+export class LayoutSimpleComponent implements OnDestroy, AfterViewChecked {
   mobileQuery: MediaQueryList;
+  startedSession = true;
 
   private _mobileQueryListener: () => void;
 
-  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher) {
+  constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher, public router: Router) {
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();
     this.mobileQuery.addEventListener("change", this._mobileQueryListener);
+  }
+
+  ngAfterViewChecked(): void {
+    this.startedSession = true;
+  }
+  test(){
+    console.log(33);
   }
 
   ngOnDestroy(): void {

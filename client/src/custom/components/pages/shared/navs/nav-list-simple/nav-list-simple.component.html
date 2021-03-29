@@ -2,6 +2,7 @@
   <div class="header-scroll">
     <div>
       <a
+        (click)="onChangeNav()"
         mat-button
         routerLink=""
         routerLinkActive="active"
@@ -9,6 +10,7 @@
         ><mat-icon>home</mat-icon> Home</a
       >
       <a
+        (click)="onChangeNav()"
         mat-button
         routerLink="/referral"
         routerLinkActive="active"
@@ -16,6 +18,7 @@
         ><mat-icon>app_registration</mat-icon> Referral</a
       >
       <a
+        (click)="onChangeNav()"
         mat-button
         routerLink="/mailBoxes"
         routerLinkActive="active"
@@ -44,10 +47,7 @@
     [routerLinkActiveOptions]="{ exact: true }"
     ><mat-icon>follow_the_signs</mat-icon> Register</a
   >
-  <a
-    *ngIf="serviceAuth.currentUser"
-    mat-button
-    (click)="serviceAuth.logout()"
+  <a *ngIf="serviceAuth.currentUser" mat-button (click)="serviceAuth.logout()"
     ><mat-icon>logout</mat-icon> Logout</a
   >
 </div>

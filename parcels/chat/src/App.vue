@@ -64,7 +64,8 @@ export default defineComponent({
   position: absolute;
   top: 0;
   bottom: 142px;
-  width: 100%;
+  left: 0;
+  right: 0;
   min-height: unset;
   overflow-y: scroll;
 }

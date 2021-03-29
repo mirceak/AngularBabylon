@@ -13,11 +13,7 @@ export class ChatContentService {
       type: 'input',
       templateOptions: {
         label: "Message",
-        placeholder: 'Type a message',
-        required: true,
-      },
-      validators: {
-        required: this.pageFormlyService.requiredValidator,
+        placeholder: 'Type a message'
       },
     },
   ];

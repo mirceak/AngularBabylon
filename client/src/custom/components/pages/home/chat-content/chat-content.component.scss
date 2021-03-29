@@ -1,10 +1,11 @@
 .message-box {
   height: 140px;
   position: absolute;
-  width: 100%;
+  right: 0;
+  left: 0;
   bottom: 1px;
 }
 .content-box {
     overflow-y: hidden;
-    height: calc(100vh - 212px)
+    height: 100%;
 }
