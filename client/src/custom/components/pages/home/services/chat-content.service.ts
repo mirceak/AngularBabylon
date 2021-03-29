@@ -13,6 +13,7 @@ export class ChatContentService {
       type: 'input',
       templateOptions: {
         label: "Message",
+        required: true,
         placeholder: 'Type a message'
       },
     },

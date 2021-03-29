@@ -1,4 +1,7 @@
 <mat-card>
+  <mat-card-header>
+    <h3>Create Mailbox</h3>
+  </mat-card-header>
   <app-form-simple
     [form]="form"
     [fields]="mailBoxContentService.fields"
@@ -7,8 +10,10 @@
     (onSubmit)="addMailBox()"
   ></app-form-simple
 ></mat-card>
-<mat-divider></mat-divider>
-<mat-card>
+<mat-card>  
+  <mat-card-header>
+    <h3>Link Mailbox</h3>    
+  </mat-card-header>
   <app-form-simple
     [form]="acceptForm"
     [fields]="mailBoxContentService.acceptFields"
@@ -17,7 +22,6 @@
     (onSubmit)="acceptMailBox()"
   ></app-form-simple>
 </mat-card>
-<mat-divider></mat-divider>
 <mat-card *ngFor="let mailBox of serviceAuth.mailBoxes" class='mailBox'>
   <mat-card-header>
     <mat-card-title
