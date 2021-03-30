@@ -11,8 +11,9 @@ export class MailBoxContentService {
       key: 'name',
       type: 'input',
       templateOptions: {
-        label: this.pageFormlyService.internationalization.display(["MailBox's Name"]),
-        placeholder: this.pageFormlyService.internationalization.display(['Enter name']),
+        translate: true,
+        _label: 'formlyFields.name.label',
+        _placeholder: 'formlyFields.name.placeholder',
         required: true,
       },
       validators: {
@@ -25,8 +26,9 @@ export class MailBoxContentService {
       key: 'name',
       type: 'input',
       templateOptions: {
-        label: this.pageFormlyService.internationalization.display(["MailBox's Name"]),
-        placeholder: this.pageFormlyService.internationalization.display(['Enter name']),
+        translate: true,
+        _label: 'formlyFields.name.label',
+        _placeholder: 'formlyFields.name.placeholder',
         required: true,
       },
       validators: {
@@ -37,26 +39,38 @@ export class MailBoxContentService {
       key: 'secret1',
       type: 'input',
       templateOptions: {
-        label: this.pageFormlyService.internationalization.display(["Secret 1"]),
-        placeholder: this.pageFormlyService.internationalization.display(['Enter secret']),
+        translate: true,
+        _label: 'formlyFields.secret1.label',
+        _placeholder: 'formlyFields.secret1.placeholder',
         required: true,
       },
       validators: {
         required: this.pageFormlyService.requiredValidator,
-        minLength: this.pageFormlyService.minLengthValidator(20),
+        minLength: {
+          options: {
+            min: 20,
+          },
+          expression: this.pageFormlyService.minLengthValidator(20),
+        }
       },
     },
     {
       key: 'secret2',
       type: 'input',
       templateOptions: {
-        label: this.pageFormlyService.internationalization.display(["Secret 2"]),
-        placeholder: this.pageFormlyService.internationalization.display(['Enter secret']),
+        translate: true,
+        _label: 'formlyFields.secret2.label',
+        _placeholder: 'formlyFields.secret2.placeholder',
         required: true,
       },
       validators: {
         required: this.pageFormlyService.requiredValidator,
-        minLength: this.pageFormlyService.minLengthValidator(20),
+        minLength: {
+          options: {
+            min: 20,
+          },
+          expression: this.pageFormlyService.minLengthValidator(20),
+        }
       },
     },
   ];

@@ -1,84 +1,96 @@
 import { Injectable } from '@angular/core';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 import { PageFormlyService } from '@custom/components/pages/shared/base/page-simple-formly/page-simple-formly.service';
+import { TranslateService } from '@ngx-translate/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class RegisterService {
-  constructor(private pageFormlyService: PageFormlyService) {}
+  constructor(
+    private pageFormlyService: PageFormlyService,
+    private translate: TranslateService
+  ) {}
   fields = [
     {
       key: 'email',
       type: 'input',
       templateOptions: {
-        label: this.pageFormlyService.internationalization.display(["Email"]),
-        placeholder: this.pageFormlyService.internationalization.display(['Enter email']),
+        translate: true,
+        _label: 'formlyFields.email.label',
+        _placeholder: 'formlyFields.email.placeholder',
         required: true,
         type: 'password',
       },
       validators: {
-        minLength: this.pageFormlyService.minLengthValidator(6),
+        minLength: {
+          options: {
+            min: 6,
+          },
+          expression: this.pageFormlyService.minLengthValidator(6),
+        },
         email: this.pageFormlyService.emailValidator,
         required: this.pageFormlyService.requiredValidator,
-      },
-      expressionProperties: {
-        'templateOptions.label':  ()=> this.pageFormlyService.internationalization.display(['Email']),
-        'templateOptions.placeholder': () => this.pageFormlyService.internationalization.display(['Enter email']),
       },
     },
     {
       key: 'username',
       type: 'input',
       templateOptions: {
-        label: this.pageFormlyService.internationalization.display(["Username"]),
-        placeholder: this.pageFormlyService.internationalization.display(['Enter username']),
+        translate: true,
+        _label: 'formlyFields.username.label',
+        _placeholder: 'formlyFields.username.placeholder',
         required: true,
         type: 'password',
       },
       validators: {
-        minLength: this.pageFormlyService.minLengthValidator(6),
+        minLength: {
+          options: {
+            min: 6,
+          },
+          expression: this.pageFormlyService.minLengthValidator(6),
+        },
         required: this.pageFormlyService.requiredValidator,
-      },
-      expressionProperties: {
-        'templateOptions.label': () => this.pageFormlyService.internationalization.display(['Username']),
-        'templateOptions.placeholder': () => this.pageFormlyService.internationalization.display(['Enter username']),
       },
     },
     {
       key: 'password',
       type: 'input',
       templateOptions: {
-        label: this.pageFormlyService.internationalization.display(["Password"]),
-        placeholder: this.pageFormlyService.internationalization.display(['Enter password']),
+        translate: true,
+        _label: 'formlyFields.password.label',
+        _placeholder: 'formlyFields.password.placeholder',
         required: true,
         type: 'password',
       },
       validators: {
-        minLength: this.pageFormlyService.minLengthValidator(6),
+        minLength: {
+          options: {
+            min: 6,
+          },
+          expression: this.pageFormlyService.minLengthValidator(6),
+        },
         required: this.pageFormlyService.requiredValidator,
-      },
-      expressionProperties: {
-        'templateOptions.label': () => this.pageFormlyService.internationalization.display(['Password']),
-        'templateOptions.placeholder': () => this.pageFormlyService.internationalization.display(['Enter password']),
       },
     },
     {
       key: 'referralCode',
       type: 'input',
       templateOptions: {
-        label: this.pageFormlyService.internationalization.display(["Secret"]),
-        placeholder: this.pageFormlyService.internationalization.display(['Enter secret']),
+        translate: true,
+        _label: 'formlyFields.referralCode.label',
+        _placeholder: 'formlyFields.referralCode.placeholder',
         required: true,
         type: 'password',
       },
       validators: {
-        minLength: this.pageFormlyService.minLengthValidator(20),
+        minLength: {
+          options: {
+            min: 20,
+          },
+          expression: this.pageFormlyService.minLengthValidator(20),
+        },
         required: this.pageFormlyService.requiredValidator,
-      },
-      expressionProperties: {
-        'templateOptions.label': () => this.pageFormlyService.internationalization.display(['Secret']),
-        'templateOptions.placeholder': () => this.pageFormlyService.internationalization.display(['Enter secret']),
       },
     },
   ];

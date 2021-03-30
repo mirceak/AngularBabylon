@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MailBoxContentService } from '@custom/components/pages/home/services/mailBox-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
-import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-mailBox-content',
@@ -16,7 +16,7 @@ export class MailBoxContentComponent implements OnInit {
   constructor(
     public mailBoxContentService: MailBoxContentService,
     public serviceAuth: ServiceAuth,
-    public internationalization: ServiceInternationalization
+    public translate: TranslateService
   ) {}
 
   ngOnInit(): void {}

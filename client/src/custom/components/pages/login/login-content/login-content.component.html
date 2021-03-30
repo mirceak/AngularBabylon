@@ -1,13 +1,13 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>{{
-      internationalization.display(["Login"])
+      translate.instant('pages.login.login')
     }}</mat-card-title>
   </mat-card-header>
   <app-form-simple
     [form]="form"
     [fields]="loginService.fields"
-    [submitLabel]="internationalization.display(['Login'])"
+    [submitLabel]="translate.instant('pages.login.login')"
     [submitIcon]="'login'"
     (onSubmit)="login()"
   ></app-form-simple>

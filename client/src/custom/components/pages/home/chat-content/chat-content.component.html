@@ -5,7 +5,7 @@
   <app-form-simple
     [form]="form"
     [fields]="chatContentService.fields"
-    [submitLabel]="internationalization.display(['Send'])"
+    [submitLabel]="translate.instant('pages.chat.send')"
     [submitIcon]="'send'"
     [submitDisabled]="!this.form.value.message || !this.form.value.message.length"
     (onSubmit)="send()"

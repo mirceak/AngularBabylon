@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LoginService } from '@custom/components/pages/login/services/login.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
-import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-login-content',
@@ -15,7 +15,7 @@ export class LoginContentComponent {
   constructor(
     public loginService: LoginService,
     private serviceAuth: ServiceAuth,
-    public internationalization: ServiceInternationalization
+    public translate: TranslateService
   ) {}
 
   login(): void {

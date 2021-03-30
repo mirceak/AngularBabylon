@@ -1,13 +1,13 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>{{
-      internationalization.display(["Register"])
+      translate.instant('pages.register.register')
     }}</mat-card-title>
   </mat-card-header>
   <app-form-simple
     [form]="form"
     [fields]="registerService.fields"
-    [submitLabel]="internationalization.display(['Register'])"
+    [submitLabel]="translate.instant('pages.register.register')"
     [submitIcon]="'follow_the_signs'"
     (onSubmit)="register()"
   ></app-form-simple>

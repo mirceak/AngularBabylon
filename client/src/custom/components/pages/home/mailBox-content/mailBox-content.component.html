@@ -1,14 +1,14 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      <h3>{{ internationalization.display(["Create Mailbox"]) }}</h3>
+      <h3>{{ translate.instant('pages.mailBox.create') }}</h3>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <app-form-simple
       [form]="form"
       [fields]="mailBoxContentService.fields"
-      [submitLabel]="internationalization.display(['Add New MailBox'])"
+      [submitLabel]="translate.instant('pages.mailBox.add')"
       [submitIcon]="'follow_the_signs'"
       (onSubmit)="addMailBox()"
     >
@@ -19,7 +19,7 @@
   <mat-card-header>
     <mat-card-title>
       <h3>
-        {{ internationalization.display(["Chat With A Mailbox"]) }}
+        {{ translate.instant('pages.mailBox.chat') }}
       </h3>
     </mat-card-title>
   </mat-card-header>
@@ -28,7 +28,7 @@
       [form]="acceptForm"
       [fields]="mailBoxContentService.acceptFields"
       [submitLabel]="
-        internationalization.display(['Accept MailBox Invitation'])
+        translate.instant('pages.mailBox.accept')
       "
       [submitIcon]="'follow_the_signs'"
       (onSubmit)="acceptMailBox()"
@@ -38,25 +38,23 @@
 <mat-card *ngFor="let mailBox of serviceAuth.mailBoxes" class="mailBox">
   <mat-card-header>
     <mat-card-title>
-      <h3>{{ mailBox.name }} {{ mailBox.secret3 == null ? "(Free)" : "" }}</h3>
+      <h3>{{ mailBox.name }} {{ mailBox.secret3 == null ? "(" + translate.instant('pages.mailBox.free') + ")" : "" }}</h3>
     </mat-card-title>
     <mat-card-subtitle *ngIf="mailBox.secret3 == null"
       >{{
-        internationalization.display([
-          "Share Secrets Piece By Piece On Multiple Communication Channels"
-        ])
+        translate.instant('pages.mailBox.secrets')
       }}.</mat-card-subtitle
     >
     <mat-card-subtitle *ngIf="mailBox.secret3 != null"
       >{{
-        internationalization.display(["Chat With Your Secret Connection"])
+        translate.instant('pages.mailBox.chatInfo')
       }}.</mat-card-subtitle
     >
   </mat-card-header>
   <mat-card-content *ngIf="mailBox.secret3 == null">
-    <p>{{ internationalization.display(["Secret"]) }} 1: {{ mailBox._id }}</p>
+    <p>{{ translate.instant('pages.mailBox.secret') }} 1: {{ mailBox._id }}</p>
     <p>
-      {{ internationalization.display(["Secret"]) }} 2: {{ mailBox.secret }}
+      {{ translate.instant('pages.mailBox.secret') }} 2: {{ mailBox.secret }}
     </p>
   </mat-card-content>
   <mat-card-actions>
@@ -66,7 +64,7 @@
       color="primary"
       [routerLink]="'/mailBoxes/chat/' + mailBox._id"
     >
-      {{ internationalization.display(["Talk"]) }}
+      {{ translate.instant('pages.mailBox.talk') }}
     </button>
   </mat-card-actions>
 </mat-card>

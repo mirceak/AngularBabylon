@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ReferralContentService } from '@custom/components/pages/home/services/referral-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
-import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-referral-content',
@@ -15,7 +15,7 @@ export class ReferralContentComponent implements OnInit {
   constructor(
     public referralContentService: ReferralContentService,
     public serviceAuth: ServiceAuth,
-    public internationalization: ServiceInternationalization
+    public translate: TranslateService
   ) {}
 
   ngOnInit(): void {}

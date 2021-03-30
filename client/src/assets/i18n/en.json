@@ -1,10 +1,96 @@
 {
-    "FORM": {
-      "TITLE": "Hello Angular with ngx-translate!",
-      "LANG": "Change language",
-      "NAME": "Name333",
-      "VALIDATION": {
-        "REQUIRED": "This field is required1"
+  "formlyValidation": {
+    "required": "\"{{ label }}\" Is Required.",
+    "email": "\"{{ label }}\" Needs To Be A Valid Email.",
+    "minLen": "\"{{ label }}\" Needs To Have At Least {{ count }} Characters."
+  },
+  "formlyFields": {
+    "name": {
+      "label": "Name",
+      "placeholder": "Enter a name"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter an email"
+    },
+    "password": {
+      "label": "Password",
+      "placeholder": "Enter a password"
+    },
+    "username": {
+      "label": "Username",
+      "placeholder": "Enter an username"
+    },
+    "referralCode": {
+      "label": "Referral Code",
+      "placeholder": "Enter secret code"
+    },
+    "secret1": {
+      "label": "Secret 1",
+      "placeholder": "Enter first secret code"
+    },
+    "secret2": {
+      "label": "Secret 2",
+      "placeholder": "Enter second secret code"
+    },
+    "message": {
+      "label": "Message",
+      "placeholder": "Enter a message"
+    }
+  },
+  "pages": {
+    "login": {
+      "login": "Login"
+    },
+    "register": {
+      "register": "Register"
+    },
+    "referral": {
+      "create": "Create Referral",
+      "refer": "Refer",
+      "secrets": "Share Secrets Piece By Piece On Multiple Communication Channels",
+      "secret": "Secret"
+    },
+    "mailBox": {
+      "free": "Free",
+      "create": "Create MailBox",
+      "add": "Add MailBox",
+      "secrets": "Share Secrets Piece By Piece On Multiple Communication Channels",
+      "secret": "Secret",
+      "chat": "Chat With A MailBox",
+      "accept": "Accept MailBox",
+      "chatInfo": "Chat With Your Secret Connection",
+      "talk": "Talk"
+    },
+    "home": {
+      "hi": "Hi",
+      "welcome": "Welcome!"
+    },
+    "chat": {
+      "send": "Send"
+    }
+  },
+  "components": {
+    "nav": {
+      "lang": "Select Language",
+      "login": "Login",
+      "home": "Home",
+      "referral": "Referral",
+      "mailBoxes": "Mail Boxes",
+      "logout": "Logout",
+      "register": "Register"
+    }
+  },
+  "services": {
+    "guards": {
+      "auth": {
+        "message": "You Must Be Logged In!",
+        "close": "Close"
+      },
+      "guest": {
+        "message": "You Are Already Logged In!",
+        "close": "Close"
       }
     }
   }
+}

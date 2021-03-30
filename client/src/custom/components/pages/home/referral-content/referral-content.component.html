@@ -1,14 +1,14 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      <h3>{{ internationalization.display(["Create Referral"]) }}</h3>
+      <h3>{{ translate.instant("pages.referral.create") }}</h3>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <app-form-simple
       [form]="form"
       [fields]="referralContentService.fields"
-      [submitLabel]="internationalization.display(['Refer'])"
+      [submitLabel]="translate.instant('pages.referral.refer')"
       [submitIcon]="'follow_the_signs'"
       (onSubmit)="referr()"
     ></app-form-simple>
@@ -19,15 +19,11 @@
     <mat-card-header>
       <mat-card-title>{{ referral.email }}</mat-card-title>
       <mat-card-subtitle
-        >{{
-          internationalization.display([
-            "Share Secrets Piece By Piece On Multiple Communication Channels"
-          ])
-        }}.</mat-card-subtitle
+        >{{ translate.instant("pages.referral.secrets") }}.</mat-card-subtitle
       >
     </mat-card-header>
     <mat-card-content>
-      {{ internationalization.display(["Secret"]) }}: {{ referral.code }}
+      {{ translate.instant("pages.referral.secret") }}: {{ referral.code }}
     </mat-card-content>
   </mat-card>
 </mat-list>

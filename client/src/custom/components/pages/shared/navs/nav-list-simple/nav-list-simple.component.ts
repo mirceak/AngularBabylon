@@ -1,6 +1,6 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
-import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-nav-list',
@@ -12,7 +12,7 @@ export class NavListSimpleComponent implements OnInit {
 
   constructor(
     public serviceAuth: ServiceAuth,
-    public internationalization: ServiceInternationalization
+    public translate: TranslateService
   ) {}
 
   ngOnInit(): void {}

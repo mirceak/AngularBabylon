@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { RegisterService } from '@custom/components/pages/login/services/register.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
-import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-register-content',
@@ -15,7 +15,7 @@ export class RegisterContentComponent {
   constructor(
     public registerService: RegisterService,
     private serviceAuth: ServiceAuth,
-    public internationalization: ServiceInternationalization
+    public translate: TranslateService
   ) {}
 
   register() {

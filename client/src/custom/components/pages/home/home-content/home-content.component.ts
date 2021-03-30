@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
+import { TranslateService } from '@ngx-translate/core';
 @Component({
   selector: 'app-home-content',
   templateUrl: './home-content.component.html',
@@ -7,7 +7,7 @@ import { ServiceInternationalization } from '@custom/services/utils/service.inte
 })
 export class HomeContentComponent implements OnInit {
 
-  constructor(public internationalization: ServiceInternationalization) { }
+  constructor(public translate: TranslateService) { }
 
   ngOnInit(): void {
   }

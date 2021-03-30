@@ -5,8 +5,7 @@ import { ChatContentService } from '@custom/components/pages/home/services/chat-
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { mountRootParcel } from 'single-spa';
 import { loadRemoteModule } from '@angular-architects/module-federation';
-import { BehaviorSubject } from 'rxjs';
-import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
+import { TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-chat-content',
@@ -23,7 +22,7 @@ export class ChatContentComponent implements OnInit {
     public chatContentService: ChatContentService,
     private serviceAuth: ServiceAuth,
     private route: ActivatedRoute,
-    public internationalization: ServiceInternationalization
+    public translate: TranslateService
   ) {}
 
   ngOnInit(): void {

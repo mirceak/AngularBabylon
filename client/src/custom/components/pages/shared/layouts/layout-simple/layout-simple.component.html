@@ -4,15 +4,14 @@
       <mat-icon>menu</mat-icon>
     </button>
     <h1 class="layout-app-name">Talky</h1>
-    <mat-form-field appearance="fill">
-      <mat-label>{{
-        internationalization.display(["Select Language"])
-      }}</mat-label>
-      <mat-select (selectionChange)="internationalization.setLanguage($event.value)" [(value)]="internationalization.lang">
-        <mat-option value="en">English</mat-option>
-        <mat-option value="ro">Romana</mat-option>
-      </mat-select>
-    </mat-form-field>
+    <mat-select
+      (selectionChange)="internationalization.setLanguage($event)"
+      value="null"
+    >
+      <mat-option value="null">Select Language</mat-option>
+      <mat-option value="en">English</mat-option>
+      <mat-option value="ro">Romana</mat-option>
+    </mat-select>
   </mat-toolbar>
 
   <mat-sidenav-container

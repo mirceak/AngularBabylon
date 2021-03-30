@@ -1,10 +1,98 @@
 {
-    "FORM": {
-      "TITLE": "Hello Angular with ngx-translate!",
-      "LANG": "Change language",
-      "NAME": "Nombre1",
-      "VALIDATION": {
-        "REQUIRED": "This field is required2"
+  "formlyValidation": {
+    "required": "\"Campul {{ label }}\" este obligatoriu.",
+    "email": "\"Campul {{ label }}\" trebuie sa contina un email valid.",
+    "minLen": "\"Campul {{ label }}\" trebuie sa aiba cel putin {{ count }} caractere."
+  },
+  "formlyFields": {
+    "name": {
+      "label": "Nume",
+      "placeholder": "Introduceti un nume"
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Introduceti un email"
+    },
+    "password": {
+      "label": "Parola",
+      "placeholder": "Introduceti o parola"
+    },
+    "username": {
+      "label": "Username",
+      "placeholder": "Introduceti un username"
+    },
+    "referralCode": {
+      "label": "Cod Contact De Referinta",
+      "placeholder": "Introduceti codul secret"
+    },
+    "secret1": {
+      "label": "Secret 1",
+      "placeholder": "Introduceti primul cod secret"
+    },
+    "secret2": {
+      "label": "Secret 2",
+      "placeholder": "Introduceti al doilea cod secret"
+    },
+    "formlyFields": {
+      "message": {
+        "label": "Mesaj",
+        "placeholder": "Introduceti un mesaj"
+      }
+    }
+  },
+  "pages": {
+    "login": {
+      "login": "Login"
+    },
+    "register": {
+      "register": "Inregistrare"
+    },
+    "referral": {
+      "create": "Creeaza contact de referinta",
+      "refer": "Creeaza",
+      "secrets": "Dezvaluie secretele bucata cu bucata cu ajutorul mai multor canale de comunicare",
+      "secret": "Secret"
+    },
+    "mailBox": {
+      "free": "Liber",
+      "create": "Creeaza cutie postala",
+      "add": "Creeaza",
+      "secrets": "Dezvaluie secretele bucata cu bucata cu ajutorul mai multor canale de comunicare",
+      "secret": "Secret",
+      "chat": "Chat With A MailBox",
+      "accept": "Accept MailBox",
+      "chatInfo": "Chat With Your Secret Connection",
+      "talk": "Talk"
+    },
+    "home": {
+      "hi": "Salut",
+      "welcome": "Bine ai venit!"
+    },
+    "chat": {
+      "send": "Trimite"
+    }
+  },
+  "components": {
+    "nav": {
+      "lang": "Selecteaza Limba",
+      "login": "Login",
+      "home": "Acasa",
+      "referral": "Contacte De Referinta",
+      "mailBoxes": "Cutii Postale",
+      "logout": "Delogare",
+      "register": "Inregistrare"
+    }
+  },
+  "services": {
+    "guards": {
+      "auth": {
+        "message": "Trebuie sa fii logat!",
+        "close": "Inchide"
+      },
+      "guest": {
+        "message": "Esti deja logat!",
+        "close": "Inchide"
       }
     }
   }
+}

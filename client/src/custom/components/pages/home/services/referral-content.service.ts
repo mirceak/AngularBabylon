@@ -11,8 +11,9 @@ export class ReferralContentService {
       key: 'email',
       type: 'input',
       templateOptions: {
-        label: this.pageFormlyService.internationalization.display(["Referal\'s Email"]),
-        placeholder: this.pageFormlyService.internationalization.display(['Enter email']),
+        translate: true,
+        _label: 'formlyFields.email.label',
+        _placeholder: 'formlyFields.email.placeholder',
         required: true,
       },
       validators: {
