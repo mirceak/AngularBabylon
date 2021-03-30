@@ -2,12 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MailBoxContentService } from '@custom/components/pages/home/services/mailBox-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
+import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
 
 @Component({
   selector: 'app-mailBox-content',
   templateUrl: './mailBox-content.component.html',
   styleUrls: ['./mailBox-content.component.scss'],
-  providers: [MailBoxContentService],
 })
 export class MailBoxContentComponent implements OnInit {
   form = new FormGroup({});
@@ -15,7 +15,8 @@ export class MailBoxContentComponent implements OnInit {
 
   constructor(
     public mailBoxContentService: MailBoxContentService,
-    public serviceAuth: ServiceAuth
+    public serviceAuth: ServiceAuth,
+    public internationalization: ServiceInternationalization
   ) {}
 
   ngOnInit(): void {}

@@ -4,6 +4,15 @@
       <mat-icon>menu</mat-icon>
     </button>
     <h1 class="layout-app-name">Talky</h1>
+    <mat-form-field appearance="fill">
+      <mat-label>{{
+        internationalization.display(["Select Language"])
+      }}</mat-label>
+      <mat-select (selectionChange)="internationalization.setLanguage($event.value)" [(value)]="internationalization.lang">
+        <mat-option value="en">English</mat-option>
+        <mat-option value="ro">Romana</mat-option>
+      </mat-select>
+    </mat-form-field>
   </mat-toolbar>
 
   <mat-sidenav-container
@@ -16,7 +25,10 @@
       [fixedInViewport]="mobileQuery.matches"
       fixedTopGap="56"
       aria-expanded="true"
-      [opened]="!mobileQuery.matches || (!this.startedSession && router.url.split('/')[1]==='')"
+      [opened]="
+        !mobileQuery.matches ||
+        (!this.startedSession && router.url.split('/')[1] === '')
+      "
     >
       <mat-nav-list>
         <app-nav-list

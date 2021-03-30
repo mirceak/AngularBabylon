@@ -11,8 +11,8 @@ export class MailBoxContentService {
       key: 'name',
       type: 'input',
       templateOptions: {
-        label: "MailBox's Name",
-        placeholder: 'Enter name',
+        label: this.pageFormlyService.internationalization.display(["MailBox's Name"]),
+        placeholder: this.pageFormlyService.internationalization.display(['Enter name']),
         required: true,
       },
       validators: {
@@ -25,8 +25,8 @@ export class MailBoxContentService {
       key: 'name',
       type: 'input',
       templateOptions: {
-        label: "MailBox's Name",
-        placeholder: 'Enter name',
+        label: this.pageFormlyService.internationalization.display(["MailBox's Name"]),
+        placeholder: this.pageFormlyService.internationalization.display(['Enter name']),
         required: true,
       },
       validators: {
@@ -37,24 +37,26 @@ export class MailBoxContentService {
       key: 'secret1',
       type: 'input',
       templateOptions: {
-        label: "Secret 1",
-        placeholder: 'Enter secret',
+        label: this.pageFormlyService.internationalization.display(["Secret 1"]),
+        placeholder: this.pageFormlyService.internationalization.display(['Enter secret']),
         required: true,
       },
       validators: {
         required: this.pageFormlyService.requiredValidator,
+        minLength: this.pageFormlyService.minLengthValidator(20),
       },
     },
     {
       key: 'secret2',
       type: 'input',
       templateOptions: {
-        label: "Secret 2",
-        placeholder: 'Enter secret',
+        label: this.pageFormlyService.internationalization.display(["Secret 2"]),
+        placeholder: this.pageFormlyService.internationalization.display(['Enter secret']),
         required: true,
       },
       validators: {
         required: this.pageFormlyService.requiredValidator,
+        minLength: this.pageFormlyService.minLengthValidator(20),
       },
     },
   ];

@@ -11,8 +11,8 @@ export class LoginService {
       key: 'email',
       type: 'input',
       templateOptions: {
-        label: 'Email',
-        placeholder: 'Enter email',
+        label: this.pageFormlyService.internationalization.display(["Email"]),
+        placeholder: this.pageFormlyService.internationalization.display(['Enter email']),
         required: true,
       },
       validators: {
@@ -20,32 +20,47 @@ export class LoginService {
         email: this.pageFormlyService.emailValidator,
         required: this.pageFormlyService.requiredValidator,
       },
+      expressionProperties: {
+        'templateOptions.label': () => this.pageFormlyService.internationalization.display(["Email"]),
+        'templateOptions.placeholder': () => this.pageFormlyService.internationalization.display(['Enter email']),
+      },
     },
     {
       key: 'username',
       type: 'input',
       templateOptions: {
-        label: 'Username',
-        required: true,
+        label: this.pageFormlyService.internationalization.display(["Username"]),
+        placeholder: this.pageFormlyService.internationalization.display(['Enter username']),
         type: 'password',
+        required: true,
       },
       validators: {
         minLength: this.pageFormlyService.minLengthValidator(6),
         required: this.pageFormlyService.requiredValidator,
+      },
+      expressionProperties: {
+        'templateOptions.label': () => this.pageFormlyService.internationalization.display(['Username']),
+        'templateOptions.placeholder': () => this.pageFormlyService.internationalization.display(['Enter username']),
       },
     },
     {
       key: 'password',
       type: 'input',
       templateOptions: {
-        label: 'Password',
-        required: true,
+        translate: true,
+        label: 'FORM.NAME',
+        placeholder: this.pageFormlyService.internationalization.display(['Enter password']),
         type: 'password',
+        required: true,
       },
       validators: {
         minLength: this.pageFormlyService.minLengthValidator(6),
         required: this.pageFormlyService.requiredValidator,
       },
+      // expressionProperties: {
+      //   'templateOptions.label': () => this.pageFormlyService.internationalization.display(['Password']),
+      //   'templateOptions.placeholder': () => this.pageFormlyService.internationalization.display(['Enter password']),
+      // },
     },
   ];
 }

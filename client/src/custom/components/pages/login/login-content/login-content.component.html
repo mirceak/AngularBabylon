@@ -1,11 +1,13 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Login</mat-card-title>
+    <mat-card-title>{{
+      internationalization.display(["Login"])
+    }}</mat-card-title>
   </mat-card-header>
   <app-form-simple
     [form]="form"
     [fields]="loginService.fields"
-    [submitLabel]="'Login'"
+    [submitLabel]="internationalization.display(['Login'])"
     [submitIcon]="'login'"
     (onSubmit)="login()"
   ></app-form-simple>

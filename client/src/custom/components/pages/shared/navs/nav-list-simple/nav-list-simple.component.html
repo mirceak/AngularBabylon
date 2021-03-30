@@ -7,7 +7,8 @@
         routerLink=""
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
-        ><mat-icon>home</mat-icon> Home</a
+        ><mat-icon>home</mat-icon>
+        {{ internationalization.display(["Home"]) }}</a
       >
       <a
         (click)="onChangeNav()"
@@ -15,7 +16,8 @@
         routerLink="/referral"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
-        ><mat-icon>app_registration</mat-icon> Referral</a
+        ><mat-icon>app_registration</mat-icon>
+        {{ internationalization.display(["Referrals"]) }}</a
       >
       <a
         (click)="onChangeNav()"
@@ -23,7 +25,8 @@
         routerLink="/mailBoxes"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: false }"
-        ><mat-icon>contacts</mat-icon> MailBoxes</a
+        ><mat-icon>contacts</mat-icon>
+        {{ internationalization.display(["Mail Boxes"]) }}</a
       >
     </div>
   </div>
@@ -37,7 +40,7 @@
     routerLink="/auth/login"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }"
-    ><mat-icon>login</mat-icon> Login</a
+    ><mat-icon>login</mat-icon> {{ internationalization.display(["Login"]) }}</a
   >
   <a
     *ngIf="!serviceAuth.currentUser"
@@ -47,9 +50,10 @@
     routerLink="/auth/register"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }"
-    ><mat-icon>follow_the_signs</mat-icon> Register</a
+    ><mat-icon>follow_the_signs</mat-icon>
+    {{ internationalization.display(["Register"]) }}</a
   >
   <a *ngIf="serviceAuth.currentUser" mat-button (click)="serviceAuth.logout()"
-    ><mat-icon>logout</mat-icon> Logout</a
+    ><mat-icon>logout</mat-icon> {{ internationalization.display(["Logout"]) }}</a
   >
 </div>

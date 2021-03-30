@@ -1,11 +1,13 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>Register</mat-card-title>
+    <mat-card-title>{{
+      internationalization.display(["Register"])
+    }}</mat-card-title>
   </mat-card-header>
   <app-form-simple
     [form]="form"
     [fields]="registerService.fields"
-    [submitLabel]="'Register'"
+    [submitLabel]="internationalization.display(['Register'])"
     [submitIcon]="'follow_the_signs'"
     (onSubmit)="register()"
   ></app-form-simple>

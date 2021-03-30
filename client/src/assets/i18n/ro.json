@@ -1,0 +1,10 @@
+{
+    "FORM": {
+      "TITLE": "Hello Angular with ngx-translate!",
+      "LANG": "Change language",
+      "NAME": "Nombre1",
+      "VALIDATION": {
+        "REQUIRED": "This field is required2"
+      }
+    }
+  }

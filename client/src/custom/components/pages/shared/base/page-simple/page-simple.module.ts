@@ -10,7 +10,6 @@ import { PageSimpleComponent } from '@custom/components/pages/shared/base/page-s
   imports: [RouterModule, BasePageModule],
   exports: [
     BasePageModule,
-    LayoutSimpleComponent,
     PageSimpleComponent,
     NavListSimpleComponent,
   ]

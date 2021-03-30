@@ -1,14 +1,14 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      <h3>Create Mailbox</h3>
+      <h3>{{ internationalization.display(["Create Mailbox"]) }}</h3>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <app-form-simple
       [form]="form"
       [fields]="mailBoxContentService.fields"
-      [submitLabel]="'Add New MailBox'"
+      [submitLabel]="internationalization.display(['Add New MailBox'])"
       [submitIcon]="'follow_the_signs'"
       (onSubmit)="addMailBox()"
     >
@@ -18,14 +18,18 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      <h3>Chat With Mailbox</h3>
+      <h3>
+        {{ internationalization.display(["Chat With A Mailbox"]) }}
+      </h3>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <app-form-simple
       [form]="acceptForm"
       [fields]="mailBoxContentService.acceptFields"
-      [submitLabel]="'Accept MailBox Invitation'"
+      [submitLabel]="
+        internationalization.display(['Accept MailBox Invitation'])
+      "
       [submitIcon]="'follow_the_signs'"
       (onSubmit)="acceptMailBox()"
     ></app-form-simple>
@@ -37,16 +41,23 @@
       <h3>{{ mailBox.name }} {{ mailBox.secret3 == null ? "(Free)" : "" }}</h3>
     </mat-card-title>
     <mat-card-subtitle *ngIf="mailBox.secret3 == null"
-      >Share secrets piece by piece on multiple commuincation
-      channels.</mat-card-subtitle
+      >{{
+        internationalization.display([
+          "Share Secrets Piece By Piece On Multiple Communication Channels"
+        ])
+      }}.</mat-card-subtitle
     >
     <mat-card-subtitle *ngIf="mailBox.secret3 != null"
-      >Chat with your secret connection.</mat-card-subtitle
+      >{{
+        internationalization.display(["Chat With Your Secret Connection"])
+      }}.</mat-card-subtitle
     >
   </mat-card-header>
   <mat-card-content *ngIf="mailBox.secret3 == null">
-    <p>Secret 1: {{ mailBox._id }}</p>
-    <p>Secret 2: {{ mailBox.secret }}</p>
+    <p>{{ internationalization.display(["Secret"]) }} 1: {{ mailBox._id }}</p>
+    <p>
+      {{ internationalization.display(["Secret"]) }} 2: {{ mailBox.secret }}
+    </p>
   </mat-card-content>
   <mat-card-actions>
     <button
@@ -55,7 +66,7 @@
       color="primary"
       [routerLink]="'/mailBoxes/chat/' + mailBox._id"
     >
-      Talk
+      {{ internationalization.display(["Talk"]) }}
     </button>
   </mat-card-actions>
 </mat-card>

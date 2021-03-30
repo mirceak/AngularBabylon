@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Validators } from '@angular/forms';
+import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
 import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Injectable({
@@ -7,28 +8,32 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 })
 export class PageFormlyService {
   requiredValidator = {
-    expression: (c) => Validators.required(c) == null,
-    message: (error, field: FormlyFieldConfig) =>
-      `"${field.templateOptions.label}" field is required`,
+    expression: (c) => Validators.required(c) == null
   };
   emailValidator = {
     expression: (c) => Validators.email(c) == null,
     message: (error, field: FormlyFieldConfig) =>
-      `"${field.templateOptions.label}" needs to be a valid email`,
+      `"${field.templateOptions.label}" ${this.internationalization.display([
+        'needs to be a valid email',
+      ])}`,
   };
   minLengthValidator = (count) => {
     return {
       expression: (c) => Validators.minLength(count)(c) == null,
       message: (error, field: FormlyFieldConfig) =>
-        `"${field.templateOptions.label}" needs to be at least ${count} characters long`,
+        `"${field.templateOptions.label}" ${this.internationalization.display([
+          'needs to be at least',
+        ])} ${count} ${this.internationalization.display(['characters long'])}`,
     };
   };
   minValidator = (value) => {
     return {
       expression: (c) => Validators.min(value)(c) == null,
       message: (error, field: FormlyFieldConfig) =>
-        `"${field.templateOptions.label}" needs to be minimum ${value}`,
+        `"${field.templateOptions.label}" ${this.internationalization.display([
+          'needs to be minimum',
+        ])} ${value}`,
     };
   };
-  constructor() {}
+  constructor(public internationalization: ServiceInternationalization) {}
 }

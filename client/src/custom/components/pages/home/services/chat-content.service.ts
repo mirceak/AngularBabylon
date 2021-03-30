@@ -12,8 +12,8 @@ export class ChatContentService {
       key: 'message',
       type: 'input',
       templateOptions: {
-        label: "Message",
-        placeholder: 'Type a message'
+        label: this.pageFormlyService.internationalization.display(["Message"]),
+        placeholder: this.pageFormlyService.internationalization.display(['Enter message']),
       },
     },
   ];

@@ -5,7 +5,7 @@ import { ServiceUser } from '@custom/entities/user/service/service.user';
 @Injectable({
   providedIn: 'root',
 })
-export class ServiceCryptography {
+export class ServiceApi {
   constructor(private http: HttpClient, private serviceUser: ServiceUser) {}
 
   requestLogin(postData) {

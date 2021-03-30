@@ -6,6 +6,7 @@ import {
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
 } from '@angular/router';
+import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
 import { ServiceAuth } from '../service.auth';
 
 @Injectable({ providedIn: 'root' })
@@ -13,7 +14,8 @@ export class GuestGuardService implements CanActivate {
   constructor(
     private _snackBar: MatSnackBar,
     private router: Router,
-    private serviceAuth: ServiceAuth
+    private serviceAuth: ServiceAuth,
+    public internationalization: ServiceInternationalization
   ) {}
 
   canActivate(
@@ -22,7 +24,7 @@ export class GuestGuardService implements CanActivate {
   ): boolean {
     if (this.serviceAuth.loggedIn) {      
       this.router.navigate(['/']);
-      this._snackBar.open('Already Logged In!', 'Close', {
+      this._snackBar.open(this.internationalization.display(['Already Logged In!']), this.internationalization.display(['Close']), {
         duration: 2000,
       });
       return false;

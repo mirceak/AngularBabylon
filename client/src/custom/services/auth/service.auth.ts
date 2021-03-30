@@ -2,7 +2,7 @@ import { HostListener, Injectable, NgZone, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ModelUser } from '@custom/entities/user/model/model.user';
-import { ServiceCryptography } from '@custom/services/cryptography/service.cryptography';
+import { ServiceApi } from '@custom/services/api/service.api';
 import _Cryptography from '../../../cryptography';
 import * as socketIO from 'socket.io-client';
 
@@ -25,7 +25,7 @@ export class ServiceAuth {
   public loggedIn = false;
   currentUser: ModelUser = null;
   constructor(
-    private ServiceCryptography: ServiceCryptography,
+    private ServiceApi: ServiceApi,
     private router: Router,
     private jwtHelper: JwtHelperService,
     private zone: NgZone
@@ -99,7 +99,7 @@ export class ServiceAuth {
 
   async login(postData): Promise<any> {
     var firstRsaKeys = await this.Cryptography.generateRsaKeys('jwk');
-    this.ServiceCryptography.requestLogin({
+    this.ServiceApi.requestLogin({
       email: postData.email,
       rsaPubkData: firstRsaKeys.pubkData,
     }).subscribe(async (response: any) => {
@@ -107,7 +107,7 @@ export class ServiceAuth {
         firstRsaKeys: firstRsaKeys,
       });
       postData.nextRsa = await this.Cryptography.generateRsaKeys('jwk');
-      this.ServiceCryptography.login(
+      this.ServiceApi.login(
         await this.Cryptography.signLoginSessionData(postData)
       ).subscribe(async (data: any) => {
         await this.decryptServerData(data, postData.nextRsa, true);
@@ -131,7 +131,7 @@ export class ServiceAuth {
 
   async register(postData): Promise<any> {
     var firstRsaKeys = await this.Cryptography.generateRsaKeys('jwk');
-    this.ServiceCryptography.requestRegister({
+    this.ServiceApi.requestRegister({
       email: postData.email,
       rsaPubkData: firstRsaKeys.pubkData,
     }).subscribe(async (response: any) => {
@@ -139,7 +139,7 @@ export class ServiceAuth {
         firstRsaKeys: firstRsaKeys,
       });
       postData.nextRsa = await this.Cryptography.generateRsaKeys('jwk');
-      this.ServiceCryptography.register(
+      this.ServiceApi.register(
         await this.Cryptography.signRegisterSessionData(postData)
       ).subscribe(async (data: any) => {
         await this.decryptServerData(data, postData.nextRsa, true);
@@ -152,7 +152,7 @@ export class ServiceAuth {
 
   async reqSignup(postData): Promise<any> {
     var reqData = await this.getRequestData(postData);
-    this.ServiceCryptography.reqSignup({
+    this.ServiceApi.reqSignup({
       sessionJwt: this.token.sessionJwt,
       rsaEncryptedAes: await this.Cryptography.ab2str(
         reqData.rsaEncryptedAes.encryptedAes
@@ -170,7 +170,7 @@ export class ServiceAuth {
   }
   async accMailBox(postData): Promise<any> {
     var reqData = await this.getRequestData(postData);
-    this.ServiceCryptography.getMailBox({
+    this.ServiceApi.getMailBox({
       save: true,
       sessionJwt: this.token.sessionJwt,
       rsaEncryptedAes: await this.Cryptography.ab2str(
@@ -207,7 +207,7 @@ export class ServiceAuth {
       ];
       //update messages with new data.
       reqData = await this.getRequestData(postData);
-      this.ServiceCryptography.setMailBox({
+      this.ServiceApi.setMailBox({
         sessionJwt: this.token.sessionJwt,
         rsaEncryptedAes: await this.Cryptography.ab2str(
           reqData.rsaEncryptedAes.encryptedAes
@@ -244,7 +244,7 @@ export class ServiceAuth {
       };
     }
     var reqData = await this.getRequestData(postData);
-    this.ServiceCryptography.setMailBox({
+    this.ServiceApi.setMailBox({
       sessionJwt: this.token.sessionJwt,
       rsaEncryptedAes: await this.Cryptography.ab2str(
         reqData.rsaEncryptedAes.encryptedAes
@@ -280,7 +280,7 @@ export class ServiceAuth {
       .map((i) => (~~(Math.random() * 36)).toString(36))
       .join('');
     var reqData = await this.getRequestData(postData);
-    this.ServiceCryptography.reqMailBox({
+    this.ServiceApi.reqMailBox({
       sessionJwt: this.token.sessionJwt,
       rsaEncryptedAes: await this.Cryptography.ab2str(
         reqData.rsaEncryptedAes.encryptedAes
