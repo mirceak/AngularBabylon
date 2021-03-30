@@ -59,10 +59,10 @@
       "add": "Creeaza",
       "secrets": "Dezvaluie secretele bucata cu bucata cu ajutorul mai multor canale de comunicare",
       "secret": "Secret",
-      "chat": "Chat With A MailBox",
-      "accept": "Accept MailBox",
-      "chatInfo": "Chat With Your Secret Connection",
-      "talk": "Talk"
+      "chat": "Converseaza prin o cutie postala",
+      "accept": "Accepta Invitatia",
+      "chatInfo": "Converseaza cu un contact secret",
+      "talk": "Vorbeste"
     },
     "home": {
       "hi": "Salut",

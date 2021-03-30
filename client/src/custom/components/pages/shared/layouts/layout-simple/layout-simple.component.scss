@@ -36,7 +36,8 @@ h1.layout-app-name {
 }
 
 .mat-drawer.mat-sidenav {
-  min-width: 250px;
+  min-width: 300px;
+  max-width: 300px;
 }
 
 .mat-drawer-content {

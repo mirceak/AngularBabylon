@@ -32,6 +32,16 @@
   </div>
 </div>
 <div class="footer">
+  <mat-form-field appearance="fill">
+    <mat-label>{{ translate.instant("components.nav.lang") }}</mat-label>
+    <mat-select
+      (selectionChange)="internationalization.setLanguage($event)"
+      [(value)]="internationalization.lang"
+    >
+      <mat-option value="en">English</mat-option>
+      <mat-option value="ro">Romana</mat-option>
+    </mat-select>
+  </mat-form-field>
   <a
     *ngIf="!serviceAuth.currentUser"
     (click)="onChangeNav()"
@@ -40,7 +50,8 @@
     routerLink="/auth/login"
     routerLinkActive="active"
     [routerLinkActiveOptions]="{ exact: true }"
-    ><mat-icon>login</mat-icon> {{ translate.instant("components.nav.login") }}</a
+    ><mat-icon>login</mat-icon>
+    {{ translate.instant("components.nav.login") }}</a
   >
   <a
     *ngIf="!serviceAuth.currentUser"
@@ -54,6 +65,7 @@
     {{ translate.instant("components.nav.register") }}</a
   >
   <a *ngIf="serviceAuth.currentUser" mat-button (click)="serviceAuth.logout()"
-    ><mat-icon>logout</mat-icon> {{ translate.instant("components.nav.logout") }}</a
+    ><mat-icon>logout</mat-icon>
+    {{ translate.instant("components.nav.logout") }}</a
   >
 </div>
