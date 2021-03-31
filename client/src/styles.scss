@@ -1,6 +1,13 @@
-@import '@angular/material/prebuilt-themes/indigo-pink';
-@import '@sweetalert2/theme-material-ui/material-ui';
+@import "@angular/material/prebuilt-themes/indigo-pink";
+@import "@sweetalert2/theme-material-ui/material-ui";
 
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.mat-card-header {
+  max-width: calc(100% - 36px);
+  .mat-card-header-text {
+    max-width: 100%;
+  }
 }
