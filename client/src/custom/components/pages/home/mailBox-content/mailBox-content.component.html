@@ -1,7 +1,7 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      <h3>{{ translate.instant('pages.mailBox.create') }}</h3>
+      <h3>{{ translate.instant("pages.mailBox.create") }}</h3>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
@@ -19,7 +19,7 @@
   <mat-card-header>
     <mat-card-title>
       <h3>
-        {{ translate.instant('pages.mailBox.chat') }}
+        {{ translate.instant("pages.mailBox.chat") }}
       </h3>
     </mat-card-title>
   </mat-card-header>
@@ -27,9 +27,7 @@
     <app-form-simple
       [form]="acceptForm"
       [fields]="mailBoxContentService.acceptFields"
-      [submitLabel]="
-        translate.instant('pages.mailBox.accept')
-      "
+      [submitLabel]="translate.instant('pages.mailBox.accept')"
       [submitIcon]="'follow_the_signs'"
       (onSubmit)="acceptMailBox()"
     ></app-form-simple>
@@ -38,23 +36,26 @@
 <mat-card *ngFor="let mailBox of serviceAuth.mailBoxes" class="mailBox">
   <mat-card-header>
     <mat-card-title>
-      <h3>{{ mailBox.name }} {{ mailBox.secret3 == null ? "(" + translate.instant('pages.mailBox.free') + ")" : "" }}</h3>
+      <h3>
+        {{ mailBox.name }}
+        {{
+          mailBox.secret3 == null
+            ? "(" + translate.instant("pages.mailBox.free") + ")"
+            : ""
+        }}
+      </h3>
     </mat-card-title>
     <mat-card-subtitle *ngIf="mailBox.secret3 == null"
-      >{{
-        translate.instant('pages.mailBox.secrets')
-      }}.</mat-card-subtitle
+      >{{ translate.instant("pages.mailBox.secrets") }}.</mat-card-subtitle
     >
     <mat-card-subtitle *ngIf="mailBox.secret3 != null"
-      >{{
-        translate.instant('pages.mailBox.chatInfo')
-      }}.</mat-card-subtitle
+      >{{ translate.instant("pages.mailBox.chatInfo") }}.</mat-card-subtitle
     >
   </mat-card-header>
   <mat-card-content *ngIf="mailBox.secret3 == null">
-    <p>{{ translate.instant('pages.mailBox.secret') }} 1: {{ mailBox._id }}</p>
+    <p>{{ translate.instant("pages.mailBox.secret") }} 1: {{ mailBox._id }}</p>
     <p>
-      {{ translate.instant('pages.mailBox.secret') }} 2: {{ mailBox.secret }}
+      {{ translate.instant("pages.mailBox.secret") }} 2: {{ mailBox.secret }}
     </p>
   </mat-card-content>
   <mat-card-actions>
@@ -64,14 +65,7 @@
       color="primary"
       [routerLink]="'/mailBoxes/chat/' + mailBox._id"
     >
-      {{ translate.instant('pages.mailBox.talk') }}
-    </button>
-    <button
-      mat-flat-button
-      color="primary"
-      (click)="test()"
-    >
-      AAA
+      {{ translate.instant("pages.mailBox.talk") }}
     </button>
   </mat-card-actions>
 </mat-card>

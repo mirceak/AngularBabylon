@@ -1,8 +1,10 @@
 <mat-card>
   <mat-card-header>
-    <mat-card-title>{{
-      translate.instant('pages.register.register')
-    }}</mat-card-title>
+    <mat-card-title
+      ><h3>
+        {{ translate.instant("pages.register.register") }}
+      </h3></mat-card-title
+    >
   </mat-card-header>
   <app-form-simple
     [form]="form"
