@@ -308,7 +308,6 @@ export class ServiceAuth {
       transports: ['websocket', 'polling'],
     });
     this.socket.on('connect', () => {
-      console.log('connect');
       this.socket.emit('identification', {
         sessionJwt: localStorage.getItem('token'),
       });

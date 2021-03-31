@@ -1468,6 +1468,18 @@
     semver "7.3.4"
     semver-intersect "1.4.0"
 
+"@sweetalert2/ngx-sweetalert2@9.0.0":
+  version "9.0.0"
+  resolved "https://registry.yarnpkg.com/@sweetalert2/ngx-sweetalert2/-/ngx-sweetalert2-9.0.0.tgz#5ca82387b75b88ff9e7b669a7abcc5e627ba151c"
+  integrity sha512-J1e5ksyTuP0qnhOjFiFCuO6rfHueTFKF54Qq5KR1ZEw+pPURC4CJtUZnsSe4osU9WCdOrvGfEfMkz6c3ceRZbA==
+  dependencies:
+    tslib "^2.0.0"
+
+"@sweetalert2/theme-material-ui@^4.0.3":
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/@sweetalert2/theme-material-ui/-/theme-material-ui-4.0.3.tgz#98761dbdd8153deab55277ed2dbc197f3d1bbae7"
+  integrity sha512-yCP9rMdlKjffyDveS3wzIuGsBbXQXKvzvRqiqTib9Z2l2XhRJl6YZn6Rv8FLbbzH4dH+kMaaHUq0UBAKm0I9Aw==
+
 "@tootallnate/once@1":
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/@tootallnate/once/-/once-1.1.2.tgz#ccb91445360179a04e7fe6aff78c00ffc1eeaf82"
@@ -8613,6 +8625,11 @@ svgo@^1.0.0:
     stable "^0.1.8"
     unquote "~1.1.1"
     util.promisify "~1.0.0"
+
+sweetalert2@10.15.7:
+  version "10.15.7"
+  resolved "https://registry.yarnpkg.com/sweetalert2/-/sweetalert2-10.15.7.tgz#ad4c8f08432952d3283adbaa9a309c534f5a863d"
+  integrity sha512-imY0MR03NGefPcGzSYjWYz1GMIlniusEBXilswvKrHD/GMiTxA5jnsdjtK2IoRyXfEaqV7GWt6DM4YVjAZU8gw==
 
 symbol-observable@3.0.0:
   version "3.0.0"

@@ -1,0 +1,10 @@
+:host-context(.no-submit-bottom) {
+  .mat-card-content {
+    margin-bottom: -4px;
+    margin-top: 4px;
+  }
+  .mat-card-actions {
+    text-align: right;
+    margin-right: 0;
+  }
+}

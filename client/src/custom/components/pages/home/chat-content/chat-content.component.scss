@@ -1,11 +1,15 @@
 .message-box {
-  height: 140px;
+  height: 124px;
   position: absolute;
+  padding-top: 16px;
   right: 0;
   left: 0;
-  bottom: 1px;
+  bottom: 0px;
+  border-radius: 0;
+  border-width: 0;
+  box-shadow: none;
 }
 .content-box {
-    overflow-y: hidden;
-    height: 100%;
+  overflow-y: hidden;
+  height: 100%;
 }
