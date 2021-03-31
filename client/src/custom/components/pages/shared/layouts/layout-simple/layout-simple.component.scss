@@ -42,13 +42,12 @@ h1.layout-app-name {
 
 .mat-drawer-content {
   height: calc(100%);
-  overflow: hidden;
+  overflow: auto;
 }
 
-.layout-content {  
+.layout-content {
   margin-left: 24px;
   margin-right: 24px;
   margin-bottom: 24px;
   margin-top: 12px;
 }
-
