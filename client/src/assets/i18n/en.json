@@ -63,8 +63,16 @@
       "talk": "Talk"
     },
     "home": {
-      "hi": "Hi",
-      "welcome": "Welcome!"
+      "welcome": "Welcome!",
+      "content0": "This is Talky. Here is what you need to know:",
+      "content1": "Talky is a web application you can safely use for communication purposes.",
+      "content2": "Talky does not store absolutely no information about what you do or about who you are.",
+      "content3": "Talky only stores a scrambled version of your email and password.",
+      "content4": "After you login (something Talky does not keep track of) you receive a unique identity valid for that device.",
+      "content5": "Talky issued identities are just secret codes that cannot be traced back to people unless someone sees them use it or if they use it on a device that has their identity stored.",
+      "content6": "Everything you do on the server stays on your device. If you loose your device, your identity will be lost with it unless you transfer it to another device.",
+      "content7": "Because there is no connection between your email and your identities, Talky cannot help you retrieve any passwords or information since your identity has no email linked to it.",
+      "content8": "Talky will not allow linking an email to an identity because that would defeat the purpose of the application. The point is to stay secure and email accounts generally require you to validate your person upon creation."
     },
     "chat": {
       "send": "Send"

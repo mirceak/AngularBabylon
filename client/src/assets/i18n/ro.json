@@ -65,8 +65,16 @@
       "talk": "Vorbeste"
     },
     "home": {
-      "hi": "Salut",
-      "welcome": "Bine ai venit!"
+      "welcome": "Bine ai venit!",
+      "content0": "Acesta este Talky. Iata ce trebuie sa stii:",
+      "content1": "Talky este o aplicatie web ce poate fi folosita pentru a comunica.",
+      "content2": "Talky nu retine informatii despre ceea ce faci sau despre cine esti.",
+      "content3": "Talky doar retine o versiune amestecata a emailului si a parolei tale.",
+      "content4": "Dupa ce te loghezi (lucru pe care Talky nu il retine), primesti o identitate unica valida pentru terminalul respectiv.",
+      "content5": "Identitatile eliberate de Talky sunt doar niste coduri secrete ce nu pot fi legate de o persoana, decat daca acea persoana este surprinsa folosind aplicatia sub acea identitate, sau daca folosesc identitatea pe un telefon in care au fost introduse contacte reale.",
+      "content6": "Tot ce faci pe server sta pe terminal. Daca iti pierzi terminalul, identitatea ta va fi pierduta daca nu ai transferat identitatea pe un alt terminal.",
+      "content7": "Pentru ca nu exista o conexiune intre emailul si identitatea pe care o folosesti, Talky nu te poate ajuta sa recuperezi parole sau informatii din moment ce identitatea ta nu are un email aferent.",
+      "content8": "Talky nu va permite creearea unei conexiuni intre email si identitate din cauza ca ar incalca politica aplicatiei. Ideea este sa ramai securizat si conturile de email, in general, iti cer sa iti validei persoana la creatie."
     },
     "chat": {
       "send": "Trimite"

@@ -7,6 +7,8 @@ import { TranslateService } from '@ngx-translate/core';
 })
 export class HomeContentComponent implements OnInit {
 
+  count = new Array(7);
+
   constructor(public translate: TranslateService) { }
 
   ngOnInit(): void {

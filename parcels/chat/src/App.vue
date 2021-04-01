@@ -64,7 +64,7 @@ export default defineComponent({
   color: #2c3e50;
   position: absolute;
   top: 0;
-  bottom: 132px;
+  bottom: 124px;
   left: 0;
   right: 0;
   min-height: unset;
