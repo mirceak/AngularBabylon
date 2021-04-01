@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
+import Swal from 'sweetalert2/src/sweetalert2';
+import { ServiceModals } from '@custom/services/utils/service.modals';
 import {
   Router,
   CanActivate,
@@ -12,10 +13,10 @@ import { ServiceAuth } from '../service.auth';
 @Injectable({ providedIn: 'root' })
 export class GuestGuardService implements CanActivate {
   constructor(
-    private _snackBar: MatSnackBar,
     private router: Router,
     private serviceAuth: ServiceAuth,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private serviceModals: ServiceModals
   ) {}
 
   canActivate(
@@ -24,13 +25,10 @@ export class GuestGuardService implements CanActivate {
   ): boolean {
     if (this.serviceAuth.loggedIn) {
       this.router.navigate(['/']);
-      this._snackBar.open(
-        this.translate.instant('services.guards.guest.message'),
-        this.translate.instant('services.guards.guest.close'),
-        {
-          duration: 2000,
-        }
-      );
+      this.serviceModals.showToast({
+        icon: 'error',
+        title: this.translate.instant('services.guards.guest.message'),
+      });
       return false;
     }
     return true;

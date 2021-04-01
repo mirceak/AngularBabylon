@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ReferralContentService } from '@custom/components/pages/home/services/referral-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
+import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -15,12 +16,18 @@ export class ReferralContentComponent implements OnInit {
   constructor(
     public referralContentService: ReferralContentService,
     public serviceAuth: ServiceAuth,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public serviceModals: ServiceModals
   ) {}
 
   ngOnInit(): void {}
 
-  referr(): void {
-    this.serviceAuth.reqSignup(this.form.value);
+  async referr() {
+    await this.serviceAuth.reqSignup(this.form.value);
+
+    this.serviceModals.showToast({
+      icon: 'success',
+      title: this.translate.instant('pages.referral.created'),
+    });
   }
 }

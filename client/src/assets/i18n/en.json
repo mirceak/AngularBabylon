@@ -40,16 +40,20 @@
   },
   "pages": {
     "login": {
-      "login": "Login"
+      "login": "Login",
+      "loggedIn": "You have logged in!",
+      "loggedOut": "You have logged out!"
     },
     "register": {
-      "register": "Register"
+      "register": "Register",
+      "registered": "Congratiulations, you have been registered!"
     },
     "referral": {
       "create": "Create Referral",
       "refer": "Refer",
       "secrets": "Share Secrets Piece By Piece On Multiple Communication Channels",
-      "secret": "Secret"
+      "secret": "Secret",
+      "created": "Created new referral!"
     },
     "mailBox": {
       "free": "Free",
@@ -60,7 +64,10 @@
       "chat": "Chat With A MailBox",
       "accept": "Accept MailBox",
       "chatInfo": "Chat With Your Secret Connection",
-      "talk": "Talk"
+      "talk": "Talk",
+      "created": "Created new mail box!",
+      "accepted": "Accepted mail box!",
+      "acceptedRemote": "Mailbox {{ name }} has been accepted!"
     },
     "home": {
       "welcome": "Welcome!",
@@ -86,7 +93,8 @@
       "referral": "Referral",
       "mailBoxes": "Mail Boxes",
       "logout": "Logout",
-      "register": "Register"
+      "register": "Register",
+      "changedLang": "Changed language!"
     }
   },
   "services": {

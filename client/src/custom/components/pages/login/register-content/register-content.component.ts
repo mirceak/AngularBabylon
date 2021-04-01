@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { RegisterService } from '@custom/components/pages/login/services/register.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
+import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -15,10 +16,16 @@ export class RegisterContentComponent {
   constructor(
     public registerService: RegisterService,
     private serviceAuth: ServiceAuth,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public serviceModals: ServiceModals
   ) {}
 
-  register() {
-    this.serviceAuth.register(this.form.value);
+  async register() {
+    await this.serviceAuth.register(this.form.value);
+    
+    this.serviceModals.showToast({
+      icon: 'success',
+      title: this.translate.instant('pages.register.registered'),
+    });
   }
 }

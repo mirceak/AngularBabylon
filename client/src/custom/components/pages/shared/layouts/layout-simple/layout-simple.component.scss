@@ -12,11 +12,15 @@
   height: calc(100% - 8px);
 }
 
+.layout-toolbar {  
+  height: 56px;
+  max-height: 56px;
+}
+
 .layout-is-mobile .layout-toolbar {
   position: fixed;
   /* Make sure the toolbar will stay on top of the content as it scrolls past. */
   z-index: 2;
-  max-height: 56px;
 }
 
 h1.layout-app-name {

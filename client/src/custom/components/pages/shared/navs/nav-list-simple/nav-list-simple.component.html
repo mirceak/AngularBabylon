@@ -35,37 +35,39 @@
   <mat-form-field appearance="fill">
     <mat-label>{{ translate.instant("components.nav.lang") }}</mat-label>
     <mat-select
-      (selectionChange)="internationalization.setLanguage($event)"
+      (selectionChange)="onChangeLang($event)"
       [(value)]="internationalization.lang"
     >
       <mat-option value="en">English</mat-option>
       <mat-option value="ro">Romana</mat-option>
     </mat-select>
   </mat-form-field>
-  <a
-    *ngIf="!serviceAuth.currentUser"
-    (click)="onChangeNav()"
-    mat-button
-    class="split-mat-button"
-    routerLink="/auth/login"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-    ><mat-icon>login</mat-icon>
-    {{ translate.instant("components.nav.login") }}</a
-  >
-  <a
-    *ngIf="!serviceAuth.currentUser"
-    (click)="onChangeNav()"
-    mat-button
-    class="split-mat-button"
-    routerLink="/auth/register"
-    routerLinkActive="active"
-    [routerLinkActiveOptions]="{ exact: true }"
-    ><mat-icon>follow_the_signs</mat-icon>
-    {{ translate.instant("components.nav.register") }}</a
-  >
-  <a *ngIf="serviceAuth.currentUser" mat-button (click)="serviceAuth.logout()"
-    ><mat-icon>logout</mat-icon>
-    {{ translate.instant("components.nav.logout") }}</a
-  >
+  <div class="action-bar">
+    <a
+      *ngIf="!serviceAuth.currentUser"
+      (click)="onChangeNav()"
+      mat-button
+      class="split-mat-button"
+      routerLink="/auth/login"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ><mat-icon>login</mat-icon>
+      {{ translate.instant("components.nav.login") }}</a
+    >
+    <a
+      *ngIf="!serviceAuth.currentUser"
+      (click)="onChangeNav()"
+      mat-button
+      class="split-mat-button"
+      routerLink="/auth/register"
+      routerLinkActive="active"
+      [routerLinkActiveOptions]="{ exact: true }"
+      ><mat-icon>follow_the_signs</mat-icon>
+      {{ translate.instant("components.nav.register") }}</a
+    >
+    <a *ngIf="serviceAuth.currentUser" mat-button (click)="logout()"
+      ><mat-icon>logout</mat-icon>
+      {{ translate.instant("components.nav.logout") }}</a
+    >
+  </div>
 </div>

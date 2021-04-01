@@ -7,7 +7,6 @@ import { EmptyRouteComponent } from './empty-route/empty-route.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
@@ -53,7 +52,6 @@ export function appInitializerFactory(translate: TranslateService) {
   ],
   bootstrap: [AppComponent],
   providers: [
-    MatSnackBar,
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFactory,

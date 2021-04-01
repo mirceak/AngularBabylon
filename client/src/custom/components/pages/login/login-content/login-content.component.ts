@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { LoginService } from '@custom/components/pages/login/services/login.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
+import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -15,10 +16,16 @@ export class LoginContentComponent {
   constructor(
     public loginService: LoginService,
     private serviceAuth: ServiceAuth,
-    public translate: TranslateService
+    public translate: TranslateService,
+    public serviceModals: ServiceModals
   ) {}
 
-  login(): void {
-    this.serviceAuth.login(this.form.value);
+  async login() {
+    await this.serviceAuth.login(this.form.value);
+    
+    this.serviceModals.showToast({
+      icon: 'success',
+      title: this.translate.instant('pages.login.loggedIn'),
+    });
   }
 }

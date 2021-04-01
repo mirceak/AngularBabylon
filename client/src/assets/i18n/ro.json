@@ -42,16 +42,20 @@
   },
   "pages": {
     "login": {
-      "login": "Login"
+      "login": "Login",
+      "loggedIn": "Te-ai logat!",
+      "loggedOut": "Te-ai de-logat!"
     },
     "register": {
-      "register": "Inregistrare"
+      "register": "Inregistrare",
+      "registered": "Felicitari, te-ai inregistrat!"
     },
     "referral": {
       "create": "Creeaza contact de referinta",
       "refer": "Creeaza",
       "secrets": "Dezvaluie secretele bucata cu bucata cu ajutorul mai multor canale de comunicare",
-      "secret": "Secret"
+      "secret": "Secret",
+      "created": "Un nou contact de referinta a fost creeat!"
     },
     "mailBox": {
       "free": "Liber",
@@ -62,7 +66,10 @@
       "chat": "Converseaza prin cutie postala",
       "accept": "Accepta Invitatia",
       "chatInfo": "Converseaza cu un contact secret",
-      "talk": "Vorbeste"
+      "talk": "Vorbeste",
+      "created": "O noua cutie postala a fost creeata!",
+      "accepted": "Cutia postala a fost acceptata!",
+      "acceptedRemote": "Cutia postala {{ name }} a fost acceptata!"
     },
     "home": {
       "welcome": "Bine ai venit!",
@@ -88,7 +95,8 @@
       "referral": "Contacte De Referinta",
       "mailBoxes": "Cutii Postale",
       "logout": "Delogare",
-      "register": "Inregistrare"
+      "register": "Inregistrare",
+      "changedLang": "Limba a fost schimbata!"
     }
   },
   "services": {

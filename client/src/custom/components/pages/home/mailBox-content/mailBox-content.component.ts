@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MailBoxContentService } from '@custom/components/pages/home/services/mailBox-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
+import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
-import swal from 'sweetalert2/src/sweetalert2';
 
 @Component({
   selector: 'app-mailBox-content',
@@ -17,15 +17,26 @@ export class MailBoxContentComponent implements OnInit {
   constructor(
     public mailBoxContentService: MailBoxContentService,
     public serviceAuth: ServiceAuth,
-    public translate: TranslateService
+    public translate: TranslateService,
+    private serviceModals: ServiceModals
   ) {}
 
   ngOnInit(): void {}
 
-  addMailBox(): void {
-    this.serviceAuth.reqMailBox(this.form.value);
+  async addMailBox() {
+    await this.serviceAuth.reqMailBox(this.form.value);
+
+    this.serviceModals.showToast({
+      icon: 'success',
+      title: this.translate.instant('pages.mailBox.created'),
+    });
   }
-  acceptMailBox(): void {
-    this.serviceAuth.accMailBox(this.acceptForm.value);
+  async acceptMailBox() {
+    await this.serviceAuth.accMailBox(this.acceptForm.value);
+
+    this.serviceModals.showToast({
+      icon: 'success',
+      title: this.translate.instant('pages.mailBox.accepted'),
+    });
   }
 }
