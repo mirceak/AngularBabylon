@@ -21,8 +21,13 @@ export class LoginContentComponent {
   ) {}
 
   async login() {
+    this.serviceModals.showLoading({
+      title: this.translate.instant('components.swal.loading'),
+      html: this.translate.instant('pages.login.loggingIn'),
+    });
     await this.serviceAuth.login(this.form.value);
     
+    this.serviceModals.hideLoading();
     this.serviceModals.showToast({
       icon: 'success',
       title: this.translate.instant('pages.login.loggedIn'),

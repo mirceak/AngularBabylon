@@ -42,10 +42,12 @@
     "login": {
       "login": "Login",
       "loggedIn": "You have logged in!",
+      "loggingIn": "Logging in!",
       "loggedOut": "You have logged out!"
     },
     "register": {
       "register": "Register",
+      "registering": "Registering!",
       "registered": "Congratiulations, you have been registered!"
     },
     "referral": {
@@ -86,6 +88,9 @@
     }
   },
   "components": {
+    "swal": {
+      "loading": "Please wait..."
+    },
     "nav": {
       "lang": "Select Language",
       "login": "Login",

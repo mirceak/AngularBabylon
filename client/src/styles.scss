@@ -5,6 +5,14 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+.loader-center {
+  justify-content: center;
+}
+  
+.swal2-container  {
+  padding-bottom: 20px;
+}
+
 .mat-card-header {
   max-width: calc(100% - 36px);
   .mat-card-header-text {

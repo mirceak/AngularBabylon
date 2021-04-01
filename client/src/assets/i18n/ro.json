@@ -44,10 +44,12 @@
     "login": {
       "login": "Login",
       "loggedIn": "Te-ai logat!",
+      "loggingIn": "Se logheaza!",
       "loggedOut": "Te-ai de-logat!"
     },
     "register": {
       "register": "Inregistrare",
+      "registering": "Se inregistreaza!",
       "registered": "Felicitari, te-ai inregistrat!"
     },
     "referral": {
@@ -88,6 +90,9 @@
     }
   },
   "components": {
+    "swal": {
+      "loading": "Va rugam asteptati..."
+    },
     "nav": {
       "lang": "Selecteaza Limba",
       "login": "Login",

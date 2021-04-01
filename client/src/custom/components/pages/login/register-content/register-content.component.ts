@@ -21,8 +21,13 @@ export class RegisterContentComponent {
   ) {}
 
   async register() {
+    this.serviceModals.showLoading({
+      title: this.translate.instant('components.swal.loading'),
+      html: this.translate.instant('pages.register.registering'),
+    });
     await this.serviceAuth.register(this.form.value);
     
+    this.serviceModals.hideLoading();
     this.serviceModals.showToast({
       icon: 'success',
       title: this.translate.instant('pages.register.registered'),

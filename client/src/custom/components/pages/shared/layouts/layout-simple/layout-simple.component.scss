@@ -8,6 +8,11 @@
   right: 0;
 }
 
+.toast-container {
+  display: flex;
+  flex-direction: column;
+}
+
 .mat-list-base {
   height: calc(100% - 8px);
 }

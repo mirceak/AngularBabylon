@@ -12,6 +12,6 @@ import { PageSimpleComponent } from '@custom/components/pages/shared/base/page-s
     BasePageModule,
     PageSimpleComponent,
     NavListSimpleComponent,
-  ]
+  ],
 })
 export class PageSimpleModule {}
