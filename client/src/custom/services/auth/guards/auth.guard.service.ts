@@ -25,8 +25,8 @@ export class AuthGuardService implements CanActivate {
     if (!this.serviceAuth.loggedIn) {
       this.router.navigate(['/auth/login']);
       this.serviceModals.showToast({
-        status: 'success',
-        statusMessage: this.translate.instant('components.toastr.success'),
+        status: 'error',
+        statusMessage: this.translate.instant('components.toastr.error'),
         title: this.translate.instant('services.guards.auth.message'),
       });
       return false;

@@ -71,6 +71,7 @@
       "talk": "Talk",
       "created": "Created new mail box!",
       "accepted": "Accepted mail box!",
+      "accepting": "Accepting mail box!",
       "acceptedRemote": "Mailbox {{ name }} has been accepted!"
     },
     "home": {
@@ -91,7 +92,8 @@
   },
   "components": {
     "toastr": {
-      "success": "Success!"
+      "success": "Success!",
+      "error": "Error!"
     },
     "swal": {
       "loading": "Please wait...",

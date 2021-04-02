@@ -38,8 +38,13 @@ export class MailBoxContentComponent implements OnInit {
     });
   }
   async acceptMailBox() {
+    this.serviceModals.showLoading({
+      title: this.translate.instant('components.swal.loading'),
+      html: this.translate.instant('pages.mailBox.accepting'),
+    });
     await this.serviceAuth.accMailBox(this.acceptForm.value);
 
+    this.serviceModals.hideLoading();
     this.serviceModals.showToast({
       status: 'success',
       statusMessage: this.translate.instant('components.toastr.success'),

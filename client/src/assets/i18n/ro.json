@@ -33,11 +33,9 @@
       "label": "Secret 2",
       "placeholder": "Introduceti al doilea cod secret"
     },
-    "formlyFields": {
-      "message": {
-        "label": "Mesaj",
-        "placeholder": "Introduceti un mesaj"
-      }
+    "message": {
+      "label": "Mesaj",
+      "placeholder": "Introduceti un mesaj"
     }
   },
   "pages": {
@@ -73,6 +71,7 @@
       "talk": "Vorbeste",
       "created": "O noua cutie postala a fost creeata!",
       "accepted": "Cutia postala a fost acceptata!",
+      "accepting": "Se accepta cutia postala!",
       "acceptedRemote": "Cutia postala {{ name }} a fost acceptata!"
     },
     "home": {
@@ -93,7 +92,8 @@
   },
   "components": {
     "toastr": {
-      "success": "Succes!"
+      "success": "Succes!",
+      "error": "Eroare!"
     },
     "swal": {
       "loading": "Va rugam asteptati...",
