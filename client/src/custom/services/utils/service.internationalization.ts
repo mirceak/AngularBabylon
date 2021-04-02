@@ -13,7 +13,7 @@ export class ServiceInternationalization {
 
   setLanguage($event) {
     this.lang = $event.value;
-    this.translate.use(this.lang);
     $event.source.value = 'null';
+    return this.translate.use(this.lang)
   }
 }

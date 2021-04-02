@@ -19,14 +19,14 @@ import { TranslateService } from '@ngx-translate/core';
 export class NavListSimpleComponent implements OnInit {
   @Output() changedNav: EventEmitter<any> = new EventEmitter();
   waitForLanguage;
+  langObserver;
 
   constructor(
     public serviceAuth: ServiceAuth,
     public translate: TranslateService,
     public internationalization: ServiceInternationalization,
     private serviceModals: ServiceModals,
-    private zone: NgZone,
-    private changeDetectorRef: ChangeDetectorRef
+    private zone: NgZone
   ) {}
 
   ngOnInit(): void {}
@@ -52,24 +52,24 @@ export class NavListSimpleComponent implements OnInit {
       });
   }
 
+  showToast() {
+    this.serviceModals.showToast({
+      status: 'success',
+      statusMessage: this.translate.instant('components.toastr.success'),
+      title: this.translate.instant('components.nav.changedLang'),
+    });
+    this.serviceModals.hideLoading();
+    this.langObserver.unsubscribe();
+  }
+
   onChangeLang($event) {
     this.serviceModals.showLoading({
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('components.nav.changingLang'),
     });
-    this.internationalization.setLanguage($event);
-
-    this.waitForLanguage = setInterval(() => {
-      if (this.translate.store.translations[this.internationalization.lang]) {
-        clearInterval(this.waitForLanguage);
-        this.serviceModals.showToast({
-          status: 'success',
-          statusMessage: this.translate.instant('components.toastr.success'),
-          title: this.translate.instant('components.nav.changedLang'),
-        });
-        this.serviceModals.hideLoading();
-      }
-    }, 100);
+    this.langObserver = this.internationalization
+      .setLanguage($event)
+      .subscribe(this.showToast.bind(this));
   }
 
   onChangeNav() {

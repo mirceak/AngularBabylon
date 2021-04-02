@@ -4,6 +4,7 @@ import { ReferralContentService } from '@custom/components/pages/home/services/r
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
+import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral'
 
 @Component({
   selector: 'app-referral-content',
@@ -17,7 +18,8 @@ export class ReferralContentComponent implements OnInit {
     public referralContentService: ReferralContentService,
     public serviceAuth: ServiceAuth,
     public translate: TranslateService,
-    public serviceModals: ServiceModals
+    public serviceModals: ServiceModals,
+    private ProviderReferral: ProviderReferral
   ) {}
 
   ngOnInit(): void {}
@@ -27,7 +29,7 @@ export class ReferralContentComponent implements OnInit {
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('pages.referral.creating'),
     });
-    await this.serviceAuth.reqSignup(this.form.value);
+    await this.ProviderReferral.reqSignup(this.form.value);
 
     this.serviceModals.hideLoading();
     this.serviceModals.showToast({
