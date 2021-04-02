@@ -3,9 +3,9 @@ import * as https from 'https';
 
 import { jwtSessionToken, Cryptography, jwt } from './certs/jwtSessionToken/jwtSessionToken';
 import { Server } from 'socket.io';
-import * as UserController from './entities/user/controller/controller.user';
 import Identity from './entities/identity/schema/schema.identity';
 import MailBox from './entities/mailBox/schema/schema.mailBox';
+import utils from './controllers/utils'
 
 var sockets = [];
 var registeredMessages = [];
@@ -45,18 +45,18 @@ io.on('connection', async (socket: any) => {
   });
 
   socket.on('verify', async (data) => {
-    var reqData = await UserController.default.getRequestData(data);
+    var reqData = await utils.getRequestData(data);
     var regMessageIndex = registeredMessages.findIndex((msg) => {
       return socket.identity == msg.socket.identity;
     });
     var regMessage = registeredMessages.splice(regMessageIndex, 1)[0];
     var encryptedResponse: any;
     if (regMessage.mailBox){
-      encryptedResponse = await UserController.default.encryptResponseData(reqData, {
+      encryptedResponse = await utils.encryptResponseData(reqData, {
         mailBox: regMessage.mailBox,
       });
     }else{
-      encryptedResponse = await UserController.default.encryptResponseData(reqData, {
+      encryptedResponse = await utils.encryptResponseData(reqData, {
         mailBoxes: regMessage.mailBoxes,
       });
     }

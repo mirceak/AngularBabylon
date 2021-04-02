@@ -17,10 +17,6 @@
       "label": "Password",
       "placeholder": "Enter a password"
     },
-    "username": {
-      "label": "Username",
-      "placeholder": "Enter an username"
-    },
     "referralCode": {
       "label": "Referral Code",
       "placeholder": "Enter secret code"

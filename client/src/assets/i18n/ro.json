@@ -17,10 +17,6 @@
       "label": "Parola",
       "placeholder": "Introduceti o parola"
     },
-    "username": {
-      "label": "Username",
-      "placeholder": "Introduceti un username"
-    },
     "referralCode": {
       "label": "Cod Contact De Referinta",
       "placeholder": "Introduceti codul secret"

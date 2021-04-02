@@ -380,7 +380,6 @@ class Cryptography {
       aesEncrypted: this.str2ab(postData.aesEncrypted),
       referralEmail: postData.referralEmail,
       referralCode: postData.referralCode,
-      username: postData.username,
       password: postData.password,
       email: postData.email,
     },
@@ -431,7 +430,6 @@ class Cryptography {
     cipherMap = await this.makeCipherMap(
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
       JSON.stringify({
-        username: options.username,
         password: options.password,
         nextRsa: nextRsa.pubkData,
       })
@@ -455,9 +453,7 @@ class Cryptography {
     options = {
       rsaEncryptedAesKey: this.str2ab(postData.rsaEncryptedAesKey),
       aesEncrypted: this.str2ab(postData.aesEncrypted),
-      p2: null,
-      p3: null,
-      username: postData.username,
+      passHash: null,
       password: postData.password,
     },
     nextRsa = postData.nextRsa,
@@ -473,8 +469,7 @@ class Cryptography {
     cipherMap = null,
     aesEncrypted = null
   ) {
-    options.p2 = await this.getShaHash(postData.username);
-    options.p3 = await this.getShaHash(postData.password);
+    options.passHash = await this.getShaHash(postData.password);
     rsaDecryptedAesKey = await this.rsaDecrypt(
       options.rsaEncryptedAesKey,
       postData.firstRsaKeys.privateKey
@@ -484,8 +479,7 @@ class Cryptography {
       postData.firstRsaKeys.pubkData + rsaDecryptedAesKey
     );
     fullHash = await this.getShaHash(
-      (await this.getShaHash(options.p2)) +
-        (await this.getShaHash(options.p3)) +
+        (await this.getShaHash(options.passHash)) +
         postData.firstRsaKeys.pubkData +
         rsaDecryptedAesKey
     );
@@ -509,7 +503,6 @@ class Cryptography {
     cipherMap = await this.makeCipherMap(
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
       JSON.stringify({
-        username: options.username,
         password: options.password,
         nextRsa: nextRsa.pubkData,
       })
@@ -632,8 +625,7 @@ class Cryptography {
     rsaEncryptedAesKeyHash = null,
     cipherData = null,
     json = null,
-    ph2 = null,
-    ph3 = null
+    passHash = null
   ) {
     nextRsa = await this.generateRsaKeys('jwk');
     postData.aesEncrypted = this.str2ab(postData.aesEncrypted);
@@ -679,11 +671,9 @@ class Cryptography {
       rsaEncryptedAesKeyHash,
     ]);
     json = JSON.parse(cipherData);
-    ph2 = await this.getShaHash(json.username);
-    ph3 = await this.getShaHash(json.password);
+    passHash = await this.getShaHash(json.password);
     if (
-      ph2 == postData.sessionJwt.username &&
-      ph3 == postData.sessionJwt.password
+      passHash == postData.sessionJwt.password
     ) {
       return {
         nextRsa: json.nextRsa,
@@ -772,7 +762,6 @@ class Cryptography {
       rsaPubkData + rsaEncryptedAesKey.aesPubkData
     );
     fullHash = await this.getShaHash(
-      (await this.getShaHash(postData.user.username)) +
         (await this.getShaHash(postData.user.password)) +
         rsaPubkData +
         rsaEncryptedAesKey.aesPubkData
@@ -784,7 +773,6 @@ class Cryptography {
         sessionJwt: await this.signJwtSessionToken(
           {
             email: postData.user.email,
-            username: postData.user.username,
             password: postData.user.password,
             totalHash: totalHash,
             fullHash: fullHash,

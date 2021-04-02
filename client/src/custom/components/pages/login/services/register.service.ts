@@ -34,26 +34,6 @@ export class RegisterService {
       },
     },
     {
-      key: 'username',
-      type: 'input',
-      templateOptions: {
-        translate: true,
-        _label: 'formlyFields.username.label',
-        _placeholder: 'formlyFields.username.placeholder',
-        required: true,
-        type: 'password',
-      },
-      validators: {
-        minLength: {
-          options: {
-            min: 6,
-          },
-          expression: this.pageFormlyService.minLengthValidator(6),
-        },
-        required: this.pageFormlyService.requiredValidator,
-      },
-    },
-    {
       key: 'password',
       type: 'input',
       templateOptions: {

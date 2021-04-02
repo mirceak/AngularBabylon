@@ -1,27 +1,67 @@
-import * as express from 'express';
+import * as express from "express";
+import utils from "../utils";
 
 abstract class BaseController {
   abstract Entity: any;
   private router;
 
+  public protectedRoutes = [];
+  public routes = [];
+
+  registerProtectedRoute(route) {
+    this.protectedRoutes.push(route);
+    return this._getRouter().route(route);
+  }
+
+  registerRoute(route) {
+    this.routes.push(route);
+    return this._getRouter().route(route);
+  }
+
   getRouter() {
+    return this._getRouter();
+  }
+
+  _getRouter() {
     if (!this.router) {
       this.router = express.Router();
+      this.router.use(
+        ["*"],
+        async (req, res, next) => {
+          if (this.protectedRoutes.indexOf(req._parsedUrl.pathname) === -1){
+            return next();
+          }
+          var reqData: any = await utils.getRequestData(req.body);
+          req.decryptedData = reqData.decryptedData;
+          req.sessionJwt = reqData.sessionJwt;
+          req.send = async (data, res) => {
+            var encryptedResponse = await utils.encryptResponseData(
+              reqData,
+              data
+            );
+            res.send({
+              rsaEncryptedAes: encryptedResponse.rsaEncryptedAes,
+              aesEncrypted: encryptedResponse.aesEncrypted,
+            });
+          };
+          next();
+        }
+      );
       this.router
-        .route('/' + this.Entity.apiPaths.pathNamePlural)
+        .route("/" + this.Entity.apiPaths.pathNamePlural)
         .get(this.getAll);
       this.router
-        .route('/' + this.Entity.apiPaths.pathNamePlural + '/count')
+        .route("/" + this.Entity.apiPaths.pathNamePlural + "/count")
         .get(this.count);
-      this.router.route('/' + this.Entity.apiPaths.pathName).post(this.insert);
+      this.router.route("/" + this.Entity.apiPaths.pathName).post(this.insert);
       this.router
-        .route('/' + this.Entity.apiPaths.pathName + '/:id')
+        .route("/" + this.Entity.apiPaths.pathName + "/:id")
         .get(this.get);
       this.router
-        .route('/' + this.Entity.apiPaths.pathName + '/:id')
+        .route("/" + this.Entity.apiPaths.pathName + "/:id")
         .put(this.update);
       this.router
-        .route('/' + this.Entity.apiPaths.pathName + '/:id')
+        .route("/" + this.Entity.apiPaths.pathName + "/:id")
         .delete(this.delete);
     }
     return this.router;
