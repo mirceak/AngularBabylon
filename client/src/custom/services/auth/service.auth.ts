@@ -278,13 +278,8 @@ export class ServiceAuth {
         Object.assign(this.mailBoxes[mailBoxIndex], {
           messages: decryptedData.decryptedToken.data.messages,
         });
-        if (
-          this.mailBoxes[mailBoxIndex].reactiveCallbacks &&
-          this.mailBoxes[mailBoxIndex].reactiveCallbacks.length
-        ) {
-          this.mailBoxes[mailBoxIndex].reactiveCallbacks.forEach((callback) => {
-            if (callback) callback();
-          });
+        if (this.mailBoxes[mailBoxIndex].reactiveCallback) {
+          this.mailBoxes[mailBoxIndex].reactiveCallback();
         }
         localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
       });
@@ -364,13 +359,8 @@ export class ServiceAuth {
               return _mailBox._id == mailBox._id;
             })
           ];
-          if (
-            localMailbox.reactiveCallbacks &&
-            localMailbox.reactiveCallbacks.length
-          ) {
-            localMailbox.reactiveCallbacks.forEach((callback) => {
-              if (callback) callback();
-            });
+          if (localMailbox.reactiveCallback) {
+            localMailbox.reactiveCallback();
           }
           Object.assign(localMailbox, { messages: mailBox.messages });
         });
@@ -382,10 +372,8 @@ export class ServiceAuth {
       }
 
       var mailBox = this.mailBoxes[mailBoxIndex];
-      if (mailBox.reactiveCallbacks && mailBox.reactiveCallbacks.length) {
-        mailBox.reactiveCallbacks.forEach((callback) => {
-          if (callback) callback();
-        });
+      if (mailBox.reactiveCallback) {
+        mailBox.reactiveCallback();
       }
       mailBox.messages =
         decryptedData.decryptedToken.data.mailBox.messages || mailBox.messages;

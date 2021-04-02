@@ -20,7 +20,6 @@ export class RegisterService {
         _label: 'formlyFields.email.label',
         _placeholder: 'formlyFields.email.placeholder',
         required: true,
-        type: 'password',
       },
       validators: {
         minLength: {

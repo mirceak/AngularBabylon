@@ -28,23 +28,21 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.mailBox.reactiveCallbacks = [
-      () => {
-        this.show = false;
-        this.messages.splice(0);
-        nextTick(() => {
-          this.messages.push(
-            ...this.mailBox.messages.local
-              .concat(this.mailBox.messages.remote)
-              .sort((a, b) => {
-                return a.timeStamp - b.timeStamp;
-              })
-          );
-          this.show = true;
-          this.$emit("update");
-        });
-      },
-    ];
+    this.mailBox.reactiveCallback = () => {
+      this.show = false;
+      this.messages.splice(0);
+      nextTick(() => {
+        this.messages.push(
+          ...this.mailBox.messages.local
+            .concat(this.mailBox.messages.remote)
+            .sort((a, b) => {
+              return a.timeStamp - b.timeStamp;
+            })
+        );
+        this.show = true;
+        this.$emit("update");
+      });
+    };
     this.messages.push(
       ...this.mailBox.messages.local
         .concat(this.mailBox.messages.remote)
