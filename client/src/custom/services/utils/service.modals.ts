@@ -9,15 +9,6 @@ import { ToastrService } from 'ngx-toastr';
 export class ServiceModals {
   constructor(private http: HttpClient, private toastr: ToastrService) {}
 
-  toast = Swal.mixin({
-    toast: true,
-    position: 'top-right',
-    width: '66%',
-    showConfirmButton: false,
-    timer: 3000,
-    timerProgressBar: true,
-  });
-
   confirmation = Swal.mixin({
     showCancelButton: true,
   });

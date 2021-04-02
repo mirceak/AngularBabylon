@@ -53,6 +53,7 @@
       "registered": "Felicitari, te-ai inregistrat!"
     },
     "referral": {
+      "creating": "Se creeaza un contact de referinta!",
       "create": "Creeaza contact de referinta",
       "refer": "Creeaza",
       "secrets": "Dezvaluie secretele bucata cu bucata cu ajutorul mai multor canale de comunicare",
@@ -60,6 +61,7 @@
       "created": "Un nou contact de referinta a fost creeat!"
     },
     "mailBox": {
+      "creating": "Se creeaza o cutie postala!",
       "free": "Liber",
       "create": "Creeaza cutie postala",
       "add": "Creeaza",

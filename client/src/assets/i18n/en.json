@@ -51,6 +51,7 @@
       "registered": "Congratiulations, you have been registered!"
     },
     "referral": {
+      "creating": "Creating Referral!",
       "create": "Create Referral",
       "refer": "Refer",
       "secrets": "Share Secrets Piece By Piece On Multiple Communication Channels",
@@ -58,6 +59,7 @@
       "created": "Created new referral!"
     },
     "mailBox": {
+      "creating": "Creating Mail Box!",
       "free": "Free",
       "create": "Create MailBox",
       "add": "Add MailBox",

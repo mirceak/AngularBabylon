@@ -24,8 +24,13 @@ export class MailBoxContentComponent implements OnInit {
   ngOnInit(): void {}
 
   async addMailBox() {
+    this.serviceModals.showLoading({
+      title: this.translate.instant('components.swal.loading'),
+      html: this.translate.instant('pages.mailBox.creating'),
+    });
     await this.serviceAuth.reqMailBox(this.form.value);
 
+    this.serviceModals.hideLoading();
     this.serviceModals.showToast({
       status: 'success',
       statusMessage: this.translate.instant('components.toastr.success'),

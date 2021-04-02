@@ -23,8 +23,13 @@ export class ReferralContentComponent implements OnInit {
   ngOnInit(): void {}
 
   async referr() {
+    this.serviceModals.showLoading({
+      title: this.translate.instant('components.swal.loading'),
+      html: this.translate.instant('pages.referral.creating'),
+    });
     await this.serviceAuth.reqSignup(this.form.value);
 
+    this.serviceModals.hideLoading();
     this.serviceModals.showToast({
       status: 'success',
       statusMessage: this.translate.instant('components.toastr.success'),
