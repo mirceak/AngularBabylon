@@ -108,7 +108,8 @@
       "mailBoxes": "Cutii Postale",
       "logout": "Delogare",
       "register": "Inregistrare",
-      "changedLang": "Limba a fost schimbata!"
+      "changedLang": "Limba a fost schimbata!",
+      "changingLang": "Se schimba limba!"
     }
   },
   "services": {

@@ -106,7 +106,8 @@
       "mailBoxes": "Mail Boxes",
       "logout": "Logout",
       "register": "Register",
-      "changedLang": "Changed language!"
+      "changedLang": "Changed language!",
+      "changingLang": "Changing language!"
     }
   },
   "services": {

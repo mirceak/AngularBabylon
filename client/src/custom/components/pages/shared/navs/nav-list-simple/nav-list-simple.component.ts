@@ -53,8 +53,11 @@ export class NavListSimpleComponent implements OnInit {
   }
 
   onChangeLang($event) {
+    this.serviceModals.showLoading({
+      title: this.translate.instant('components.swal.loading'),
+      html: this.translate.instant('components.nav.changingLang'),
+    });
     this.internationalization.setLanguage($event);
-    this.changeDetectorRef.detectChanges();
 
     this.waitForLanguage = setInterval(() => {
       if (this.translate.store.translations[this.internationalization.lang]) {
@@ -64,6 +67,7 @@ export class NavListSimpleComponent implements OnInit {
           statusMessage: this.translate.instant('components.toastr.success'),
           title: this.translate.instant('components.nav.changedLang'),
         });
+        this.serviceModals.hideLoading();
       }
     }, 100);
   }
