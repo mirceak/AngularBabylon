@@ -394,7 +394,8 @@ export class ServiceAuth {
         mailBox.messages.remote != null
       ) {
         this.serviceModals.showToast({
-          icon: 'success',
+          status: 'success',
+          statusMessage: this.translate.instant('components.toastr.success'),
           title: this.translate.instant('pages.mailBox.acceptedRemote', {
             name: mailBox.name,
           }),

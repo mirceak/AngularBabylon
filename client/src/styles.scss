@@ -1,5 +1,9 @@
-@import "@angular/material/prebuilt-themes/indigo-pink";
-@import "@sweetalert2/theme-material-ui/material-ui";
+@import "~@angular/material/prebuilt-themes/indigo-pink";
+@import "~@sweetalert2/theme-material-ui/material-ui";
+@import "~bootstrap/scss/functions";
+@import "~bootstrap/scss/variables";
+@import "~bootstrap/scss/mixins";
+@import "~ngx-toastr/toastr-bs4-alert";
 
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -8,9 +12,16 @@ body {
 .loader-center {
   justify-content: center;
 }
-  
-.swal2-container  {
+
+.swal2-container {
   padding-bottom: 20px;
+}
+
+.toast-container {
+  max-width: 300px;
+  .ngx-toastr {
+    max-width: 224px;
+  }
 }
 
 .mat-card-header {

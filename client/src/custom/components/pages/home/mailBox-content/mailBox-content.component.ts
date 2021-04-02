@@ -27,7 +27,8 @@ export class MailBoxContentComponent implements OnInit {
     await this.serviceAuth.reqMailBox(this.form.value);
 
     this.serviceModals.showToast({
-      icon: 'success',
+      status: 'success',
+      statusMessage: this.translate.instant('components.toastr.success'),
       title: this.translate.instant('pages.mailBox.created'),
     });
   }
@@ -35,7 +36,8 @@ export class MailBoxContentComponent implements OnInit {
     await this.serviceAuth.accMailBox(this.acceptForm.value);
 
     this.serviceModals.showToast({
-      icon: 'success',
+      status: 'success',
+      statusMessage: this.translate.instant('components.toastr.success'),
       title: this.translate.instant('pages.mailBox.accepted'),
     });
   }

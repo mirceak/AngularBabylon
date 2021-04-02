@@ -26,7 +26,8 @@ export class GuestGuardService implements CanActivate {
     if (this.serviceAuth.loggedIn) {
       this.router.navigate(['/']);
       this.serviceModals.showToast({
-        icon: 'error',
+        status: 'success',
+        statusMessage: this.translate.instant('components.toastr.success'),
         title: this.translate.instant('services.guards.guest.message'),
       });
       return false;

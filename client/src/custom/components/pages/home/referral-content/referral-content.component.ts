@@ -26,7 +26,8 @@ export class ReferralContentComponent implements OnInit {
     await this.serviceAuth.reqSignup(this.form.value);
 
     this.serviceModals.showToast({
-      icon: 'success',
+      status: 'success',
+      statusMessage: this.translate.instant('components.toastr.success'),
       title: this.translate.instant('pages.referral.created'),
     });
   }

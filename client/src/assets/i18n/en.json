@@ -88,8 +88,13 @@
     }
   },
   "components": {
+    "toastr": {
+      "success": "Success!"
+    },
     "swal": {
-      "loading": "Please wait..."
+      "loading": "Please wait...",
+      "confirmChanges": "<h3>Please Confirm Changes:<h3> \n <p>{{ changes }}</p>",
+      "confirm": "Confirm"
     },
     "nav": {
       "lang": "Select Language",
@@ -103,6 +108,9 @@
     }
   },
   "services": {
+    "auth": {
+      "confirmLogout": "You will be logged out!"
+    },
     "guards": {
       "auth": {
         "message": "You Must Be Logged In!",

@@ -10,6 +10,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { ToastrModule } from 'ngx-toastr';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(
@@ -44,6 +45,7 @@ export function appInitializerFactory(translate: TranslateService) {
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    ToastrModule.forRoot(),
     JwtModule.forRoot({
       config: {
         tokenGetter: (): string => localStorage.getItem('token'),

@@ -29,7 +29,8 @@ export class RegisterContentComponent {
     
     this.serviceModals.hideLoading();
     this.serviceModals.showToast({
-      icon: 'success',
+      status: 'success',
+      statusMessage: this.translate.instant('components.toastr.success'),
       title: this.translate.instant('pages.register.registered'),
     });
   }

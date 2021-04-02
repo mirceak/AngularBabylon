@@ -90,8 +90,13 @@
     }
   },
   "components": {
+    "toastr": {
+      "success": "Succes!"
+    },
     "swal": {
-      "loading": "Va rugam asteptati..."
+      "loading": "Va rugam asteptati...",
+      "confirmChanges": "<h3>Va rugam sa confirmati urmatoarele:<h3> \n <p>{{ changes }}</p>",
+      "confirm": "Confirma"
     },
     "nav": {
       "lang": "Selecteaza Limba",
@@ -105,6 +110,9 @@
     }
   },
   "services": {
+    "auth": {
+      "confirmLogout": "Vei fi delogat!"
+    },
     "guards": {
       "auth": {
         "message": "Trebuie sa fii logat!",

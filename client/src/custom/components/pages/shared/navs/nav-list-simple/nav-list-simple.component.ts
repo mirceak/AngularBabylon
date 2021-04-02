@@ -32,12 +32,24 @@ export class NavListSimpleComponent implements OnInit {
   ngOnInit(): void {}
 
   logout() {
-    this.serviceAuth.logout();
+    this.serviceModals
+      .confirm({
+        html: this.translate.instant('components.swal.confirmChanges', {
+          changes: this.translate.instant('services.auth.confirmLogout'),
+        }),
+        confirmButtonText: this.translate.instant('components.swal.confirm'),
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.serviceAuth.logout();
 
-    this.serviceModals.showToast({
-      icon: 'success',
-      title: this.translate.instant('pages.login.loggedOut'),
-    });
+          this.serviceModals.showToast({
+            status: 'success',
+            statusMessage: this.translate.instant('components.toastr.success'),
+            title: this.translate.instant('pages.login.loggedOut'),
+          });
+        }
+      });
   }
 
   onChangeLang($event) {
@@ -48,11 +60,12 @@ export class NavListSimpleComponent implements OnInit {
       if (this.translate.store.translations[this.internationalization.lang]) {
         clearInterval(this.waitForLanguage);
         this.serviceModals.showToast({
-          icon: 'success',
+          status: 'success',
+          statusMessage: this.translate.instant('components.toastr.success'),
           title: this.translate.instant('components.nav.changedLang'),
         });
       }
-    }, 5);
+    }, 100);
   }
 
   onChangeNav() {

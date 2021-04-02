@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import Swal from 'sweetalert2/src/sweetalert2';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceModals {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private toastr: ToastrService) {}
 
   toast = Swal.mixin({
     toast: true,
@@ -15,6 +16,10 @@ export class ServiceModals {
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
+  });
+
+  confirmation = Swal.mixin({
+    showCancelButton: true,
   });
 
   loading = Swal.mixin({
@@ -28,8 +33,14 @@ export class ServiceModals {
     },
   });
 
-  public showToast(options) {
-    this.toast.fire(options);
+  public confirm(options) {
+    return this.confirmation.fire(options);
+  }
+
+  public showToast(options) {    
+    this.toastr[`${options.status}`](options.title, options.statusMessage, {
+      timeOut: 2000
+    });
   }
 
   public showLoading(options) {
@@ -37,7 +48,7 @@ export class ServiceModals {
   }
   
   public hideLoading() {
-    Swal.close();
     Swal.hideLoading();
+    Swal.close();
   }
 }
