@@ -1,15 +1,13 @@
 import BaseController from "../../../controllers/base/base.controller";
-import MailBox from "../schema/schema.mailBox";
+import ServiceMailBox from "../service/service.mailBox";
 import ServiceIdentity from "../../identity/service/service.identity";
 import socketApp from "../../../socket.io";
-import Identity from "../../identity/schema/schema.identity";
-import * as mongoose from "mongoose";
 
 class ControllerMailBox extends BaseController {
-  Entity = MailBox;
+  Entity = ServiceMailBox.Entity;
 
   getMailBox = async (req, res) => {
-    var mailBox: any = await MailBox.SchemaMailBox.findOne({
+    var mailBox: any = await ServiceMailBox.findOne({
       _id: req.decryptedData.data.secret1,
       secret: req.decryptedData.data.secret2,
     });
@@ -24,7 +22,7 @@ class ControllerMailBox extends BaseController {
     req.send(mailBox, res);
   };
   setMailBox = async (req, res) => {
-    var mailBox: any = await MailBox.SchemaMailBox.findOne({
+    var mailBox: any = await ServiceMailBox.findOne({
       _id: req.decryptedData.data.secret1,
       secret: req.decryptedData.data.secret2,
     });
@@ -44,22 +42,21 @@ class ControllerMailBox extends BaseController {
       });
     }
     mailBox.save();
-    Identity.SchemaIdentity.find(
-      { mailBox: mongoose.Types.ObjectId(mailBox._id) },
-      (err, identities) => {
-        identities.map((currentIdentity) => {
-          if (currentIdentity._id != req.sessionJwt.identity._id) {
-            socketApp.registerMessage(currentIdentity, mailBox);
-          }
-          return currentIdentity;
-        });
-      }
-    );
+    ServiceIdentity.find({
+      mailBox: mailBox._id,
+    }).then((identities) => {
+      identities.map((currentIdentity) => {
+        if (currentIdentity._id != req.sessionJwt.identity._id) {
+          socketApp.registerMessage(currentIdentity, mailBox);
+        }
+        return currentIdentity;
+      });
+    });
     req.send(mailBox, res);
   };
   reqMailBox = async (req, res) => {
-    var mailBox: any = await MailBox.SchemaMailBox.create({
-      secret: req.decryptedData.data.secret,
+    var mailBox: any = await ServiceMailBox.create({
+      secret: req.decryptedData.data.secret
     });
     mailBox.set("messages.local", [req.decryptedData.data.message]);
     var identity: any = await ServiceIdentity.findOne({
@@ -71,11 +68,11 @@ class ControllerMailBox extends BaseController {
     mailBox.save();
     req.send(mailBox, res);
   };
-  
+
   getRouter() {
-    super.registerProtectedRoute("/setMailBox").post(this.setMailBox)
-    super.registerProtectedRoute("/getMailBox").post(this.getMailBox)
-    super.registerProtectedRoute("/reqMailBox").post(this.reqMailBox)
+    super.registerProtectedRoute("/setMailBox").post(this.setMailBox);
+    super.registerProtectedRoute("/getMailBox").post(this.getMailBox);
+    super.registerProtectedRoute("/reqMailBox").post(this.reqMailBox);
     return super._getRouter();
   }
 }

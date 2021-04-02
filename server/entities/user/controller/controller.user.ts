@@ -1,7 +1,7 @@
 import BaseController from "../../../controllers/base/base.controller";
-import User from "../schema/schema.user";
-import Referral from "../../referral/schema/schema.referral";
-import Identity from "../../identity/schema/schema.identity";
+import UserService from "../service/service.user";
+import ReferralService from "../../referral/service/service.referral";
+import IdentityService from "../../identity/service/service.identity";
 import {
   jwtSessionToken,
   Cryptography,
@@ -9,16 +9,11 @@ import {
 } from "../../../certs/jwtSessionToken/jwtSessionToken";
 
 class ControllerUser extends BaseController {
-  Entity = User;
+  Entity = UserService.Entity;
 
   preLogin = async (req, res) => {
-    console.log(req);
-    await User.SchemaUser.findOne(
-      { email: req.body.email },
-      async (err, user) => {
-        if (!user) {
-          return res.send(err);
-        }
+    await UserService.findOne({ email: req.body.email }).then(
+      async (user) => {
         req.body.user = user;
         res.send(
           await Cryptography.generateLoginSessionData(
@@ -31,7 +26,7 @@ class ControllerUser extends BaseController {
     );
   };
   login = async (req, res) => {
-    var identity: any = await Identity.SchemaIdentity.create({
+    var identity: any = await IdentityService.create({
       secret: [...Array(128)]
         .map((i) => (~~(Math.random() * 36)).toString(36))
         .join(""),
@@ -57,9 +52,8 @@ class ControllerUser extends BaseController {
     });
   };
   preRegister = async (req, res) => {
-    await Referral.SchemaReferral.findOne(
-      { email: req.body.email },
-      async (err, referral) => {
+    await ReferralService.findOne({ email: req.body.email }).then(
+      async (referral) => {
         if (!referral) {
           return res.send({
             err: "bad referral email",
@@ -79,7 +73,7 @@ class ControllerUser extends BaseController {
   };
   register = async (req, res) => {
     req.body.nextRsa = await Cryptography.generateRsaKeys("jwk");
-    var identity: any = await Identity.SchemaIdentity.create({
+    var identity: any = await IdentityService.create({
       secret: [...Array(128)]
         .map((i) => (~~(Math.random() * 36)).toString(36))
         .join(""),
@@ -91,15 +85,14 @@ class ControllerUser extends BaseController {
       req.body,
       jwt
     );
-    await User.SchemaUser.findOne(
-      { email: req.body.sessionJwt.email },
-      async (err, user) => {
+    await UserService.findOne({ email: req.body.sessionJwt.email }).then(
+      async (user) => {
         if (user) {
           return res.send({
             err: "taken email",
           });
         }
-        var newUser = await User.SchemaUser.create({
+        var newUser = await UserService.create({
           email: req.body.sessionJwt.email,
           password: validatedSessionData.json.password,
         });
@@ -128,12 +121,12 @@ class ControllerUser extends BaseController {
       }
     );
   };
-  
+
   getRouter() {
-    super.registerRoute("/login").post(this.login)
-    super.registerRoute("/preRegister").post(this.preRegister)
-    super.registerRoute("/preLogin").post(this.preLogin)
-    super.registerRoute("/register").post(this.register)
+    super.registerRoute("/login").post(this.login);
+    super.registerRoute("/preRegister").post(this.preRegister);
+    super.registerRoute("/preLogin").post(this.preLogin);
+    super.registerRoute("/register").post(this.register);
     return super._getRouter();
   }
 }
