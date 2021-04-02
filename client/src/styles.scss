@@ -24,9 +24,24 @@ body {
   }
 }
 
-.mat-card-header {
-  max-width: calc(100% - 36px);
-  .mat-card-header-text {
-    max-width: 100%;
+.mat-card {
+  .mat-card-header {
+    display: initial;
+    max-width: calc(100% - 36px);
+    .mat-card-header-text {
+      max-width: 100%;
+
+      .mat-card-title {
+        max-width: 100%;
+        overflow-x: hidden;
+
+        .elipsis {
+          max-width: 100%;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+          overflow: hidden;
+        }
+      }
+    }
   }
 }

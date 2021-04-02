@@ -97,7 +97,7 @@
     },
     "swal": {
       "loading": "Please wait...",
-      "confirmChanges": "<h3>Please Confirm Changes:<h3> \n <p>{{ changes }}</p>",
+      "confirmChanges": "<h4>Please Confirm Changes:<h4> \n <p>{{ changes }}</p>",
       "confirm": "Confirm"
     },
     "nav": {

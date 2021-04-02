@@ -1,16 +1,16 @@
 <mat-card>
   <mat-card-header>
     <mat-card-title>
-      <h3>{{ translate.instant("pages.home.welcome") }}</h3>
+      <h4>{{ translate.instant("pages.home.welcome") }}</h4>
     </mat-card-title>
   </mat-card-header>
   <mat-card-content>
     <ul>
-      <h3>{{ translate.instant("pages.home.content0") }}</h3>
+      <h4>{{ translate.instant("pages.home.content0") }}</h4>
       <li *ngFor="let _null of count; let i = index">
-        <h5>
+        <p>
           {{ translate.instant("pages.home.content" + (i + 1)) }}
-        </h5>
+        </p>
       </li>
     </ul>
   </mat-card-content>

@@ -97,7 +97,7 @@
     },
     "swal": {
       "loading": "Va rugam asteptati...",
-      "confirmChanges": "<h3>Va rugam sa confirmati urmatoarele:<h3> \n <p>{{ changes }}</p>",
+      "confirmChanges": "<h4>Va rugam sa confirmati urmatoarele:<h4> \n <p>{{ changes }}</p>",
       "confirm": "Confirma"
     },
     "nav": {
