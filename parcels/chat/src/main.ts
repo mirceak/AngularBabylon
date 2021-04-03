@@ -13,6 +13,7 @@ const vueLifecycles = singleSpaVue({
         // if you uncomment these, remember to add matching prop definitions for them in your App.vue file.
         // /*
         parcelData: this,
+        unmountListeners: unmountListeners,
         window: window
         // */
       });
@@ -20,6 +21,16 @@ const vueLifecycles = singleSpaVue({
   },
 });
 
+
+
 export const bootstrap = vueLifecycles.bootstrap;
 export const mount = vueLifecycles.mount;
-export const unmount = vueLifecycles.unmount;
+var unmountListeners = [];
+export const unmount = (dom)=>{
+  unmountListeners.map((listener)=>{
+    listener();
+    return listener;
+  })
+  unmountListeners.splice(0);
+  return vueLifecycles.unmount(dom);
+};

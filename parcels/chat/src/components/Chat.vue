@@ -21,6 +21,7 @@ export default defineComponent({
   name: "Chat",
   props: {
     mailBoxObservable: Object,
+    unmountListeners: Array,
   },
   data() {
     return {
@@ -28,7 +29,7 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.mailBoxObservable.subscribe((mailBox) => {
+    let observer = this.mailBoxObservable.subscribe((mailBox) => {
       this.show = false;
       this.messages.splice(0);
       nextTick(() => {
@@ -43,6 +44,11 @@ export default defineComponent({
         this.$emit("update");
       });
     });
+
+    this.unmountListeners.push(()=>{
+      console.log(111);
+      observer.unsubscribe();
+    })
   },
 });
 </script>

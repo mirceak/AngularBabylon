@@ -1,6 +1,6 @@
 <template>
   <div ref="chat" :class="{ mobile: isMobile, 'chat-app': true }">
-    <Chat @update="onUpdate" :mailBoxObservable="mailBoxObservable" />
+    <Chat @update="onUpdate" :unmountListeners="unmountListeners" :mailBoxObservable="mailBoxObservable" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import Chat from "./components/Chat.vue";
 
 export default defineComponent({
   name: "App",
-  props: ["parcelData", "window"],
+  props: ["parcelData", "window", 'unmountListeners'],
   components: {
     Chat,
   },

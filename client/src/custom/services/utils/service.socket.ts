@@ -12,7 +12,7 @@ export class ServiceSocket {
   @HostListener('window:beforeunload', ['$event'])
   beforeUnloadHandler(event: any) {
     event.preventDefault();
-    this.socket.disconnect();
+    if (this.socket) this.socket.disconnect();
   }
   public socket;
   private messageQueue: any = [];
@@ -23,7 +23,7 @@ export class ServiceSocket {
     public ProviderMailBox: ProviderMailBox
   ) {}
   disconnectSocket() {
-    this.socket.disconnect();
+    if (this.socket) this.socket.disconnect();
   }
   connectSocket() {
     this.socket = socketIO.io('https://talky.ro:5050', {
