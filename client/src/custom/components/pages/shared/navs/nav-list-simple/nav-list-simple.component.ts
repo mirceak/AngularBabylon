@@ -59,7 +59,9 @@ export class NavListSimpleComponent implements OnInit {
       title: this.translate.instant('components.nav.changedLang'),
     });
     this.serviceModals.hideLoading();
-    this.langObserver.unsubscribe();
+    setTimeout(() => {
+      this.langObserver.unsubscribe();
+    }, 0);
   }
 
   onChangeLang($event) {

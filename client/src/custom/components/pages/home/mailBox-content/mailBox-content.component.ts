@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MailBoxContentService } from '@custom/components/pages/home/services/mailBox-content.service';
-import { ServiceAuth } from '@custom/services/auth/service.auth';
+import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
+import { ServiceApi } from '@custom/services/utils/service.api';
 import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 
@@ -16,9 +17,10 @@ export class MailBoxContentComponent implements OnInit {
 
   constructor(
     public mailBoxContentService: MailBoxContentService,
-    public serviceAuth: ServiceAuth,
+    public ProviderMailBox: ProviderMailBox,
     public translate: TranslateService,
-    private serviceModals: ServiceModals
+    private serviceModals: ServiceModals,
+    public serviceApi: ServiceApi
   ) {}
 
   ngOnInit(): void {}
@@ -28,7 +30,7 @@ export class MailBoxContentComponent implements OnInit {
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('pages.mailBox.creating'),
     });
-    await this.serviceAuth.reqMailBox(this.form.value);
+    await this.ProviderMailBox.reqMailBox(this.form.value);
 
     this.serviceModals.hideLoading();
     this.serviceModals.showToast({
@@ -42,7 +44,7 @@ export class MailBoxContentComponent implements OnInit {
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('pages.mailBox.accepting'),
     });
-    await this.serviceAuth.accMailBox(this.acceptForm.value);
+    await this.ProviderMailBox.accMailBox(this.acceptForm.value);
 
     this.serviceModals.hideLoading();
     this.serviceModals.showToast({

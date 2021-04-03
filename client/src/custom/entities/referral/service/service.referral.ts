@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 
 import { ServiceEntityBase } from '@custom/entities/base/service.entity.base';
 import { ModelReferral } from '@custom/entities/referral/model/model.referral';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class ServiceReferral extends ServiceEntityBase<ModelReferral> {
     });
   }
 
-  reqSignup(postData) {
+  async reqSignup(postData) {
     return this.http.post('api/reqSignup', postData);
   }
 }

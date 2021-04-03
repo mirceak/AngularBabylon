@@ -5,6 +5,7 @@ import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral'
+import { ServiceApi } from '@custom/services/utils/service.api';
 
 @Component({
   selector: 'app-referral-content',
@@ -17,9 +18,10 @@ export class ReferralContentComponent implements OnInit {
   constructor(
     public referralContentService: ReferralContentService,
     public serviceAuth: ServiceAuth,
+    public serviceApi: ServiceApi,
     public translate: TranslateService,
     public serviceModals: ServiceModals,
-    private ProviderReferral: ProviderReferral
+    public ProviderReferral: ProviderReferral
   ) {}
 
   ngOnInit(): void {}

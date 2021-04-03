@@ -2,10 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { ChatContentService } from '@custom/components/pages/home/services/chat-content.service';
-import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { mountRootParcel } from 'single-spa';
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import { TranslateService } from '@ngx-translate/core';
+import { ServiceApi } from '@custom/services/utils/service.api';
+import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
 
 @Component({
   selector: 'app-chat-content',
@@ -20,13 +21,13 @@ export class ChatContentComponent implements OnInit {
   mountRootParcel;
   constructor(
     public chatContentService: ChatContentService,
-    private serviceAuth: ServiceAuth,
+    private ProviderMailBox: ProviderMailBox,
     private route: ActivatedRoute,
     public translate: TranslateService
   ) {}
 
   ngOnInit(): void {
-    this.mailBox = this.serviceAuth.mailBoxes.filter((current) => {
+    this.mailBox = this.ProviderMailBox.mailBoxes.filter((current) => {
       return current._id == this.route.snapshot.params._id;
     })[0];
     this.config = loadRemoteModule({
@@ -48,6 +49,6 @@ export class ChatContentComponent implements OnInit {
   }
 
   async send(): Promise<any> {
-    await this.serviceAuth.sendMessage(this.form.value, this.mailBox);
+    await this.ProviderMailBox.sendMessage(this.form.value, this.mailBox);
   }
 }

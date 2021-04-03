@@ -21,15 +21,6 @@ export class ServiceUser extends ServiceEntityBase<ModelUser> {
   login(postData) {
     return this.http.post('api/login', postData);
   }
-  reqMailBox(postData) {
-    return this.http.post('api/reqMailBox', postData);
-  }
-  getMailBox(postData) {
-    return this.http.post('api/getMailBox', postData);
-  }
-  setMailBox(postData) {
-    return this.http.post('/api/setMailBox', postData);
-  }
   requestRegister(postData) {
     return this.http.post('api/preRegister', postData);    
   }
