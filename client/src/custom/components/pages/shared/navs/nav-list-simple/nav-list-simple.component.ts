@@ -52,18 +52,6 @@ export class NavListSimpleComponent implements OnInit {
       });
   }
 
-  showToast() {
-    this.serviceModals.showToast({
-      status: 'success',
-      statusMessage: this.translate.instant('components.toastr.success'),
-      title: this.translate.instant('components.nav.changedLang'),
-    });
-    this.serviceModals.hideLoading();
-    setTimeout(() => {
-      this.langObserver.unsubscribe();
-    }, 0);
-  }
-
   onChangeLang($event) {
     this.serviceModals.showLoading({
       title: this.translate.instant('components.swal.loading'),
@@ -71,7 +59,15 @@ export class NavListSimpleComponent implements OnInit {
     });
     this.langObserver = this.internationalization
       .setLanguage($event)
-      .subscribe(this.showToast.bind(this));
+      .toPromise()
+      .then((lang) => {
+        this.serviceModals.showToast({
+          status: 'success',
+          statusMessage: this.translate.instant('components.toastr.success'),
+          title: this.translate.instant('components.nav.changedLang'),
+        });
+        this.serviceModals.hideLoading();
+      });
   }
 
   onChangeNav() {
