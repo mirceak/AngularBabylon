@@ -2,7 +2,6 @@ import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceMailBox } from '../service/service.mailBox';
 import { ServiceApi } from '@custom/services/utils/service.api';
-import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +23,62 @@ export class ProviderMailBox extends ServiceMailBox {
     }
     this.mailBoxes = JSON.parse(this.mailBoxes);
 
-    this.serviceApi.loggedOut.subscribe(()=>{
+    this.serviceApi.loggedOut.subscribe(() => {
       this.mailBoxes.splice(0);
-    })
+    });
+  }
+
+  async updateMailBox(mailBox, remoteMailBox) {
+    if (mailBox.reactiveCallback) {
+      mailBox.reactiveCallback();
+    }
+    mailBox.messages = remoteMailBox.messages || mailBox.messages;
+    if (
+      mailBox.remote == false &&
+      mailBox.secret3 == null &&
+      mailBox.messages.remote != null
+    ) {
+      this.serviceApi.serviceModals.showToast({
+        status: 'success',
+        statusMessage: this.serviceApi.translate.instant(
+          'components.toastr.success'
+        ),
+        title: this.serviceApi.translate.instant(
+          'pages.mailBox.acceptedRemote',
+          {
+            name: mailBox.name,
+          }
+        ),
+      });
+      var mailBoxKey = await this.serviceApi.Cryptography.importRsaKey(
+        mailBox.privkData
+      );
+      var rsaDecryptedAesKey = await this.serviceApi.Cryptography.rsaDecrypt(
+        await this.serviceApi.Cryptography.str2ab(mailBox.messages.remote[0]),
+        mailBoxKey
+      );
+      var aesKey = await this.serviceApi.Cryptography.importAesKey(
+        rsaDecryptedAesKey
+      );
+      var aesDecrypted = JSON.parse(
+        await this.serviceApi.Cryptography.aesDecrypt(
+          await this.serviceApi.Cryptography.str2ab(mailBox.messages.remote[1]),
+          aesKey,
+          mailBox.pubkData
+        )
+      );
+      mailBox.aesPubkData = rsaDecryptedAesKey;
+      mailBox.secret3 = aesDecrypted.secret;
+      mailBox.nextRsa = aesDecrypted.nextRsa;
+      mailBox.messages.remote.length = 0;
+
+      this.sendMessage({ messages: mailBox.messages }, mailBox);
+    } else {
+      this.serviceApi.zone.run(() => {
+        Object.assign(this.mailBoxes, {});
+      });
+      localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
+    }
   }
 
   async reqMailBox(postData): Promise<any> {
@@ -65,10 +117,7 @@ export class ProviderMailBox extends ServiceMailBox {
           decryptedData.decryptedToken.data.pubkData = mailBoxRsa.pubkData;
           this.zone.run(() => {
             this.mailBoxes.push(decryptedData.decryptedToken.data);
-            localStorage.setItem(
-              'mailBoxes',
-              JSON.stringify(this.mailBoxes)
-            );
+            localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
             resolve(null);
           });
         });
@@ -115,10 +164,7 @@ export class ProviderMailBox extends ServiceMailBox {
           if (this.mailBoxes[mailBoxIndex].reactiveCallback) {
             this.mailBoxes[mailBoxIndex].reactiveCallback();
           }
-          localStorage.setItem(
-            'mailBoxes',
-            JSON.stringify(this.mailBoxes)
-          );
+          localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
         });
       });
   }
@@ -201,9 +247,7 @@ export class ProviderMailBox extends ServiceMailBox {
               decryptedData.decryptedToken.data.aesPubkData =
                 rsaEncryptedAes.aesPubkData;
               this.zone.run(() => {
-                this.mailBoxes.push(
-                  decryptedData.decryptedToken.data
-                );
+                this.mailBoxes.push(decryptedData.decryptedToken.data);
                 localStorage.setItem(
                   'mailBoxes',
                   JSON.stringify(this.mailBoxes)
