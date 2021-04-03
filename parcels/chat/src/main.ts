@@ -14,23 +14,21 @@ const vueLifecycles = singleSpaVue({
         // /*
         parcelData: this,
         unmountListeners: unmountListeners,
-        window: window
+        window: window,
         // */
       });
     },
   },
 });
 
-
-
 export const bootstrap = vueLifecycles.bootstrap;
 export const mount = vueLifecycles.mount;
-var unmountListeners = [];
-export const unmount = (dom)=>{
-  unmountListeners.map((listener)=>{
+var unmountListeners = new Array();
+export const unmount = (dom = null) => {
+  unmountListeners.map((listener) => {
     listener();
     return listener;
-  })
+  });
   unmountListeners.splice(0);
-  return vueLifecycles.unmount(dom);
+  return vueLifecycles.unmount(dom || {});
 };

@@ -1,7 +1,6 @@
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
 const { VueLoaderPlugin } = require("vue-loader");
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
 const webpack = require("webpack");
 
@@ -42,14 +41,13 @@ module.exports = [
           },
         },
         {
-          test: /\.(sa|sc|c)ss$/,
+          test: /\.scss$/,
           use: [
-            MiniCssExtractPlugin.loader,
+            'vue-style-loader',
             'css-loader',
-            'postcss-loader',
-            'sass-loader',
-          ],
-        },
+            'sass-loader'
+          ]
+        },  
         { test: /\.html$/, loader: "raw-loader" },
       ],
     },
@@ -58,9 +56,6 @@ module.exports = [
       new webpack.DefinePlugin({
         __VUE_OPTIONS_API__: true,
         __VUE_PROD_DEVTOOLS__: false
-      }),
-      new MiniCssExtractPlugin({
-        filename: "[name].css",
       }),
       new ModuleFederationPlugin({
         name: "chat",
