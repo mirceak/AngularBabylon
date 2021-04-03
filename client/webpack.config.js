@@ -1,8 +1,6 @@
 const AotPlugin = require("@ngtools/webpack").AngularCompilerPlugin;
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const path = require("path");
-const sass = require("sass");
-const postcssModules = require("postcss-modules");
 const CopyPlugin = require("copy-webpack-plugin");
 
 const ModuleFederationPlugin = require("webpack/lib/container/ModuleFederationPlugin");
