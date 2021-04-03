@@ -5,7 +5,6 @@ import { ChatContentService } from '@custom/components/pages/home/services/chat-
 import { mountRootParcel } from 'single-spa';
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import { TranslateService } from '@ngx-translate/core';
-import { ServiceApi } from '@custom/services/utils/service.api';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
 
 @Component({
