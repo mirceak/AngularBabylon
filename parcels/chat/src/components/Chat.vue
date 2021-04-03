@@ -20,7 +20,7 @@ import { defineComponent, nextTick } from "vue";
 export default defineComponent({
   name: "Chat",
   props: {
-    mailBox: Object,
+    mailBoxObservable: Object,
   },
   data() {
     return {
@@ -28,13 +28,13 @@ export default defineComponent({
     };
   },
   mounted() {
-    this.mailBox.reactiveCallback = () => {
+    this.mailBoxObservable.subscribe((mailBox) => {
       this.show = false;
       this.messages.splice(0);
       nextTick(() => {
         this.messages.push(
-          ...this.mailBox.messages.local
-            .concat(this.mailBox.messages.remote)
+          ...mailBox.messages.local
+            .concat(mailBox.messages.remote)
             .sort((a, b) => {
               return a.timeStamp - b.timeStamp;
             })
@@ -42,15 +42,7 @@ export default defineComponent({
         this.show = true;
         this.$emit("update");
       });
-    };
-    this.messages.push(
-      ...this.mailBox.messages.local
-        .concat(this.mailBox.messages.remote)
-        .sort((a, b) => {
-          return a.timeStamp - b.timeStamp;
-        })
-    );
-    this.$emit("update");
+    });
   },
 });
 </script>

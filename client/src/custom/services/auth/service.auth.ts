@@ -3,8 +3,6 @@ import { ModelUser } from '@custom/entities/user/model/model.user';
 import { ServiceUser } from '@custom/entities/user/service/service.user';
 import { ServiceApi } from '../utils/service.api';
 import { ServiceSocket } from '../../services/utils/service.socket';
-import { BehaviorSubject } from 'rxjs';
-
 
 @Injectable({
   providedIn: 'root',

@@ -14,7 +14,6 @@ import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mail
 })
 export class ChatContentComponent implements OnInit {
   form = new FormGroup({});
-  mailBox = null;
 
   config;
   mountRootParcel;
@@ -26,9 +25,11 @@ export class ChatContentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.mailBox = this.ProviderMailBox.mailBoxes.filter((current) => {
-      return current._id == this.route.snapshot.params._id;
-    })[0];
+    this.ProviderMailBox.mailBoxObservable.next(
+      this.ProviderMailBox.mailBoxes.filter((current) => {
+        return current._id == this.route.snapshot.params._id;
+      })[0]
+    );
     this.config = loadRemoteModule({
       remoteEntry: 'https://talky.ro/chat/remoteEntry.js',
       remoteName: 'chat',
@@ -37,17 +38,17 @@ export class ChatContentComponent implements OnInit {
       return m;
     });
     this.mountRootParcel = (config, props) => {
-      props.mailBox = this.mailBox;
+      props.mailBoxObservable = this.ProviderMailBox.mailBoxObservable;
       var parcel = mountRootParcel(config, props);
       return parcel;
     };
   }
 
   mailBoxSorter(a, b) {
-    return a.timeStamp<b.timeStamp
+    return a.timeStamp < b.timeStamp;
   }
 
   async send(): Promise<any> {
-    await this.ProviderMailBox.sendMessage(this.form.value, this.mailBox);
+    await this.ProviderMailBox.sendMessage(this.form.value, this.ProviderMailBox.mailBoxObservable.value);
   }
 }

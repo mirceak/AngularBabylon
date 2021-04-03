@@ -2,12 +2,14 @@ import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceMailBox } from '../service/service.mailBox';
 import { ServiceApi } from '@custom/services/utils/service.api';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProviderMailBox extends ServiceMailBox {
   mailBoxes;
+  mailBoxObservable = new BehaviorSubject<any>({});
 
   constructor(
     http: HttpClient,
@@ -29,10 +31,11 @@ export class ProviderMailBox extends ServiceMailBox {
   }
 
   async updateMailBox(mailBox, remoteMailBox) {
-    if (mailBox.reactiveCallback) {
-      mailBox.reactiveCallback();
-    }
     mailBox.messages = remoteMailBox.messages || mailBox.messages;
+
+    if (mailBox._id == this.mailBoxObservable.value._id) {
+      this.mailBoxObservable.next(mailBox);
+    }
     if (
       mailBox.remote == false &&
       mailBox.secret3 == null &&
@@ -161,8 +164,10 @@ export class ProviderMailBox extends ServiceMailBox {
           Object.assign(this.mailBoxes[mailBoxIndex], {
             messages: decryptedData.decryptedToken.data.messages,
           });
-          if (this.mailBoxes[mailBoxIndex].reactiveCallback) {
-            this.mailBoxes[mailBoxIndex].reactiveCallback();
+          if (
+            this.mailBoxes[mailBoxIndex]._id == this.mailBoxObservable.value._id
+          ) {
+            this.mailBoxObservable.next(this.mailBoxes[mailBoxIndex]);
           }
           localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
         });

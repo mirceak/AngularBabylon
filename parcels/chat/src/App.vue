@@ -1,6 +1,6 @@
 <template>
   <div ref="chat" :class="{ mobile: isMobile, 'chat-app': true }">
-    <Chat @update="onUpdate" :mailBox="mailBox" />
+    <Chat @update="onUpdate" :mailBoxObservable="mailBoxObservable" />
   </div>
 </template>
 
@@ -39,8 +39,8 @@ export default defineComponent({
     };
   },
   computed: {
-    mailBox() {
-      return this.parcelData.mailBox;
+    mailBoxObservable() {
+      return this.parcelData.mailBoxObservable;
     },
   },
   methods: {
