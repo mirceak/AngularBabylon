@@ -22,6 +22,9 @@ export class ServiceSocket {
     public serviceApi: ServiceApi,
     public ProviderMailBox: ProviderMailBox
   ) {}
+  disconnectSocket() {
+    this.socket.disconnect();
+  }
   connectSocket() {
     this.socket = socketIO.io('https://talky.ro:5050', {
       transports: ['websocket', 'polling'],

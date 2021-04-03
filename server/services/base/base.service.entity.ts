@@ -1,5 +1,3 @@
-import * as mongoose from "mongoose";
-
 var getBaseServiceEntity = (Entity) => {
   var findOne = (options) => {
     return Entity.findOne(options);
