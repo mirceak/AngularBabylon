@@ -46,7 +46,6 @@ export default defineComponent({
     });
 
     this.unmountListeners.push(()=>{
-      console.log(111);
       observer.unsubscribe();
     })
   },
