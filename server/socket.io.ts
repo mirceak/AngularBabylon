@@ -11,8 +11,8 @@ var sockets = [];
 var registeredMessages = [];
 const httpsSocketServer = https
   .createServer({
-    key: readFileSync('./server/certs/https.key', 'utf-8'),
-    cert: readFileSync('./server/certs/https.cert', 'utf-8'),
+    key: readFileSync('./certs/https.key', 'utf-8'),
+    cert: readFileSync('./certs/https.cert', 'utf-8'),
   })
   .listen(5050, () => {
     console.log('Listening for socket requests...');
