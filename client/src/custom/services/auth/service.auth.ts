@@ -1,8 +1,9 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { ModelUser } from '@custom/entities/user/model/model.user';
 import { ServiceUser } from '@custom/entities/user/service/service.user';
 import { ServiceApi } from '../utils/service.api';
 import { ServiceSocket } from '../../services/utils/service.socket';
+import { BehaviorSubject } from 'rxjs';
 
 
 @Injectable({
@@ -65,7 +66,7 @@ export class ServiceAuth {
     localStorage.clear();
     this.loggedIn = false;
     this.currentUser = null;
-    this.serviceApi.router.navigate(['/auth/login']);
+    this.serviceApi.loggedOut.next(null);
   }
 
   async register(postData): Promise<any> {

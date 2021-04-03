@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceReferral } from '@custom/entities/referral/service/service.referral';
 import { ServiceApi } from '@custom/services/utils/service.api';
+import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,10 @@ export class ProviderReferral extends ServiceReferral {
       localStorage.setItem('referrals', this.referrals);
     }
     this.referrals = JSON.parse(this.referrals);
+
+    this.serviceApi.loggedOut.subscribe(()=>{
+      this.referrals.splice(0);
+    })
   }
 
   async reqSignup(postData): Promise<any> {

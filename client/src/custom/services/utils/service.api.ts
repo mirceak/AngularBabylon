@@ -5,6 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ServiceModals } from './service.modals';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ import { Router } from '@angular/router';
 export class ServiceApi {
   lang = 'en';
 
+  public loggedOut = new Subject();
   public token: any;
   public Cryptography: _Cryptography = new _Cryptography(window.crypto);
 
@@ -26,6 +28,13 @@ export class ServiceApi {
     if (this.token) {
       this.token = this.jwtHelper.decodeToken(this.token);
     }
+
+    this.loggedOut.subscribe(this.logout.bind(this))
+  }
+
+  logout(){
+    this.token = null;
+    this.router.navigate(['/auth/login']);
   }
 
   async getRequestData(postData, token) {

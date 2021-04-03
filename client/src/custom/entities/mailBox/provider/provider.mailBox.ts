@@ -2,6 +2,7 @@ import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceMailBox } from '../service/service.mailBox';
 import { ServiceApi } from '@custom/services/utils/service.api';
+import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Injectable({
   providedIn: 'root',
@@ -22,6 +23,10 @@ export class ProviderMailBox extends ServiceMailBox {
       localStorage.setItem('mailBoxes', this.mailBoxes);
     }
     this.mailBoxes = JSON.parse(this.mailBoxes);
+
+    this.serviceApi.loggedOut.subscribe(()=>{
+      this.mailBoxes.splice(0);
+    })
   }
 
   async reqMailBox(postData): Promise<any> {
