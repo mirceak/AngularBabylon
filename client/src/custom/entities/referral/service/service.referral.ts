@@ -3,7 +3,6 @@ import { HttpClient } from '@angular/common/http';
 
 import { ServiceEntityBase } from '@custom/entities/base/service.entity.base';
 import { ModelReferral } from '@custom/entities/referral/model/model.referral';
-import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',

@@ -2,7 +2,6 @@ import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceReferral } from '@custom/entities/referral/service/service.referral';
 import { ServiceApi } from '@custom/services/utils/service.api';
-import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Injectable({
   providedIn: 'root',
@@ -37,7 +36,7 @@ export class ProviderReferral extends ServiceReferral {
       );
       (
         await super.reqSignup({
-          sessionJwt: this.serviceApi.token.sessionJwt,
+          sessionJwt: this.serviceApi.token.value.sessionJwt,
           rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
             reqData.rsaEncryptedAes.encryptedAes
           ),

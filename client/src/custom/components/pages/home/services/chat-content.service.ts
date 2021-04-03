@@ -11,6 +11,9 @@ export class ChatContentService {
       key: 'message',
       type: 'input',
       templateOptions: {
+        attributes: {
+          autocomplete: 'off',
+        },
         translate: true,
         _label: 'formlyFields.message.label',
         _placeholder: 'formlyFields.message.placeholder',

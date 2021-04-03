@@ -15,7 +15,7 @@ export class AuthGuardService implements CanActivate {
     private router: Router,
     private serviceAuth: ServiceAuth,
     private translate: TranslateService,
-    private serviceModals: ServiceModals
+    private serviceModals: ServiceModals,
   ) {}
 
   canActivate(

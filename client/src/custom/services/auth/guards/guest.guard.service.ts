@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import Swal from 'sweetalert2/src/sweetalert2';
 import { ServiceModals } from '@custom/services/utils/service.modals';
 import {
   Router,

@@ -10,6 +10,7 @@ import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
 import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
+import { ProviderUser } from '@custom/entities/user/provider/provider.user';
 
 @Component({
   selector: 'app-nav-list',
@@ -26,7 +27,7 @@ export class NavListSimpleComponent implements OnInit {
     public translate: TranslateService,
     public internationalization: ServiceInternationalization,
     private serviceModals: ServiceModals,
-    private zone: NgZone
+    public ProviderUser: ProviderUser,
   ) {}
 
   ngOnInit(): void {}

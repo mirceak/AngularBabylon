@@ -39,7 +39,7 @@ export class ServiceSocket {
       );
       this.messageQueue.push({ id: data.clientMsgId, rsa: reqData.nextRsa });
       this.socket.emit('verify', {
-        sessionJwt: this.serviceApi.token.sessionJwt,
+        sessionJwt: this.serviceApi.token.value.sessionJwt,
         rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
           reqData.rsaEncryptedAes.encryptedAes
         ),
@@ -63,7 +63,10 @@ export class ServiceSocket {
           return mailBox._id == decryptedData.decryptedToken.data.mailBox._id;
         });
         var mailBox = this.ProviderMailBox.mailBoxes[mailBoxIndex];
-        this.ProviderMailBox.updateMailBox(mailBox, decryptedData.decryptedToken.data.mailBox);
+        this.ProviderMailBox.updateMailBox(
+          mailBox,
+          decryptedData.decryptedToken.data.mailBox
+        );
       } else if (decryptedData.decryptedToken.data.mailBoxes) {
         decryptedData.decryptedToken.data.mailBoxes.forEach((mailBox) => {
           var localMailbox = this.ProviderMailBox.mailBoxes[

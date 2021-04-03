@@ -99,7 +99,7 @@ export class ProviderMailBox extends ServiceMailBox {
       );
       (
         await super.reqMailBox({
-          sessionJwt: this.serviceApi.token.sessionJwt,
+          sessionJwt: this.serviceApi.token.value.sessionJwt,
           rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
             reqData.rsaEncryptedAes.encryptedAes
           ),
@@ -144,7 +144,7 @@ export class ProviderMailBox extends ServiceMailBox {
     );
     super
       .setMailBox({
-        sessionJwt: this.serviceApi.token.sessionJwt,
+        sessionJwt: this.serviceApi.token.value.sessionJwt,
         rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
           reqData.rsaEncryptedAes.encryptedAes
         ),
@@ -182,7 +182,7 @@ export class ProviderMailBox extends ServiceMailBox {
       super
         .getMailBox({
           save: true,
-          sessionJwt: this.serviceApi.token.sessionJwt,
+          sessionJwt: this.serviceApi.token.value.sessionJwt,
           rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
             reqData.rsaEncryptedAes.encryptedAes
           ),
@@ -230,7 +230,7 @@ export class ProviderMailBox extends ServiceMailBox {
           );
           super
             .setMailBox({
-              sessionJwt: this.serviceApi.token.sessionJwt,
+              sessionJwt: this.serviceApi.token.value.sessionJwt,
               rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
                 reqData.rsaEncryptedAes.encryptedAes
               ),

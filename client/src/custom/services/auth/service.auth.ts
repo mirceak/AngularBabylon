@@ -1,22 +1,22 @@
 import { Injectable } from '@angular/core';
-import { ModelUser } from '@custom/entities/user/model/model.user';
-import { ServiceUser } from '@custom/entities/user/service/service.user';
+import { ProviderUser } from '@custom/entities/user/provider/provider.user';
 import { ServiceApi } from '../utils/service.api';
-import { ServiceSocket } from '../../services/utils/service.socket';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceAuth {
   public loggedIn = false;
-  currentUser: ModelUser = null;
   constructor(
-    private ServiceUser: ServiceUser,
-    private serviceApi: ServiceApi,
-    private serviceSocket: ServiceSocket
+    private ProviderUser: ProviderUser,
+    private serviceApi: ServiceApi
   ) {
-    if (serviceApi.token) {
-      this.setCurrentUser(this.serviceApi.token);
+    var _token = localStorage.getItem('token');
+    if (_token) {
+      this.loggedIn = true;
+      this.serviceApi.token.next(
+        this.serviceApi.jwtHelper.decodeToken(_token)
+      );
     }
   }
 
@@ -28,7 +28,7 @@ export class ServiceAuth {
       var firstRsaKeys = await this.serviceApi.Cryptography.generateRsaKeys(
         'jwk'
       );
-      this.ServiceUser.requestLogin({
+      this.ProviderUser.requestLogin({
         email: postData.email,
         rsaPubkData: firstRsaKeys.pubkData,
       }).subscribe(async (response: any) => {
@@ -38,7 +38,7 @@ export class ServiceAuth {
         postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
           'jwk'
         );
-        this.ServiceUser.login(
+        this.ProviderUser.login(
           await this.serviceApi.Cryptography.signLoginSessionData(postData)
         ).subscribe(async (data: any) => {
           var decrypted = await this.serviceApi.decryptServerData(
@@ -46,11 +46,11 @@ export class ServiceAuth {
             postData.nextRsa,
             false
           );
+          this.loggedIn = true;
           localStorage.setItem('token', decrypted.decryptedToken);
-          this.serviceApi.token = this.serviceApi.jwtHelper.decodeToken(
-            decrypted.decryptedToken
+          this.serviceApi.token.next(
+            this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );
-          this.setCurrentUser(this.serviceApi.token);
           this.serviceApi.zone.run(() => {
             this.serviceApi.router.navigate(['/']);
             resolve(null);
@@ -63,7 +63,6 @@ export class ServiceAuth {
   logout(): void {
     localStorage.clear();
     this.loggedIn = false;
-    this.currentUser = null;
     this.serviceApi.loggedOut.next(null);
   }
 
@@ -72,7 +71,7 @@ export class ServiceAuth {
       var firstRsaKeys = await this.serviceApi.Cryptography.generateRsaKeys(
         'jwk'
       );
-      this.ServiceUser.requestRegister({
+      this.ProviderUser.requestRegister({
         email: postData.email,
         rsaPubkData: firstRsaKeys.pubkData,
       }).subscribe(async (response: any) => {
@@ -82,7 +81,7 @@ export class ServiceAuth {
         postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
           'jwk'
         );
-        this.ServiceUser.register(
+        this.ProviderUser.register(
           await this.serviceApi.Cryptography.signRegisterSessionData(postData)
         ).subscribe(async (data: any) => {
           var decrypted = await this.serviceApi.decryptServerData(
@@ -90,12 +89,11 @@ export class ServiceAuth {
             postData.nextRsa,
             false
           );
-          decrypted.decryptedToken = JSON.stringify(decrypted.decryptedToken);
+          this.loggedIn = true;
           localStorage.setItem('token', decrypted.decryptedToken);
-          this.serviceApi.token = this.serviceApi.jwtHelper.decodeToken(
-            decrypted.decryptedToken
+          this.serviceApi.token.next(
+            this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );
-          this.setCurrentUser(this.serviceApi.token);
           this.serviceApi.zone.run(() => {
             this.serviceApi.router.navigate(['/']);
             resolve(null);
@@ -103,11 +101,5 @@ export class ServiceAuth {
         });
       });
     });
-  }
-
-  setCurrentUser(decodedToken): void {
-    this.currentUser = new ModelUser();
-    this.loggedIn = true;
-    this.serviceSocket.connectSocket();
   }
 }

@@ -14,7 +14,7 @@ export class ServiceApi {
   lang = 'en';
 
   public loggedOut = new Subject();
-  public token: any;
+  public token = new BehaviorSubject<any>(null);
   public Cryptography: _Cryptography = new _Cryptography(window.crypto);
 
   constructor(
@@ -24,28 +24,23 @@ export class ServiceApi {
     public router: Router,
     public zone: NgZone
   ) {
-    this.token = localStorage.getItem('token');
-    if (this.token) {
-      this.token = this.jwtHelper.decodeToken(this.token);
-    }
-
-    this.loggedOut.subscribe(this.logout.bind(this))
+    this.loggedOut.subscribe(this.logout.bind(this));
   }
 
-  logout(){
-    this.token = null;
+  logout() {
+    this.token.next(null);
     this.router.navigate(['/auth/login']);
   }
 
   async getRequestData(postData, token) {
     var nextRsa = await this.Cryptography.generateRsaKeys('jwk');
     var rsaEncryptedAes = await this.Cryptography.getRsaEncryptedAesKey(
-      token.nextRsa
+      token.value.nextRsa
     );
     var aesEncrypted = await this.Cryptography.aesEncrypt(
       JSON.stringify({ data: postData, nextRsa: nextRsa.pubkData }),
       rsaEncryptedAes.aesKey,
-      token.nextRsa
+      token.value.nextRsa
     );
     return {
       nextRsa,
