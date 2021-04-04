@@ -4,13 +4,14 @@ import { ReferralContentService } from '@custom/components/pages/home/services/r
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
-import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral'
+import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral';
 import { ServiceApi } from '@custom/services/utils/service.api';
 
 @Component({
   selector: 'app-referral-content',
   templateUrl: './referral-content.component.html',
   styleUrls: ['./referral-content.component.scss'],
+  providers: [ReferralContentService],
 })
 export class ReferralContentComponent implements OnInit {
   form = new FormGroup({});

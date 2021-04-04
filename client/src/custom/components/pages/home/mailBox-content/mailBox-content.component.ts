@@ -10,6 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-mailBox-content',
   templateUrl: './mailBox-content.component.html',
   styleUrls: ['./mailBox-content.component.scss'],
+  providers: [MailBoxContentService],
 })
 export class MailBoxContentComponent implements OnInit {
   form = new FormGroup({});

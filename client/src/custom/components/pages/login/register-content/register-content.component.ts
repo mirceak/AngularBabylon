@@ -9,6 +9,9 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-register-content',
   templateUrl: './register-content.component.html',
   styleUrls: ['./register-content.component.scss'],
+  providers: [
+    RegisterService
+  ]
 })
 export class RegisterContentComponent {
   form = new FormGroup({});

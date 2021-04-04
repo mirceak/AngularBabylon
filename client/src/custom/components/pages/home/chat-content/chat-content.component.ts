@@ -11,6 +11,7 @@ import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mail
   selector: 'app-chat-content',
   templateUrl: './chat-content.component.html',
   styleUrls: ['./chat-content.component.scss'],
+  providers: [ChatContentService],
 })
 export class ChatContentComponent implements OnInit {
   form = new FormGroup({});
@@ -49,6 +50,9 @@ export class ChatContentComponent implements OnInit {
   }
 
   async send(): Promise<any> {
-    await this.ProviderMailBox.sendMessage(this.form.value, this.ProviderMailBox.mailBoxObservable.value);
+    await this.ProviderMailBox.sendMessage(
+      this.form.value,
+      this.ProviderMailBox.mailBoxObservable.value
+    );
   }
 }
