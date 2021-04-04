@@ -25,13 +25,23 @@ export class RegisterContentComponent {
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('pages.register.registering'),
     });
-    await this.serviceAuth.register(this.form.value);
-    
-    this.serviceModals.hideLoading();
-    this.serviceModals.showToast({
-      status: 'success',
-      statusMessage: this.translate.instant('components.toastr.success'),
-      title: this.translate.instant('pages.register.registered'),
-    });
+    await this.serviceAuth
+      .register(this.form.value)
+      .then(() => {
+        this.serviceModals.hideLoading();
+        this.serviceModals.showToast({
+          status: 'success',
+          statusMessage: this.translate.instant('components.toastr.success'),
+          title: this.translate.instant('pages.register.registered'),
+        });
+      })
+      .catch((e) => {
+        this.serviceModals.hideLoading();
+        this.serviceModals.showToast({
+          status: 'error',
+          statusMessage: this.translate.instant('components.toastr.error'),
+          title: this.translate.instant('pages.login.badLogin'),
+        });
+      });
   }
 }

@@ -1,16 +1,23 @@
 import BaseController from "../../../controllers/base/base.controller";
 import ServiceMailBox from "../service/service.mailBox";
 import ServiceIdentity from "../../identity/service/service.identity";
-import socketApp from "../../../socket.io";
+import socketApp from "../../../socketio";
 
 class ControllerMailBox extends BaseController {
   Entity = ServiceMailBox.Entity;
 
   getMailBox = async (req, res) => {
-    var mailBox: any = await ServiceMailBox.findOne({
-      _id: req.decryptedData.data.secret1,
-      secret: req.decryptedData.data.secret2,
-    });
+    var mailBox: any;
+    try {
+      mailBox = await ServiceMailBox.findOne({
+        _id: req.decryptedData.data.secret1,
+        secret: req.decryptedData.data.secret2,
+      });
+    } catch (e) {
+      return res.status(403).send({
+        message: "pages.register.badCode",
+      });
+    }
     if (req.body.save) {
       var identity: any = await ServiceIdentity.findOne({
         _id: req.sessionJwt.identity._id,
@@ -56,7 +63,7 @@ class ControllerMailBox extends BaseController {
   };
   reqMailBox = async (req, res) => {
     var mailBox: any = await ServiceMailBox.create({
-      secret: req.decryptedData.data.secret
+      secret: req.decryptedData.data.secret,
     });
     mailBox.set("messages.local", [req.decryptedData.data.message]);
     var identity: any = await ServiceIdentity.findOne({

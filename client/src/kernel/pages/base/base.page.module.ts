@@ -7,6 +7,5 @@ import { ParcelModule } from 'single-spa-angular/parcel';
   declarations: [],
   imports: [BaseMaterialModule, CommonModule, ParcelModule],
   exports: [BaseMaterialModule, CommonModule, ParcelModule],
-  providers: [],
 })
 export class BasePageModule {}

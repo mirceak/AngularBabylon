@@ -38,6 +38,7 @@
     "login": {
       "login": "Login",
       "loggedIn": "You have logged in!",
+      "badLogin": "The information is incorrect!",
       "loggingIn": "Logging in!",
       "loggedOut": "You have logged out!"
     },

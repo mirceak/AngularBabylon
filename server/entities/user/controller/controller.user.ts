@@ -12,18 +12,22 @@ class ControllerUser extends BaseController {
   Entity = UserService.Entity;
 
   preLogin = async (req, res) => {
-    await UserService.findOne({ email: req.body.email }).then(
-      async (user) => {
-        req.body.user = user;
-        res.send(
-          await Cryptography.generateLoginSessionData(
-            jwtSessionToken,
-            req.body,
-            jwt
-          )
-        );
+    await UserService.findOne({ email: req.body.email }).then(async (user) => {
+      if (user == null) {
+        return res.status(403).send({
+          message: "pages.login.badLogin",
+        });
       }
-    );
+
+      req.body.user = user;
+      res.send(
+        await Cryptography.generateLoginSessionData(
+          jwtSessionToken,
+          req.body,
+          jwt
+        )
+      );
+    });
   };
   login = async (req, res) => {
     var identity: any = await IdentityService.create({
@@ -55,8 +59,8 @@ class ControllerUser extends BaseController {
     await ReferralService.findOne({ email: req.body.email }).then(
       async (referral) => {
         if (!referral) {
-          return res.send({
-            err: "bad referral email",
+          return res.status(403).send({
+            message: "pages.register.badEmail",
           });
         }
         req.body.referral = referral;
@@ -67,7 +71,6 @@ class ControllerUser extends BaseController {
             jwt
           )
         );
-        referral.delete();
       }
     );
   };
@@ -80,16 +83,23 @@ class ControllerUser extends BaseController {
       mailBox: [],
     });
     req.body.identity = identity;
-    var validatedSessionData = await Cryptography.validateRegisterSessionData(
-      jwtSessionToken,
-      req.body,
-      jwt
-    );
+    var validatedSessionData;
+    try {
+      validatedSessionData = await Cryptography.validateRegisterSessionData(
+        jwtSessionToken,
+        req.body,
+        jwt
+      );
+    } catch (e) {
+      return res.status(403).send({
+        message: "pages.register.badCode",
+      });
+    }
     await UserService.findOne({ email: req.body.sessionJwt.email }).then(
       async (user) => {
         if (user) {
-          return res.send({
-            err: "taken email",
+          return res.status(403).send({
+            message: "pages.register.alreadyRegistered",
           });
         }
         var newUser = await UserService.create({
@@ -112,6 +122,11 @@ class ControllerUser extends BaseController {
           rsaEncryptedAes.aesKey,
           validatedSessionData.nextRsa
         );
+        await ReferralService.findOne({
+          email: req.body.sessionJwt.email,
+        }).then(async (referral) => {
+          referral.delete();
+        });
         res.send({
           rsaEncryptedAes: await Cryptography.ab2str(
             rsaEncryptedAes.encryptedAes

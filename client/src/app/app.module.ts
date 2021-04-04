@@ -6,12 +6,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { EmptyRouteComponent } from './empty-route/empty-route.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpClientModule,
+  HTTP_INTERCEPTORS,
+} from '@angular/common/http';
 import { JwtModule } from '@auth0/angular-jwt';
 import { OverlayModule } from '@angular/cdk/overlay';
-import { TranslateModule, TranslateLoader, TranslateService } from '@ngx-translate/core';
+import {
+  TranslateModule,
+  TranslateLoader,
+  TranslateService,
+} from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { ToastrModule } from 'ngx-toastr';
+import { ServiceHttp } from '@custom/services/utils/service.http';
 
 export function HttpLoaderFactory(httpClient: HttpClient) {
   return new TranslateHttpLoader(
@@ -27,7 +36,9 @@ export function appInitializerFactory(translate: TranslateService) {
     translate.setDefaultLang('en');
     const browserLang = translate.getBrowserLang();
 
-    return translate.use(browserLang.match(/en|ro/) ? browserLang : 'en').toPromise();
+    return translate
+      .use(browserLang.match(/en|ro/) ? browserLang : 'en')
+      .toPromise();
   };
 }
 
@@ -55,6 +66,7 @@ export function appInitializerFactory(translate: TranslateService) {
   ],
   bootstrap: [AppComponent],
   providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: ServiceHttp, multi: true },
     {
       provide: APP_INITIALIZER,
       useFactory: appInitializerFactory,

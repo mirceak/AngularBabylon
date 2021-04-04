@@ -25,13 +25,23 @@ export class LoginContentComponent {
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('pages.login.loggingIn'),
     });
-    await this.serviceAuth.login(this.form.value);
-    
-    this.serviceModals.hideLoading();
-    this.serviceModals.showToast({
-      status: 'success',
-      statusMessage: this.translate.instant('components.toastr.success'),
-      title: this.translate.instant('pages.login.loggedIn'),
-    });
+    await this.serviceAuth
+      .login(this.form.value)
+      .then(() => {
+        this.serviceModals.hideLoading();
+        this.serviceModals.showToast({
+          status: 'success',
+          statusMessage: this.translate.instant('components.toastr.success'),
+          title: this.translate.instant('pages.login.loggedIn'),
+        });
+      })
+      .catch((e) => {
+        this.serviceModals.hideLoading();
+        this.serviceModals.showToast({
+          status: 'error',
+          statusMessage: this.translate.instant('components.toastr.error'),
+          title: this.translate.instant('pages.login.badLogin'),
+        });
+      });
   }
 }

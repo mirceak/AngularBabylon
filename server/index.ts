@@ -9,7 +9,7 @@ import Controllers from './controllers/base/base.controller.index';
 import { readFileSync } from 'fs';
 import * as https from 'https';
 
-var socketApp = require('./socket.io');
+var socketApp = require('./socketio');
 const httpApp = express();
 httpApp.set('port', 80);
 httpApp.use(express.json());
@@ -22,8 +22,8 @@ const app = express();
 const httpsServer = https
   .createServer(
     {
-      key: readFileSync('./certs/https.key', 'utf-8'),
-      cert: readFileSync('./certs/https.cert', 'utf-8'),
+      key: readFileSync('../server/certs/https.key', 'utf-8'),
+      cert: readFileSync('../server/certs/https.cert', 'utf-8'),
     },
     app
   )
@@ -44,13 +44,13 @@ async function main(): Promise<any> {
       let ctrl: BaseController = new Controllers[key]();
       app.use('/api', ctrl.getRouter());
     });
-    app.use('', express.static(path.join(__dirname, '../../public/')));
+    app.use('', express.static(path.join(__dirname, '../dist/public/')));
     app.get('*', (req, res) => {
       if (req.headers.host.includes('www.')) {
         return res.redirect('https://' + req.headers.host.replaceAll(/www./g, '') + req.url);
       }
       // res.set('pageHash', 'someHash');
-      res.sendFile(path.join(__dirname, '../../public/spa/index.html'));
+      res.sendFile(path.join(__dirname, '../dist/public/spa/index.html'));
     });
   } catch (err) {
     console.error(err);

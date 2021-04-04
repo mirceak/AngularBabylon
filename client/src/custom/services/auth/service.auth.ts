@@ -14,14 +14,12 @@ export class ServiceAuth {
     var _token = localStorage.getItem('token');
     if (_token) {
       this.loggedIn = true;
-      this.serviceApi.token.next(
-        this.serviceApi.jwtHelper.decodeToken(_token)
-      );
+      this.serviceApi.token.next(this.serviceApi.jwtHelper.decodeToken(_token));
     }
   }
 
   async login(postData): Promise<any> {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       postData.email = await this.serviceApi.Cryptography.getShaHash(
         postData.email
       );
@@ -38,9 +36,15 @@ export class ServiceAuth {
         postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
           'jwk'
         );
-        this.ProviderUser.login(
-          await this.serviceApi.Cryptography.signLoginSessionData(postData)
-        ).subscribe(async (data: any) => {
+        let request;
+        try {
+          request = await this.serviceApi.Cryptography.signLoginSessionData(
+            postData
+          );
+        } catch (e) {
+          return reject(null);
+        }
+        this.ProviderUser.login(request).subscribe(async (data: any) => {
           var decrypted = await this.serviceApi.decryptServerData(
             data,
             postData.nextRsa,
@@ -67,7 +71,7 @@ export class ServiceAuth {
   }
 
   async register(postData): Promise<any> {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       var firstRsaKeys = await this.serviceApi.Cryptography.generateRsaKeys(
         'jwk'
       );
@@ -81,9 +85,15 @@ export class ServiceAuth {
         postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
           'jwk'
         );
-        this.ProviderUser.register(
-          await this.serviceApi.Cryptography.signRegisterSessionData(postData)
-        ).subscribe(async (data: any) => {
+        let request;
+        try {
+          request = await this.serviceApi.Cryptography.signRegisterSessionData(
+            postData
+          );
+        } catch (e) {
+          return reject(null);
+        }
+        this.ProviderUser.register(request).subscribe(async (data: any) => {
           var decrypted = await this.serviceApi.decryptServerData(
             data,
             postData.nextRsa,

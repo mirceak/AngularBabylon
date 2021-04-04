@@ -5,8 +5,7 @@
   "private": "true",
   "main": "index.ts",
   "scripts": {
-    "tst": "tsc -w -p server",
-    "start": "concurrently \"mongod\" \"tsc -w -p ./\" \"nodemon ../dist/server/server/index.js\""
+    "start": "concurrently \"tsc -w\" \"mongod\" \"nodemon --watch ../dist/server/server/index.js\""
   },
   "author": "",
   "license": "ISC",
