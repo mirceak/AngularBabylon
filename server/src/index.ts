@@ -22,8 +22,8 @@ const app = express();
 const httpsServer = https
   .createServer(
     {
-      key: readFileSync('../server/certs/https.key', 'utf-8'),
-      cert: readFileSync('../server/certs/https.cert', 'utf-8'),
+      key: readFileSync(path.join(__dirname, "certs/https.key"), 'utf-8'),
+      cert: readFileSync(path.join(__dirname, "certs/https.cert"), 'utf-8'),
     },
     app
   )
@@ -44,13 +44,13 @@ async function main(): Promise<any> {
       let ctrl: BaseController = new Controllers[key]();
       app.use('/api', ctrl.getRouter());
     });
-    app.use('', express.static(path.join(__dirname, '../dist/public/')));
+    app.use('', express.static(path.join(__dirname, '../../../dist/public/')));
     app.get('*', (req, res) => {
       if (req.headers.host.includes('www.')) {
         return res.redirect('https://' + req.headers.host.replaceAll(/www./g, '') + req.url);
       }
       // res.set('pageHash', 'someHash');
-      res.sendFile(path.join(__dirname, '../dist/public/spa/index.html'));
+      res.sendFile(path.join(__dirname, '../../../dist/public/spa/index.html'));
     });
   } catch (err) {
     console.error(err);

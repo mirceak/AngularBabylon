@@ -13,9 +13,12 @@ class ControllerMailBox extends BaseController {
         _id: req.decryptedData.data.secret1,
         secret: req.decryptedData.data.secret2,
       });
+      if (mailBox == null){
+        throw null;
+      }
     } catch (e) {
       return res.status(403).send({
-        message: "pages.register.badCode",
+        message: "pages.mailBox.badCode",
       });
     }
     if (req.body.save) {

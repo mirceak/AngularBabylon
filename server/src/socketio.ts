@@ -1,18 +1,19 @@
 import { readFileSync } from 'fs';
 import * as https from 'https';
 
-import { jwtSessionToken, Cryptography, jwt } from '../server/certs/jwtSessionToken/jwtSessionToken';
+import { jwtSessionToken, Cryptography, jwt } from './certs/jwtSessionToken/jwtSessionToken';
 import { Server } from 'socket.io';
 import Identity from './entities/identity/schema/schema.identity';
 import MailBox from './entities/mailBox/schema/schema.mailBox';
 import utils from './controllers/utils'
+import path = require('path');
 
 var sockets = [];
 var registeredMessages = [];
 const httpsSocketServer = https
   .createServer({
-    key: readFileSync('../server/certs/https.key', 'utf-8'),
-    cert: readFileSync('../server/certs/https.cert', 'utf-8'),
+    key:  readFileSync(path.join(__dirname, "certs/https.key"), 'utf-8'),
+    cert: readFileSync(path.join(__dirname, "certs/https.cert"), 'utf-8'),
   })
   .listen(5050, () => {
     console.log('Listening for socket requests...');

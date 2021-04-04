@@ -174,6 +174,10 @@ export class ProviderMailBox extends ServiceMailBox {
       });
   }
   async accMailBox(postData): Promise<any> {
+    this.serviceApi.serviceModals.showLoading({
+      title: this.serviceApi.translate.instant('components.swal.loading'),
+      html: this.serviceApi.translate.instant('pages.mailBox.acceptingMailBox'),
+    });
     return new Promise(async (resolve) => {
       var reqData = await this.serviceApi.getRequestData(
         postData,
@@ -191,10 +195,22 @@ export class ProviderMailBox extends ServiceMailBox {
           ),
         })
         .subscribe(async (data: any) => {
-          var decryptedData = await this.serviceApi.decryptServerData(
-            data,
-            reqData.nextRsa
-          );
+          var decryptedData;
+          try {
+            decryptedData = await this.serviceApi.decryptServerData(
+              data,
+              reqData.nextRsa
+            );
+          } catch (e) {
+            this.serviceApi.serviceModals.hideLoading();
+            this.serviceApi.serviceModals.showToast({
+              status: 'error',
+              statusMessage: this.serviceApi.translate.instant('components.toastr.error'),
+              title: this.serviceApi.translate.instant('pages.mailBox.badMailBox'),
+            });
+            return;
+          }
+          console.log(decryptedData.decryptedToken);
           decryptedData.decryptedToken.data.name = postData.name;
           var remoteRsaPubkData =
             decryptedData.decryptedToken.data.messages.local[0];

@@ -1,8 +1,9 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "rootDir": "./src",
     "baseUrl": "./",
-    "outDir": "../dist/server",
+    "outDir": "dist/server",
     "sourceMap": true,
     "declaration": false,
     "downlevelIteration": true,
@@ -12,5 +13,14 @@
     "target": "ESNext",
     "module": "CommonJS",
     "lib": ["ESNext", "ES2015", "dom"]
-  }
+  },
+  "files": [
+    "src/index.ts",
+  ],
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.json",
+    "src/**/*.key",
+    "src/**/*.cert",
+  ]
 }

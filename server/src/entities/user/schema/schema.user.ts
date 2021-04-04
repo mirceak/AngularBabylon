@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import _Cryptography from "../../../../client/src/cryptography";
+import _Cryptography from "../../../cryptography";
 
 const webcrypto = require("crypto").webcrypto;
 var Cryptography = new _Cryptography(webcrypto);
