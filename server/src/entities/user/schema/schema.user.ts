@@ -13,12 +13,8 @@ const userSchema = new mongoose.Schema({
 userSchema.pre("save", async function (next): Promise<any> {
   const user: any = this;
   var hash;
-  if (!user.isModified("password") && !user.isModified("email")) {
+  if (!user.isModified("password")) {
     return next();
-  }
-  if (user.isModified("email")) {
-    hash = await Cryptography.getShaHash(user.email);
-    user.email = hash;
   }
   if (user.isModified("password")) {
     hash = await Cryptography.getShaHash(user.password);

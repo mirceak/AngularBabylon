@@ -72,6 +72,9 @@ export class ServiceAuth {
 
   async register(postData): Promise<any> {
     return new Promise(async (resolve, reject) => {
+      postData.email = await this.serviceApi.Cryptography.getShaHash(
+        postData.email
+      )
       var firstRsaKeys = await this.serviceApi.Cryptography.generateRsaKeys(
         'jwk'
       );

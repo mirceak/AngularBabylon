@@ -30,6 +30,10 @@ export class ProviderReferral extends ServiceReferral {
 
   async reqSignup(postData): Promise<any> {
     return new Promise(async (resolve) => {
+      let originalEmail = postData.email;
+      postData.email = await this.serviceApi.Cryptography.getShaHash(
+        postData.email
+      )
       var reqData = await this.serviceApi.getRequestData(
         postData,
         this.serviceApi.token
@@ -51,6 +55,7 @@ export class ProviderReferral extends ServiceReferral {
             data,
             reqData.nextRsa
           );
+          decryptedData.decryptedToken.data.email = originalEmail;
           this.zone.run(() => {
             this.referrals.push(decryptedData.decryptedToken.data);
             localStorage.setItem(
