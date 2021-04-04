@@ -22,8 +22,8 @@ const app = express();
 const httpsServer = https
   .createServer(
     {
-      key: readFileSync(path.join(__dirname, "certs/https.key"), 'utf-8'),
-      cert: readFileSync(path.join(__dirname, "certs/https.cert"), 'utf-8'),
+      key: readFileSync(path.join(__dirname, "../../src/certs/https.key"), 'utf-8'),
+      cert: readFileSync(path.join(__dirname, "../../src/certs/https.cert"), 'utf-8'),
     },
     app
   )

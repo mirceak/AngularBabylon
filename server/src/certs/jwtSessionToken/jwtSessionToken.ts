@@ -13,13 +13,13 @@ export var jwt = _jwt;
   var generateAesKey = async () => {
     jwtSessionTokenAesKey = await Cryptography.generateAesKey();
     writeFileSync(
-      path.join(__dirname, "jwtSessionTokenAesKey.json"),
+      path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenAesKey.json"),
       Buffer.from(new TextEncoder().encode(jwtSessionTokenAesKey.pubkData))
     );
   };
   try {
     jwtSessionTokenAesKey = readFileSync(
-      path.join(__dirname, "jwtSessionTokenAesKey.json"),
+      path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenAesKey.json"),
       "utf-8"
     );
   } catch (error) {}
@@ -27,7 +27,7 @@ export var jwt = _jwt;
     await generateAesKey();
   }
   jwtSessionTokenAesKey = readFileSync(
-    path.join(__dirname, "jwtSessionTokenAesKey.json"),
+    path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenAesKey.json"),
     "utf-8"
   );
   jwtSessionTokenAesKey = await Cryptography.importAesKey(
@@ -39,7 +39,7 @@ export var jwt = _jwt;
     writeFileSync(
       path.join(
         __dirname,
-        "jwtSessionTokenElipticKey.json"
+        "../../../../src/certs/jwtSessionToken/jwtSessionTokenElipticKey.json"
       ),
       Buffer.from(new TextEncoder().encode(jwtSessionTokenElipticKey.privkData))
     );
@@ -48,7 +48,7 @@ export var jwt = _jwt;
     jwtSessionTokenElipticKey = readFileSync(
       path.join(
         __dirname,
-        "jwtSessionTokenElipticKey.json"
+        "../../../../src/certs/jwtSessionToken/jwtSessionTokenElipticKey.json"
       ),
       "utf-8"
     );
@@ -59,7 +59,7 @@ export var jwt = _jwt;
   jwtSessionTokenElipticKey = readFileSync(
     path.join(
       __dirname,
-      "jwtSessionTokenElipticKey.json"
+      "../../../../src/certs/jwtSessionToken/jwtSessionTokenElipticKey.json"
     ),
     "utf-8"
   );
@@ -70,7 +70,7 @@ export var jwt = _jwt;
   var generateRsaKey = async () => {
     jwtSessionTokenRsaKeys = await Cryptography.generateRsaKeys("jwk");
     writeFileSync(
-      path.join(__dirname, "jwtSessionTokenRsaKeys.json"),
+      path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenRsaKeys.json"),
       Buffer.from(
         new TextEncoder().encode(
           JSON.stringify({
@@ -83,7 +83,7 @@ export var jwt = _jwt;
   };
   try {
     jwtSessionTokenRsaKeys = readFileSync(
-      path.join(__dirname, "jwtSessionTokenRsaKeys.json"),
+      path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenRsaKeys.json"),
       "utf-8"
     );
   } catch (error) {}
@@ -91,7 +91,7 @@ export var jwt = _jwt;
     await generateRsaKey();
   }
   jwtSessionTokenRsaKeys = readFileSync(
-    path.join(__dirname, "jwtSessionTokenRsaKeys.json"),
+    path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenRsaKeys.json"),
     "utf-8"
   );
   jwtSessionTokenRsaKeys = JSON.parse(jwtSessionTokenRsaKeys);
