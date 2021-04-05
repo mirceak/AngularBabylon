@@ -38,9 +38,7 @@ export class ServiceAuth {
         );
         let request;
         try {
-          request = await this.serviceApi.Cryptography.signLoginSessionData(
-            postData
-          );
+          request = await this.signLoginSessionData(postData);
         } catch (e) {
           return reject(null);
         }
@@ -74,7 +72,7 @@ export class ServiceAuth {
     return new Promise(async (resolve, reject) => {
       postData.email = await this.serviceApi.Cryptography.getShaHash(
         postData.email
-      )
+      );
       var firstRsaKeys = await this.serviceApi.Cryptography.generateRsaKeys(
         'jwk'
       );
@@ -90,9 +88,7 @@ export class ServiceAuth {
         );
         let request;
         try {
-          request = await this.serviceApi.Cryptography.signRegisterSessionData(
-            postData
-          );
+          request = await this.signRegisterSessionData(postData);
         } catch (e) {
           return reject(null);
         }
@@ -114,5 +110,181 @@ export class ServiceAuth {
         });
       });
     });
+  }
+
+  public async signLoginSessionData(postData) {
+    var options = {
+      rsaEncryptedAesKey: this.serviceApi.Cryptography.str2ab(
+        postData.rsaEncryptedAesKey
+      ),
+      aesEncrypted: this.serviceApi.Cryptography.str2ab(postData.aesEncrypted),
+      passHash: null,
+      password: postData.password,
+    };
+    var nextRsa = postData.nextRsa;
+    var rsaDecryptedAesKey = null;
+    var aesKey = null;
+    var userHash = null;
+    var fullHash = null;
+    var totalHash = null;
+    var decryptedAes = null;
+    var rsaEncryptedAesKey = null;
+    var finalHash = null;
+    var rsaEncryptedAesKeyHash = null;
+    var cipherMap = null;
+    var aesEncrypted = null;
+
+    options.passHash = await this.serviceApi.Cryptography.getShaHash(
+      postData.password
+    );
+    rsaDecryptedAesKey = await this.serviceApi.Cryptography.rsaDecrypt(
+      options.rsaEncryptedAesKey,
+      postData.firstRsaKeys.privateKey
+    );
+    aesKey = await this.serviceApi.Cryptography.importAesKey(
+      rsaDecryptedAesKey
+    );
+    userHash = await this.serviceApi.Cryptography.getShaHash(
+      postData.firstRsaKeys.pubkData + rsaDecryptedAesKey
+    );
+    fullHash = await this.serviceApi.Cryptography.getShaHash(
+      (await this.serviceApi.Cryptography.getShaHash(options.passHash)) +
+        postData.firstRsaKeys.pubkData +
+        rsaDecryptedAesKey
+    );
+    totalHash = await this.serviceApi.Cryptography.getShaHash(
+      fullHash + userHash
+    );
+    decryptedAes = JSON.parse(
+      await this.serviceApi.Cryptography.aesDecrypt(
+        options.aesEncrypted,
+        aesKey,
+        totalHash
+      )
+    );
+    rsaEncryptedAesKey = await this.serviceApi.Cryptography.getRsaEncryptedAesKey(
+      decryptedAes.secondRsaPubkData
+    );
+    finalHash = await this.serviceApi.Cryptography.getShaHash(
+      totalHash +
+        fullHash +
+        userHash +
+        decryptedAes.secondRsaPubkData +
+        this.serviceApi.Cryptography.ab2str(rsaEncryptedAesKey.encryptedAes)
+    );
+    rsaEncryptedAesKeyHash = await this.serviceApi.Cryptography.getShaHash(
+      this.serviceApi.Cryptography.ab2str(rsaEncryptedAesKey.encryptedAes)
+    );
+    cipherMap = await this.serviceApi.Cryptography.makeCipherMap(
+      [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
+      JSON.stringify({
+        password: options.password,
+        nextRsa: nextRsa.pubkData,
+      })
+    );
+    aesEncrypted = await this.serviceApi.Cryptography.aesEncrypt(
+      JSON.stringify({
+        cipherLock: cipherMap.lock,
+        cipherDataLock: cipherMap.dataLock,
+      }),
+      rsaEncryptedAesKey.aesKey,
+      finalHash
+    );
+    return {
+      sessionJwt: decryptedAes.sessionJwt,
+      aesEncrypted: this.serviceApi.Cryptography.ab2str(
+        aesEncrypted.ciphertext
+      ),
+      rsaEncryptedAesKey: this.serviceApi.Cryptography.ab2str(
+        rsaEncryptedAesKey.encryptedAes
+      ),
+    };
+  }
+
+  public async signRegisterSessionData(postData) {
+    var options = {
+      rsaEncryptedAesKey: this.serviceApi.Cryptography.str2ab(
+        postData.rsaEncryptedAesKey
+      ),
+      aesEncrypted: this.serviceApi.Cryptography.str2ab(postData.aesEncrypted),
+      referralEmail: postData.referralEmail,
+      referralCode: postData.referralCode,
+      password: postData.password,
+      email: postData.email,
+    };
+    var nextRsa = postData.nextRsa;
+    var aesKey = null;
+    var userHash = null;
+    var fullHash = null;
+    var totalHash = null;
+    var decryptedAes = null;
+    var rsaEncryptedAesKey = null;
+    var finalHash = null;
+    var rsaEncryptedAesKeyHash = null;
+    var cipherMap = null;
+    var aesEncrypted = null;
+    var rsaDecryptedAesKey = await this.serviceApi.Cryptography.rsaDecrypt(
+      options.rsaEncryptedAesKey,
+      postData.firstRsaKeys.privateKey
+    );
+    aesKey = await this.serviceApi.Cryptography.importAesKey(
+      rsaDecryptedAesKey
+    );
+    userHash = await this.serviceApi.Cryptography.getShaHash(
+      postData.firstRsaKeys.pubkData + rsaDecryptedAesKey
+    );
+    fullHash = await this.serviceApi.Cryptography.getShaHash(
+      (await this.serviceApi.Cryptography.getShaHash(options.referralEmail)) +
+        (await this.serviceApi.Cryptography.getShaHash(options.referralCode)) +
+        postData.firstRsaKeys.pubkData +
+        rsaDecryptedAesKey
+    );
+    totalHash = await this.serviceApi.Cryptography.getShaHash(
+      fullHash + userHash
+    );
+    decryptedAes = JSON.parse(
+      await this.serviceApi.Cryptography.aesDecrypt(
+        options.aesEncrypted,
+        aesKey,
+        totalHash
+      )
+    );
+    rsaEncryptedAesKey = await this.serviceApi.Cryptography.getRsaEncryptedAesKey(
+      decryptedAes.secondRsaPubkData
+    );
+    finalHash = await this.serviceApi.Cryptography.getShaHash(
+      totalHash +
+        fullHash +
+        userHash +
+        decryptedAes.secondRsaPubkData +
+        this.serviceApi.Cryptography.ab2str(rsaEncryptedAesKey.encryptedAes)
+    );
+    rsaEncryptedAesKeyHash = await this.serviceApi.Cryptography.getShaHash(
+      this.serviceApi.Cryptography.ab2str(rsaEncryptedAesKey.encryptedAes)
+    );
+    cipherMap = await this.serviceApi.Cryptography.makeCipherMap(
+      [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
+      JSON.stringify({
+        password: options.password,
+        nextRsa: nextRsa.pubkData,
+      })
+    );
+    aesEncrypted = await this.serviceApi.Cryptography.aesEncrypt(
+      JSON.stringify({
+        cipherLock: cipherMap.lock,
+        cipherDataLock: cipherMap.dataLock,
+      }),
+      rsaEncryptedAesKey.aesKey,
+      finalHash
+    );
+    return {
+      sessionJwt: decryptedAes.sessionJwt,
+      aesEncrypted: this.serviceApi.Cryptography.ab2str(
+        aesEncrypted.ciphertext
+      ),
+      rsaEncryptedAesKey: this.serviceApi.Cryptography.ab2str(
+        rsaEncryptedAesKey.encryptedAes
+      ),
+    };
   }
 }

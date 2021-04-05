@@ -1,7 +1,7 @@
 import { readFileSync } from 'fs';
 import * as https from 'https';
 
-import { jwtSessionToken, Cryptography, jwt } from './certs/jwtSessionToken/jwtSessionToken';
+import { jwtSessionToken, jwt } from './certs/jwtSessionToken/jwtSessionToken';
 import { Server } from 'socket.io';
 import Identity from './entities/identity/schema/schema.identity';
 import MailBox from './entities/mailBox/schema/schema.mailBox';
@@ -32,7 +32,7 @@ io.on('connection', async (socket: any) => {
   console.log('client connected to socket');
   socket.on('identification', async (data) => {
     var sessionJwt = await jwt.verify(data.sessionJwt, jwtSessionToken.jwtSessionTokenElipticKey, { algorithms: ['ES512'] });
-    sessionJwt = await Cryptography.parseJwtSessionToken(sessionJwt.sessionJwt, jwtSessionToken, jwt);
+    sessionJwt = await utils.parseJwtSessionToken(sessionJwt.sessionJwt, jwtSessionToken, jwt);
     socket.identity = sessionJwt.identity._id;
     var user:any = await Identity.SchemaIdentity.findOne({
       _id: socket.identity

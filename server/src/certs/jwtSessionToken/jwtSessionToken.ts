@@ -6,6 +6,7 @@ const webcrypto = require("crypto").webcrypto;
 export var jwtSessionToken: any = {};
 export var Cryptography: _Cryptography = new _Cryptography(webcrypto);
 export var jwt = _jwt;
+export var getRandomValues = webcrypto.getRandomValues;
 (async () => {
   var jwtSessionTokenAesKey;
   var jwtSessionTokenElipticKey;

@@ -2,6 +2,7 @@ import BaseController from "../../../controllers/base/base.controller";
 import UserService from "../service/service.user";
 import ReferralService from "../../referral/service/service.referral";
 import IdentityService from "../../identity/service/service.identity";
+import utils from "../../../controllers/utils";
 import {
   jwtSessionToken,
   Cryptography,
@@ -21,11 +22,7 @@ class ControllerUser extends BaseController {
 
       req.body.user = user;
       res.send(
-        await Cryptography.generateLoginSessionData(
-          jwtSessionToken,
-          req.body,
-          jwt
-        )
+        await this.generateLoginSessionData(jwtSessionToken, req.body, jwt)
       );
     });
   };
@@ -37,7 +34,7 @@ class ControllerUser extends BaseController {
       mailBox: [],
     });
     req.body.identity = identity;
-    var validatedSessionData = await Cryptography.validateLoginSessionData(
+    var validatedSessionData = await this.validateLoginSessionData(
       jwtSessionToken,
       req.body,
       jwt
@@ -65,11 +62,7 @@ class ControllerUser extends BaseController {
         }
         req.body.referral = referral;
         res.send(
-          await Cryptography.generateRegisterSessionData(
-            jwtSessionToken,
-            req.body,
-            jwt
-          )
+          await this.generateRegisterSessionData(jwtSessionToken, req.body, jwt)
         );
       }
     );
@@ -85,7 +78,7 @@ class ControllerUser extends BaseController {
     req.body.identity = identity;
     var validatedSessionData;
     try {
-      validatedSessionData = await Cryptography.validateRegisterSessionData(
+      validatedSessionData = await this.validateRegisterSessionData(
         jwtSessionToken,
         req.body,
         jwt
@@ -136,6 +129,241 @@ class ControllerUser extends BaseController {
       }
     );
   };
+
+  async validateRegisterSessionData(jwtSessionToken, postData, jwt) {
+    var nextRsa = postData.nextRsa;
+    var finalHash = null;
+    var rsaDecryptedAesKey = null;
+    var aesKey = null;
+    var aesDecrypted = null;
+    var cipherMap = null;
+    var rsaEncryptedAesKeyHash = null;
+    var cipherData = null;
+    var json = null;
+    postData.aesEncrypted = Cryptography.str2ab(postData.aesEncrypted);
+    postData.rsaEncryptedAesKey = Cryptography.str2ab(
+      postData.rsaEncryptedAesKey
+    );
+    postData.sessionJwt = await utils.parseJwtSessionToken(
+      postData.sessionJwt,
+      jwtSessionToken,
+      jwt
+    );
+    postData.sessionJwt.rsaKeyPriv = await Cryptography.importRsaKey(
+      postData.sessionJwt.rsaKeyPriv
+    );
+    finalHash = await Cryptography.getShaHash(
+      postData.sessionJwt.totalHash +
+        postData.sessionJwt.fullHash +
+        postData.sessionJwt.userHash +
+        postData.sessionJwt.rsaKeyPub +
+        Cryptography.ab2str(postData.rsaEncryptedAesKey)
+    );
+    rsaDecryptedAesKey = await Cryptography.rsaDecrypt(
+      postData.rsaEncryptedAesKey,
+      postData.sessionJwt.rsaKeyPriv
+    );
+    aesKey = await Cryptography.importAesKey(rsaDecryptedAesKey);
+    aesDecrypted = await Cryptography.aesDecrypt(
+      postData.aesEncrypted,
+      aesKey,
+      finalHash
+    );
+    cipherMap = JSON.parse(aesDecrypted);
+    cipherMap = {
+      lock: Cryptography.fromString(cipherMap.cipherLock),
+      dataLock: Cryptography.fromString(cipherMap.cipherDataLock),
+    };
+    rsaEncryptedAesKeyHash = await Cryptography.getShaHash(
+      Cryptography.ab2str(postData.rsaEncryptedAesKey)
+    );
+    cipherData = Cryptography.unlock(cipherMap, [
+      finalHash,
+      postData.sessionJwt.userHash,
+      postData.sessionJwt.fullHash,
+      postData.sessionJwt.totalHash,
+      rsaEncryptedAesKeyHash,
+    ]);
+    json = JSON.parse(cipherData);
+    return {
+      nextRsa: json.nextRsa,
+      json: json,
+      sessionJwt: await utils.signJwtSessionToken(
+        {
+          identity: postData.identity,
+          rsaKeyPriv: nextRsa.privkData,
+          rsaKeyPub: nextRsa.pubkData,
+        },
+        jwtSessionToken,
+        jwt
+      ),
+    };
+  }
+  async validateLoginSessionData(jwtSessionToken, postData, jwt) {
+    var finalHash = null;
+    var rsaDecryptedAesKey = null;
+    var aesKey = null;
+    var aesDecrypted = null;
+    var cipherMap = null;
+    var rsaEncryptedAesKeyHash = null;
+    var cipherData = null;
+    var json = null;
+    var passHash = null;
+    var nextRsa = await Cryptography.generateRsaKeys("jwk");
+    postData.aesEncrypted = Cryptography.str2ab(postData.aesEncrypted);
+    postData.rsaEncryptedAesKey = Cryptography.str2ab(
+      postData.rsaEncryptedAesKey
+    );
+    postData.sessionJwt = await utils.parseJwtSessionToken(
+      postData.sessionJwt,
+      jwtSessionToken,
+      jwt
+    );
+    postData.sessionJwt.rsaKeyPriv = await Cryptography.importRsaKey(
+      postData.sessionJwt.rsaKeyPriv
+    );
+    finalHash = await Cryptography.getShaHash(
+      postData.sessionJwt.totalHash +
+        postData.sessionJwt.fullHash +
+        postData.sessionJwt.userHash +
+        postData.sessionJwt.rsaKeyPub +
+        Cryptography.ab2str(postData.rsaEncryptedAesKey)
+    );
+    rsaDecryptedAesKey = await Cryptography.rsaDecrypt(
+      postData.rsaEncryptedAesKey,
+      postData.sessionJwt.rsaKeyPriv
+    );
+    aesKey = await Cryptography.importAesKey(rsaDecryptedAesKey);
+    aesDecrypted = await Cryptography.aesDecrypt(
+      postData.aesEncrypted,
+      aesKey,
+      finalHash
+    );
+    cipherMap = JSON.parse(aesDecrypted);
+    cipherMap = {
+      lock: Cryptography.fromString(cipherMap.cipherLock),
+      dataLock: Cryptography.fromString(cipherMap.cipherDataLock),
+    };
+    rsaEncryptedAesKeyHash = await Cryptography.getShaHash(
+      Cryptography.ab2str(postData.rsaEncryptedAesKey)
+    );
+    cipherData = Cryptography.unlock(cipherMap, [
+      finalHash,
+      postData.sessionJwt.userHash,
+      postData.sessionJwt.fullHash,
+      postData.sessionJwt.totalHash,
+      rsaEncryptedAesKeyHash,
+    ]);
+    json = JSON.parse(cipherData);
+    passHash = await Cryptography.getShaHash(json.password);
+    if (passHash == postData.sessionJwt.password) {
+      return {
+        nextRsa: json.nextRsa,
+        token: await jwt.sign(
+          {
+            nextRsa: nextRsa.pubkData,
+            sessionJwt: await utils.signJwtSessionToken(
+              {
+                identity: postData.identity,
+                rsaKeyPriv: nextRsa.privkData,
+                rsaKeyPub: nextRsa.pubkData,
+              },
+              jwtSessionToken,
+              jwt
+            ),
+          },
+          jwtSessionToken.jwtSessionTokenElipticKey,
+          { algorithm: "ES512" }
+        ),
+      };
+    }
+  }
+  async generateRegisterSessionData(jwtSessionToken, postData, jwt) {
+    var rsaPubkData = postData.rsaPubkData;
+    var rsaEncryptedAesKey = null;
+    var userHash = null;
+    var fullHash = null;
+    var totalHash = null;
+    var aesEncrypted = null;
+    var nextRsa = await Cryptography.generateRsaKeys("jwk");
+    rsaEncryptedAesKey = await Cryptography.getRsaEncryptedAesKey(rsaPubkData);
+    userHash = await Cryptography.getShaHash(
+      rsaPubkData + rsaEncryptedAesKey.aesPubkData
+    );
+    fullHash = await Cryptography.getShaHash(
+      (await Cryptography.getShaHash(postData.referralEmail)) +
+        (await Cryptography.getShaHash(postData.referral.code)) +
+        rsaPubkData +
+        rsaEncryptedAesKey.aesPubkData
+    );
+    totalHash = await Cryptography.getShaHash(fullHash + userHash);
+    aesEncrypted = await Cryptography.aesEncrypt(
+      JSON.stringify({
+        secondRsaPubkData: nextRsa.pubkData,
+        sessionJwt: await utils.signJwtSessionToken(
+          {
+            email: postData.email,
+            totalHash: totalHash,
+            fullHash: fullHash,
+            userHash: userHash,
+            rsaKeyPriv: nextRsa.privkData,
+            rsaKeyPub: nextRsa.pubkData,
+          },
+          jwtSessionToken,
+          jwt
+        ),
+      }),
+      rsaEncryptedAesKey.aesKey,
+      totalHash
+    );
+    return {
+      rsaEncryptedAesKey: Cryptography.ab2str(rsaEncryptedAesKey.encryptedAes),
+      aesEncrypted: Cryptography.ab2str(aesEncrypted.ciphertext),
+    };
+  }
+  async generateLoginSessionData(jwtSessionToken, postData, jwt) {
+    var rsaPubkData = postData.rsaPubkData;
+    var rsaEncryptedAesKey = null;
+    var userHash = null;
+    var fullHash = null;
+    var totalHash = null;
+    var aesEncrypted = null;
+    var nextRsa = await Cryptography.generateRsaKeys("jwk");
+    rsaEncryptedAesKey = await Cryptography.getRsaEncryptedAesKey(rsaPubkData);
+    userHash = await Cryptography.getShaHash(
+      rsaPubkData + rsaEncryptedAesKey.aesPubkData
+    );
+    fullHash = await Cryptography.getShaHash(
+      (await Cryptography.getShaHash(postData.user.password)) +
+        rsaPubkData +
+        rsaEncryptedAesKey.aesPubkData
+    );
+    totalHash = await Cryptography.getShaHash(fullHash + userHash);
+    aesEncrypted = await Cryptography.aesEncrypt(
+      JSON.stringify({
+        secondRsaPubkData: nextRsa.pubkData,
+        sessionJwt: await utils.signJwtSessionToken(
+          {
+            email: postData.user.email,
+            password: postData.user.password,
+            totalHash: totalHash,
+            fullHash: fullHash,
+            userHash: userHash,
+            rsaKeyPriv: nextRsa.privkData,
+            rsaKeyPub: nextRsa.pubkData,
+          },
+          jwtSessionToken,
+          jwt
+        ),
+      }),
+      rsaEncryptedAesKey.aesKey,
+      totalHash
+    );
+    return {
+      rsaEncryptedAesKey: Cryptography.ab2str(rsaEncryptedAesKey.encryptedAes),
+      aesEncrypted: Cryptography.ab2str(aesEncrypted.ciphertext),
+    };
+  }
 
   getRouter() {
     super.registerRoute("/login").post(this.login);
