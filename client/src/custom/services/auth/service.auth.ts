@@ -177,7 +177,7 @@ export class ServiceAuth {
     );
     cipherMap = await this.serviceApi.Cryptography.makeCipherMap(
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
-      JSON.stringify({
+      JSON.stringify({ 
         password: options.password,
         nextRsa: nextRsa.pubkData,
       })
@@ -186,6 +186,7 @@ export class ServiceAuth {
       JSON.stringify({
         cipherLock: cipherMap.lock,
         cipherDataLock: cipherMap.dataLock,
+        cipherOutput: cipherMap.output,
       }),
       rsaEncryptedAesKey.aesKey,
       finalHash
@@ -273,6 +274,7 @@ export class ServiceAuth {
       JSON.stringify({
         cipherLock: cipherMap.lock,
         cipherDataLock: cipherMap.dataLock,
+        cipherOutput: cipherMap.output,
       }),
       rsaEncryptedAesKey.aesKey,
       finalHash

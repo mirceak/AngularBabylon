@@ -96,9 +96,6 @@ var signJwtSessionToken = async (postData, jwtSessionToken, jwt) => {
     jwtSessionToken.jwtSessionTokenElipticKey,
     { algorithm: "ES512" }
   );
-  console.log(
-    getRandomValues(new Uint32Array(1)).reduce((total, val) => total + val, 0) / Math.pow(2, 32)
-  );
   aesIv = Cryptography.ab2str(getRandomValues(new Uint8Array(12)));
   rsaEncryptedAesIv = await Cryptography.rsaEncrypt(
     aesIv,

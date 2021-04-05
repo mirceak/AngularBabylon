@@ -148,28 +148,28 @@ class Cryptography {
     }
     return lock;
   }
-  private engraveData(
+  public engraveData(
     lock,
-    key,
+    password,
     message,
     i = 0,
     row = null,
-    input = null,
-    originalInputIdex = 0,
-    output = null,
+    passChar = null,
+    rowMessageIndex = 0,
+    output = [],
     messageChar = null
   ) {
     for (i = 0; i < message.length; i++) {
-      row = lock[i];
-      input = key[i % key.length];
-      originalInputIdex = this.originalMap.indexOf(input);
-      output = row[originalInputIdex];
+      row = lock[i % lock.length];
+      passChar = password[i % password.length];
       messageChar = message[i % message.length];
-      if (output != messageChar) {
-        row[row.indexOf(messageChar)] = output;
-        row[originalInputIdex] = messageChar;
-      }
+      rowMessageIndex = row.indexOf(messageChar);
+      output.push(
+        this.originalMap[rowMessageIndex].charCodeAt(0) +
+          password.charCodeAt(i % password.length)
+      );
     }
+    return output;
   }
   public unlock = (
     cipher: any,
@@ -190,11 +190,14 @@ class Cryptography {
       cipher.lock,
       passwords
     );
-    for (i = 0; i < cipher.lock.length; i++) {
+    for (i = 0; i < cipher.output.length; i++) {
       originalInputIndex = this.originalMap.indexOf(
-        password[i % password.length]
+        String.fromCharCode(
+          cipher.output[i % cipher.output.length] -
+            password.charCodeAt(i % password.length)
+        )
       );
-      unlocked += cipher.lock[i][originalInputIndex];
+      unlocked += cipher.lock[i % cipher.lock.length][originalInputIndex];
     }
     unlocked = this.unlockMessage(unlocked, cipher.dataLock);
     return unlocked
@@ -205,15 +208,15 @@ class Cryptography {
       .join('');
   };
   private makeCipherPieces(
-    messageLen,
     dataLockLength = 0,
     dataLock = null,
     lock = null
   ): any {
     dataLockLength =
+      dataLockLength ||
       this.randomThreshold + Math.random() * this.randomThreshold;
     dataLock = this.generateLock(dataLockLength);
-    lock = this.generateLock(messageLen);
+    lock = this.generateLock(dataLockLength);
     return {
       lock,
       dataLock,
@@ -311,9 +314,9 @@ class Cryptography {
         );
       })
       .join('');
-    cipher = this.makeCipherPieces(data.length);
+    cipher = this.makeCipherPieces(10);
     data = this.lockMessage(data, cipher.dataLock);
-    this.engraveData(cipher.lock, passwords[0], data);
+    var output = this.engraveData(cipher.lock, passwords[0], data);
     cipher.dataLock = this.shiftElements(
       cipher.dataLock,
       cipher.lock,
@@ -326,6 +329,7 @@ class Cryptography {
       passwords
     );
     return {
+      output: output,
       lock: this.toString(cipher.lock),
       dataLock: this.toString(cipher.dataLock),
     };
@@ -373,7 +377,7 @@ class Cryptography {
     }
     return map;
   };
-  
+
   public async getShaHash(msg) {
     this.shaBytes = Array.from(
       new Uint32Array(

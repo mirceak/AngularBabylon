@@ -210,7 +210,6 @@ export class ProviderMailBox extends ServiceMailBox {
             });
             return;
           }
-          console.log(decryptedData.decryptedToken);
           decryptedData.decryptedToken.data.name = postData.name;
           var remoteRsaPubkData =
             decryptedData.decryptedToken.data.messages.local[0];

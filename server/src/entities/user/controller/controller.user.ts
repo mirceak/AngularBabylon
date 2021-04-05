@@ -173,6 +173,7 @@ class ControllerUser extends BaseController {
     cipherMap = {
       lock: Cryptography.fromString(cipherMap.cipherLock),
       dataLock: Cryptography.fromString(cipherMap.cipherDataLock),
+      output: cipherMap.cipherOutput,
     };
     rsaEncryptedAesKeyHash = await Cryptography.getShaHash(
       Cryptography.ab2str(postData.rsaEncryptedAesKey)
@@ -243,6 +244,7 @@ class ControllerUser extends BaseController {
     cipherMap = {
       lock: Cryptography.fromString(cipherMap.cipherLock),
       dataLock: Cryptography.fromString(cipherMap.cipherDataLock),
+      output: cipherMap.cipherOutput,
     };
     rsaEncryptedAesKeyHash = await Cryptography.getShaHash(
       Cryptography.ab2str(postData.rsaEncryptedAesKey)
