@@ -36,6 +36,9 @@ export default defineComponent({
         this.messages.push(
           ...mailBox.messages.local
             .concat(mailBox.messages.remote)
+            .filter((mailbox)=>{
+              return mailbox.timeStamp != null;
+            })
             .sort((a, b) => {
               return a.timeStamp - b.timeStamp;
             })

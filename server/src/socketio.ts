@@ -37,13 +37,8 @@ const io = new Server(httpsSocketServer, {
 io.on("connection", async (socket: any) => {
   console.log("client connected to socket");
   socket.on("identification", async (data) => {
-    var sessionJwt = await jwt.verify(
+    var sessionJwt = await utils.parseJwtSessionToken(
       data.sessionJwt,
-      jwtSessionToken.jwtSessionTokenElipticKey,
-      { algorithms: ["ES512"] }
-    );
-    sessionJwt = await utils.parseJwtSessionToken(
-      sessionJwt.sessionJwt,
       jwtSessionToken,
       jwt
     );

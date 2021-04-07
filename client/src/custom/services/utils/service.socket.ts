@@ -31,7 +31,7 @@ export class ServiceSocket {
     });
     this.socket.on('connect', () => {
       this.socket.emit('identification', {
-        sessionJwt: localStorage.getItem('token'),
+        sessionJwt: this.serviceApi.token.value.sessionJwt,
       });
     });
     this.socket.on('verification', async (data) => {
