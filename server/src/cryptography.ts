@@ -169,7 +169,7 @@ class Cryptography {
           password.charCodeAt(i % password.length)
       );
     }
-    return output;
+    return output.join(',');
   }
   public degraveData(lock, output, password) {
     var originalInputIndex = 0;
@@ -204,7 +204,7 @@ class Cryptography {
       cipher.lock,
       passwords
     );
-    unlocked = this.degraveData(cipher.lock, cipher.output.join(','), password);
+    unlocked = this.degraveData(cipher.lock, cipher.output, password);
     unlocked = this.unlockMessage(unlocked, cipher.dataLock);
     return unlocked
       .split("")

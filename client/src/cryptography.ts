@@ -151,7 +151,7 @@ class Cryptography {
   public engraveData(
     lock,
     password,
-    message,
+    message: string,
     i = 0,
     row = null,
     passChar = null,
@@ -169,20 +169,21 @@ class Cryptography {
           password.charCodeAt(i % password.length)
       );
     }
-    return output;
+    return output.join(',');
   }
-  public degraveData(cipher, password) {
+  public degraveData(lock, output, password) {
     var originalInputIndex = 0;
     var i;
     var unlocked = "";
-    for (i = 0; i < cipher.output.length; i++) {
+    output = output.split(',');
+    for (i = 0; i < output.length; i++) {
       originalInputIndex = this.originalMap.indexOf(
         String.fromCharCode(
-          cipher.output[i % cipher.output.length] -
+          output[i % output.length] -
             password.charCodeAt(i % password.length)
         )
       );
-      unlocked += cipher.lock[i % cipher.lock.length][originalInputIndex];
+      unlocked += lock[i % lock.length][originalInputIndex];
     }
     return unlocked;
   }
@@ -203,7 +204,7 @@ class Cryptography {
       cipher.lock,
       passwords
     );
-    unlocked = this.degraveData(cipher, password);
+    unlocked = this.degraveData(cipher.lock, cipher.output, password);
     unlocked = this.unlockMessage(unlocked, cipher.dataLock);
     return unlocked
       .split("")
