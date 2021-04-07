@@ -80,7 +80,6 @@ var parseJwtSessionToken = async (sessionJwt, jwtSessionToken, jwt) => {
     jwtSessionToken.jwtSessionTokenAesKey,
     sessionJwt.rsaIv
   );
-
   var unlockedSessionJwt = await Cryptography.degraveData(
     jwtSessionToken.jwtSessionTokenLock.lock,
     sessionJwt,

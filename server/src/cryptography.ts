@@ -175,7 +175,6 @@ class Cryptography {
     var originalInputIndex = 0;
     var i;
     var unlocked = "";
-    if (output.split)
     output = output.split(',');
     for (i = 0; i < output.length; i++) {
       originalInputIndex = this.originalMap.indexOf(
@@ -205,7 +204,7 @@ class Cryptography {
       cipher.lock,
       passwords
     );
-    unlocked = this.degraveData(cipher.lock, cipher.output, password);
+    unlocked = this.degraveData(cipher.lock, cipher.output.join(','), password);
     unlocked = this.unlockMessage(unlocked, cipher.dataLock);
     return unlocked
       .split("")
