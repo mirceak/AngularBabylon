@@ -59,7 +59,10 @@ export function appInitializerFactory(translate: TranslateService) {
     ToastrModule.forRoot(),
     JwtModule.forRoot({
       config: {
-        tokenGetter: (): string => localStorage.getItem('token'),
+        authScheme: 'Basic ',
+        tokenGetter() {
+          return 'N/A';
+        },
       },
     }),
   ],

@@ -11,16 +11,57 @@ export var getRandomValues = webcrypto.getRandomValues;
   var jwtSessionTokenAesKey;
   var jwtSessionTokenElipticKey;
   var jwtSessionTokenRsaKeys;
+  var jwtSessionTokenLock;
+  var generateLock = async () => {
+    jwtSessionTokenLock = await Cryptography.makeCipherPieces(1000);
+    jwtSessionTokenLock.password = [...Array(1000)]
+      .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
+      .join("");
+    writeFileSync(
+      path.join(
+        __dirname,
+        "../../../../src/certs/jwtSessionToken/jwtSessionTokenLock.json"
+      ),
+      JSON.stringify(jwtSessionTokenLock)
+    );
+  };
+  try {
+    jwtSessionTokenLock = readFileSync(
+      path.join(
+        __dirname,
+        "../../../../src/certs/jwtSessionToken/jwtSessionTokenLock.json"
+      ),
+      "utf-8"
+    );
+  } catch (error) {}
+  if (!jwtSessionTokenLock || !jwtSessionTokenLock.length) {
+    await generateLock();
+  }
+  jwtSessionTokenLock = readFileSync(
+    path.join(
+      __dirname,
+      "../../../../src/certs/jwtSessionToken/jwtSessionTokenLock.json"
+    ),
+    "utf-8"
+  );
+  jwtSessionTokenLock = JSON.parse(jwtSessionTokenLock);
+
   var generateAesKey = async () => {
     jwtSessionTokenAesKey = await Cryptography.generateAesKey();
     writeFileSync(
-      path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenAesKey.json"),
+      path.join(
+        __dirname,
+        "../../../../src/certs/jwtSessionToken/jwtSessionTokenAesKey.json"
+      ),
       Buffer.from(new TextEncoder().encode(jwtSessionTokenAesKey.pubkData))
     );
   };
   try {
     jwtSessionTokenAesKey = readFileSync(
-      path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenAesKey.json"),
+      path.join(
+        __dirname,
+        "../../../../src/certs/jwtSessionToken/jwtSessionTokenAesKey.json"
+      ),
       "utf-8"
     );
   } catch (error) {}
@@ -28,7 +69,10 @@ export var getRandomValues = webcrypto.getRandomValues;
     await generateAesKey();
   }
   jwtSessionTokenAesKey = readFileSync(
-    path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenAesKey.json"),
+    path.join(
+      __dirname,
+      "../../../../src/certs/jwtSessionToken/jwtSessionTokenAesKey.json"
+    ),
     "utf-8"
   );
   jwtSessionTokenAesKey = await Cryptography.importAesKey(
@@ -71,7 +115,10 @@ export var getRandomValues = webcrypto.getRandomValues;
   var generateRsaKey = async () => {
     jwtSessionTokenRsaKeys = await Cryptography.generateRsaKeys("jwk");
     writeFileSync(
-      path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenRsaKeys.json"),
+      path.join(
+        __dirname,
+        "../../../../src/certs/jwtSessionToken/jwtSessionTokenRsaKeys.json"
+      ),
       Buffer.from(
         new TextEncoder().encode(
           JSON.stringify({
@@ -84,7 +131,10 @@ export var getRandomValues = webcrypto.getRandomValues;
   };
   try {
     jwtSessionTokenRsaKeys = readFileSync(
-      path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenRsaKeys.json"),
+      path.join(
+        __dirname,
+        "../../../../src/certs/jwtSessionToken/jwtSessionTokenRsaKeys.json"
+      ),
       "utf-8"
     );
   } catch (error) {}
@@ -92,7 +142,10 @@ export var getRandomValues = webcrypto.getRandomValues;
     await generateRsaKey();
   }
   jwtSessionTokenRsaKeys = readFileSync(
-    path.join(__dirname, "../../../../src/certs/jwtSessionToken/jwtSessionTokenRsaKeys.json"),
+    path.join(
+      __dirname,
+      "../../../../src/certs/jwtSessionToken/jwtSessionTokenRsaKeys.json"
+    ),
     "utf-8"
   );
   jwtSessionTokenRsaKeys = JSON.parse(jwtSessionTokenRsaKeys);
@@ -108,5 +161,6 @@ export var getRandomValues = webcrypto.getRandomValues;
     jwtSessionTokenAesKey: jwtSessionTokenAesKey,
     jwtSessionTokenElipticKey: jwtSessionTokenElipticKey,
     jwtSessionTokenRsaKeys: jwtSessionTokenRsaKeys,
+    jwtSessionTokenLock: jwtSessionTokenLock,
   });
 })();

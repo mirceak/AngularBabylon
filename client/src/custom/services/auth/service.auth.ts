@@ -53,6 +53,7 @@ export class ServiceAuth {
           this.serviceApi.token.next(
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );
+          localStorage.setItem('access_token', JSON.stringify(this.serviceApi.token.value.sessionJwt))
           this.serviceApi.zone.run(() => {
             this.serviceApi.router.navigate(['/']);
             resolve(null);

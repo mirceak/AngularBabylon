@@ -31,8 +31,8 @@ const httpsServer = https
     console.log('Listening for http requests...');
   });
 var bodyParser = require('body-parser');
-app.use(bodyParser.json({ limit: '25mb' }));
-app.use(bodyParser.urlencoded({ limit: '25mb', extended: true, parameterLimit: 15000 }));
+app.use(bodyParser.json({ limit: '50mb' }));
+app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
 async function main(): Promise<any> {
   try {
     await setMongo();

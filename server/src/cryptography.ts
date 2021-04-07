@@ -1,118 +1,118 @@
 class Cryptography {
   private letters: Array<string> = [
-    'a',
-    'b',
-    'c',
-    'd',
-    'e',
-    'f',
-    'g',
-    'h',
-    'i',
-    'j',
-    'k',
-    'l',
-    'm',
-    'n',
-    'o',
-    'p',
-    'q',
-    'r',
-    's',
-    't',
-    'u',
-    'v',
-    'w',
-    'x',
-    'y',
-    'z',
-    'A',
-    'B',
-    'C',
-    'D',
-    'E',
-    'F',
-    'G',
-    'H',
-    'I',
-    'J',
-    'K',
-    'L',
-    'M',
-    'N',
-    'O',
-    'P',
-    'Q',
-    'R',
-    'S',
-    'T',
-    'U',
-    'V',
-    'W',
-    'X',
-    'Y',
-    'Z',
+    "a",
+    "b",
+    "c",
+    "d",
+    "e",
+    "f",
+    "g",
+    "h",
+    "i",
+    "j",
+    "k",
+    "l",
+    "m",
+    "n",
+    "o",
+    "p",
+    "q",
+    "r",
+    "s",
+    "t",
+    "u",
+    "v",
+    "w",
+    "x",
+    "y",
+    "z",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z",
   ];
   private numbers: Array<string> = [
-    '0',
-    '1',
-    '2',
-    '3',
-    '4',
-    '5',
-    '6',
-    '7',
-    '8',
-    '9',
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
   ];
   private characters: Array<string> = [
-    '~',
-    '`',
-    '!',
-    '@',
-    '#',
-    '$',
-    '%',
-    '^',
-    '&',
-    '*',
-    '(',
-    ')',
-    '_',
-    '+',
-    '-',
-    '=',
-    ',',
-    '<',
-    '>',
-    '.',
-    '/',
-    '?',
-    '[',
-    ']',
-    '{',
-    '}',
-    ';',
-    ':',
-    '\\',
-    '|',
+    "~",
+    "`",
+    "!",
+    "@",
+    "#",
+    "$",
+    "%",
+    "^",
+    "&",
+    "*",
+    "(",
+    ")",
+    "_",
+    "+",
+    "-",
+    "=",
+    ",",
+    "<",
+    ">",
+    ".",
+    "/",
+    "?",
+    "[",
+    "]",
+    "{",
+    "}",
+    ";",
+    ":",
+    "\\",
+    "|",
     '"',
     "'",
-    ' ',
+    " ",
   ];
   private fakeCharacters: Array<string> = [
-    '♈',
-    '♉',
-    '♊',
-    '♋',
-    '♌',
-    '♍',
-    '♎',
-    '♏',
-    '♐',
-    '♑',
-    '♒',
-    '♓',
+    "♈",
+    "♉",
+    "♊",
+    "♋",
+    "♌",
+    "♍",
+    "♎",
+    "♏",
+    "♐",
+    "♑",
+    "♒",
+    "♓",
   ];
 
   constructor(private webcrypto: any) {}
@@ -151,7 +151,7 @@ class Cryptography {
   public engraveData(
     lock,
     password,
-    message,
+    message: string,
     i = 0,
     row = null,
     passChar = null,
@@ -171,13 +171,28 @@ class Cryptography {
     }
     return output;
   }
+  public degraveData(lock, output, password) {
+    var originalInputIndex = 0;
+    var i;
+    var unlocked = "";
+    if (output.split)
+    output = output.split(',');
+    for (i = 0; i < output.length; i++) {
+      originalInputIndex = this.originalMap.indexOf(
+        String.fromCharCode(
+          output[i % output.length] -
+            password.charCodeAt(i % password.length)
+        )
+      );
+      unlocked += lock[i % lock.length][originalInputIndex];
+    }
+    return unlocked;
+  }
   public unlock = (
     cipher: any,
     passwords,
-    unlocked = '',
-    password = passwords[0],
-    i = 0,
-    originalInputIndex = 0
+    unlocked = "",
+    password = passwords[0]
   ): string => {
     cipher.dataLock = this.unShiftElements(
       cipher.dataLock,
@@ -190,24 +205,16 @@ class Cryptography {
       cipher.lock,
       passwords
     );
-    for (i = 0; i < cipher.output.length; i++) {
-      originalInputIndex = this.originalMap.indexOf(
-        String.fromCharCode(
-          cipher.output[i % cipher.output.length] -
-            password.charCodeAt(i % password.length)
-        )
-      );
-      unlocked += cipher.lock[i % cipher.lock.length][originalInputIndex];
-    }
+    unlocked = this.degraveData(cipher.lock, cipher.output, password);
     unlocked = this.unlockMessage(unlocked, cipher.dataLock);
     return unlocked
-      .split('')
+      .split("")
       .filter((current) => {
         return this.fakeCharacters.indexOf(current) == -1;
       })
-      .join('');
+      .join("");
   };
-  private makeCipherPieces(
+  public makeCipherPieces(
     dataLockLength = 0,
     dataLock = null,
     lock = null
@@ -215,7 +222,7 @@ class Cryptography {
     dataLockLength =
       dataLockLength ||
       this.randomThreshold + Math.random() * this.randomThreshold;
-    dataLock = this.generateLock(dataLockLength);
+    dataLock = this.generateLock(Math.max(10, dataLockLength / 10));
     lock = this.generateLock(dataLockLength);
     return {
       lock,
@@ -300,7 +307,7 @@ class Cryptography {
     cipher = null
   ): Promise<any> => {
     data = data
-      .split('')
+      .split("")
       .map((current) => {
         return (
           current +
@@ -310,10 +317,10 @@ class Cryptography {
             ? this.fakeCharacters[
                 Math.floor(Math.random() * (this.fakeCharacters.length - 1))
               ]
-            : '')
+            : "")
         );
       })
-      .join('');
+      .join("");
     cipher = this.makeCipherPieces(10);
     data = this.lockMessage(data, cipher.dataLock);
     var output = this.engraveData(cipher.lock, passwords[0], data);
@@ -337,7 +344,7 @@ class Cryptography {
   private lockMessage(
     message: string,
     lock: string[][],
-    locked = '',
+    locked = "",
     i = 0
   ): string {
     for (i = 0; i < message.length; i++) {
@@ -348,7 +355,7 @@ class Cryptography {
   public unlockMessage = (
     message: string,
     lock: string[][],
-    unlocked = '',
+    unlocked = "",
     i = 0
   ): string => {
     for (i = 0; i < message.length; i++) {
@@ -381,20 +388,20 @@ class Cryptography {
   public async getShaHash(msg) {
     this.shaBytes = Array.from(
       new Uint32Array(
-        await this.webcrypto.subtle.digest('SHA-512', this.te.encode(msg))
+        await this.webcrypto.subtle.digest("SHA-512", this.te.encode(msg))
       )
     );
     this.shaBytes = this.shaBytes.map((byte) => {
-      return ('00' + byte.toString(32)).slice(-2);
+      return ("00" + byte.toString(32)).slice(-2);
     });
-    this.shaHash = this.shaBytes.join('');
+    this.shaHash = this.shaBytes.join("");
     return this.shaHash;
   }
   public toString = (lock: string[][], result = null): string => {
     result = lock.reduce((total, current) => {
-      total += current.join('');
+      total += current.join("");
       return total;
-    }, '');
+    }, "");
     return result;
   };
   public fromString = (string: string, result = [], i = 0): string[][] => {
@@ -411,7 +418,7 @@ class Cryptography {
   public async rsaEncrypt(plaintext, key, encrypted = null) {
     encrypted = await this.webcrypto.subtle.encrypt(
       {
-        name: 'RSA-OAEP',
+        name: "RSA-OAEP",
       },
       key,
       this.te.encode(plaintext)
@@ -421,12 +428,12 @@ class Cryptography {
   public async aesEncrypt(
     plaintext,
     key,
-    iv = 'someRandomIvThatNeedsChanging',
+    iv = "someRandomIvThatNeedsChanging",
     ciphertext = null
   ) {
     ciphertext = await this.webcrypto.subtle.encrypt(
       {
-        name: 'AES-GCM',
+        name: "AES-GCM",
         iv: this.te.encode(iv),
       },
       key,
@@ -440,7 +447,7 @@ class Cryptography {
   public async rsaDecrypt(ciphertext, key, plaintext = null) {
     plaintext = await this.webcrypto.subtle.decrypt(
       {
-        name: 'RSA-OAEP',
+        name: "RSA-OAEP",
       },
       key,
       ciphertext
@@ -450,7 +457,7 @@ class Cryptography {
   public async aesDecrypt(ciphertext, key, iv, plaintext = null) {
     plaintext = await this.webcrypto.subtle.decrypt(
       {
-        name: 'AES-GCM',
+        name: "AES-GCM",
         iv: this.te.encode(iv),
       },
       key,
@@ -461,15 +468,15 @@ class Cryptography {
   public async generateRsaKeys(format, keys = null) {
     keys = await this.webcrypto.subtle.generateKey(
       {
-        name: 'RSA-OAEP',
+        name: "RSA-OAEP",
         modulusLength: 2048,
         publicExponent: new Uint8Array([1, 0, 1]),
         hash: {
-          name: 'SHA-512',
+          name: "SHA-512",
         },
       },
       true,
-      ['encrypt', 'decrypt']
+      ["encrypt", "decrypt"]
     );
     return {
       publicKey: keys.publicKey,
@@ -485,75 +492,75 @@ class Cryptography {
   public async generateElipticKey(keys = null) {
     keys = await this.webcrypto.subtle.generateKey(
       {
-        name: 'ECDSA',
-        namedCurve: 'P-521',
+        name: "ECDSA",
+        namedCurve: "P-521",
       },
       true,
-      ['sign', 'verify']
+      ["sign", "verify"]
     );
     return {
       privkData: JSON.stringify(
-        await this.webcrypto.subtle.exportKey('jwk', keys.privateKey)
+        await this.webcrypto.subtle.exportKey("jwk", keys.privateKey)
       ),
     };
   }
   public async importElipticKey(data, pub = false, key = null) {
     key = await this.webcrypto.subtle.importKey(
-      'jwk',
+      "jwk",
       JSON.parse(data),
       {
-        name: 'ECDSA',
-        namedCurve: 'P-521',
+        name: "ECDSA",
+        namedCurve: "P-521",
       },
       true,
-      [pub ? 'verify' : 'sign']
+      [pub ? "verify" : "sign"]
     );
-    return await this.webcrypto.subtle.exportKey('node.keyObject', key);
+    return await this.webcrypto.subtle.exportKey("node.keyObject", key);
   }
   public async generateAesKey(key = null) {
     key = await this.webcrypto.subtle.generateKey(
       {
-        name: 'AES-GCM',
+        name: "AES-GCM",
         length: 256,
       },
       true,
-      ['encrypt', 'decrypt']
+      ["encrypt", "decrypt"]
     );
     return {
       publicKey: key,
       privateKey: key,
-      pubkData: (await this.webcrypto.subtle.exportKey('jwk', key)).k,
+      pubkData: (await this.webcrypto.subtle.exportKey("jwk", key)).k,
     };
   }
   public async importRsaKey(keyData, pub = false, key = null) {
     key = await this.webcrypto.subtle.importKey(
-      'jwk',
+      "jwk",
       JSON.parse(keyData),
       {
-        name: 'RSA-OAEP',
-        hash: 'SHA-512',
+        name: "RSA-OAEP",
+        hash: "SHA-512",
       },
       true,
-      [pub ? 'encrypt' : 'decrypt']
+      [pub ? "encrypt" : "decrypt"]
     );
     return key;
   }
-  public async importAesKey(keyData, format = 'jwk', key = null) {
+  public async importAesKey(keyData, format = "jwk", key = null) {
     key = await this.webcrypto.subtle.importKey(
       format,
       {
-        key_ops: ['encrypt', 'decrypt'],
+        key_ops: ["encrypt", "decrypt"],
         ext: true,
-        kty: 'oct',
+        kty: "oct",
         k: keyData,
-        alg: 'A256GCM',
+        alg: "A256GCM",
       },
       {
-        name: 'AES-GCM',
+        name: "AES-GCM",
         length: 256,
       },
       true,
-      ['encrypt', 'decrypt']
+      ["encrypt", "decrypt"]
     );
     return key;
   }
@@ -588,7 +595,7 @@ class Cryptography {
       .map((curent) => {
         return String.fromCharCode(curent);
       })
-      .join('');
+      .join("");
   }
 }
 
