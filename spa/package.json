@@ -10,7 +10,7 @@
     "serve": "^11.3.0",
     "single-spa": "^5.1.0",
     "html-webpack-plugin": "^5.3.1",
-    "webpack": "^5.27.0",
+    "webpack": "^5.31.0",
     "webpack-cli": "^4.5.0"
   },
   "scripts": {
