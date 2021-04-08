@@ -150,6 +150,7 @@ class Cryptography {
   }
   public engraveData(
     lock,
+    dataLock,
     password,
     message: string,
     i = 0,
@@ -159,6 +160,8 @@ class Cryptography {
     output = [],
     messageChar = null
   ) {
+    lock = JSON.parse(JSON.stringify(lock));
+    dataLock = JSON.parse(JSON.stringify(dataLock));
     for (i = 0; i < message.length; i++) {
       row = lock[i % lock.length];
       passChar = password[i % password.length];
@@ -168,22 +171,29 @@ class Cryptography {
         this.originalMap[rowMessageIndex].charCodeAt(0) +
           password.charCodeAt(i % password.length)
       );
+      if (i % lock.length == 0) {
+        lock = this.lockMap(lock, dataLock);
+      }
     }
-    return output.join(',');
+    return output.join(",");
   }
-  public degraveData(lock, output, password) {
+  public degraveData(lock, dataLock, output, password) {
     var originalInputIndex = 0;
     var i;
     var unlocked = "";
-    output = output.split(',');
+    lock = JSON.parse(JSON.stringify(lock));
+    dataLock = JSON.parse(JSON.stringify(dataLock));
+    output = output.split(",");
     for (i = 0; i < output.length; i++) {
       originalInputIndex = this.originalMap.indexOf(
         String.fromCharCode(
-          output[i % output.length] -
-            password.charCodeAt(i % password.length)
+          output[i % output.length] - password.charCodeAt(i % password.length)
         )
       );
       unlocked += lock[i % lock.length][originalInputIndex];
+      if (i % lock.length == 0) {
+        lock = this.lockMap(lock, dataLock);
+      }
     }
     return unlocked;
   }
@@ -204,7 +214,12 @@ class Cryptography {
       cipher.lock,
       passwords
     );
-    unlocked = this.degraveData(cipher.lock, cipher.output, password);
+    unlocked = this.degraveData(
+      cipher.lock,
+      cipher.dataLock,
+      cipher.output,
+      password
+    );
     unlocked = this.unlockMessage(unlocked, cipher.dataLock);
     return unlocked
       .split("")
@@ -322,7 +337,12 @@ class Cryptography {
       .join("");
     cipher = this.makeCipherPieces(10);
     data = this.lockMessage(data, cipher.dataLock);
-    var output = this.engraveData(cipher.lock, passwords[0], data);
+    var output = this.engraveData(
+      cipher.lock,
+      cipher.dataLock,
+      passwords[0],
+      data
+    );
     cipher.dataLock = this.shiftElements(
       cipher.dataLock,
       cipher.lock,

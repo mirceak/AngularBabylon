@@ -82,8 +82,9 @@ var parseJwtSessionToken = async (sessionJwt, jwtSessionToken, jwt) => {
   );
   var unlockedSessionJwt = await Cryptography.degraveData(
     jwtSessionToken.jwtSessionTokenLock.lock,
+    jwtSessionToken.jwtSessionTokenLock.dataLock,
     sessionJwt,
-    jwtSessionToken.jwtSessionTokenLock.password
+    jwtSessionToken.jwtSessionTokenLock.password[0]
   );
   return await jwt.verify(
     unlockedSessionJwt,
@@ -108,7 +109,8 @@ var signJwtSessionToken = async (postData, jwtSessionToken, jwt) => {
   );
   var lockedSessionJwtToken = await Cryptography.engraveData(
     jwtSessionToken.jwtSessionTokenLock.lock,
-    jwtSessionToken.jwtSessionTokenLock.password,
+    jwtSessionToken.jwtSessionTokenLock.dataLock,
+    jwtSessionToken.jwtSessionTokenLock.password[0],
     sessionJwtToken
   );
   aesEncryptedJwtToken = await Cryptography.aesEncrypt(

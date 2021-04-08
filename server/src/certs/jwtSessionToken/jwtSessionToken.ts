@@ -43,7 +43,7 @@ export var getRandomValues = webcrypto.getRandomValues;
       "../../../../src/certs/jwtSessionToken/jwtSessionTokenLock.json"
     ),
     "utf-8"
-  );
+  );;
   jwtSessionTokenLock = JSON.parse(jwtSessionTokenLock);
 
   var generateAesKey = async () => {
