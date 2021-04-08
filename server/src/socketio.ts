@@ -37,11 +37,18 @@ const io = new Server(httpsSocketServer, {
 io.on("connection", async (socket: any) => {
   console.log("client connected to socket");
   socket.on("identification", async (data) => {
-    var sessionJwt = await utils.parseJwtSessionToken(
-      data.sessionJwt,
-      jwtSessionToken,
-      jwt
-    );
+    var sessionJwt;
+    try {
+      sessionJwt = await utils.parseJwtSessionToken(
+        data.sessionJwt,
+        jwtSessionToken,
+        jwt
+      );
+    } catch (e) {
+      return socket.emit("error", {
+        message: "services.auth.badJwt",
+      });
+    }
     socket.identity = sessionJwt.identity._id;
     var user: any = await Identity.SchemaIdentity.findOne({
       _id: socket.identity,

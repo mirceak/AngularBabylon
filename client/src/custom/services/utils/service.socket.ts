@@ -4,6 +4,7 @@ import * as socketIO from 'socket.io-client';
 
 import { ServiceApi } from './service.api';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
+import { ServiceAuth } from '../auth/service.auth';
 
 @Injectable({
   providedIn: 'root',
@@ -33,6 +34,16 @@ export class ServiceSocket {
       this.socket.emit('identification', {
         sessionJwt: this.serviceApi.token.value.sessionJwt,
       });
+    });
+    this.socket.on('error', (error) => {
+      this.serviceApi.serviceModals.showToast({
+        status: 'error',
+        statusMessage: this.serviceApi.translate.instant(
+          'components.toastr.error'
+        ),
+        title: this.serviceApi.translate.instant(error.message),
+      });
+      this.serviceApi.logout();
     });
     this.socket.on('verification', async (data) => {
       data.clientMsgId = Date.now().toString();

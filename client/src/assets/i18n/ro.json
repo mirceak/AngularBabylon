@@ -111,6 +111,7 @@
   },
   "services": {
     "auth": {
+      "badJwt": "Sesiunea a expirat",
       "confirmLogout": "Vei fi delogat!"
     },
     "guards": {

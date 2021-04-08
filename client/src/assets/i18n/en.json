@@ -111,6 +111,7 @@
   },
   "services": {
     "auth": {
+      "badJwt": "Your session has expired",
       "confirmLogout": "You will be logged out!"
     },
     "guards": {

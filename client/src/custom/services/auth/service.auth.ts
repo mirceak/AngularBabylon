@@ -16,6 +16,11 @@ export class ServiceAuth {
       this.loggedIn = true;
       this.serviceApi.token.next(this.serviceApi.jwtHelper.decodeToken(_token));
     }
+    this.serviceApi.token.subscribe((token) => {
+      if (token == null) {
+        this.logout(false);
+      }
+    });
   }
 
   async login(postData): Promise<any> {
@@ -53,7 +58,10 @@ export class ServiceAuth {
           this.serviceApi.token.next(
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );
-          localStorage.setItem('access_token', JSON.stringify(this.serviceApi.token.value.sessionJwt))
+          localStorage.setItem(
+            'access_token',
+            JSON.stringify(this.serviceApi.token.value.sessionJwt)
+          );
           this.serviceApi.zone.run(() => {
             this.serviceApi.router.navigate(['/']);
             resolve(null);
@@ -63,10 +71,12 @@ export class ServiceAuth {
     });
   }
 
-  logout(): void {
+  logout(resetToken = true): void {
     localStorage.clear();
     this.loggedIn = false;
-    this.serviceApi.loggedOut.next(null);
+    if (resetToken) {
+      this.serviceApi.loggedOut.next(null);
+    }
   }
 
   async register(postData): Promise<any> {
@@ -178,7 +188,7 @@ export class ServiceAuth {
     );
     cipherMap = await this.serviceApi.Cryptography.makeCipherMap(
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
-      JSON.stringify({ 
+      JSON.stringify({
         password: options.password,
         nextRsa: nextRsa.pubkData,
       })
