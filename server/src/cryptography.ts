@@ -197,12 +197,7 @@ class Cryptography {
     }
     return unlocked;
   }
-  public unlock = (
-    cipher: any,
-    passwords,
-    unlocked = "",
-    password = passwords[0]
-  ): string => {
+  public unlock = (cipher: any, passwords, unlocked = ""): string => {
     cipher.dataLock = this.unShiftElements(
       cipher.dataLock,
       cipher.lock,
@@ -218,7 +213,9 @@ class Cryptography {
       cipher.lock,
       cipher.dataLock,
       cipher.output,
-      password
+      passwords.reduce((total, current) => {
+        return total + current;
+      }, "")
     );
     unlocked = this.unlockMessage(unlocked, cipher.dataLock);
     return unlocked
@@ -340,7 +337,9 @@ class Cryptography {
     var output = this.engraveData(
       cipher.lock,
       cipher.dataLock,
-      passwords[0],
+      passwords.reduce((total, current) => {
+        return total + current;
+      }, ""),
       data
     );
     cipher.dataLock = this.shiftElements(
