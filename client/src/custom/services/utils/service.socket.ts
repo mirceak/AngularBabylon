@@ -43,7 +43,7 @@ export class ServiceSocket {
         ),
         title: this.serviceApi.translate.instant(error.message),
       });
-      this.serviceApi.logout();
+      this.serviceApi.loggedOut.next(null);
     });
     this.socket.on('verification', async (data) => {
       data.clientMsgId = Date.now().toString();

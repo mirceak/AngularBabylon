@@ -72,7 +72,8 @@ export class ServiceAuth {
   }
 
   logout(resetToken = true): void {
-    localStorage.clear();
+    localStorage.clear();    
+    console.log(5);
     this.loggedIn = false;
     if (resetToken) {
       this.serviceApi.loggedOut.next(null);

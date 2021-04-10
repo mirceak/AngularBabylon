@@ -161,7 +161,6 @@ class Cryptography {
     messageChar = null
   ) {
     lock = JSON.parse(JSON.stringify(lock));
-    dataLock = JSON.parse(JSON.stringify(dataLock));
     for (i = 0; i < message.length; i++) {
       row = lock[i % lock.length];
       passChar = password[i % password.length];
@@ -182,7 +181,6 @@ class Cryptography {
     var i;
     var unlocked = "";
     lock = JSON.parse(JSON.stringify(lock));
-    dataLock = JSON.parse(JSON.stringify(dataLock));
     output = output.split(",");
     for (i = 0; i < output.length; i++) {
       originalInputIndex = this.originalMap.indexOf(
