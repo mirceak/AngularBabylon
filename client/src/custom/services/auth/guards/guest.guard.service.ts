@@ -22,7 +22,7 @@ export class GuestGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (this.serviceAuth.loggedIn) {
+    if (this.serviceAuth.serviceApi.loggedIn.value) {
       this.router.navigate(['/']);
       this.serviceModals.showToast({
         status: 'error',

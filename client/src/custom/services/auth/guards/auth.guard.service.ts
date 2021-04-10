@@ -22,7 +22,7 @@ export class AuthGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (!this.serviceAuth.loggedIn) {
+    if (!this.serviceAuth.serviceApi.loggedIn.value) {
       this.router.navigate(['/auth/login']);
       this.serviceModals.showToast({
         status: 'error',

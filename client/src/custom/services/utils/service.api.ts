@@ -13,6 +13,7 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class ServiceApi {
   lang = 'en';
 
+  public loggedIn = new BehaviorSubject<any>(null);
   public loggedOut = new Subject();
   public token = new BehaviorSubject<any>(null);
   public Cryptography: _Cryptography = new _Cryptography(window.crypto);

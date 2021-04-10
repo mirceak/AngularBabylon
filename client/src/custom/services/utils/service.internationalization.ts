@@ -9,7 +9,9 @@ import { TranslateService } from '@ngx-translate/core';
 export class ServiceInternationalization {
   lang = 'en';
 
-  constructor(private http: HttpClient, public translate: TranslateService) {}
+  constructor(private http: HttpClient, public translate: TranslateService) {
+    
+  }
 
   setLanguage($event) {
     this.lang = $event.value;

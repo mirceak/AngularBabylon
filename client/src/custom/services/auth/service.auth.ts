@@ -6,14 +6,13 @@ import { ServiceApi } from '../utils/service.api';
   providedIn: 'root',
 })
 export class ServiceAuth {
-  public loggedIn = false;
   constructor(
     private ProviderUser: ProviderUser,
-    private serviceApi: ServiceApi
+    public serviceApi: ServiceApi
   ) {
     var _token = localStorage.getItem('token');
     if (_token) {
-      this.loggedIn = true;
+      this.serviceApi.loggedIn.next(true);
       this.serviceApi.token.next(this.serviceApi.jwtHelper.decodeToken(_token));
     }
     this.serviceApi.token.subscribe((token) => {
@@ -53,7 +52,7 @@ export class ServiceAuth {
             postData.nextRsa,
             false
           );
-          this.loggedIn = true;
+          this.serviceApi.loggedIn.next(true);
           localStorage.setItem('token', decrypted.decryptedToken);
           this.serviceApi.token.next(
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
@@ -74,7 +73,7 @@ export class ServiceAuth {
   logout(resetToken = true): void {
     localStorage.clear();    
     console.log(5);
-    this.loggedIn = false;
+    this.serviceApi.loggedIn.next(false);
     if (resetToken) {
       this.serviceApi.loggedOut.next(null);
     }
@@ -110,7 +109,7 @@ export class ServiceAuth {
             postData.nextRsa,
             false
           );
-          this.loggedIn = true;
+          this.serviceApi.loggedIn.next(true);
           localStorage.setItem('token', decrypted.decryptedToken);
           this.serviceApi.token.next(
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
