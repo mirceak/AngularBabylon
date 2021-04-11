@@ -29,7 +29,7 @@ export class ServiceHttp implements HttpInterceptor {
             statusMessage: this.serviceApi.translate.instant(
               'components.toastr.error'
             ),
-            title: this.serviceApi.translate.instant(res.error.message),
+            title: this.serviceApi.translate.instant(res.error?.message || 'services.error'),
           });
 
           return of(res);

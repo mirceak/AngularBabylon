@@ -110,6 +110,7 @@
     }
   },
   "services": {
+    "error": "Eroare de server! Va rugam sa incercati din nou!",
     "auth": {
       "badJwt": "Sesiunea a expirat",
       "confirmLogout": "Vei fi delogat!"

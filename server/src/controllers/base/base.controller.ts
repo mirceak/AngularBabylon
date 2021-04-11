@@ -13,6 +13,18 @@ abstract class BaseController {
     return this._getRouter().route(route);
   }
 
+  getSafeMethod(method) {
+    return async function () {
+      try {
+        await method(...arguments);
+      } catch (e) {
+        return arguments[1].status(500).send({
+          message: "services.error",
+        });
+      }
+    };
+  }
+
   registerRoute(route) {
     this.routes.push(route);
     return this._getRouter().route(route);

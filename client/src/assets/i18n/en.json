@@ -110,6 +110,7 @@
     }
   },
   "services": {
+    "error": "Server error! Please try again!",
     "auth": {
       "badJwt": "Your session has expired",
       "confirmLogout": "You will be logged out!"

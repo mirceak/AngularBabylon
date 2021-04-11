@@ -80,9 +80,9 @@ class ControllerMailBox extends BaseController {
   };
 
   getRouter() {
-    super.registerProtectedRoute("/setMailBox").post(this.setMailBox);
-    super.registerProtectedRoute("/getMailBox").post(this.getMailBox);
-    super.registerProtectedRoute("/reqMailBox").post(this.reqMailBox);
+    super.registerProtectedRoute("/setMailBox").post(this.getSafeMethod(this.setMailBox));
+    super.registerProtectedRoute("/getMailBox").post(this.getSafeMethod(this.getMailBox));
+    super.registerProtectedRoute("/reqMailBox").post(this.getSafeMethod(this.reqMailBox));
     return super._getRouter();
   }
 }

@@ -23,7 +23,7 @@ class ControllerReferral extends BaseController {
   };
 
   getRouter() {
-    super.registerProtectedRoute("/reqSignup").post(this.requestSignupData);
+    super.registerProtectedRoute("/reqSignup").post(this.getSafeMethod(this.requestSignupData));
     return super._getRouter();
   }
 }

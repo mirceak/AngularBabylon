@@ -368,10 +368,12 @@ class ControllerUser extends BaseController {
   }
 
   getRouter() {
-    super.registerRoute("/login").post(this.login);
-    super.registerRoute("/preRegister").post(this.preRegister);
-    super.registerRoute("/preLogin").post(this.preLogin);
-    super.registerRoute("/register").post(this.register);
+    super.registerRoute("/login").post(this.getSafeMethod(this.login));
+    super
+      .registerRoute("/preRegister")
+      .post(this.getSafeMethod(this.preRegister));
+    super.registerRoute("/preLogin").post(this.getSafeMethod(this.preLogin));
+    super.registerRoute("/register").post(this.getSafeMethod(this.register));
     return super._getRouter();
   }
 }
