@@ -178,7 +178,7 @@ class ControllerUser extends BaseController {
     rsaEncryptedAesKeyHash = await Cryptography.getShaHash(
       Cryptography.ab2str(postData.rsaEncryptedAesKey)
     );
-    cipherData = Cryptography.unlock(cipherMap, [
+    cipherData = Cryptography.unlockCipherMap(cipherMap, [
       finalHash,
       postData.sessionJwt.userHash,
       postData.sessionJwt.fullHash,
@@ -249,7 +249,7 @@ class ControllerUser extends BaseController {
     rsaEncryptedAesKeyHash = await Cryptography.getShaHash(
       Cryptography.ab2str(postData.rsaEncryptedAesKey)
     );
-    cipherData = Cryptography.unlock(cipherMap, [
+    cipherData = Cryptography.unlockCipherMap(cipherMap, [
       finalHash,
       postData.sessionJwt.userHash,
       postData.sessionJwt.fullHash,

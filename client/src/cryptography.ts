@@ -114,8 +114,20 @@ class Cryptography {
     "♒",
     "♓",
   ];
+  fakeCheck =
+    this.fakeCharacters.length >= 10
+      ? undefined
+      : (() => {
+          throw new Error("Fake characters should have a min length of 10");
+        })();
 
   constructor(private webcrypto: any) {}
+
+  private originalMapNoFakes: string[] = [
+    ...this.letters,
+    ...this.numbers,
+    ...this.characters,
+  ];
 
   private originalMap: string[] = [
     ...this.letters,
@@ -160,6 +172,36 @@ class Cryptography {
     output = [],
     messageChar = null
   ) {
+    message = message
+      .split("")
+      .map((current, index) => {
+        const passChar = password[index % password.length].charCodeAt(0);
+        const messageChar = message[index % message.length].charCodeAt(0);
+        var diff1 = (
+          Math.max(passChar, messageChar) - Math.min(passChar, messageChar)
+        ).toString();
+        if (+diff1 >= 10) {
+          diff1 = diff1.charAt(1);
+        }
+        var diff2;
+        if (+diff1 >= 100) {
+          diff2 = diff1.charAt(2);
+        } else {
+          diff2 = 10 - +diff1;
+        }
+        return (
+          current +
+          ((Math.random() < 0.2 && Math.random() % 2 == 0) ||
+          (Math.random() > 0.8 && Math.random() % 3 == 0) ||
+          (Math.random() > 0.4 && Math.random() < 0.6)
+            ? this.fakeCharacters
+                .slice(Math.min(+diff1, +diff2), Math.max(+diff1, +diff2))
+                .join("")
+            : "")
+        );
+      })
+      .join("");
+    message = this.lockMessage(message, dataLock);
     lock = JSON.parse(JSON.stringify(lock));
     for (i = 0; i < message.length; i++) {
       row = lock[i % lock.length];
@@ -193,9 +235,15 @@ class Cryptography {
         lock = this.lockMap(lock, dataLock);
       }
     }
-    return unlocked;
+    unlocked = this.unlockMessage(unlocked, dataLock);
+    return unlocked
+      .split("")
+      .filter((current) => {
+        return this.originalMapNoFakes.indexOf(current) !== -1;
+      })
+      .join("");
   }
-  public unlock = (cipher: any, passwords, unlocked = ""): string => {
+  public unlockCipherMap = (cipher: any, passwords, unlocked = ""): string => {
     cipher.dataLock = this.unShiftElements(
       cipher.dataLock,
       cipher.lock,
@@ -215,13 +263,7 @@ class Cryptography {
         return total + current;
       }, "")
     );
-    unlocked = this.unlockMessage(unlocked, cipher.dataLock);
-    return unlocked
-      .split("")
-      .filter((current) => {
-        return this.fakeCharacters.indexOf(current) == -1;
-      })
-      .join("");
+    return unlocked;
   };
   public makeCipherPieces(
     dataLockLength = 0,
@@ -315,23 +357,7 @@ class Cryptography {
     data: string,
     cipher = null
   ): Promise<any> => {
-    data = data
-      .split("")
-      .map((current) => {
-        return (
-          current +
-          ((Math.random() < 0.2 && Math.random() % 2 == 0) ||
-          (Math.random() > 0.8 && Math.random() % 3 == 0) ||
-          (Math.random() > 0.4 && Math.random() < 0.6)
-            ? this.fakeCharacters[
-                Math.floor(Math.random() * (this.fakeCharacters.length - 1))
-              ]
-            : "")
-        );
-      })
-      .join("");
     cipher = this.makeCipherPieces(10);
-    data = this.lockMessage(data, cipher.dataLock);
     var output = this.engraveData(
       cipher.lock,
       cipher.dataLock,
