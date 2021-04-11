@@ -64,6 +64,7 @@
       "secret": "Secret",
       "chat": "Converseaza prin cutie postala",
       "accept": "Accepta Invitatia",
+      "badCode": "Coduri invalide, incercati din nou!",
       "chatInfo": "Converseaza cu un contact secret",
       "talk": "Vorbeste",
       "created": "O noua cutie postala a fost creeata!",

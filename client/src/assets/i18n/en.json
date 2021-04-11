@@ -66,6 +66,7 @@
       "accept": "Accept MailBox",
       "chatInfo": "Chat With Your Secret Connection",
       "talk": "Talk",
+      "badCode": "Invalid codes, please try again!",
       "created": "Created new mail box!",
       "accepted": "Accepted mail box!",
       "accepting": "Accepting mail box!",

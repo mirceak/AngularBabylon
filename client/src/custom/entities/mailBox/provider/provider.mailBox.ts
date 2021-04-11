@@ -123,6 +123,8 @@ export class ProviderMailBox extends ServiceMailBox {
             localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
             resolve(null);
           });
+        }).catch((e)=>{
+          //res status 500 server error
         });
     });
   }
