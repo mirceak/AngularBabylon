@@ -39,14 +39,14 @@ abstract class BaseController {
       this.router = express.Router();
       this.router.use(
         ["*"],
-        async (req, res, next) => {
-          if (this.protectedRoutes.indexOf(req._parsedUrl.pathname) === -1){
+        this.getSafeMethod(async (req, res, next) => {
+          if (this.protectedRoutes.indexOf(req._parsedUrl.pathname) === -1) {
             return next();
           }
           var reqData: any = await utils.getRequestData(req.body);
           req.decryptedData = reqData.decryptedData;
           req.sessionJwt = reqData.sessionJwt;
-          req.send = async (data, res) => {
+          req.send = this.getSafeMethod(async (data, res) => {
             var encryptedResponse = await utils.encryptResponseData(
               reqData,
               data
@@ -55,9 +55,9 @@ abstract class BaseController {
               rsaEncryptedAes: encryptedResponse.rsaEncryptedAes,
               aesEncrypted: encryptedResponse.aesEncrypted,
             });
-          };
+          });
           next();
-        }
+        })
       );
       this.router
         .route("/" + this.Entity.apiPaths.pathNamePlural)
