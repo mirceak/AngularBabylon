@@ -27,13 +27,6 @@ class ControllerUser extends BaseController {
     });
   };
   login = async (req, res) => {
-    var identity: any = await IdentityService.create({
-      secret: [...Array(128)]
-        .map((i) => (~~(Math.random() * 36)).toString(36))
-        .join(""),
-      mailBox: [],
-    });
-    req.body.identity = identity;
     var validatedSessionData = await this.validateLoginSessionData(
       jwtSessionToken,
       req.body,
@@ -69,13 +62,6 @@ class ControllerUser extends BaseController {
   };
   register = async (req, res) => {
     req.body.nextRsa = await Cryptography.generateRsaKeys("jwk");
-    var identity: any = await IdentityService.create({
-      secret: [...Array(128)]
-        .map((i) => (~~(Math.random() * 36)).toString(36))
-        .join(""),
-      mailBox: [],
-    });
-    req.body.identity = identity;
     var validatedSessionData;
     try {
       validatedSessionData = await this.validateRegisterSessionData(
@@ -106,6 +92,7 @@ class ControllerUser extends BaseController {
         var aesEncrypted = await Cryptography.aesEncrypt(
           await jwt.sign(
             {
+              lockedPin: false,
               nextRsa: req.body.nextRsa.pubkData,
               sessionJwt: validatedSessionData.sessionJwt,
             },
@@ -186,12 +173,22 @@ class ControllerUser extends BaseController {
       rsaEncryptedAesKeyHash,
     ]);
     json = JSON.parse(cipherData);
+    var identity: any = await IdentityService.create({
+      secret: [...Array(128)]
+        .map((i) => (~~(Math.random() * 36)).toString(36))
+        .join(""),
+      mailBox: [],
+      password: json.password,
+      pin: [...Array(4)]
+        .map((i) => Math.min(9, Math.floor(Math.random() * 10)))
+        .join(""),
+    });
     return {
       nextRsa: json.nextRsa,
       json: json,
       sessionJwt: await utils.signJwtSessionToken(
         {
-          identity: postData.identity,
+          identity: identity,
           rsaKeyPriv: nextRsa.privkData,
           rsaKeyPub: nextRsa.pubkData,
         },
@@ -257,6 +254,17 @@ class ControllerUser extends BaseController {
       rsaEncryptedAesKeyHash,
     ]);
     json = JSON.parse(cipherData);
+    var identity: any = await IdentityService.create({
+      secret: [...Array(128)]
+        .map((i) => (~~(Math.random() * 36)).toString(36))
+        .join(""),
+      mailBox: [],
+      password: json.password,
+      pin: [...Array(4)]
+        .map((i) => Math.min(9, Math.floor(Math.random() * 10)))
+        .join(""),
+    });
+    identity.lockedPin = false;
     passHash = await Cryptography.getShaHash(json.password);
     if (passHash == postData.sessionJwt.password) {
       return {
@@ -264,9 +272,10 @@ class ControllerUser extends BaseController {
         token: await jwt.sign(
           {
             nextRsa: nextRsa.pubkData,
+            lockedPin: false,
             sessionJwt: await utils.signJwtSessionToken(
               {
-                identity: postData.identity,
+                identity: identity,
                 rsaKeyPriv: nextRsa.privkData,
                 rsaKeyPub: nextRsa.pubkData,
               },

@@ -17,6 +17,10 @@
       "label": "Password",
       "placeholder": "Enter a password"
     },
+    "pin": {
+      "label": "Pin",
+      "placeholder": "Enter a pin"
+    },
     "referralCode": {
       "label": "Referral Code",
       "placeholder": "Enter secret code"
@@ -41,6 +45,9 @@
       "badLogin": "The information is incorrect!",
       "loggingIn": "Logging in!",
       "loggedOut": "You have logged out!"
+    },
+    "login-identity": {
+      "login": "Identity Login"
     },
     "register": {
       "register": "Register",
@@ -120,6 +127,9 @@
       "auth": {
         "message": "You Must Be Logged In!",
         "close": "Close"
+      },
+      "auth-identity": {
+        "message": "Session expired, please enter your pin!"
       },
       "guest": {
         "message": "You Are Already Logged In!",

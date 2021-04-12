@@ -44,7 +44,7 @@
   </mat-form-field>
   <div class="action-bar">
     <a
-      *ngIf="!ProviderUser.currentUser"
+      *ngIf="!ProviderUser.currentUser && !serviceAuth.serviceApi.token.value"
       (click)="onChangeNav()"
       mat-button
       class="split-mat-button"
@@ -55,7 +55,7 @@
       {{ translate.instant("components.nav.login") }}</a
     >
     <a
-      *ngIf="!ProviderUser.currentUser"
+      *ngIf="!ProviderUser.currentUser && !serviceAuth.serviceApi.token.value"
       (click)="onChangeNav()"
       mat-button
       class="split-mat-button"
@@ -65,7 +65,7 @@
       ><mat-icon>follow_the_signs</mat-icon>
       {{ translate.instant("components.nav.register") }}</a
     >
-    <a *ngIf="ProviderUser.currentUser" mat-button (click)="logout()"
+    <a *ngIf="ProviderUser.currentUser || serviceAuth.serviceApi.token.value" mat-button (click)="logout()"
       ><mat-icon>logout</mat-icon>
       {{ translate.instant("components.nav.logout") }}</a
     >

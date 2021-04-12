@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ProviderUser } from '@custom/entities/user/provider/provider.user';
+import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';
 import { ServiceApi } from '../utils/service.api';
 
 @Injectable({
@@ -7,12 +8,12 @@ import { ServiceApi } from '../utils/service.api';
 })
 export class ServiceAuth {
   constructor(
-    private ProviderUser: ProviderUser,
+    public ProviderUser: ProviderUser,
+    public ProviderIdentity: ProviderIdentity,
     public serviceApi: ServiceApi
   ) {
     var _token = localStorage.getItem('token');
     if (_token) {
-      this.serviceApi.loggedIn.next(true);
       this.serviceApi.token.next(this.serviceApi.jwtHelper.decodeToken(_token));
     }
     this.serviceApi.token.subscribe((token) => {
@@ -52,15 +53,11 @@ export class ServiceAuth {
             postData.nextRsa,
             false
           );
-          this.serviceApi.loggedIn.next(true);
-          localStorage.setItem('token', decrypted.decryptedToken);
           this.serviceApi.token.next(
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );
-          localStorage.setItem(
-            'access_token',
-            JSON.stringify(this.serviceApi.token.value.sessionJwt)
-          );
+          localStorage.setItem('token', decrypted.decryptedToken);
+          this.serviceApi.loggedIn.next(true);
           this.serviceApi.zone.run(() => {
             this.serviceApi.router.navigate(['/']);
             resolve(null);

@@ -16,16 +16,15 @@ export class ProviderReferral extends ServiceReferral {
   ) {
     super(http);
 
-    this.referrals = localStorage.getItem('referrals');
-    if (!this.referrals) {
-      this.referrals = '[]';
-      localStorage.setItem('referrals', this.referrals);
-    }
-    this.referrals = JSON.parse(this.referrals);
-
-    this.serviceApi.loggedOut.subscribe(()=>{
+    this.referrals = [];
+    this.serviceApi.loggedOut.subscribe(() => {
       this.referrals.splice(0);
-    })
+    });
+    this.serviceApi.unload.subscribe(() => {
+      Object.assign(this.serviceApi.recycleBin, {
+        referrals: JSON.stringify(this.referrals),
+      });
+    });
   }
 
   async reqSignup(postData): Promise<any> {
@@ -33,7 +32,7 @@ export class ProviderReferral extends ServiceReferral {
       let originalEmail = postData.email;
       postData.email = await this.serviceApi.Cryptography.getShaHash(
         postData.email
-      )
+      );
       var reqData = await this.serviceApi.getRequestData(
         postData,
         this.serviceApi.token
@@ -58,10 +57,6 @@ export class ProviderReferral extends ServiceReferral {
           decryptedData.decryptedToken.data.email = originalEmail;
           this.zone.run(() => {
             this.referrals.push(decryptedData.decryptedToken.data);
-            localStorage.setItem(
-              'referrals',
-              JSON.stringify(this.referrals)
-            );
             resolve(null);
           });
         });

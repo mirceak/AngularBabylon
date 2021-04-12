@@ -18,15 +18,14 @@ export class ProviderMailBox extends ServiceMailBox {
   ) {
     super(http);
 
-    this.mailBoxes = localStorage.getItem('mailBoxes');
-    if (!this.mailBoxes) {
-      this.mailBoxes = '[]';
-      localStorage.setItem('mailBoxes', this.mailBoxes);
-    }
-    this.mailBoxes = JSON.parse(this.mailBoxes);
-
+    this.mailBoxes = [];
     this.serviceApi.loggedOut.subscribe(() => {
       this.mailBoxes.splice(0);
+    });
+    this.serviceApi.unload.subscribe(() => {
+      Object.assign(this.serviceApi.recycleBin, {
+        mailBoxes: JSON.stringify(this.mailBoxes),
+      });
     });
   }
 
@@ -80,7 +79,6 @@ export class ProviderMailBox extends ServiceMailBox {
       this.serviceApi.zone.run(() => {
         Object.assign(this.mailBoxes, {});
       });
-      localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
     }
   }
 
@@ -120,11 +118,12 @@ export class ProviderMailBox extends ServiceMailBox {
           decryptedData.decryptedToken.data.pubkData = mailBoxRsa.pubkData;
           this.zone.run(() => {
             this.mailBoxes.push(decryptedData.decryptedToken.data);
-            localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
             resolve(null);
           });
-        }).catch((e)=>{
+        })
+        .catch((e) => {
           //res status 500 server error
+          console.warn('skipped exception');
         });
     });
   }
@@ -171,7 +170,6 @@ export class ProviderMailBox extends ServiceMailBox {
           ) {
             this.mailBoxObservable.next(this.mailBoxes[mailBoxIndex]);
           }
-          localStorage.setItem('mailBoxes', JSON.stringify(this.mailBoxes));
         });
       });
   }
@@ -207,8 +205,12 @@ export class ProviderMailBox extends ServiceMailBox {
             this.serviceApi.serviceModals.hideLoading();
             this.serviceApi.serviceModals.showToast({
               status: 'error',
-              statusMessage: this.serviceApi.translate.instant('components.toastr.error'),
-              title: this.serviceApi.translate.instant('pages.mailBox.badMailBox'),
+              statusMessage: this.serviceApi.translate.instant(
+                'components.toastr.error'
+              ),
+              title: this.serviceApi.translate.instant(
+                'pages.mailBox.badMailBox'
+              ),
             });
             return;
           }
@@ -240,7 +242,6 @@ export class ProviderMailBox extends ServiceMailBox {
             ),
             await this.serviceApi.Cryptography.ab2str(aesEncrypted.ciphertext),
           ];
-          //update messages with new data.
           reqData = await this.serviceApi.getRequestData(
             postData,
             this.serviceApi.token
@@ -270,10 +271,6 @@ export class ProviderMailBox extends ServiceMailBox {
                 rsaEncryptedAes.aesPubkData;
               this.zone.run(() => {
                 this.mailBoxes.push(decryptedData.decryptedToken.data);
-                localStorage.setItem(
-                  'mailBoxes',
-                  JSON.stringify(this.mailBoxes)
-                );
                 resolve(null);
               });
             });

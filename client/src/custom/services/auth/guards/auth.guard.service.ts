@@ -15,14 +15,28 @@ export class AuthGuardService implements CanActivate {
     private router: Router,
     private serviceAuth: ServiceAuth,
     private translate: TranslateService,
-    private serviceModals: ServiceModals,
+    private serviceModals: ServiceModals
   ) {}
 
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (!this.serviceAuth.serviceApi.loggedIn.value) {
+    if (
+      this.serviceAuth.serviceApi.token.value &&
+      !this.serviceAuth.serviceApi.loggedIn.value
+    ) {
+      this.serviceModals.showToast({
+        status: 'error',
+        statusMessage: this.translate.instant('components.toastr.error'),
+        title: this.translate.instant('services.guards.auth-identity.message'),
+      });
+      this.router.navigate(['/auth/login-identity']);
+      return false;
+    } else if (
+      !this.serviceAuth.serviceApi.token.value &&
+      !this.serviceAuth.serviceApi.loggedIn.value
+    ) {
       this.router.navigate(['/auth/login']);
       this.serviceModals.showToast({
         status: 'error',

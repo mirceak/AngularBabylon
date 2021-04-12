@@ -13,8 +13,11 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class ServiceApi {
   lang = 'en';
 
+  public recycleBin = {};
+  public unload = new BehaviorSubject<any>(null);
+  public unloaded = new Subject();
   public loggedIn = new BehaviorSubject<any>(null);
-  public loggedOut = new Subject();
+  public loggedOut = new Subject<any>();
   public token = new BehaviorSubject<any>(null);
   public Cryptography: _Cryptography = new _Cryptography(window.crypto);
 
@@ -63,7 +66,11 @@ export class ServiceApi {
       aesKey,
       nextRsa.pubkData
     );
-    if (parse) decryptedToken = JSON.parse(decryptedToken);
+    if (parse) {
+      decryptedToken = JSON.parse(decryptedToken);
+      localStorage.setItem('token', decryptedToken.token);
+      this.token.next(this.jwtHelper.decodeToken(decryptedToken.token));
+    }
     return {
       decryptedToken: decryptedToken,
       decryptedAes: decryptedAes,

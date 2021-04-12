@@ -32,7 +32,7 @@ var getRequestData = async (data) => {
   };
 };
 
-var encryptResponseData = async (reqData, data) => {
+var encryptResponseData = async (reqData, data, jwtOptions = {}) => {
   var nextRsa = await Cryptography.generateRsaKeys("jwk");
   var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(
     reqData.decryptedData.nextRsa
@@ -41,18 +41,22 @@ var encryptResponseData = async (reqData, data) => {
     JSON.stringify({
       data: data,
       token: await jwt.sign(
-        {
-          nextRsa: nextRsa.pubkData,
-          sessionJwt: await signJwtSessionToken(
-            {
-              identity: reqData.sessionJwt.identity,
-              rsaKeyPriv: nextRsa.privkData,
-              rsaKeyPub: nextRsa.pubkData,
-            },
-            jwtSessionToken,
-            jwt
-          ),
-        },
+        Object.assign(
+          {
+            lockedPin: false,
+            nextRsa: nextRsa.pubkData,
+            sessionJwt: await signJwtSessionToken(
+              {
+                identity: reqData.sessionJwt.identity,
+                rsaKeyPriv: nextRsa.privkData,
+                rsaKeyPub: nextRsa.pubkData,
+              },
+              jwtSessionToken,
+              jwt
+            ),
+          },
+          jwtOptions
+        ),
         jwtSessionToken.jwtSessionTokenElipticKey,
         { algorithm: "ES512" }
       ),

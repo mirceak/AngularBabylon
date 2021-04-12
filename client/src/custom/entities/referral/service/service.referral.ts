@@ -16,6 +16,6 @@ export class ServiceReferral extends ServiceEntityBase<ModelReferral> {
   }
 
   async reqSignup(postData) {
-    return this.http.post('api/reqSignup', postData);
+    return this.http.post(`api/${this.options.pathName}/reqSignup`, postData);
   }
 }

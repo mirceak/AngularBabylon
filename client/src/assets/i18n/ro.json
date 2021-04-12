@@ -1,8 +1,8 @@
 {
   "formlyValidation": {
-    "required": "\"Campul {{ label }}\" este obligatoriu.",
-    "email": "\"Campul {{ label }}\" trebuie sa contina un email valid.",
-    "minLen": "\"Campul {{ label }}\" trebuie sa aiba cel putin {{ count }} caractere."
+    "required": "Campul \"{{ label }}\" este obligatoriu.",
+    "email": "Campul \"{ label }}\" trebuie sa contina un email valid.",
+    "minLen": "Campul \"{{ label }}\" trebuie sa aiba cel putin {{ count }} caractere."
   },
   "formlyFields": {
     "name": {
@@ -16,6 +16,10 @@
     "password": {
       "label": "Parola",
       "placeholder": "Introduceti o parola"
+    },
+    "pin": {
+      "label": "Pin",
+      "placeholder": "Introduceti un pin"
     },
     "referralCode": {
       "label": "Cod Contact De Referinta",
@@ -41,6 +45,9 @@
       "badLogin": "Datele sunt incorecte!",
       "loggingIn": "Se logheaza!",
       "loggedOut": "Te-ai de-logat!"
+    },
+    "login-identity": {
+      "login": "Login Identitate"
     },
     "register": {
       "register": "Inregistrare",
@@ -120,6 +127,9 @@
       "auth": {
         "message": "Trebuie sa fii logat!",
         "close": "Inchide"
+      },
+      "auth-identity": {
+        "message": "Sesiunea a expirat, va rugam sa introduceti pinul!"
       },
       "guest": {
         "message": "Esti deja logat!",

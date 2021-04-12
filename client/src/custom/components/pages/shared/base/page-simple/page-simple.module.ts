@@ -9,6 +9,7 @@ import { PageSimpleComponent } from '@custom/components/pages/shared/base/page-s
   declarations: [LayoutSimpleComponent, PageSimpleComponent, NavListSimpleComponent],
   imports: [RouterModule, BasePageModule],
   exports: [
+    RouterModule,
     BasePageModule,
     PageSimpleComponent,
     NavListSimpleComponent,

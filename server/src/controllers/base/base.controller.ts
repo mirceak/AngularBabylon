@@ -9,8 +9,8 @@ abstract class BaseController {
   public routes = [];
 
   registerProtectedRoute(route) {
-    this.protectedRoutes.push(route);
-    return this._getRouter().route(route);
+    this.protectedRoutes.push("/" + this.Entity.apiPaths.pathName + route);
+    return this._getRouter().route("/" + this.Entity.apiPaths.pathName + route);
   }
 
   getSafeMethod(method) {
@@ -18,6 +18,7 @@ abstract class BaseController {
       try {
         await method(...arguments);
       } catch (e) {
+        console.log(e);
         return arguments[1].status(500).send({
           message: "services.error",
         });
@@ -26,8 +27,8 @@ abstract class BaseController {
   }
 
   registerRoute(route) {
-    this.routes.push(route);
-    return this._getRouter().route(route);
+    this.routes.push("/" + this.Entity.apiPaths.pathName + route);
+    return this._getRouter().route("/" + this.Entity.apiPaths.pathName + route);
   }
 
   getRouter() {
@@ -49,7 +50,8 @@ abstract class BaseController {
           req.send = this.getSafeMethod(async (data, res) => {
             var encryptedResponse = await utils.encryptResponseData(
               reqData,
-              data
+              data,
+              req.jwtOptions || {}
             );
             res.send({
               rsaEncryptedAes: encryptedResponse.rsaEncryptedAes,

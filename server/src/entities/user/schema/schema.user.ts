@@ -1,8 +1,7 @@
 import * as mongoose from "mongoose";
-import _Cryptography from "../../../cryptography";
+import { Cryptography } from "../../../certs/jwtSessionToken/jwtSessionToken";
 
 const webcrypto = require("crypto").webcrypto;
-var Cryptography = new _Cryptography(webcrypto);
 const EntityName = "User";
 const userSchema = new mongoose.Schema({
   email: { type: String, unique: true, lowercase: true, trim: true },

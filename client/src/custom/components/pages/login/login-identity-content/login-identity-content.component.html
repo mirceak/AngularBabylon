@@ -1,0 +1,14 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title
+      ><h4>{{ translate.instant("pages.login-identity.login") }}</h4></mat-card-title
+    >
+  </mat-card-header>
+  <app-form-simple
+    [form]="form"
+    [fields]="loginIdentityService.fields"
+    [submitLabel]="translate.instant('pages.login-identity.login')"
+    [submitIcon]="'login'"
+    (onSubmit)="login()"
+  ></app-form-simple>
+</mat-card>

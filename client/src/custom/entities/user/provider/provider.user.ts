@@ -12,7 +12,7 @@ export class ProviderUser extends ServiceUser {
 
   constructor(http: HttpClient, private serviceSocket: ServiceSocket) {
     super(http);
-    this.serviceSocket.serviceApi.token.subscribe(
+    this.serviceSocket.serviceApi.loggedIn.subscribe(
       this.setCurrentUser.bind(this)
     );
   }

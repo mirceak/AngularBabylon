@@ -11,7 +11,7 @@ class Options {
   providedIn: 'root',
 })
 export abstract class ServiceEntityBase<Entity> {
-  constructor(public http: HttpClient, private options: Options) {}
+  constructor(public http: HttpClient, public options: Options) {}
 
   getEntities(): Observable<Entity[]> {
     return this.http.get<Entity[]>(`api/${this.options.pathNamePlural}`);

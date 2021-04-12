@@ -4,17 +4,11 @@ import * as socketIO from 'socket.io-client';
 
 import { ServiceApi } from './service.api';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
-import { ServiceAuth } from '../auth/service.auth';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceSocket {
-  @HostListener('window:beforeunload', ['$event'])
-  beforeUnloadHandler(event: any) {
-    event.preventDefault();
-    if (this.socket) this.socket.disconnect();
-  }
   public socket;
   private messageQueue: any = [];
   lang = 'en';
@@ -22,7 +16,13 @@ export class ServiceSocket {
   constructor(
     public serviceApi: ServiceApi,
     public ProviderMailBox: ProviderMailBox
-  ) {}
+  ) {
+    this.serviceApi.unload.subscribe(() => {
+      if (this.socket) {
+        this.socket.disconnect();
+      }
+    });
+  }
   disconnectSocket() {
     if (this.socket) this.socket.disconnect();
   }

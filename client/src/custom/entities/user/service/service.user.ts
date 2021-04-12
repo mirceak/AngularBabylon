@@ -16,15 +16,15 @@ export class ServiceUser extends ServiceEntityBase<ModelUser> {
   }
 
   requestLogin(postData) {
-    return this.http.post('api/preLogin', postData);
+    return this.http.post(`api/${this.options.pathName}/preLogin`, postData);
   }
   login(postData) {
-    return this.http.post('api/login', postData);
+    return this.http.post(`api/${this.options.pathName}/login`, postData);
   }
   requestRegister(postData) {
-    return this.http.post('api/preRegister', postData);    
+    return this.http.post(`api/${this.options.pathName}/preRegister`, postData);
   }
   register(postData) {
-    return this.http.post('api/register', postData);    
+    return this.http.post(`api/${this.options.pathName}/register`, postData);
   }
 }

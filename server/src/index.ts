@@ -31,8 +31,8 @@ const httpsServer = https
     console.log('Listening for http requests...');
   });
 var bodyParser = require('body-parser');
-app.use(bodyParser.json({ limit: '50mb' }));
-app.use(bodyParser.urlencoded({ limit: '50mb', extended: true, parameterLimit: 50000 }));
+app.use(bodyParser.json({ limit: '5mb' }));
+app.use(bodyParser.urlencoded({ limit: '5mb', extended: true, parameterLimit: 5000 }));
 async function main(): Promise<any> {
   try {
     await setMongo();
@@ -40,16 +40,15 @@ async function main(): Promise<any> {
     app.use(morgan('dev'));
     app.use(express.json());
     app.use(express.urlencoded({ extended: false }));
-    Object.keys(Controllers).map((key) => {
-      let ctrl: BaseController = new Controllers[key]();
-      app.use('/api', ctrl.getRouter());
+    Object.keys(Controllers).map(async (key) => {
+      let ctrl: BaseController = Controllers[key];
+      app.use('/api', await ctrl.getRouter());
     });
     app.use('', express.static(path.join(__dirname, '../../../dist/public/')));
     app.get('*', (req, res) => {
       if (req.headers.host.includes('www.')) {
         return res.redirect('https://' + req.headers.host.replaceAll(/www./g, '') + req.url);
       }
-      // res.set('pageHash', 'someHash');
       res.sendFile(path.join(__dirname, '../../../dist/public/spa/index.html'));
     });
   } catch (err) {
