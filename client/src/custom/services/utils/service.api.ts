@@ -14,8 +14,7 @@ export class ServiceApi {
   lang = 'en';
 
   public recycleBin = {};
-  public unload = new BehaviorSubject<any>(null);
-  public unloaded = new Subject();
+  public unload = new Subject<any>();
   public loggedIn = new BehaviorSubject<any>(null);
   public loggedOut = new Subject<any>();
   public token = new BehaviorSubject<any>(null);

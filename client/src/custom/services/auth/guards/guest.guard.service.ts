@@ -23,10 +23,6 @@ export class GuestGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    console.log(route, state);
-    if (state.url.toString() == '/auth/login-identity'){
-      return true;
-    }
     if (this.serviceAuth.serviceApi.loggedIn.value) {
       this.serviceModals.showToast({
         status: 'error',
@@ -35,7 +31,7 @@ export class GuestGuardService implements CanActivate {
       });
       this.router.navigate(['/']);
       return false;
-    } else if (this.serviceAuth.serviceApi.token.value) {
+    } else if (state.url.toString() !== '/auth/login-identity' && this.serviceAuth.serviceApi.token.value) {
       this.serviceModals.showToast({
         status: 'error',
         statusMessage: this.translate.instant('components.toastr.error'),

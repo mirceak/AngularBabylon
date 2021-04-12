@@ -60,9 +60,6 @@ io.on("connection", async (socket: any) => {
     registeredMessages.push({ socket: socket, mailBoxes: mailBoxes });
     socket.emit("verification", {});
   });
-  socket.on("unload", async (data) => {
-    console.log("good", data)
-  })
   socket.on("verify", async (data) => {
     var reqData = await utils.getRequestData(data);
     var regMessageIndex = registeredMessages.findIndex((msg) => {

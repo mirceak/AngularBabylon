@@ -1,8 +1,6 @@
 import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceIdentity } from '../service/service.identity';
-import { ServiceApi } from '@custom/services/utils/service.api';
-import { BehaviorSubject } from 'rxjs';
 import { ServiceSocket } from '@custom/services/utils/service.socket';
 
 @Injectable({
@@ -20,7 +18,6 @@ export class ProviderIdentity extends ServiceIdentity {
   async encryptData() {
     return new Promise(async (resolve) => {
       var encryptedBin = await (await this.test({ drama: true })).toPromise();
-      this.serviceSocket.serviceApi.unloaded.next(null);
       console.log(33333, encryptedBin);
       resolve(null);
     });

@@ -16,13 +16,7 @@ export class ServiceSocket {
   constructor(
     public serviceApi: ServiceApi,
     public ProviderMailBox: ProviderMailBox
-  ) {
-    this.serviceApi.unload.subscribe(() => {
-      if (this.socket) {
-        this.socket.disconnect();
-      }
-    });
-  }
+  ) {}
   disconnectSocket() {
     if (this.socket) this.socket.disconnect();
   }
