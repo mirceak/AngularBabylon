@@ -14,8 +14,8 @@ export class ServiceIdentity extends ServiceEntityBase<ModelIdentity> {
       pathName: 'identity',
     });
   }
-  async test(postData) {
-    return this.http.post(`api/${this.options.pathName}/test`, postData);
+  async encrypt(postData) {
+    return this.http.post(`api/${this.options.pathName}/encrypt`, postData);
   }
 
   async login(postData) {

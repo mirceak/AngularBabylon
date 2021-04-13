@@ -22,7 +22,7 @@ export class AuthIdentityGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): boolean {
-    if (this.serviceAuth.serviceApi.token.value) {
+    if (this.serviceAuth.serviceApi.sessionToken.value) {
       this.serviceModals.showToast({
         status: 'error',
         statusMessage: this.translate.instant('components.toastr.error'),

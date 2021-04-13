@@ -33,7 +33,10 @@ export class LoginIdentityService {
         },
       },
       hideExpression: () => {
-        return !this.serviceAuth.serviceApi.token.value.lockedPin;
+        return (
+          this.serviceAuth.serviceApi.sessionToken.value == null ||
+          !this.serviceAuth.serviceApi.sessionToken.value.failedPin
+        );
       },
     },
     {

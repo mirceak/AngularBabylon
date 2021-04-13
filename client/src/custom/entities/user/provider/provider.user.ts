@@ -20,7 +20,7 @@ export class ProviderUser extends ServiceUser {
   setCurrentUser(decodedToken): void {
     if (decodedToken) {
       this.currentUser = new ModelUser();
-      this.serviceSocket.connectSocket();
+      // this.serviceSocket.connectSocket();
     } else {
       this.serviceSocket.disconnectSocket();
       this.currentUser = null;

@@ -8,7 +8,7 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class ProviderMailBox extends ServiceMailBox {
-  mailBoxes;
+  mailBoxes = new BehaviorSubject<any>([]);
   mailBoxObservable = new BehaviorSubject<any>({});
 
   constructor(
@@ -18,14 +18,8 @@ export class ProviderMailBox extends ServiceMailBox {
   ) {
     super(http);
 
-    this.mailBoxes = [];
     this.serviceApi.loggedOut.subscribe(() => {
-      this.mailBoxes.splice(0);
-    });
-    this.serviceApi.unload.subscribe(() => {
-      Object.assign(this.serviceApi.recycleBin, {
-        mailBoxes: JSON.stringify(this.mailBoxes),
-      });
+      this.mailBoxes.next([]);
     });
   }
 
@@ -117,7 +111,10 @@ export class ProviderMailBox extends ServiceMailBox {
           decryptedData.decryptedToken.data.privkData = mailBoxRsa.privkData;
           decryptedData.decryptedToken.data.pubkData = mailBoxRsa.pubkData;
           this.zone.run(() => {
-            this.mailBoxes.push(decryptedData.decryptedToken.data);
+            this.mailBoxes.next([
+              ...this.mailBoxes.value,
+              decryptedData.decryptedToken.data,
+            ]);
             resolve(null);
           });
         })
@@ -158,7 +155,7 @@ export class ProviderMailBox extends ServiceMailBox {
           data,
           reqData.nextRsa
         );
-        var mailBoxIndex = this.mailBoxes.findIndex((mailBox) => {
+        var mailBoxIndex = this.mailBoxes.value.findIndex((mailBox) => {
           return mailBox._id == decryptedData.decryptedToken.data._id;
         });
         this.zone.run(() => {
@@ -270,7 +267,10 @@ export class ProviderMailBox extends ServiceMailBox {
               decryptedData.decryptedToken.data.aesPubkData =
                 rsaEncryptedAes.aesPubkData;
               this.zone.run(() => {
-                this.mailBoxes.push(decryptedData.decryptedToken.data);
+                this.mailBoxes.next([
+                  ...this.mailBoxes.value,
+                  decryptedData.decryptedToken.data,
+                ]);
                 resolve(null);
               });
             });

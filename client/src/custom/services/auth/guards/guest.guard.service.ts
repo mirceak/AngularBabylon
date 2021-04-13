@@ -31,13 +31,27 @@ export class GuestGuardService implements CanActivate {
       });
       this.router.navigate(['/']);
       return false;
-    } else if (state.url.toString() !== '/auth/login-identity' && this.serviceAuth.serviceApi.token.value) {
+    } else if (
+      state.url.toString() !== '/auth/login-identity' &&
+      this.serviceAuth.serviceApi.token.value
+    ) {
       this.serviceModals.showToast({
         status: 'error',
         statusMessage: this.translate.instant('components.toastr.error'),
         title: this.translate.instant('services.guards.auth-identity.message'),
       });
       this.router.navigate(['/auth/login-identity']);
+      return false;
+    } else if (
+      state.url.toString() == '/auth/login-identity' &&
+      !this.serviceAuth.serviceApi.sessionToken.value
+    ) {
+      this.router.navigate(['/auth/login']);
+      this.serviceModals.showToast({
+        status: 'error',
+        statusMessage: this.translate.instant('components.toastr.error'),
+        title: this.translate.instant('services.guards.auth.message'),
+      });
       return false;
     }
     return true;

@@ -5,7 +5,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
 import { ServiceModals } from './service.modals';
 import { Router } from '@angular/router';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -13,11 +13,11 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class ServiceApi {
   lang = 'en';
 
-  public recycleBin = {};
-  public unload = new Subject<any>();
   public loggedIn = new BehaviorSubject<any>(null);
-  public loggedOut = new Subject<any>();
+  public loggedOut = new ReplaySubject<any>();
   public token = new BehaviorSubject<any>(null);
+  public sessionToken = new BehaviorSubject<any>(null);
+  public decryptedToken = new ReplaySubject<any>();
   public Cryptography: _Cryptography = new _Cryptography(window.crypto);
 
   constructor(
@@ -32,6 +32,7 @@ export class ServiceApi {
 
   logout() {
     this.token.next(null);
+    this.sessionToken.next(null);
     this.router.navigate(['/auth/login']);
   }
 
@@ -67,7 +68,6 @@ export class ServiceApi {
     );
     if (parse) {
       decryptedToken = JSON.parse(decryptedToken);
-      localStorage.setItem('token', decryptedToken.token);
       this.token.next(this.jwtHelper.decodeToken(decryptedToken.token));
     }
     return {

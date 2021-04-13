@@ -12,12 +12,13 @@ export class ServiceAuth {
     public ProviderIdentity: ProviderIdentity,
     public serviceApi: ServiceApi
   ) {
-    var _token = localStorage.getItem('token');
-    if (_token) {
-      this.serviceApi.token.next(this.serviceApi.jwtHelper.decodeToken(_token));
+    if (localStorage.getItem('encryptedState')) {
+      this.serviceApi.sessionToken.next(
+        JSON.parse(localStorage.getItem('sessionToken'))
+      );
     }
     this.serviceApi.token.subscribe((token) => {
-      if (token == null) {
+      if (token == null && serviceApi.loggedIn.value) {
         this.logout(false);
       }
     });
@@ -56,8 +57,8 @@ export class ServiceAuth {
           this.serviceApi.token.next(
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );
-          localStorage.setItem('token', decrypted.decryptedToken);
           this.serviceApi.loggedIn.next(true);
+          this.ProviderIdentity.recycleBin.next(this.ProviderIdentity.state);
           this.serviceApi.zone.run(() => {
             this.serviceApi.router.navigate(['/']);
             resolve(null);
@@ -106,7 +107,7 @@ export class ServiceAuth {
             false
           );
           this.serviceApi.loggedIn.next(true);
-          localStorage.setItem('token', decrypted.decryptedToken);
+          this.ProviderIdentity.recycleBin.next(this.ProviderIdentity.state);
           this.serviceApi.token.next(
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );

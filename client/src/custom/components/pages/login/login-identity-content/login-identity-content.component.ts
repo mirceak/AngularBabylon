@@ -22,6 +22,6 @@ export class LoginIdentityContentComponent {
   ) {}
 
   async login() {
-    this.serviceAuth.ProviderIdentity.login();
+    this.serviceAuth.ProviderIdentity.login(this.form.value);
   }
 }

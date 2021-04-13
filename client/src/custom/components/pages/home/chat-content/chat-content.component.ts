@@ -27,7 +27,7 @@ export class ChatContentComponent implements OnInit {
 
   ngOnInit(): void {
     this.ProviderMailBox.mailBoxObservable.next(
-      this.ProviderMailBox.mailBoxes.filter((current) => {
+      this.ProviderMailBox.mailBoxes.value.filter((current) => {
         return current._id == this.route.snapshot.params._id;
       })[0]
     );

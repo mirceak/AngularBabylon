@@ -2,12 +2,14 @@ import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceReferral } from '@custom/entities/referral/service/service.referral';
 import { ServiceApi } from '@custom/services/utils/service.api';
+import { SubjectSubscriber } from 'rxjs/internal/Subject';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProviderReferral extends ServiceReferral {
-  referrals;
+  referrals = new BehaviorSubject<any>([]);
 
   constructor(
     http: HttpClient,
@@ -15,15 +17,8 @@ export class ProviderReferral extends ServiceReferral {
     private zone: NgZone
   ) {
     super(http);
-
-    this.referrals = [];
     this.serviceApi.loggedOut.subscribe(() => {
-      this.referrals.splice(0);
-    });
-    this.serviceApi.unload.subscribe(() => {
-      Object.assign(this.serviceApi.recycleBin, {
-        referrals: JSON.stringify(this.referrals),
-      });
+      this.referrals.next([]);
     });
   }
 
@@ -56,7 +51,10 @@ export class ProviderReferral extends ServiceReferral {
           );
           decryptedData.decryptedToken.data.email = originalEmail;
           this.zone.run(() => {
-            this.referrals.push(decryptedData.decryptedToken.data);
+            this.referrals.next([
+              ...this.referrals.value,
+              decryptedData.decryptedToken.data,
+            ]);
             resolve(null);
           });
         });

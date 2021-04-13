@@ -23,7 +23,7 @@ export class AuthGuardService implements CanActivate {
     state: RouterStateSnapshot
   ): boolean {
     if (
-      this.serviceAuth.serviceApi.token.value &&
+      this.serviceAuth.serviceApi.sessionToken.value &&
       !this.serviceAuth.serviceApi.loggedIn.value
     ) {
       this.serviceModals.showToast({
@@ -34,7 +34,7 @@ export class AuthGuardService implements CanActivate {
       this.router.navigate(['/auth/login-identity']);
       return false;
     } else if (
-      !this.serviceAuth.serviceApi.token.value &&
+      !this.serviceAuth.serviceApi.sessionToken.value &&
       !this.serviceAuth.serviceApi.loggedIn.value
     ) {
       this.router.navigate(['/auth/login']);

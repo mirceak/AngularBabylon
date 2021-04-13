@@ -67,30 +67,25 @@ export class ServiceSocket {
       );
       var mailBoxIndex;
       if (decryptedData.decryptedToken.data.mailBox) {
-        mailBoxIndex = this.ProviderMailBox.mailBoxes.findIndex((mailBox) => {
-          return mailBox._id == decryptedData.decryptedToken.data.mailBox._id;
-        });
-        var mailBox = this.ProviderMailBox.mailBoxes[mailBoxIndex];
+        mailBoxIndex = this.ProviderMailBox.mailBoxes.value.findIndex(
+          (mailBox) => {
+            return mailBox._id == decryptedData.decryptedToken.data.mailBox._id;
+          }
+        );
+        var mailBox = this.ProviderMailBox.mailBoxes.value[mailBoxIndex];
         this.ProviderMailBox.updateMailBox(
           mailBox,
           decryptedData.decryptedToken.data.mailBox
         );
-      } else if (decryptedData.decryptedToken.data.mailBoxes) {
-        decryptedData.decryptedToken.data.mailBoxes.forEach((mailBox) => {
-          var localMailbox = this.ProviderMailBox.mailBoxes[
-            this.ProviderMailBox.mailBoxes.findIndex((_mailBox) => {
+      } else if (decryptedData.decryptedToken.data.mailBoxes.value) {
+        decryptedData.decryptedToken.data.mailBoxes.value.forEach((mailBox) => {
+          var localMailbox = this.ProviderMailBox.mailBoxes.value[
+            this.ProviderMailBox.mailBoxes.value.findIndex((_mailBox) => {
               return _mailBox._id == mailBox._id;
             })
           ];
           this.ProviderMailBox.updateMailBox(localMailbox, mailBox);
         });
-        this.serviceApi.zone.run(() => {
-          Object.assign(this.ProviderMailBox.mailBoxes, {});
-        });
-        localStorage.setItem(
-          'mailBoxes',
-          JSON.stringify(this.ProviderMailBox.mailBoxes)
-        );
         return;
       }
     });
