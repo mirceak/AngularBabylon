@@ -8,7 +8,7 @@
     [fields]="chatContentService.fields"
     [submitLabel]="translate.instant('pages.chat.send')"
     [submitIcon]="'send'"
-    [submitDisabled]="!this.form.value.message || !this.form.value.message.length"
+    [submitDisabled]="!form.value.message || !form.value.message.length || ProviderIdentity.encryptingData.value"
     (onSubmit)="send()"
   ></app-form-simple>
 </mat-card>

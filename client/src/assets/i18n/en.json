@@ -123,6 +123,9 @@
       "badJwt": "Your session has expired",
       "confirmLogout": "You will be logged out!"
     },
+    "auth-identity": {
+      "encrypting": "Encrypting and saving your data!"
+    },
     "guards": {
       "auth": {
         "message": "You Must Be Logged In!",

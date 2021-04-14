@@ -6,6 +6,7 @@ import { mountRootParcel } from 'single-spa';
 import { loadRemoteModule } from '@angular-architects/module-federation';
 import { TranslateService } from '@ngx-translate/core';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
+import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';
 
 @Component({
   selector: 'app-chat-content',
@@ -21,6 +22,7 @@ export class ChatContentComponent implements OnInit {
   constructor(
     public chatContentService: ChatContentService,
     private ProviderMailBox: ProviderMailBox,
+    public ProviderIdentity: ProviderIdentity,
     private route: ActivatedRoute,
     public translate: TranslateService
   ) {}

@@ -123,6 +123,9 @@
       "badJwt": "Sesiunea a expirat",
       "confirmLogout": "Vei fi delogat!"
     },
+    "auth-identity": {
+      "encrypting": "Se encripteaza datele inainte de a fi salvate!"
+    },
     "guards": {
       "auth": {
         "message": "Trebuie sa fii logat!",

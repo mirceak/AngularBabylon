@@ -4,13 +4,14 @@ import { ServiceIdentity } from '../service/service.identity';
 import { ServiceSocket } from '@custom/services/utils/service.socket';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
 import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral';
-import { Subject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProviderIdentity extends ServiceIdentity {
   public recycleBin = new Subject<any>();
+  public encryptingData = new BehaviorSubject<boolean>(false);
   public state = {
     mailBoxes: [],
     referrals: [],
@@ -20,8 +21,7 @@ export class ProviderIdentity extends ServiceIdentity {
     http: HttpClient,
     public serviceSocket: ServiceSocket,
     private ProviderMailBox: ProviderMailBox,
-    private ProviderReferral: ProviderReferral,
-    private zone: NgZone
+    private ProviderReferral: ProviderReferral
   ) {
     super(http);
 
@@ -29,6 +29,15 @@ export class ProviderIdentity extends ServiceIdentity {
       if (!this.serviceSocket.serviceApi.loggedIn.value) {
         return;
       }
+      this.serviceSocket.serviceApi.serviceModals.showLoading({
+        title: this.serviceSocket.serviceApi.translate.instant(
+          'components.swal.loading'
+        ),
+        html: this.serviceSocket.serviceApi.translate.instant(
+          'services.auth-identity.encrypting'
+        ),
+      });
+      this.encryptingData.next(true);
       //must encrypt val first
       await this.encryptData({
         ...val,
@@ -40,6 +49,9 @@ export class ProviderIdentity extends ServiceIdentity {
             return current.charCodeAt(0);
           })
           .join(','),
+      }).then(() => {
+        this.serviceSocket.serviceApi.serviceModals.hideLoading();
+        this.encryptingData.next(false);
       });
     });
 
@@ -66,7 +78,7 @@ export class ProviderIdentity extends ServiceIdentity {
       postData,
       this.serviceSocket.serviceApi.token
     );
-    super
+    return await super
       .encrypt({
         sessionJwt: this.serviceSocket.serviceApi.token.value.sessionJwt,
         rsaEncryptedAes: await this.serviceSocket.serviceApi.Cryptography.ab2str(
@@ -89,7 +101,6 @@ export class ProviderIdentity extends ServiceIdentity {
           'sessionToken',
           JSON.stringify(decryptedData.decryptedToken.data.resumeToken)
         );
-        this.serviceSocket.serviceApi.serviceModals.hideLoading();
       });
   }
 
