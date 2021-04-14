@@ -5,6 +5,7 @@ import { ServiceSocket } from '@custom/services/utils/service.socket';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
 import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral';
 import { BehaviorSubject, Subject } from 'rxjs';
+import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
 
 @Injectable({
   providedIn: 'root',
@@ -15,7 +16,7 @@ export class ProviderIdentity extends ServiceIdentity {
   public state = {
     mailBoxes: [],
     referrals: [],
-    language: 'en'
+    language: 'en',
   };
 
   constructor(
@@ -27,7 +28,6 @@ export class ProviderIdentity extends ServiceIdentity {
     super(http);
 
     this.recycleBin.subscribe(async (val) => {
-      Object.assign(this.state, val);
       if (!this.serviceSocket.serviceApi.loggedIn.value) {
         return;
       }
@@ -63,7 +63,7 @@ export class ProviderIdentity extends ServiceIdentity {
       }
       this.state.mailBoxes.splice(0);
       this.state.mailBoxes.push(...val);
-      this.recycleBin.next(JSON.stringify(this.state));
+      this.recycleBin.next(this.state);
     });
     this.ProviderReferral.referrals.subscribe((val) => {
       if (!this.serviceSocket.serviceApi.loggedIn.value) {
@@ -71,7 +71,7 @@ export class ProviderIdentity extends ServiceIdentity {
       }
       this.state.referrals.splice(0);
       this.state.referrals.push(...val);
-      this.recycleBin.next(JSON.stringify(this.state));
+      this.recycleBin.next(this.state);
     });
   }
 
@@ -182,17 +182,8 @@ export class ProviderIdentity extends ServiceIdentity {
                 decryptedData.token
               )
             );
-            var unlockedData: any = JSON.parse(
-              Object.keys(decryptedData.data.unlockedData)
-                .map((current) => {
-                  return decryptedData.data.unlockedData[current];
-                })
-                .join('')
-            );
-            Object.assign(this.state, {
-              mailBoxes: unlockedData.mailBoxes,
-              referrals: unlockedData.referrals,
-            });
+            var unlockedData: any = decryptedData.data.unlockedData;
+            Object.assign(this.state, unlockedData);
             this.ProviderMailBox.mailBoxes.next(this.state.mailBoxes);
             this.ProviderReferral.referrals.next(this.state.referrals);
             this.serviceSocket.serviceApi.loggedIn.next(true);

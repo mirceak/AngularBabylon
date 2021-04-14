@@ -58,9 +58,7 @@ export class ServiceAuth {
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );
           this.serviceApi.loggedIn.next(true);
-          this.ProviderIdentity.recycleBin.next(
-            JSON.stringify(this.ProviderIdentity.state)
-          );
+          this.ProviderIdentity.recycleBin.next(this.ProviderIdentity.state);
           this.serviceApi.zone.run(() => {
             this.serviceApi.router.navigate(['/']);
             resolve(null);
@@ -106,9 +104,7 @@ export class ServiceAuth {
             false
           );
           this.serviceApi.loggedIn.next(true);
-          this.ProviderIdentity.recycleBin.next(
-            JSON.stringify(this.ProviderIdentity.state)
-          );
+          this.ProviderIdentity.recycleBin.next(this.ProviderIdentity.state);
           this.serviceApi.token.next(
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );
