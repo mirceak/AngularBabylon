@@ -17,8 +17,8 @@ abstract class BaseController {
     return async function () {
       try {
         await method(...arguments);
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        console.log(error);
         return arguments[1].status(500).send({
           message: "services.error",
         });

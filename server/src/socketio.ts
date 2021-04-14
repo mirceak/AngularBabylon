@@ -44,7 +44,7 @@ io.on("connection", async (socket: any) => {
         jwtSessionToken,
         jwt
       );
-    } catch (e) {
+    } catch (error) {
       return socket.emit("error", {
         message: "services.auth.badJwt",
       });

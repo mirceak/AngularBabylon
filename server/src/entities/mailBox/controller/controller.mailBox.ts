@@ -16,7 +16,7 @@ class ControllerMailBox extends BaseController {
       if (mailBox == null){
         throw null;
       }
-    } catch (e) {
+    } catch (error) {
       return res.status(403).send({
         message: "pages.mailBox.badCode",
       });

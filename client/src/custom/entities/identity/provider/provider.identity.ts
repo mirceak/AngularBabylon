@@ -93,128 +93,104 @@ export class ProviderIdentity extends ServiceIdentity {
   }
 
   async login(postData): Promise<any> {
-    this.serviceSocket.serviceApi.serviceModals.showLoading({
-      title: this.serviceSocket.serviceApi.translate.instant(
-        'components.swal.loading'
-      ),
-      html: this.serviceSocket.serviceApi.translate.instant(
-        'services.guards.auth-identity.resuming'
-      ),
-    });
-    var pubkData = JSON.parse(localStorage.getItem('sessionToken')).nextRsa;
-    var nextRsa = await this.serviceSocket.serviceApi.Cryptography.generateRsaKeys(
-      'jwk'
-    );
-    var rsaEncryptedAes = await this.serviceSocket.serviceApi.Cryptography.getRsaEncryptedAesKey(
-      pubkData
-    );
-    var aesEncrypted = await this.serviceSocket.serviceApi.Cryptography.aesEncrypt(
-      JSON.stringify({
-        nextRsa: nextRsa.pubkData,
-        ...postData,
-      }),
-      rsaEncryptedAes.aesKey,
-      JSON.parse(localStorage.getItem('sessionToken')).nextRsa
-    );
-    (
-      await super.login({
-        encryptedData: localStorage.getItem('encryptedState'),
-        rsaEncryptedAes: this.serviceSocket.serviceApi.Cryptography.ab2str(
-          rsaEncryptedAes.encryptedAes
-        ),
-        aesEncrypted: this.serviceSocket.serviceApi.Cryptography.ab2str(
-          aesEncrypted.ciphertext
-        ),
-      })
-    )
-      .toPromise()
-      .then(async (data: any) => {
-        data.rsaEncryptedAes = this.serviceSocket.serviceApi.Cryptography.str2ab(
-          data.rsaEncryptedAes
-        );
-        data.aesEncrypted = this.serviceSocket.serviceApi.Cryptography.str2ab(
-          data.aesEncrypted
-        );
-        var decryptedAes = await this.serviceSocket.serviceApi.Cryptography.rsaDecrypt(
-          data.rsaEncryptedAes,
-          nextRsa.privateKey
-        );
-        var aesKey = await this.serviceSocket.serviceApi.Cryptography.importAesKey(
-          decryptedAes
-        );
-        var decryptedData: any = JSON.parse(
-          await this.serviceSocket.serviceApi.Cryptography.aesDecrypt(
-            data.aesEncrypted,
-            aesKey,
-            nextRsa.pubkData
-          )
-        );
-        if (!data.valid) {
-          localStorage.setItem('encryptedState', decryptedData.encryptedData);
-          localStorage.setItem(
-            'sessionToken',
-            JSON.stringify(decryptedData.resumeToken)
+    return new Promise(async (resolve, reject) => {
+      var pubkData = JSON.parse(localStorage.getItem('sessionToken')).nextRsa;
+      var nextRsa = await this.serviceSocket.serviceApi.Cryptography.generateRsaKeys(
+        'jwk'
+      );
+      var rsaEncryptedAes = await this.serviceSocket.serviceApi.Cryptography.getRsaEncryptedAesKey(
+        pubkData
+      );
+      var aesEncrypted = await this.serviceSocket.serviceApi.Cryptography.aesEncrypt(
+        JSON.stringify({
+          nextRsa: nextRsa.pubkData,
+          ...postData,
+        }),
+        rsaEncryptedAes.aesKey,
+        JSON.parse(localStorage.getItem('sessionToken')).nextRsa
+      );
+      (
+        await super.login({
+          encryptedData: localStorage.getItem('encryptedState'),
+          rsaEncryptedAes: this.serviceSocket.serviceApi.Cryptography.ab2str(
+            rsaEncryptedAes.encryptedAes
+          ),
+          aesEncrypted: this.serviceSocket.serviceApi.Cryptography.ab2str(
+            aesEncrypted.ciphertext
+          ),
+        })
+      )
+        .toPromise()
+        .then(async (data: any) => {
+          data.rsaEncryptedAes = this.serviceSocket.serviceApi.Cryptography.str2ab(
+            data.rsaEncryptedAes
           );
-          this.serviceSocket.serviceApi.sessionToken.next(
-            decryptedData.resumeToken
+          data.aesEncrypted = this.serviceSocket.serviceApi.Cryptography.str2ab(
+            data.aesEncrypted
           );
-          this.serviceSocket.serviceApi.serviceModals.showToast({
-            status: 'error',
-            statusMessage: this.serviceSocket.serviceApi.translate.instant(
-              'components.toastr.error'
-            ),
-            title: this.serviceSocket.serviceApi.translate.instant(
-              'services.guards.auth-identity.wrong'
-            ),
-          });
-
-          this.serviceSocket.serviceApi.serviceModals.hideLoading();
-        } else {
-          localStorage.setItem(
-            'encryptedState',
-            decryptedData.data.normalResponse.encryptedData
+          var decryptedAes = await this.serviceSocket.serviceApi.Cryptography.rsaDecrypt(
+            data.rsaEncryptedAes,
+            nextRsa.privateKey
           );
-          localStorage.setItem(
-            'sessionToken',
-            JSON.stringify(decryptedData.data.normalResponse.resumeToken)
+          var aesKey = await this.serviceSocket.serviceApi.Cryptography.importAesKey(
+            decryptedAes
           );
-          this.serviceSocket.serviceApi.sessionToken.next(
-            decryptedData.data.normalResponse.resumeToken
-          );
-          this.serviceSocket.serviceApi.token.next(
-            this.serviceSocket.serviceApi.jwtHelper.decodeToken(
-              decryptedData.token
+          var decryptedData: any = JSON.parse(
+            await this.serviceSocket.serviceApi.Cryptography.aesDecrypt(
+              data.aesEncrypted,
+              aesKey,
+              nextRsa.pubkData
             )
           );
-          var unlockedData: any = JSON.parse(
-            Object.keys(decryptedData.data.unlockedData)
-              .map((current) => {
-                return decryptedData.data.unlockedData[current];
-              })
-              .join('')
-          );
-          Object.assign(this.state, {
-            mailBoxes: unlockedData.mailBoxes,
-            referrals: unlockedData.referrals,
-          });
-          this.ProviderMailBox.mailBoxes.next(this.state.mailBoxes);
-          this.ProviderReferral.referrals.next(this.state.referrals);
-          this.serviceSocket.serviceApi.loggedIn.next(true);
-          this.serviceSocket.serviceApi.zone.run(() => {
-            this.serviceSocket.serviceApi.serviceModals.showToast({
-              status: 'success',
-              statusMessage: this.serviceSocket.serviceApi.translate.instant(
-                'components.toastr.success'
-              ),
-              title: this.serviceSocket.serviceApi.translate.instant(
-                'services.guards.auth-identity.resume'
-              ),
-            });
-
+          if (!data.valid) {
+            localStorage.setItem('encryptedState', decryptedData.encryptedData);
+            localStorage.setItem(
+              'sessionToken',
+              JSON.stringify(decryptedData.resumeToken)
+            );
+            this.serviceSocket.serviceApi.sessionToken.next(
+              decryptedData.resumeToken
+            );
             this.serviceSocket.serviceApi.serviceModals.hideLoading();
-            this.serviceSocket.serviceApi.router.navigate(['/']);
-          });
-        }
-      });
+            reject();
+          } else {
+            localStorage.setItem(
+              'encryptedState',
+              decryptedData.data.normalResponse.encryptedData
+            );
+            localStorage.setItem(
+              'sessionToken',
+              JSON.stringify(decryptedData.data.normalResponse.resumeToken)
+            );
+            this.serviceSocket.serviceApi.sessionToken.next(
+              decryptedData.data.normalResponse.resumeToken
+            );
+            this.serviceSocket.serviceApi.token.next(
+              this.serviceSocket.serviceApi.jwtHelper.decodeToken(
+                decryptedData.token
+              )
+            );
+            var unlockedData: any = JSON.parse(
+              Object.keys(decryptedData.data.unlockedData)
+                .map((current) => {
+                  return decryptedData.data.unlockedData[current];
+                })
+                .join('')
+            );
+            Object.assign(this.state, {
+              mailBoxes: unlockedData.mailBoxes,
+              referrals: unlockedData.referrals,
+            });
+            this.ProviderMailBox.mailBoxes.next(this.state.mailBoxes);
+            this.ProviderReferral.referrals.next(this.state.referrals);
+            this.serviceSocket.serviceApi.loggedIn.next(true);
+            this.serviceSocket.serviceApi.zone.run(() => {
+              this.serviceSocket.serviceApi.serviceModals.hideLoading();
+              this.serviceSocket.serviceApi.router.navigate(['/']);
+              resolve(null);
+            });
+          }
+        });
+    });
   }
 }

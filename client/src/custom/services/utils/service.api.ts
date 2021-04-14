@@ -14,7 +14,6 @@ export class ServiceApi {
   lang = 'en';
 
   public loggedIn = new BehaviorSubject<any>(null);
-  public loggedOut = new ReplaySubject<any>();
   public token = new BehaviorSubject<any>(null);
   public sessionToken = new BehaviorSubject<any>(null);
   public decryptedToken = new ReplaySubject<any>();
@@ -27,13 +26,15 @@ export class ServiceApi {
     public router: Router,
     public zone: NgZone
   ) {
-    this.loggedOut.subscribe(this.logout.bind(this));
+    this.loggedIn.subscribe(this._loggedIn.bind(this));
   }
 
-  logout() {
-    this.token.next(null);
-    this.sessionToken.next(null);
-    this.router.navigate(['/auth/login']);
+  _loggedIn(val) {
+    if (!val) {
+      this.token.next(null);
+      this.sessionToken.next(null);
+      this.router.navigate(['/auth/login']);
+    }
   }
 
   async getRequestData(postData, token) {

@@ -17,8 +17,10 @@ export class ProviderReferral extends ServiceReferral {
     private zone: NgZone
   ) {
     super(http);
-    this.serviceApi.loggedOut.subscribe(() => {
-      this.referrals.next([]);
+    this.serviceApi.loggedIn.subscribe((val) => {
+      if (!val) {
+        this.referrals.next([]);
+      }
     });
   }
 

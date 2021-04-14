@@ -32,12 +32,16 @@ export class ReferralContentComponent implements OnInit {
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('pages.referral.creating'),
     });
-    await this.ProviderReferral.reqSignup(this.form.value);
-
-    this.serviceModals.showToast({
-      status: 'success',
-      statusMessage: this.translate.instant('components.toastr.success'),
-      title: this.translate.instant('pages.referral.created'),
-    });
+    await this.ProviderReferral.reqSignup(this.form.value)
+      .then(() => {
+        this.serviceModals.showToast({
+          status: 'success',
+          statusMessage: this.translate.instant('components.toastr.success'),
+          title: this.translate.instant('pages.referral.created'),
+        });
+      })
+      .catch((error) => {
+        //handled as toast in services/utils/service.http.ts
+      });
   }
 }

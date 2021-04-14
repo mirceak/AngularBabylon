@@ -9,9 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-login-content',
   templateUrl: './login-content.component.html',
   styleUrls: ['./login-content.component.scss'],
-  providers: [
-    LoginService
-  ]
+  providers: [LoginService],
 })
 export class LoginContentComponent {
   form = new FormGroup({});
@@ -37,7 +35,7 @@ export class LoginContentComponent {
           title: this.translate.instant('pages.login.loggedIn'),
         });
       })
-      .catch((e) => {
+      .catch((error) => {
         this.serviceModals.hideLoading();
         this.serviceModals.showToast({
           status: 'error',

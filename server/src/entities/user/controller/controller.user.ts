@@ -69,7 +69,7 @@ class ControllerUser extends BaseController {
         req.body,
         jwt
       );
-    } catch (e) {
+    } catch (error) {
       return res.status(403).send({
         message: "pages.register.badCode",
       });

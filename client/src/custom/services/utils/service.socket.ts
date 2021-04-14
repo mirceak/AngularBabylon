@@ -37,7 +37,7 @@ export class ServiceSocket {
         ),
         title: this.serviceApi.translate.instant(error.message),
       });
-      this.serviceApi.loggedOut.next(null);
+      this.serviceApi.loggedIn.next(null);
     });
     this.socket.on('verification', async (data) => {
       data.clientMsgId = Date.now().toString();

@@ -9,9 +9,7 @@ import { TranslateService } from '@ngx-translate/core';
   selector: 'app-register-content',
   templateUrl: './register-content.component.html',
   styleUrls: ['./register-content.component.scss'],
-  providers: [
-    RegisterService
-  ]
+  providers: [RegisterService],
 })
 export class RegisterContentComponent {
   form = new FormGroup({});
@@ -38,7 +36,7 @@ export class RegisterContentComponent {
           title: this.translate.instant('pages.register.registered'),
         });
       })
-      .catch((e) => {
+      .catch((error) => {
         this.serviceModals.hideLoading();
         this.serviceModals.showToast({
           status: 'error',

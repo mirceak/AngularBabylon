@@ -18,8 +18,10 @@ export class ProviderMailBox extends ServiceMailBox {
   ) {
     super(http);
 
-    this.serviceApi.loggedOut.subscribe(() => {
-      this.mailBoxes.next([]);
+    this.serviceApi.loggedIn.subscribe((val) => {
+      if (!val) {
+        this.mailBoxes.next([]);
+      }
     });
   }
 
@@ -69,10 +71,6 @@ export class ProviderMailBox extends ServiceMailBox {
       mailBox.messages.remote.length = 0;
 
       this.sendMessage({ messages: mailBox.messages }, mailBox);
-    } else {
-      this.serviceApi.zone.run(() => {
-        Object.assign(this.mailBoxes, {});
-      });
     }
   }
 
@@ -117,10 +115,6 @@ export class ProviderMailBox extends ServiceMailBox {
             ]);
             resolve(null);
           });
-        })
-        .catch((e) => {
-          //res status 500 server error
-          console.warn('skipped exception');
         });
     });
   }
@@ -150,7 +144,8 @@ export class ProviderMailBox extends ServiceMailBox {
           reqData.aesEncrypted.ciphertext
         ),
       })
-      .subscribe(async (data: any) => {
+      .toPromise()
+      .then(async (data: any) => {
         var decryptedData = await this.serviceApi.decryptServerData(
           data,
           reqData.nextRsa
@@ -159,22 +154,19 @@ export class ProviderMailBox extends ServiceMailBox {
           return mailBox._id == decryptedData.decryptedToken.data._id;
         });
         this.zone.run(() => {
-          Object.assign(this.mailBoxes[mailBoxIndex], {
+          Object.assign(this.mailBoxes.value[mailBoxIndex], {
             messages: decryptedData.decryptedToken.data.messages,
           });
           if (
-            this.mailBoxes[mailBoxIndex]._id == this.mailBoxObservable.value._id
+            this.mailBoxes.value[mailBoxIndex]._id ==
+            this.mailBoxObservable.value._id
           ) {
-            this.mailBoxObservable.next(this.mailBoxes[mailBoxIndex]);
+            this.mailBoxObservable.next(this.mailBoxes.value[mailBoxIndex]);
           }
         });
       });
   }
   async accMailBox(postData): Promise<any> {
-    this.serviceApi.serviceModals.showLoading({
-      title: this.serviceApi.translate.instant('components.swal.loading'),
-      html: this.serviceApi.translate.instant('pages.mailBox.acceptingMailBox'),
-    });
     return new Promise(async (resolve) => {
       var reqData = await this.serviceApi.getRequestData(
         postData,
@@ -191,14 +183,15 @@ export class ProviderMailBox extends ServiceMailBox {
             reqData.aesEncrypted.ciphertext
           ),
         })
-        .subscribe(async (data: any) => {
+        .toPromise()
+        .then(async (data: any) => {
           var decryptedData;
           try {
             decryptedData = await this.serviceApi.decryptServerData(
               data,
               reqData.nextRsa
             );
-          } catch (e) {
+          } catch (error) {
             this.serviceApi.serviceModals.hideLoading();
             this.serviceApi.serviceModals.showToast({
               status: 'error',
@@ -253,7 +246,8 @@ export class ProviderMailBox extends ServiceMailBox {
                 reqData.aesEncrypted.ciphertext
               ),
             })
-            .subscribe(async (data: any) => {
+            .toPromise()
+            .then(async (data: any) => {
               decryptedData = await this.serviceApi.decryptServerData(
                 data,
                 reqData.nextRsa
