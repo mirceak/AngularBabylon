@@ -34,7 +34,6 @@ export class ReferralContentComponent implements OnInit {
     });
     await this.ProviderReferral.reqSignup(this.form.value);
 
-    this.serviceModals.hideLoading();
     this.serviceModals.showToast({
       status: 'success',
       statusMessage: this.translate.instant('components.toastr.success'),

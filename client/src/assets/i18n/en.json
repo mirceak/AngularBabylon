@@ -129,7 +129,10 @@
         "close": "Close"
       },
       "auth-identity": {
-        "message": "Session expired, please enter your pin!"
+        "message": "Session expired, please enter your pin!",
+        "resume": "Session resumed successfully!",
+        "resuming": "Resuming session!",
+        "wrong": "The information is incorrect!"
       },
       "guest": {
         "message": "You Are Already Logged In!",

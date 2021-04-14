@@ -42,7 +42,7 @@
     "login": {
       "login": "Login",
       "loggedIn": "Te-ai logat!",
-      "badLogin": "Datele sunt incorecte!",
+      "badLogin": "Informatiile sunt incorecte!",
       "loggingIn": "Se logheaza!",
       "loggedOut": "Te-ai de-logat!"
     },
@@ -129,7 +129,10 @@
         "close": "Inchide"
       },
       "auth-identity": {
-        "message": "Sesiunea a expirat, va rugam sa introduceti pinul!"
+        "message": "Sesiunea a expirat, va rugam sa introduceti pinul!",
+        "resume": "Sesiunea a for reluata cu succes!",
+        "resuming": "Se reia sesiunea!",
+        "wrong": "Informatiile sunt incorecte!"
       },
       "guest": {
         "message": "Esti deja logat!",

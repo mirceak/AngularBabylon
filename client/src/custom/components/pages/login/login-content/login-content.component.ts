@@ -31,7 +31,6 @@ export class LoginContentComponent {
     await this.serviceAuth
       .login(this.form.value)
       .then(() => {
-        this.serviceModals.hideLoading();
         this.serviceModals.showToast({
           status: 'success',
           statusMessage: this.translate.instant('components.toastr.success'),

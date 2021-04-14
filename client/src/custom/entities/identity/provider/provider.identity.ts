@@ -88,10 +88,19 @@ export class ProviderIdentity extends ServiceIdentity {
           'sessionToken',
           JSON.stringify(decryptedData.decryptedToken.data.resumeToken)
         );
+        this.serviceSocket.serviceApi.serviceModals.hideLoading();
       });
   }
 
   async login(postData): Promise<any> {
+    this.serviceSocket.serviceApi.serviceModals.showLoading({
+      title: this.serviceSocket.serviceApi.translate.instant(
+        'components.swal.loading'
+      ),
+      html: this.serviceSocket.serviceApi.translate.instant(
+        'services.guards.auth-identity.resuming'
+      ),
+    });
     var pubkData = JSON.parse(localStorage.getItem('sessionToken')).nextRsa;
     var nextRsa = await this.serviceSocket.serviceApi.Cryptography.generateRsaKeys(
       'jwk'
@@ -149,6 +158,17 @@ export class ProviderIdentity extends ServiceIdentity {
           this.serviceSocket.serviceApi.sessionToken.next(
             decryptedData.resumeToken
           );
+          this.serviceSocket.serviceApi.serviceModals.showToast({
+            status: 'error',
+            statusMessage: this.serviceSocket.serviceApi.translate.instant(
+              'components.toastr.error'
+            ),
+            title: this.serviceSocket.serviceApi.translate.instant(
+              'services.guards.auth-identity.wrong'
+            ),
+          });
+
+          this.serviceSocket.serviceApi.serviceModals.hideLoading();
         } else {
           localStorage.setItem(
             'encryptedState',
@@ -181,6 +201,17 @@ export class ProviderIdentity extends ServiceIdentity {
           this.ProviderReferral.referrals.next(this.state.referrals);
           this.serviceSocket.serviceApi.loggedIn.next(true);
           this.serviceSocket.serviceApi.zone.run(() => {
+            this.serviceSocket.serviceApi.serviceModals.showToast({
+              status: 'success',
+              statusMessage: this.serviceSocket.serviceApi.translate.instant(
+                'components.toastr.success'
+              ),
+              title: this.serviceSocket.serviceApi.translate.instant(
+                'services.guards.auth-identity.resume'
+              ),
+            });
+
+            this.serviceSocket.serviceApi.serviceModals.hideLoading();
             this.serviceSocket.serviceApi.router.navigate(['/']);
           });
         }

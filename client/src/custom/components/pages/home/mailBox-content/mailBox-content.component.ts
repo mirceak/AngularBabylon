@@ -33,7 +33,6 @@ export class MailBoxContentComponent implements OnInit {
     });
     await this.ProviderMailBox.reqMailBox(this.form.value);
 
-    this.serviceModals.hideLoading();
     this.serviceModals.showToast({
       status: 'success',
       statusMessage: this.translate.instant('components.toastr.success'),
@@ -47,7 +46,6 @@ export class MailBoxContentComponent implements OnInit {
     });
     await this.ProviderMailBox.accMailBox(this.acceptForm.value);
 
-    this.serviceModals.hideLoading();
     this.serviceModals.showToast({
       status: 'success',
       statusMessage: this.translate.instant('components.toastr.success'),
