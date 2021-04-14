@@ -92,7 +92,6 @@ class ControllerUser extends BaseController {
         var aesEncrypted = await Cryptography.aesEncrypt(
           await jwt.sign(
             {
-              lockedPin: false,
               nextRsa: req.body.nextRsa.pubkData,
               sessionJwt: validatedSessionData.sessionJwt,
             },
@@ -264,7 +263,6 @@ class ControllerUser extends BaseController {
         .map((i) => Math.min(9, Math.floor(Math.random() * 10)))
         .join(""),
     });
-    identity.lockedPin = false;
     passHash = await Cryptography.getShaHash(json.password);
     if (passHash == postData.sessionJwt.password) {
       return {
@@ -272,7 +270,6 @@ class ControllerUser extends BaseController {
         token: await jwt.sign(
           {
             nextRsa: nextRsa.pubkData,
-            lockedPin: false,
             sessionJwt: await utils.signJwtSessionToken(
               {
                 identity: identity,

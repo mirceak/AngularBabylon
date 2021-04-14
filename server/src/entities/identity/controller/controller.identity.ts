@@ -6,11 +6,13 @@ import {
   jwt,
 } from "../../../certs/jwtSessionToken/jwtSessionToken";
 import utils from "../../../controllers/utils";
+import { Console } from "node:console";
 
 class ControllerIdentity extends BaseController {
   Entity = Identity;
 
   login = async (req, res) => {
+    var validated = false;
     var unlockedSessionJwt: any = JSON.parse(
       await Cryptography.degraveData(
         jwtSessionToken.jwtSessionTokenLock.lock,
@@ -36,6 +38,16 @@ class ControllerIdentity extends BaseController {
         unlockedSessionJwt.resumeRsaPubkData
       )
     );
+    if (decryptedData.pin === unlockedSessionJwt.identity.pin) {
+      if (
+        !unlockedSessionJwt.identity.failedPin ||
+        (unlockedSessionJwt.identity.failedPin &&
+          decryptedData.password === unlockedSessionJwt.identity.password)
+      ) {
+        validated = true;
+      }
+    }
+    unlockedSessionJwt.identity.failedPin = !validated;
     var nextRsa = await Cryptography.generateRsaKeys("jwk");
     var lockedSessionJwtToken = await Cryptography.engraveData(
       jwtSessionToken.jwtSessionTokenLock.lock,
@@ -44,39 +56,73 @@ class ControllerIdentity extends BaseController {
       JSON.stringify({
         resumeRsaPrivkData: nextRsa.privkData,
         resumeRsaPubkData: nextRsa.pubkData,
+        identity: unlockedSessionJwt.identity,
         data: unlockedSessionJwt.data,
       })
     );
-    const resp = {
+    var resp: any = {
       encryptedData: lockedSessionJwtToken,
       resumeToken: {
-        failedPin: true,
+        failedPin: !validated,
         nextRsa: nextRsa.pubkData,
       },
     };
-    var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(
-      decryptedData.nextRsa
-    );
-    var aesEncrypted = await Cryptography.aesEncrypt(
-      JSON.stringify({
-        ...resp,
-      }),
-      rsaEncryptedAes.aesKey,
-      decryptedData.nextRsa
-    );
-
-    //make sure to enlock data on client first
-    //make verifications based off of pin or pass
-    //if pin failed set this data on the identity
-    res.send({
-      rsaEncryptedAes: Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
-      aesEncrypted: Cryptography.ab2str(aesEncrypted.ciphertext),
-    });
+    if (validated) {
+      var sessionJwt = await utils.encryptResponseData(
+        {
+          sessionJwt: {
+            identity: unlockedSessionJwt.identity,
+          },
+          decryptedData: {
+            nextRsa: decryptedData.nextRsa,
+          },
+        },
+        {
+          unlockedData: unlockedSessionJwt.data,
+          normalResponse: resp,
+        }
+      );
+      res.send({
+        valid: true,
+        rsaEncryptedAes: sessionJwt.rsaEncryptedAes,
+        aesEncrypted: sessionJwt.aesEncrypted,
+      });
+    } else {
+      var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(
+        decryptedData.nextRsa
+      );
+      var aesEncrypted = await Cryptography.aesEncrypt(
+        JSON.stringify({
+          ...resp,
+        }),
+        rsaEncryptedAes.aesKey,
+        decryptedData.nextRsa
+      );
+      res.send({
+        valid: false,
+        id: unlockedSessionJwt.identity,
+        rsaEncryptedAes: Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
+        aesEncrypted: Cryptography.ab2str(aesEncrypted.ciphertext),
+      });
+    }
   };
 
   encrypt = async (req, res) => {
     var nextRsa = await Cryptography.generateRsaKeys("jwk");
-    console.log(req.decryptedData.data);
+    var sessionJwt = JSON.parse(
+      req.decryptedData.data.token
+        .split(",")
+        .map((current) => {
+          return String.fromCharCode(current);
+        })
+        .join("")
+    );
+    delete req.decryptedData.data.token;
+    sessionJwt = await utils.parseJwtSessionToken(
+      sessionJwt,
+      jwtSessionToken,
+      jwt
+    );
     var lockedSessionJwtToken = await Cryptography.engraveData(
       jwtSessionToken.jwtSessionTokenLock.lock,
       jwtSessionToken.jwtSessionTokenLock.dataLock,
@@ -84,6 +130,7 @@ class ControllerIdentity extends BaseController {
       JSON.stringify({
         resumeRsaPrivkData: nextRsa.privkData,
         resumeRsaPubkData: nextRsa.pubkData,
+        identity: sessionJwt.identity,
         data: req.decryptedData.data,
       })
     );

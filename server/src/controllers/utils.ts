@@ -43,7 +43,6 @@ var encryptResponseData = async (reqData, data, jwtOptions = {}) => {
       token: await jwt.sign(
         Object.assign(
           {
-            lockedPin: false,
             nextRsa: nextRsa.pubkData,
             sessionJwt: await signJwtSessionToken(
               {
@@ -65,8 +64,8 @@ var encryptResponseData = async (reqData, data, jwtOptions = {}) => {
     reqData.decryptedData.nextRsa
   );
   return {
-    rsaEncryptedAes: await Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
-    aesEncrypted: await Cryptography.ab2str(aesEncrypted.ciphertext),
+    rsaEncryptedAes: Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
+    aesEncrypted: Cryptography.ab2str(aesEncrypted.ciphertext),
   };
 };
 

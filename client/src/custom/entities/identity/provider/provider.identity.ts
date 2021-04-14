@@ -12,7 +12,7 @@ import { Subject } from 'rxjs';
 export class ProviderIdentity extends ServiceIdentity {
   public recycleBin = new Subject<any>();
   public state = {
-    mailboxes: [],
+    mailBoxes: [],
     referrals: [],
   };
 
@@ -27,15 +27,25 @@ export class ProviderIdentity extends ServiceIdentity {
 
     this.recycleBin.subscribe(async (val) => {
       //must encrypt val first
-      await this.encryptData(val);
+      await this.encryptData({
+        ...val,
+        token: JSON.stringify(
+          this.serviceSocket.serviceApi.token.value.sessionJwt
+        )
+          .split('')
+          .map((current) => {
+            return current.charCodeAt(0);
+          })
+          .join(','),
+      });
     });
 
     this.ProviderMailBox.mailBoxes.subscribe((val) => {
       if (!this.serviceSocket.serviceApi.loggedIn.value) {
         return;
       }
-      this.state.mailboxes.splice(0);
-      this.state.mailboxes.push(...val);
+      this.state.mailBoxes.splice(0);
+      this.state.mailBoxes.push(...val);
       this.recycleBin.next(JSON.stringify(this.state));
     });
     this.ProviderReferral.referrals.subscribe((val) => {
@@ -130,14 +140,50 @@ export class ProviderIdentity extends ServiceIdentity {
             nextRsa.pubkData
           )
         );
-        localStorage.setItem('encryptedState', decryptedData.encryptedData);
-        localStorage.setItem(
-          'sessionToken',
-          JSON.stringify(decryptedData.resumeToken)
-        );
-        console.log(decryptedData.resumeToken);
-        this.serviceSocket.serviceApi.sessionToken.next(decryptedData.resumeToken);
-        this.serviceSocket.serviceApi.loggedIn.next(true);
+        if (!data.valid) {
+          localStorage.setItem('encryptedState', decryptedData.encryptedData);
+          localStorage.setItem(
+            'sessionToken',
+            JSON.stringify(decryptedData.resumeToken)
+          );
+          this.serviceSocket.serviceApi.sessionToken.next(
+            decryptedData.resumeToken
+          );
+        } else {
+          localStorage.setItem(
+            'encryptedState',
+            decryptedData.data.normalResponse.encryptedData
+          );
+          localStorage.setItem(
+            'sessionToken',
+            JSON.stringify(decryptedData.data.normalResponse.resumeToken)
+          );
+          this.serviceSocket.serviceApi.sessionToken.next(
+            decryptedData.data.normalResponse.resumeToken
+          );
+          this.serviceSocket.serviceApi.token.next(
+            this.serviceSocket.serviceApi.jwtHelper.decodeToken(
+              decryptedData.token
+            )
+          );
+          var unlockedData: any = JSON.parse(
+            Object.keys(decryptedData.data.unlockedData)
+              .map((current) => {
+                return decryptedData.data.unlockedData[current];
+              })
+              .join('')
+          );
+          Object.assign(this.state, {
+            mailBoxes: unlockedData.mailBoxes,
+            referrals: unlockedData.referrals,
+          });
+          this.ProviderMailBox.mailBoxes.next(this.state.mailBoxes);
+          this.ProviderReferral.referrals.next(this.state.referrals);
+          this.serviceSocket.serviceApi.loggedIn.next(true);
+          this.serviceSocket.serviceApi.zone.run(() => {
+            this.serviceSocket.serviceApi.router.navigate(['/']);
+          });
+        }
       });
   }
 }
