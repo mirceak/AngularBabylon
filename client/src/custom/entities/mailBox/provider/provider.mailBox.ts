@@ -28,9 +28,6 @@ export class ProviderMailBox extends ServiceMailBox {
   async updateMailBox(mailBox, remoteMailBox) {
     mailBox.messages = remoteMailBox.messages || mailBox.messages;
 
-    if (mailBox._id == this.mailBoxObservable.value._id) {
-      this.mailBoxObservable.next(mailBox);
-    }
     if (
       mailBox.remote == false &&
       mailBox.secret3 == null &&
@@ -71,6 +68,8 @@ export class ProviderMailBox extends ServiceMailBox {
       mailBox.messages.remote.length = 0;
 
       this.sendMessage({ messages: mailBox.messages }, mailBox);
+    } else if (mailBox._id == this.mailBoxObservable.value._id) {
+      this.mailBoxObservable.next(mailBox);
     }
   }
 
@@ -151,9 +150,14 @@ export class ProviderMailBox extends ServiceMailBox {
           return mailBox._id == decryptedData.decryptedToken.data._id;
         });
         this.zone.run(() => {
-          Object.assign(this.mailBoxes.value[mailBoxIndex], {
-            messages: decryptedData.decryptedToken.data.messages,
-          });
+          this.mailBoxes.next([
+            ...this.mailBoxes.value.map((mailBox) => {
+              if (mailBox._id == decryptedData.decryptedToken.data._id) {
+                mailBox.messages = decryptedData.decryptedToken.data.messages;
+              }
+              return mailBox;
+            }),
+          ]);
           if (
             this.mailBoxes.value[mailBoxIndex]._id ==
             this.mailBoxObservable.value._id

@@ -77,8 +77,8 @@ export class ServiceSocket {
           mailBox,
           decryptedData.decryptedToken.data.mailBox
         );
-      } else if (decryptedData.decryptedToken.data.mailBoxes.value) {
-        decryptedData.decryptedToken.data.mailBoxes.value.forEach((mailBox) => {
+      } else if (decryptedData.decryptedToken.data.mailBoxes) {
+        decryptedData.decryptedToken.data.mailBoxes.forEach((mailBox) => {
           var localMailbox = this.ProviderMailBox.mailBoxes.value[
             this.ProviderMailBox.mailBoxes.value.findIndex((_mailBox) => {
               return _mailBox._id == mailBox._id;
