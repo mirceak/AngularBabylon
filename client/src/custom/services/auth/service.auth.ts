@@ -35,42 +35,38 @@ export class ServiceAuth {
       this.ProviderUser.requestLogin({
         email: postData.email,
         rsaPubkData: firstRsaKeys.pubkData,
-      })
-        .toPromise()
-        .then(async (response: any) => {
-          postData = Object.assign(postData, response, {
-            firstRsaKeys: firstRsaKeys,
-          });
-          postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
-            'jwk'
-          );
-          let request;
-          try {
-            request = await this.signLoginSessionData(postData);
-          } catch (error) {
-            return reject(null);
-          }
-          this.ProviderUser.login(request)
-            .toPromise()
-            .then(async (data: any) => {
-              var decrypted = await this.serviceApi.decryptServerData(
-                data,
-                postData.nextRsa,
-                false
-              );
-              this.serviceApi.token.next(
-                this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
-              );
-              this.serviceApi.loggedIn.next(true);
-              this.ProviderIdentity.recycleBin.next(
-                this.ProviderIdentity.state
-              );
-              this.serviceApi.zone.run(() => {
-                this.serviceApi.router.navigate(['/']);
-                resolve(null);
-              });
-            });
+      }).then(async (response: any) => {
+        postData = Object.assign(postData, response, {
+          firstRsaKeys: firstRsaKeys,
         });
+        postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
+          'jwk'
+        );
+        let request;
+        try {
+          request = await this.signLoginSessionData(postData);
+        } catch (error) {
+          return reject(null);
+        }
+        this.ProviderUser.login(request).then(async (data: any) => {
+          var decrypted = await this.serviceApi.decryptServerData(
+            data,
+            postData.nextRsa,
+            false
+          );
+          this.serviceApi.token.next(
+            this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
+          );
+          this.serviceApi.loggedIn.next(true);
+          this.ProviderIdentity.recycleBin.next(
+            JSON.stringify(this.ProviderIdentity.state)
+          );
+          this.serviceApi.zone.run(() => {
+            this.serviceApi.router.navigate(['/']);
+            resolve(null);
+          });
+        });
+      });
     });
   }
 
@@ -90,42 +86,38 @@ export class ServiceAuth {
       this.ProviderUser.requestRegister({
         email: postData.email,
         rsaPubkData: firstRsaKeys.pubkData,
-      })
-        .toPromise()
-        .then(async (response: any) => {
-          postData = Object.assign(postData, response, {
-            firstRsaKeys: firstRsaKeys,
-          });
-          postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
-            'jwk'
-          );
-          let request;
-          try {
-            request = await this.signRegisterSessionData(postData);
-          } catch (error) {
-            return reject(null);
-          }
-          this.ProviderUser.register(request)
-            .toPromise()
-            .then(async (data: any) => {
-              var decrypted = await this.serviceApi.decryptServerData(
-                data,
-                postData.nextRsa,
-                false
-              );
-              this.serviceApi.loggedIn.next(true);
-              this.ProviderIdentity.recycleBin.next(
-                this.ProviderIdentity.state
-              );
-              this.serviceApi.token.next(
-                this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
-              );
-              this.serviceApi.zone.run(() => {
-                this.serviceApi.router.navigate(['/']);
-                resolve(null);
-              });
-            });
+      }).then(async (response: any) => {
+        postData = Object.assign(postData, response, {
+          firstRsaKeys: firstRsaKeys,
         });
+        postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
+          'jwk'
+        );
+        let request;
+        try {
+          request = await this.signRegisterSessionData(postData);
+        } catch (error) {
+          return reject(null);
+        }
+        this.ProviderUser.register(request).then(async (data: any) => {
+          var decrypted = await this.serviceApi.decryptServerData(
+            data,
+            postData.nextRsa,
+            false
+          );
+          this.serviceApi.loggedIn.next(true);
+          this.ProviderIdentity.recycleBin.next(
+            JSON.stringify(this.ProviderIdentity.state)
+          );
+          this.serviceApi.token.next(
+            this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
+          );
+          this.serviceApi.zone.run(() => {
+            this.serviceApi.router.navigate(['/']);
+            resolve(null);
+          });
+        });
+      });
     });
   }
 

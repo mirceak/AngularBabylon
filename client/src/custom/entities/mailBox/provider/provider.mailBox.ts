@@ -87,8 +87,8 @@ export class ProviderMailBox extends ServiceMailBox {
         postData,
         this.serviceApi.token
       );
-      (
-        await super.reqMailBox({
+      await super
+        .reqMailBox({
           sessionJwt: this.serviceApi.token.value.sessionJwt,
           rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
             reqData.rsaEncryptedAes.encryptedAes
@@ -97,8 +97,6 @@ export class ProviderMailBox extends ServiceMailBox {
             reqData.aesEncrypted.ciphertext
           ),
         })
-      )
-        .toPromise()
         .then(async (data: any) => {
           var decryptedData = await this.serviceApi.decryptServerData(
             data,
@@ -144,7 +142,6 @@ export class ProviderMailBox extends ServiceMailBox {
           reqData.aesEncrypted.ciphertext
         ),
       })
-      .toPromise()
       .then(async (data: any) => {
         var decryptedData = await this.serviceApi.decryptServerData(
           data,
@@ -183,7 +180,6 @@ export class ProviderMailBox extends ServiceMailBox {
             reqData.aesEncrypted.ciphertext
           ),
         })
-        .toPromise()
         .then(async (data: any) => {
           var decryptedData;
           try {
@@ -246,7 +242,6 @@ export class ProviderMailBox extends ServiceMailBox {
                 reqData.aesEncrypted.ciphertext
               ),
             })
-            .toPromise()
             .then(async (data: any) => {
               decryptedData = await this.serviceApi.decryptServerData(
                 data,

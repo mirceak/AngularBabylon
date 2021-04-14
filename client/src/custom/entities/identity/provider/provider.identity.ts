@@ -26,6 +26,9 @@ export class ProviderIdentity extends ServiceIdentity {
     super(http);
 
     this.recycleBin.subscribe(async (val) => {
+      if (!this.serviceSocket.serviceApi.loggedIn.value) {
+        return;
+      }
       //must encrypt val first
       await this.encryptData({
         ...val,
@@ -63,8 +66,8 @@ export class ProviderIdentity extends ServiceIdentity {
       postData,
       this.serviceSocket.serviceApi.token
     );
-    (
-      await super.encrypt({
+    super
+      .encrypt({
         sessionJwt: this.serviceSocket.serviceApi.token.value.sessionJwt,
         rsaEncryptedAes: await this.serviceSocket.serviceApi.Cryptography.ab2str(
           postData.rsaEncryptedAes.encryptedAes
@@ -73,8 +76,6 @@ export class ProviderIdentity extends ServiceIdentity {
           postData.aesEncrypted.ciphertext
         ),
       })
-    )
-      .toPromise()
       .then(async (data: any) => {
         var decryptedData = await this.serviceSocket.serviceApi.decryptServerData(
           data,
@@ -109,8 +110,8 @@ export class ProviderIdentity extends ServiceIdentity {
         rsaEncryptedAes.aesKey,
         JSON.parse(localStorage.getItem('sessionToken')).nextRsa
       );
-      (
-        await super.login({
+      super
+        .login({
           encryptedData: localStorage.getItem('encryptedState'),
           rsaEncryptedAes: this.serviceSocket.serviceApi.Cryptography.ab2str(
             rsaEncryptedAes.encryptedAes
@@ -119,8 +120,6 @@ export class ProviderIdentity extends ServiceIdentity {
             aesEncrypted.ciphertext
           ),
         })
-      )
-        .toPromise()
         .then(async (data: any) => {
           data.rsaEncryptedAes = this.serviceSocket.serviceApi.Cryptography.str2ab(
             data.rsaEncryptedAes

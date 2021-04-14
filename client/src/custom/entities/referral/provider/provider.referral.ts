@@ -34,8 +34,8 @@ export class ProviderReferral extends ServiceReferral {
         postData,
         this.serviceApi.token
       );
-      (
-        await super.reqSignup({
+      await super
+        .reqSignup({
           sessionJwt: this.serviceApi.token.value.sessionJwt,
           rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
             reqData.rsaEncryptedAes.encryptedAes
@@ -44,8 +44,6 @@ export class ProviderReferral extends ServiceReferral {
             reqData.aesEncrypted.ciphertext
           ),
         })
-      )
-        .toPromise()
         .then(async (data: any) => {
           var decryptedData = await this.serviceApi.decryptServerData(
             data,

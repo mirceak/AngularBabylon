@@ -15,16 +15,24 @@ export class ServiceUser extends ServiceEntityBase<ModelUser> {
     });
   }
 
-  requestLogin(postData) {
-    return this.http.post(`api/${this.options.pathName}/preLogin`, postData);
+  async requestLogin(postData) {
+    return await this.http
+      .post(`api/${this.options.pathName}/preLogin`, postData)
+      .toPromise();
   }
-  login(postData) {
-    return this.http.post(`api/${this.options.pathName}/login`, postData);
+  async login(postData) {
+    return await this.http
+      .post(`api/${this.options.pathName}/login`, postData)
+      .toPromise();
   }
-  requestRegister(postData) {
-    return this.http.post(`api/${this.options.pathName}/preRegister`, postData);
+  async requestRegister(postData) {
+    return await this.http
+      .post(`api/${this.options.pathName}/preRegister`, postData)
+      .toPromise();
   }
-  register(postData) {
-    return this.http.post(`api/${this.options.pathName}/register`, postData);
+  async register(postData) {
+    return await this.http
+      .post(`api/${this.options.pathName}/register`, postData)
+      .toPromise();
   }
 }

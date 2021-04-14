@@ -15,10 +15,10 @@ export class ServiceIdentity extends ServiceEntityBase<ModelIdentity> {
     });
   }
   async encrypt(postData) {
-    return this.http.post(`api/${this.options.pathName}/encrypt`, postData);
+    return await this.http.post(`api/${this.options.pathName}/encrypt`, postData).toPromise();
   }
 
   async login(postData) {
-    return this.http.post(`api/${this.options.pathName}/login`, postData);
+    return await this.http.post(`api/${this.options.pathName}/login`, postData).toPromise();
   }
 }

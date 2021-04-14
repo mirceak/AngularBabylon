@@ -23,7 +23,7 @@ export class ProviderUser extends ServiceUser {
   setCurrentUser(loggedIn): void {
     if (loggedIn) {
       this.currentUser = new ModelUser();
-      this.serviceSocket.connectSocket();
+      // this.serviceSocket.connectSocket();
     } else {
       this.serviceSocket.disconnectSocket();
       this.currentUser = null;

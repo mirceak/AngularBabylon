@@ -2,9 +2,9 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-class Options {    
-    pathNamePlural: string
-    pathName: string
+class Options {
+  pathNamePlural: string;
+  pathName: string;
 }
 
 @Injectable({
@@ -13,27 +13,43 @@ class Options {
 export abstract class ServiceEntityBase<Entity> {
   constructor(public http: HttpClient, public options: Options) {}
 
-  getEntities(): Observable<Entity[]> {
-    return this.http.get<Entity[]>(`api/${this.options.pathNamePlural}`);
+  async getEntities(): Promise<any> {
+    return await this.http
+      .get<Entity[]>(`api/${this.options.pathNamePlural}`)
+      .toPromise();
   }
 
-  countEntities(): Observable<number> {
-    return this.http.get<number>(`api/${this.options.pathNamePlural}/count`);
+  async countEntities(): Promise<any> {
+    return await this.http
+      .get<number>(`api/${this.options.pathNamePlural}/count`)
+      .toPromise();
   }
 
-  addEntity(entity: Entity): Observable<Entity> {
-    return this.http.post<Entity>(`api/${this.options.pathName}`, entity);
+  async addEntity(entity: Entity): Promise<any> {
+    return await this.http
+      .post<Entity>(`api/${this.options.pathName}`, entity)
+      .toPromise();
   }
 
-  getEntity(entity: any): Observable<any> {
-    return this.http.get<Entity>(`api/${this.options.pathName}/${entity._id}`);
+  async getEntity(entity: any): Promise<any> {
+    return await this.http
+      .get<Entity>(`api/${this.options.pathName}/${entity._id}`)
+      .toPromise();
   }
 
-  editEntity(entity: any): Observable<any> {
-    return this.http.put(`api/${this.options.pathName}/${entity._id}`, entity, { responseType: 'text' });
+  async editEntity(entity: any): Promise<any> {
+    return await this.http
+      .put(`api/${this.options.pathName}/${entity._id}`, entity, {
+        responseType: 'text',
+      })
+      .toPromise();
   }
 
-  deleteEntity(entity: any): Observable<any> {
-    return this.http.delete(`api/${this.options.pathName}/${entity._id}`, { responseType: 'text' });
+  async deleteEntity(entity: any): Promise<any> {
+    return await this.http
+      .delete(`api/${this.options.pathName}/${entity._id}`, {
+        responseType: 'text',
+      })
+      .toPromise();
   }
 }
