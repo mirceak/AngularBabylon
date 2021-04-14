@@ -15,6 +15,7 @@ export class ProviderIdentity extends ServiceIdentity {
   public state = {
     mailBoxes: [],
     referrals: [],
+    language: 'en'
   };
 
   constructor(
@@ -26,6 +27,7 @@ export class ProviderIdentity extends ServiceIdentity {
     super(http);
 
     this.recycleBin.subscribe(async (val) => {
+      Object.assign(this.state, val);
       if (!this.serviceSocket.serviceApi.loggedIn.value) {
         return;
       }

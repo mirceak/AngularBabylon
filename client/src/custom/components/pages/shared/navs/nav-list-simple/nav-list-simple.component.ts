@@ -27,7 +27,7 @@ export class NavListSimpleComponent implements OnInit {
     public translate: TranslateService,
     public internationalization: ServiceInternationalization,
     private serviceModals: ServiceModals,
-    public ProviderUser: ProviderUser,
+    public ProviderUser: ProviderUser
   ) {}
 
   ngOnInit(): void {}
@@ -58,10 +58,10 @@ export class NavListSimpleComponent implements OnInit {
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('components.nav.changingLang'),
     });
-    this.langObserver = this.internationalization
-      .setLanguage($event)
-      .toPromise()
-      .then((lang) => {
+    this.langObserver = this.internationalization.setLanguage($event.value);
+    $event.source.value = 'null';
+    if (this.langObserver) {
+      this.langObserver.toPromise().then((lang) => {
         this.serviceModals.showToast({
           status: 'success',
           statusMessage: this.translate.instant('components.toastr.success'),
@@ -69,6 +69,7 @@ export class NavListSimpleComponent implements OnInit {
         });
         this.serviceModals.hideLoading();
       });
+    }
   }
 
   onChangeNav() {
