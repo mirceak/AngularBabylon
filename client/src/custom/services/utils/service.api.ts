@@ -30,14 +30,7 @@ export class ServiceApi {
   }
 
   _loggedIn(val) {
-    if (!val || val === -1) {
-      if (val === -1) {
-        if (!localStorage.hasOwnProperty('sessionToken')) {
-          this.router.navigate(['/auth/login']);
-        } else {
-          this.router.navigate(['/auth/login-identity']);
-        }
-      }
+    if (!val) {
       this.token.next(null);
       this.sessionToken.next(null);
     }

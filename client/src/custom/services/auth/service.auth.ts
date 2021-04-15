@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ProviderUser } from '@custom/entities/user/provider/provider.user';
 import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';
 import { ServiceApi } from '../utils/service.api';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
@@ -10,6 +11,7 @@ export class ServiceAuth {
   constructor(
     public ProviderUser: ProviderUser,
     public ProviderIdentity: ProviderIdentity,
+    private router: Router,
     public serviceApi: ServiceApi
   ) {
     if (localStorage.getItem('encryptedState')) {
@@ -70,6 +72,7 @@ export class ServiceAuth {
 
   logout(): void {
     localStorage.clear();
+    this.router.navigate(['/auth/login']);
     this.serviceApi.loggedIn.next(false);
   }
 
