@@ -209,25 +209,28 @@ class Cryptography {
       messageChar = message[i % message.length];
       rowMessageIndex = row.indexOf(messageChar);
       output.push(
-        this.originalMap[rowMessageIndex].charCodeAt(0) +
-          password.charCodeAt(i % password.length)
+        String.fromCharCode(
+          this.originalMap[rowMessageIndex].charCodeAt(0) +
+            password.charCodeAt(i % password.length)
+        )
       );
       if (i % lock.length == 0) {
         lock = this.lockMap(lock, dataLock);
       }
     }
-    return output.join(",");
+    return output.join("");
   }
   public degraveData(lock, dataLock, output, password) {
     var originalInputIndex = 0;
     var i;
     var unlocked = "";
     lock = JSON.parse(JSON.stringify(lock));
-    output = output.split(",");
+    output = output.split("");
     for (i = 0; i < output.length; i++) {
       originalInputIndex = this.originalMap.indexOf(
         String.fromCharCode(
-          output[i % output.length] - password.charCodeAt(i % password.length)
+          output[i % output.length].charCodeAt(0) -
+            password.charCodeAt(i % password.length)
         )
       );
       unlocked += lock[i % lock.length][originalInputIndex];
