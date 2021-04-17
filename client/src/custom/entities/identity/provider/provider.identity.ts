@@ -72,6 +72,18 @@ export class ProviderIdentity extends ServiceIdentity {
       postData,
       this.serviceSocket.serviceApi.token
     );
+    postData.oldPassword = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+      postData.oldPassword
+    );
+    postData.password = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+      postData.password
+    );
+    postData.oldPin = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+      postData.oldPin
+    );
+    postData.pin = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+      postData.pin
+    );
     return await super
       .account({
         sessionJwt: this.serviceSocket.serviceApi.token.value.sessionJwt,
@@ -86,7 +98,7 @@ export class ProviderIdentity extends ServiceIdentity {
         await this.serviceSocket.serviceApi.decryptServerData(
           data,
           postData.nextRsa
-        )
+        );
       });
   }
 
@@ -126,6 +138,12 @@ export class ProviderIdentity extends ServiceIdentity {
       var pubkData = JSON.parse(localStorage.getItem('sessionToken')).nextRsa;
       var nextRsa = await this.serviceSocket.serviceApi.Cryptography.generateRsaKeys(
         'jwk'
+      );
+      postData.email = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+        postData.email
+      );
+      postData.password = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+        postData.password
       );
       var rsaEncryptedAes = await this.serviceSocket.serviceApi.Cryptography.getRsaEncryptedAesKey(
         pubkData

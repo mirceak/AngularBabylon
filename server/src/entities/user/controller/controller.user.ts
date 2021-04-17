@@ -13,7 +13,9 @@ class ControllerUser extends BaseController {
   Service = ServiceUser;
 
   preLogin = async (req, res) => {
-    await ServiceUser.findOne({ email: req.body.email }).then(async (user) => {
+    await ServiceUser.findOne({
+      email: await Cryptography.getShaHash(req.body.email),
+    }).then(async (user) => {
       if (user == null) {
         return res.status(403).send({
           message: "pages.login.badLogin",
@@ -178,7 +180,7 @@ class ControllerUser extends BaseController {
         .join(""),
       mailBox: [],
       password: json.password,
-      pin: json.pin
+      pin: json.pin,
     });
     return {
       nextRsa: json.nextRsa,
@@ -257,7 +259,7 @@ class ControllerUser extends BaseController {
         .join(""),
       mailBox: [],
       password: json.password,
-      pin: json.pin
+      pin: json.pin,
     });
     passHash = await Cryptography.getShaHash(json.password);
     if (passHash == postData.sessionJwt.password) {

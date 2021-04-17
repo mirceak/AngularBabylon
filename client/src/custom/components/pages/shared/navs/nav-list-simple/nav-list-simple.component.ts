@@ -11,6 +11,7 @@ import { ServiceInternationalization } from '@custom/services/utils/service.inte
 import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 import { ProviderUser } from '@custom/entities/user/provider/provider.user';
+import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';
 
 @Component({
   selector: 'app-nav-list',
@@ -27,7 +28,8 @@ export class NavListSimpleComponent implements OnInit {
     public translate: TranslateService,
     public internationalization: ServiceInternationalization,
     private serviceModals: ServiceModals,
-    public ProviderUser: ProviderUser
+    public ProviderUser: ProviderUser,
+    public ProviderIdentity: ProviderIdentity
   ) {}
 
   ngOnInit(): void {}
@@ -67,7 +69,11 @@ export class NavListSimpleComponent implements OnInit {
           statusMessage: this.translate.instant('components.toastr.success'),
           title: this.translate.instant('components.nav.changedLang'),
         });
-        this.serviceModals.hideLoading();
+        if (!this.serviceAuth.serviceApi.loggedIn.value) {
+          this.serviceModals.hideLoading();
+        } else {
+          this.ProviderIdentity.recycleBin.next(this.ProviderIdentity.state);
+        }
       });
     }
   }

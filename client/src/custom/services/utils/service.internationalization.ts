@@ -20,7 +20,6 @@ export class ServiceInternationalization {
 
     this.ProviderIdentity.serviceSocket.serviceApi.loggedIn.subscribe((val) => {
       if (val) {
-        console.log(ProviderIdentity.state.language);
         if (this.lang !== ProviderIdentity.state.language) {
           this.setLanguage(ProviderIdentity.state.language);
         }
