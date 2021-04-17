@@ -43,9 +43,6 @@ export class ProviderIdentity extends ServiceIdentity {
       //must encrypt val first
       await this.encryptData({
         ...val,
-        token: JSON.stringify(
-          this.serviceSocket.serviceApi.token.value.sessionJwt
-        ),
       }).then(() => {
         this.serviceSocket.serviceApi.serviceModals.hideLoading();
         this.encryptingData.next(false);

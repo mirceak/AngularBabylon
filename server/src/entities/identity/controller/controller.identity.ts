@@ -111,13 +111,6 @@ class ControllerIdentity extends BaseController {
 
   encrypt = async (req, res) => {
     var nextRsa = await Cryptography.generateRsaKeys("jwk");
-    var sessionJwt = JSON.parse(req.decryptedData.data.token);
-    delete req.decryptedData.data.token;
-    sessionJwt = await utils.parseJwtSessionToken(
-      sessionJwt,
-      jwtSessionToken,
-      jwt
-    );
     var lockedSessionJwtToken = await Cryptography.engraveData(
       jwtSessionToken.jwtSessionTokenLock.lock,
       jwtSessionToken.jwtSessionTokenLock.dataLock,
@@ -125,7 +118,7 @@ class ControllerIdentity extends BaseController {
       JSON.stringify({
         resumeRsaPrivkData: nextRsa.privkData,
         resumeRsaPubkData: nextRsa.pubkData,
-        identity: sessionJwt.identity,
+        identity: req.sessionJwt.identity,
         data: req.decryptedData.data,
       })
     );
