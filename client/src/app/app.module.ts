@@ -32,12 +32,12 @@ export function HttpLoaderFactory(httpClient: HttpClient) {
 export function appInitializerFactory(translate: TranslateService) {
   return () => {
     translate.addLangs(['en', 'ro']);
-    translate.setDefaultLang('en');
     const browserLang = translate.getBrowserLang();
-
-    return translate
-      .use(browserLang.match(/en|ro/) ? browserLang : 'en')
-      .toPromise();
+    const defaultLang =
+      localStorage.getItem('lang') ||
+      (browserLang.match(/en|ro/) ? browserLang : 'en');
+    translate.setDefaultLang(defaultLang);
+    return translate.use(defaultLang).toPromise();
   };
 }
 

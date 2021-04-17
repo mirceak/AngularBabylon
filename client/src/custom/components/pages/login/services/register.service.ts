@@ -53,6 +53,26 @@ export class RegisterService {
       },
     },
     {
+      key: 'pin',
+      type: 'input',
+      templateOptions: {
+        translate: true,
+        _label: 'formlyFields.pin.label',
+        _placeholder: 'formlyFields.pin.placeholder',
+        type: 'password',
+        required: true,
+      },
+      validators: {
+        minLength: {
+          options: {
+            min: 4,
+          },
+          expression: this.pageFormlyService.minLengthValidator(4),
+        },
+        required: this.pageFormlyService.requiredValidator,
+      },
+    },
+    {
       key: 'referralCode',
       type: 'input',
       templateOptions: {

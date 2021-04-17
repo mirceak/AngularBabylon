@@ -28,6 +28,15 @@
         ><mat-icon>contacts</mat-icon>
         {{ translate.instant("components.nav.mailBoxes") }}</a
       >
+      <a
+        (click)="onChangeNav()"
+        mat-button
+        routerLink="/account"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: false }"
+        ><mat-icon>person</mat-icon>
+        {{ translate.instant("components.nav.account") }}</a
+      >
     </div>
   </div>
 </div>

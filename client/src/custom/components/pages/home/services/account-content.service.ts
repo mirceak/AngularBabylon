@@ -4,16 +4,17 @@ import { PageFormlyService } from '@custom/components/pages/shared/base/page-sim
 @Injectable({
   providedIn: 'root',
 })
-export class LoginService {
+export class AccountContentService {
   constructor(private pageFormlyService: PageFormlyService) {}
   fields = [
     {
-      key: 'email',
+      key: 'oldPassword',
       type: 'input',
       templateOptions: {
         translate: true,
-        _label: 'formlyFields.email.label',
-        _placeholder: 'formlyFields.email.placeholder',
+        _label: 'formlyFields.oldPassword.label',
+        _placeholder: 'formlyFields.oldPassword.placeholder',
+        type: 'password',
         required: true,
       },
       validators: {
@@ -23,7 +24,28 @@ export class LoginService {
           },
           expression: this.pageFormlyService.minLengthValidator(6),
         },
-        email: this.pageFormlyService.emailValidator,
+        required: {
+          expression: this.pageFormlyService.requiredValidator,
+        },
+      },
+    },
+    {
+      key: 'oldPin',
+      type: 'input',
+      templateOptions: {
+        translate: true,
+        _label: 'formlyFields.oldPin.label',
+        _placeholder: 'formlyFields.oldPin.placeholder',
+        type: 'password',
+        required: true,
+      },
+      validators: {
+        minLength: {
+          options: {
+            min: 4,
+          },
+          expression: this.pageFormlyService.minLengthValidator(4),
+        },
         required: this.pageFormlyService.requiredValidator,
       },
     },

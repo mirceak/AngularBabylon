@@ -6,6 +6,14 @@ import { AuthIdentityGuardService } from '@custom/services/auth/guards/auth-iden
 import { LoginContentComponent } from './login-content/login-content.component';
 import { LoginIdentityContentComponent } from './login-identity-content/login-identity-content.component';
 import { RegisterContentComponent } from './register-content/register-content.component';
+import { Route } from '@angular/compiler/src/core';
+
+export const routerComponentDeclarations = [
+  LoginComponent,
+  LoginContentComponent,
+  RegisterContentComponent,
+  LoginIdentityContentComponent,
+];
 
 const routes: Routes = [
   {
@@ -30,6 +38,30 @@ const routes: Routes = [
     ],
   },
 ];
+
+const checkRouterComponentDeclarations = (_routes) => {
+  _routes.reduce(
+    (allLoaded: boolean, current: any, index: number, array: Array<Route>) => {
+      if (
+        allLoaded &&
+        current.component &&
+        routerComponentDeclarations.indexOf(current.component) === -1
+      ) {
+        allLoaded = false;
+        throw new Error(
+          `Please make sure you add all components from your routes to the routerComponentDeclarations array! Missing component: ${current.component.name}`
+        );
+      }
+
+      if (current.children) {
+        checkRouterComponentDeclarations(current.children);
+      }
+      return allLoaded;
+    },
+    true
+  );
+};
+checkRouterComponentDeclarations(routes);
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],

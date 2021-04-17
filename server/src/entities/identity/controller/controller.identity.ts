@@ -6,7 +6,6 @@ import {
   jwt,
 } from "../../../certs/jwtSessionToken/jwtSessionToken";
 import utils from "../../../controllers/utils";
-import { Console } from "node:console";
 
 class ControllerIdentity extends BaseController {
   Entity = Identity;
@@ -17,7 +16,7 @@ class ControllerIdentity extends BaseController {
       await Cryptography.degraveData(
         jwtSessionToken.jwtSessionTokenLock.lock,
         jwtSessionToken.jwtSessionTokenLock.dataLock,
-        req.body.encryptedData,
+        req.body.encryptedDataWithSessionToken,
         jwtSessionToken.jwtSessionTokenLock.password[0]
       )
     );
@@ -38,11 +37,15 @@ class ControllerIdentity extends BaseController {
         unlockedSessionJwt.resumeRsaPubkData
       )
     );
-    if (decryptedData.pin === unlockedSessionJwt.identity.pin) {
+    if (
+      (await Cryptography.getShaHash(decryptedData.pin)) ===
+      unlockedSessionJwt.identity.pin
+    ) {
       if (
         !unlockedSessionJwt.identity.failedPin ||
         (unlockedSessionJwt.identity.failedPin &&
-          decryptedData.password === unlockedSessionJwt.identity.password)
+          (await Cryptography.getShaHash(decryptedData.password)) ===
+            unlockedSessionJwt.identity.password)
       ) {
         validated = true;
       }
@@ -100,7 +103,6 @@ class ControllerIdentity extends BaseController {
       );
       res.send({
         valid: false,
-        id: unlockedSessionJwt.identity,
         rsaEncryptedAes: Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
         aesEncrypted: Cryptography.ab2str(aesEncrypted.ciphertext),
       });
@@ -109,14 +111,7 @@ class ControllerIdentity extends BaseController {
 
   encrypt = async (req, res) => {
     var nextRsa = await Cryptography.generateRsaKeys("jwk");
-    var sessionJwt = JSON.parse(
-      req.decryptedData.data.token
-        .split(",")
-        .map((current) => {
-          return String.fromCharCode(current);
-        })
-        .join("")
-    );
+    var sessionJwt = JSON.parse(req.decryptedData.data.token);
     delete req.decryptedData.data.token;
     sessionJwt = await utils.parseJwtSessionToken(
       sessionJwt,
@@ -143,11 +138,32 @@ class ControllerIdentity extends BaseController {
     req.send(resp, res);
   };
 
+  account = async (req, res) => {
+    var nextRsa = await Cryptography.generateRsaKeys("jwk");
+    if (
+      (await Cryptography.getShaHash(req.decryptedData.data.oldPin)) ===
+        req.sessionJwt.identity.pin &&
+      (await Cryptography.getShaHash(req.decryptedData.data.oldPassword)) ===
+        req.sessionJwt.identity.password
+    ) {
+      req.sessionJwt.identity.pin = await Cryptography.getShaHash(
+        req.decryptedData.data.pin
+      );
+      req.sessionJwt.identity.password = await Cryptography.getShaHash(
+        req.decryptedData.data.password
+      );
+    }
+    req.send({}, res);
+  };
+
   getRouter() {
     super.registerRoute("/login").post(this.getSafeMethod(this.login));
     super
       .registerProtectedRoute("/encrypt")
       .post(this.getSafeMethod(this.encrypt));
+    super
+      .registerProtectedRoute("/account")
+      .post(this.getSafeMethod(this.account));
     return super._getRouter();
   }
 }

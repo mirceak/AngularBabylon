@@ -187,6 +187,7 @@ export class ServiceAuth {
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
       JSON.stringify({
         password: options.password,
+        pin: postData.pin,
         nextRsa: nextRsa.pubkData,
       })
     );
@@ -275,6 +276,7 @@ export class ServiceAuth {
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
       JSON.stringify({
         password: options.password,
+        pin: postData.pin,
         nextRsa: nextRsa.pubkData,
       })
     );

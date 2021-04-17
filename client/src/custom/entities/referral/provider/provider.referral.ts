@@ -52,7 +52,9 @@ export class ProviderReferral extends ServiceReferral {
           decryptedData.decryptedToken.data.email = originalEmail;
           this.zone.run(() => {
             this.referrals.next([
-              ...this.referrals.value,
+              ...this.referrals.value.filter((referral) => {
+                return referral.email !== decryptedData.decryptedToken.data.email;
+              }),
               decryptedData.decryptedToken.data,
             ]);
             resolve(null);

@@ -21,6 +21,22 @@
       "label": "Pin",
       "placeholder": "Introduceti un pin"
     },
+    "oldPassword": {
+      "label": "Vechea Parola",
+      "placeholder": "Introduceti vechea parola"
+    },
+    "oldPin": {
+      "label": "Vechiul Pin",
+      "placeholder": "Introduceti vechiul pin"
+    },
+    "newPassword": {
+      "label": "Noua Parola",
+      "placeholder": "Introduceti noua parola"
+    },
+    "newPin": {
+      "label": "Noul Pin",
+      "placeholder": "Introduceti noul pin"
+    },
     "referralCode": {
       "label": "Cod Contact De Referinta",
       "placeholder": "Introduceti codul secret"
@@ -48,6 +64,12 @@
     },
     "login-identity": {
       "login": "Login Identitate"
+    },
+    "account": {
+      "personalData": "Date Personale",
+      "update": "Salveaza",
+      "updating": "Se salveaza informatiile!",
+      "updated": "Informatiile au fost salvate!"
     },
     "register": {
       "register": "Inregistrare",
@@ -109,6 +131,7 @@
       "lang": "Selecteaza Limba",
       "login": "Login",
       "home": "Acasa",
+      "account": "Cont Personal",
       "referral": "Contacte De Referinta",
       "mailBoxes": "Cutii Postale",
       "logout": "Delogare",

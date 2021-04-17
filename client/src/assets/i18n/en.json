@@ -21,6 +21,22 @@
       "label": "Pin",
       "placeholder": "Enter a pin"
     },
+    "oldPassword": {
+      "label": "Old Password",
+      "placeholder": "Enter old password"
+    },
+    "oldPin": {
+      "label": "Old Pin",
+      "placeholder": "Enter old pin"
+    },
+    "newPassword": {
+      "label": "New Password",
+      "placeholder": "Enter new password"
+    },
+    "newPin": {
+      "label": "New Pin",
+      "placeholder": "Enter new pin"
+    },
     "referralCode": {
       "label": "Referral Code",
       "placeholder": "Enter secret code"
@@ -48,6 +64,12 @@
     },
     "login-identity": {
       "login": "Identity Login"
+    },
+    "account": {
+      "personalData": "Personal Data",
+      "update": "Update",
+      "updating": "Updating Account!",
+      "updated": "Updated Account!"
     },
     "register": {
       "register": "Register",
@@ -108,6 +130,7 @@
     "nav": {
       "lang": "Select Language",
       "login": "Login",
+      "account": "Account",
       "home": "Home",
       "referral": "Referral",
       "mailBoxes": "Mail Boxes",

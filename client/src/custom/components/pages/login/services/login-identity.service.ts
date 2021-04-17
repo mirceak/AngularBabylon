@@ -46,6 +46,7 @@ export class LoginIdentityService {
         translate: true,
         _label: 'formlyFields.pin.label',
         _placeholder: 'formlyFields.pin.placeholder',
+        type: 'password',
         required: true,
       },
       validators: {

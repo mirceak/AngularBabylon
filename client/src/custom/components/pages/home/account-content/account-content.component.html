@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title>
+      <h4>{{ translate.instant("pages.account.personalData") }}</h4>
+    </mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <app-form-simple
+      [form]="form"
+      [fields]="accountContentService.fields"
+      [submitLabel]="translate.instant('pages.account.update')"
+      [submitIcon]="'follow_the_signs'"
+      (onSubmit)="updateAccount()"
+    ></app-form-simple>
+  </mat-card-content>
+</mat-card>

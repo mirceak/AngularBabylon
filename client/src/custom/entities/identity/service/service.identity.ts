@@ -21,4 +21,8 @@ export class ServiceIdentity extends ServiceEntityBase<ModelIdentity> {
   async login(postData) {
     return await this.http.post(`api/${this.options.pathName}/login`, postData).toPromise();
   }
+
+  async account(postData) {
+    return await this.http.post(`api/${this.options.pathName}/account`, postData).toPromise();
+  }
 }

@@ -18,10 +18,10 @@ export class AuthIdentityGuardService implements CanActivate {
     private serviceModals: ServiceModals
   ) {}
 
-  canActivate(
+  async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean {
+  ): Promise<boolean> {
     if (this.serviceAuth.serviceApi.sessionToken.value) {
       this.serviceModals.showToast({
         status: 'error',

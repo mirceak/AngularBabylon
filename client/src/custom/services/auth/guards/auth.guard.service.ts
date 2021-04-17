@@ -18,10 +18,10 @@ export class AuthGuardService implements CanActivate {
     private serviceModals: ServiceModals
   ) {}
 
-  canActivate(
+  async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean {
+  ): Promise<boolean> {
     if (
       this.serviceAuth.serviceApi.sessionToken.value &&
       !this.serviceAuth.serviceApi.loggedIn.value

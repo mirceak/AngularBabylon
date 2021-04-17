@@ -19,10 +19,10 @@ export class GuestGuardService implements CanActivate {
     private serviceModals: ServiceModals
   ) {}
 
-  canActivate(
+  async canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ): boolean {
+  ): Promise<boolean> {
     if (this.serviceAuth.serviceApi.loggedIn.value) {
       this.serviceModals.showToast({
         status: 'error',

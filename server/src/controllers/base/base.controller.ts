@@ -49,9 +49,8 @@ abstract class BaseController {
           req.sessionJwt = reqData.sessionJwt;
           req.send = this.getSafeMethod(async (data, res) => {
             var encryptedResponse = await utils.encryptResponseData(
-              reqData,
-              data,
-              req.jwtOptions || {}
+              { decryptedData: req.decryptedData, sessionJwt: req.sessionJwt },
+              data
             );
             res.send({
               rsaEncryptedAes: encryptedResponse.rsaEncryptedAes,

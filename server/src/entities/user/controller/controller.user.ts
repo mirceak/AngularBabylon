@@ -178,9 +178,7 @@ class ControllerUser extends BaseController {
         .join(""),
       mailBox: [],
       password: json.password,
-      pin: [...Array(4)]
-        .map((i) => Math.min(9, Math.floor(Math.random() * 10)))
-        .join(""),
+      pin: json.pin
     });
     return {
       nextRsa: json.nextRsa,
@@ -259,9 +257,7 @@ class ControllerUser extends BaseController {
         .join(""),
       mailBox: [],
       password: json.password,
-      pin: [...Array(4)]
-        .map((i) => Math.min(9, Math.floor(Math.random() * 10)))
-        .join(""),
+      pin: json.pin
     });
     passHash = await Cryptography.getShaHash(json.password);
     if (passHash == postData.sessionJwt.password) {
@@ -311,6 +307,7 @@ class ControllerUser extends BaseController {
         sessionJwt: await utils.signJwtSessionToken(
           {
             email: postData.email,
+            pin: postData.pin,
             totalHash: totalHash,
             fullHash: fullHash,
             userHash: userHash,
@@ -354,6 +351,7 @@ class ControllerUser extends BaseController {
           {
             email: postData.user.email,
             password: postData.user.password,
+            pin: postData.user.pin,
             totalHash: totalHash,
             fullHash: fullHash,
             userHash: userHash,

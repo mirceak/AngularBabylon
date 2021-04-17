@@ -45,12 +45,7 @@ export class ProviderIdentity extends ServiceIdentity {
         ...val,
         token: JSON.stringify(
           this.serviceSocket.serviceApi.token.value.sessionJwt
-        )
-          .split('')
-          .map((current) => {
-            return current.charCodeAt(0);
-          })
-          .join(','),
+        ),
       }).then(() => {
         this.serviceSocket.serviceApi.serviceModals.hideLoading();
         this.encryptingData.next(false);
@@ -73,6 +68,29 @@ export class ProviderIdentity extends ServiceIdentity {
       this.state.referrals.push(...val);
       this.recycleBin.next(this.state);
     });
+  }
+
+  async updateAccount(postData) {
+    var postData: any = await this.serviceSocket.serviceApi.getRequestData(
+      postData,
+      this.serviceSocket.serviceApi.token
+    );
+    return await super
+      .account({
+        sessionJwt: this.serviceSocket.serviceApi.token.value.sessionJwt,
+        rsaEncryptedAes: await this.serviceSocket.serviceApi.Cryptography.ab2str(
+          postData.rsaEncryptedAes.encryptedAes
+        ),
+        aesEncrypted: await this.serviceSocket.serviceApi.Cryptography.ab2str(
+          postData.aesEncrypted.ciphertext
+        ),
+      })
+      .then(async (data: any) => {
+        await this.serviceSocket.serviceApi.decryptServerData(
+          data,
+          postData.nextRsa
+        )
+      });
   }
 
   async encryptData(postData) {
@@ -125,7 +143,7 @@ export class ProviderIdentity extends ServiceIdentity {
       );
       super
         .login({
-          encryptedData: localStorage.getItem('encryptedState'),
+          encryptedDataWithSessionToken: localStorage.getItem('encryptedState'),
           rsaEncryptedAes: this.serviceSocket.serviceApi.Cryptography.ab2str(
             rsaEncryptedAes.encryptedAes
           ),
