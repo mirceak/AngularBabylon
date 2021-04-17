@@ -4,7 +4,7 @@ import ServiceIdentity from "../../identity/service/service.identity";
 import socketApp from "../../../socketio";
 
 class ControllerMailBox extends BaseController {
-  Entity = ServiceMailBox.Entity;
+  Service = ServiceMailBox;
 
   getMailBox = async (req, res) => {
     var mailBox: any;

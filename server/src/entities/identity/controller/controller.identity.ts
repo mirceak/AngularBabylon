@@ -1,5 +1,5 @@
 import BaseController from "../../../controllers/base/base.controller";
-import Identity from "../schema/schema.identity";
+import Identity from "../service/service.identity";
 import {
   jwtSessionToken,
   Cryptography,
@@ -8,7 +8,7 @@ import {
 import utils from "../../../controllers/utils";
 
 class ControllerIdentity extends BaseController {
-  Entity = Identity;
+  Service = Identity;
 
   login = async (req, res) => {
     var validated = false;

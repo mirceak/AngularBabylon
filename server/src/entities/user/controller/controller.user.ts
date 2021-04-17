@@ -1,5 +1,5 @@
 import BaseController from "../../../controllers/base/base.controller";
-import UserService from "../service/service.user";
+import ServiceUser from "../service/service.user";
 import ReferralService from "../../referral/service/service.referral";
 import IdentityService from "../../identity/service/service.identity";
 import utils from "../../../controllers/utils";
@@ -10,10 +10,10 @@ import {
 } from "../../../certs/jwtSessionToken/jwtSessionToken";
 
 class ControllerUser extends BaseController {
-  Entity = UserService.Entity;
+  Service = ServiceUser;
 
   preLogin = async (req, res) => {
-    await UserService.findOne({ email: req.body.email }).then(async (user) => {
+    await ServiceUser.findOne({ email: req.body.email }).then(async (user) => {
       if (user == null) {
         return res.status(403).send({
           message: "pages.login.badLogin",
@@ -74,14 +74,14 @@ class ControllerUser extends BaseController {
         message: "pages.register.badCode",
       });
     }
-    await UserService.findOne({ email: req.body.sessionJwt.email }).then(
+    await ServiceUser.findOne({ email: req.body.sessionJwt.email }).then(
       async (user) => {
         if (user) {
           return res.status(403).send({
             message: "pages.register.alreadyRegistered",
           });
         }
-        var newUser = await UserService.create({
+        var newUser = await ServiceUser.create({
           email: req.body.sessionJwt.email,
           password: validatedSessionData.json.password,
         });

@@ -2,7 +2,7 @@ import BaseController from "../../../controllers/base/base.controller";
 import ServiceReferral from "../service/service.referral";
 
 class ControllerReferral extends BaseController {
-  Entity = ServiceReferral.Entity;
+  Service = ServiceReferral;
 
   requestSignupData = async (req, res) => {
     await ServiceReferral.findOne({ email: req.decryptedData.data.email }).then(
@@ -23,11 +23,13 @@ class ControllerReferral extends BaseController {
   };
 
   getRouter() {
-    super.registerProtectedRoute("/reqSignup").post(this.getSafeMethod(this.requestSignupData));
+    super
+      .registerProtectedRoute("/reqSignup")
+      .post(this.getSafeMethod(this.requestSignupData));
     return super._getRouter();
   }
 }
 
 export default {
-  ControllerReferral, 
+  ControllerReferral,
 };
