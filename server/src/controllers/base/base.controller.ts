@@ -9,8 +9,12 @@ abstract class BaseController {
   public routes = [];
 
   registerProtectedRoute(route) {
-    this.protectedRoutes.push("/" + this.Service.Entity.apiPaths.pathName + route);
-    return this._getRouter().route("/" + this.Service.Entity.apiPaths.pathName + route);
+    this.protectedRoutes.push(
+      "/" + this.Service.Entity.apiPaths.pathName + route
+    );
+    return this._getRouter().route(
+      "/" + this.Service.Entity.apiPaths.pathName + route
+    );
   }
 
   getSafeMethod(method) {
@@ -28,7 +32,9 @@ abstract class BaseController {
 
   registerRoute(route) {
     this.routes.push("/" + this.Service.Entity.apiPaths.pathName + route);
-    return this._getRouter().route("/" + this.Service.Entity.apiPaths.pathName + route);
+    return this._getRouter().route(
+      "/" + this.Service.Entity.apiPaths.pathName + route
+    );
   }
 
   getRouter() {
@@ -44,7 +50,17 @@ abstract class BaseController {
           if (this.protectedRoutes.indexOf(req._parsedUrl.pathname) === -1) {
             return next();
           }
-          var reqData: any = await utils.getRequestData(req.body);
+          try {
+            var reqData: any = await utils
+              .getRequestData(req.body)
+              .then((result) => {
+                return result;
+              });
+          } catch (e) {
+            return res.status(403).send({
+              message: "services.auth.badJwt",
+            });
+          }
           req.decryptedData = reqData.decryptedData;
           req.sessionJwt = reqData.sessionJwt;
           req.send = this.getSafeMethod(async (data, res) => {
@@ -66,7 +82,9 @@ abstract class BaseController {
       this.router
         .route("/" + this.Service.Entity.apiPaths.pathNamePlural + "/count")
         .get(this.count);
-      this.router.route("/" + this.Service.Entity.apiPaths.pathName).post(this.insert);
+      this.router
+        .route("/" + this.Service.Entity.apiPaths.pathName)
+        .post(this.insert);
       this.router
         .route("/" + this.Service.Entity.apiPaths.pathName + "/:id")
         .get(this.get);

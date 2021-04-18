@@ -25,7 +25,7 @@ export class ProviderReferral extends ServiceReferral {
   }
 
   async reqSignup(postData): Promise<any> {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       let originalEmail = postData.email;
       postData.email = await this.serviceApi.Cryptography.getShaHash(
         postData.email
@@ -45,7 +45,10 @@ export class ProviderReferral extends ServiceReferral {
           ),
         })
         .then(async (data: any) => {
-          var decryptedData = await this.serviceApi.decryptServerData(
+          if (!data) {
+            return reject();
+          }
+          var decryptedData: any = await this.serviceApi.decryptServerData(
             data,
             reqData.nextRsa
           );
@@ -53,7 +56,9 @@ export class ProviderReferral extends ServiceReferral {
           this.zone.run(() => {
             this.referrals.next([
               ...this.referrals.value.filter((referral) => {
-                return referral.email !== decryptedData.decryptedToken.data.email;
+                return (
+                  referral.email !== decryptedData.decryptedToken.data.email
+                );
               }),
               decryptedData.decryptedToken.data,
             ]);

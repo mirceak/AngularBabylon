@@ -22,7 +22,7 @@ export class ServiceHttp implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(req).pipe(
       catchError(
-        (res): Observable<HttpEvent<any>> => {
+        (res): Observable<HttpEvent<any>> => {          
           this.serviceApi.serviceModals.hideLoading();
           this.serviceApi.serviceModals.showToast({
             status: 'error',
@@ -31,6 +31,10 @@ export class ServiceHttp implements HttpInterceptor {
             ),
             title: this.serviceApi.translate.instant(res.error?.message || 'services.error'),
           });
+
+          if (res.error?.message === 'services.auth.badJwt' && res.status === 403){
+            location.reload();
+          }
 
           return of(res);
         }

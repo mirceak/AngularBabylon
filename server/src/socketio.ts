@@ -37,9 +37,8 @@ const io = new Server(httpsSocketServer, {
 io.on("connection", async (socket: any) => {
   console.log("client connected to socket");
   socket.on("identification", async (data) => {
-    var sessionJwt;
     try {
-      sessionJwt = await utils.parseJwtSessionToken(
+      var sessionJwt: any = await utils.parseJwtSessionToken(
         data.sessionJwt,
         jwtSessionToken,
         jwt
@@ -61,7 +60,15 @@ io.on("connection", async (socket: any) => {
     socket.emit("verification", {});
   });
   socket.on("verify", async (data) => {
-    var reqData = await utils.getRequestData(data);
+    try {
+      var reqData: any = await utils.getRequestData(data).then((result) => {
+        return result;
+      });
+    } catch (e) {
+      return socket.emit("expiredToken", {
+        message: "services.auth.badJwt",
+      });
+    }
     var regMessageIndex = registeredMessages.findIndex((msg) => {
       return socket.identity == msg.socket.identity;
     });

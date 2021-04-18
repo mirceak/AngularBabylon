@@ -74,7 +74,7 @@ export class ProviderMailBox extends ServiceMailBox {
   }
 
   async reqMailBox(postData): Promise<any> {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       var mailBoxRsa = await this.serviceApi.Cryptography.generateRsaKeys(
         'jwk'
       );
@@ -97,7 +97,10 @@ export class ProviderMailBox extends ServiceMailBox {
           ),
         })
         .then(async (data: any) => {
-          var decryptedData = await this.serviceApi.decryptServerData(
+          if (!data) {
+            return reject();
+          }
+          var decryptedData: any = await this.serviceApi.decryptServerData(
             data,
             reqData.nextRsa
           );
@@ -117,58 +120,63 @@ export class ProviderMailBox extends ServiceMailBox {
   }
 
   async sendMessage(postData, mailBox): Promise<any> {
-    postData.secret1 = mailBox._id;
-    postData.secret2 = mailBox.secret;
-    postData.secret3 = mailBox.secret3;
-    if (postData.message) {
-      postData.message = {
-        content: postData.message,
-        remote: mailBox.remote,
-        timeStamp: new Date().getTime(),
-      };
-    }
-    var reqData = await this.serviceApi.getRequestData(
-      postData,
-      this.serviceApi.token
-    );
-    super
-      .setMailBox({
-        sessionJwt: this.serviceApi.token.value.sessionJwt,
-        rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
-          reqData.rsaEncryptedAes.encryptedAes
-        ),
-        aesEncrypted: await this.serviceApi.Cryptography.ab2str(
-          reqData.aesEncrypted.ciphertext
-        ),
-      })
-      .then(async (data: any) => {
-        var decryptedData = await this.serviceApi.decryptServerData(
-          data,
-          reqData.nextRsa
-        );
-        var mailBoxIndex = this.mailBoxes.value.findIndex((mailBox) => {
-          return mailBox._id == decryptedData.decryptedToken.data._id;
-        });
-        this.zone.run(() => {
-          this.mailBoxes.next([
-            ...this.mailBoxes.value.map((mailBox) => {
-              if (mailBox._id == decryptedData.decryptedToken.data._id) {
-                mailBox.messages = decryptedData.decryptedToken.data.messages;
-              }
-              return mailBox;
-            }),
-          ]);
-          if (
-            this.mailBoxes.value[mailBoxIndex]._id ==
-            this.mailBoxObservable.value._id
-          ) {
-            this.mailBoxObservable.next(this.mailBoxes.value[mailBoxIndex]);
+    return new Promise(async (resolve, reject) => {
+      postData.secret1 = mailBox._id;
+      postData.secret2 = mailBox.secret;
+      postData.secret3 = mailBox.secret3;
+      if (postData.message) {
+        postData.message = {
+          content: postData.message,
+          remote: mailBox.remote,
+          timeStamp: new Date().getTime(),
+        };
+      }
+      var reqData = await this.serviceApi.getRequestData(
+        postData,
+        this.serviceApi.token
+      );
+      super
+        .setMailBox({
+          sessionJwt: this.serviceApi.token.value.sessionJwt,
+          rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
+            reqData.rsaEncryptedAes.encryptedAes
+          ),
+          aesEncrypted: await this.serviceApi.Cryptography.ab2str(
+            reqData.aesEncrypted.ciphertext
+          ),
+        })
+        .then(async (data: any) => {
+          if (!data) {
+            return reject();
           }
+          var decryptedData: any = await this.serviceApi.decryptServerData(
+            data,
+            reqData.nextRsa
+          );
+          var mailBoxIndex = this.mailBoxes.value.findIndex((mailBox) => {
+            return mailBox._id == decryptedData.decryptedToken.data._id;
+          });
+          this.zone.run(() => {
+            this.mailBoxes.next([
+              ...this.mailBoxes.value.map((mailBox) => {
+                if (mailBox._id == decryptedData.decryptedToken.data._id) {
+                  mailBox.messages = decryptedData.decryptedToken.data.messages;
+                }
+                return mailBox;
+              }),
+            ]);
+            if (
+              this.mailBoxes.value[mailBoxIndex]._id ==
+              this.mailBoxObservable.value._id
+            ) {
+              this.mailBoxObservable.next(this.mailBoxes.value[mailBoxIndex]);
+            }
+          });
         });
-      });
+    });
   }
   async accMailBox(postData): Promise<any> {
-    return new Promise(async (resolve) => {
+    return new Promise(async (resolve, reject) => {
       var reqData = await this.serviceApi.getRequestData(
         postData,
         this.serviceApi.token
@@ -185,25 +193,24 @@ export class ProviderMailBox extends ServiceMailBox {
           ),
         })
         .then(async (data: any) => {
-          var decryptedData;
-          try {
-            decryptedData = await this.serviceApi.decryptServerData(
-              data,
-              reqData.nextRsa
-            );
-          } catch (error) {
-            this.serviceApi.serviceModals.hideLoading();
-            this.serviceApi.serviceModals.showToast({
-              status: 'error',
-              statusMessage: this.serviceApi.translate.instant(
-                'components.toastr.error'
-              ),
-              title: this.serviceApi.translate.instant(
-                'pages.mailBox.badMailBox'
-              ),
-            });
-            return;
+          if (!data) {
+            return reject();
           }
+          var decryptedData: any = await this.serviceApi
+            .decryptServerData(data, reqData.nextRsa)
+            .catch(() => {
+              this.serviceApi.serviceModals.hideLoading();
+              this.serviceApi.serviceModals.showToast({
+                status: 'error',
+                statusMessage: this.serviceApi.translate.instant(
+                  'components.toastr.error'
+                ),
+                title: this.serviceApi.translate.instant(
+                  'pages.mailBox.badMailBox'
+                ),
+              });
+              return reject();
+            });
           decryptedData.decryptedToken.data.name = postData.name;
           var remoteRsaPubkData =
             decryptedData.decryptedToken.data.messages.local[0];
@@ -247,7 +254,10 @@ export class ProviderMailBox extends ServiceMailBox {
               ),
             })
             .then(async (data: any) => {
-              decryptedData = await this.serviceApi.decryptServerData(
+              if (!data) {
+                return reject();
+              }
+              var decryptedData: any = await this.serviceApi.decryptServerData(
                 data,
                 reqData.nextRsa
               );

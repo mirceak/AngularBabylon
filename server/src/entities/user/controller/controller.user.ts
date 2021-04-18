@@ -98,7 +98,7 @@ class ControllerUser extends BaseController {
               sessionJwt: validatedSessionData.sessionJwt,
             },
             jwtSessionToken.jwtSessionTokenElipticKey,
-            { algorithm: "ES512" }
+            { expiresIn: 60 * 30, algorithm: "ES512" }
           ),
           rsaEncryptedAes.aesKey,
           validatedSessionData.nextRsa
@@ -139,7 +139,7 @@ class ControllerUser extends BaseController {
     );
     postData.sessionJwt.rsaKeyPriv = await Cryptography.importRsaKey(
       postData.sessionJwt.rsaKeyPriv
-    );
+    ); 
     finalHash = await Cryptography.getShaHash(
       postData.sessionJwt.totalHash +
         postData.sessionJwt.fullHash +
@@ -279,7 +279,7 @@ class ControllerUser extends BaseController {
             ),
           },
           jwtSessionToken.jwtSessionTokenElipticKey,
-          { algorithm: "ES512" }
+          { expiresIn: 60 * 30, algorithm: "ES512" }
         ),
       };
     }

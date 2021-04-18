@@ -6,30 +6,36 @@ import {
 } from "../certs/jwtSessionToken/jwtSessionToken";
 
 var getRequestData = async (data) => {
-  var sessionJwt = await parseJwtSessionToken(
-    data.sessionJwt,
-    jwtSessionToken,
-    jwt
-  );
-  data.rsaEncryptedAes = Cryptography.str2ab(data.rsaEncryptedAes);
-  data.aesEncrypted = Cryptography.str2ab(data.aesEncrypted);
-  var jwtRsaKey = await Cryptography.importRsaKey(sessionJwt.rsaKeyPriv);
-  var decryptedAes = await Cryptography.rsaDecrypt(
-    data.rsaEncryptedAes,
-    jwtRsaKey
-  );
-  var aesKey = await Cryptography.importAesKey(decryptedAes);
-  var decryptedData: any = JSON.parse(
-    await Cryptography.aesDecrypt(
-      data.aesEncrypted,
-      aesKey,
-      sessionJwt.rsaKeyPub
-    )
-  );
-  return {
-    sessionJwt: sessionJwt,
-    decryptedData: decryptedData,
-  };
+  return new Promise(async (resolve, reject) => {
+    try {
+      var sessionJwt: any = await parseJwtSessionToken(
+        data.sessionJwt,
+        jwtSessionToken,
+        jwt
+      );
+    } catch (e) {
+      return reject();
+    }
+    data.rsaEncryptedAes = Cryptography.str2ab(data.rsaEncryptedAes);
+    data.aesEncrypted = Cryptography.str2ab(data.aesEncrypted);
+    var jwtRsaKey = await Cryptography.importRsaKey(sessionJwt.rsaKeyPriv);
+    var decryptedAes = await Cryptography.rsaDecrypt(
+      data.rsaEncryptedAes,
+      jwtRsaKey
+    );
+    var aesKey = await Cryptography.importAesKey(decryptedAes);
+    var decryptedData: any = JSON.parse(
+      await Cryptography.aesDecrypt(
+        data.aesEncrypted,
+        aesKey,
+        sessionJwt.rsaKeyPub
+      )
+    );
+    resolve({
+      sessionJwt: sessionJwt,
+      decryptedData: decryptedData,
+    });
+  });
 };
 
 var encryptResponseData = async (reqData, data) => {
@@ -54,7 +60,7 @@ var encryptResponseData = async (reqData, data) => {
           ),
         },
         jwtSessionToken.jwtSessionTokenElipticKey,
-        { algorithm: "ES512" }
+        { expiresIn: 60 * 30, algorithm: "ES512" }
       ),
     }),
     rsaEncryptedAes.aesKey,
@@ -67,30 +73,38 @@ var encryptResponseData = async (reqData, data) => {
 };
 
 var parseJwtSessionToken = async (sessionJwt, jwtSessionToken, jwt) => {
-  sessionJwt = {
-    aesToken: Cryptography.str2ab(sessionJwt.aesToken),
-    rsaIv: Cryptography.str2ab(sessionJwt.rsaIv),
-  };
-  sessionJwt.rsaIv = await Cryptography.rsaDecrypt(
-    sessionJwt.rsaIv,
-    jwtSessionToken.jwtSessionTokenRsaKeys.privateKey
-  );
-  sessionJwt = await Cryptography.aesDecrypt(
-    sessionJwt.aesToken,
-    jwtSessionToken.jwtSessionTokenAesKey,
-    sessionJwt.rsaIv
-  );
-  var unlockedSessionJwt = await Cryptography.degraveData(
-    jwtSessionToken.jwtSessionTokenLock.lock,
-    jwtSessionToken.jwtSessionTokenLock.dataLock,
-    sessionJwt,
-    jwtSessionToken.jwtSessionTokenLock.password[0]
-  );
-  return await jwt.verify(
-    unlockedSessionJwt,
-    jwtSessionToken.jwtSessionTokenElipticKey,
-    { algorithms: ["ES512"] }
-  );
+  return new Promise(async (resolve, reject) => {
+    sessionJwt = {
+      aesToken: Cryptography.str2ab(sessionJwt.aesToken),
+      rsaIv: Cryptography.str2ab(sessionJwt.rsaIv),
+    };
+    sessionJwt.rsaIv = await Cryptography.rsaDecrypt(
+      sessionJwt.rsaIv,
+      jwtSessionToken.jwtSessionTokenRsaKeys.privateKey
+    );
+    sessionJwt = await Cryptography.aesDecrypt(
+      sessionJwt.aesToken,
+      jwtSessionToken.jwtSessionTokenAesKey,
+      sessionJwt.rsaIv
+    );
+    var unlockedSessionJwt = await Cryptography.degraveData(
+      jwtSessionToken.jwtSessionTokenLock.lock,
+      jwtSessionToken.jwtSessionTokenLock.dataLock,
+      sessionJwt,
+      jwtSessionToken.jwtSessionTokenLock.password[0]
+    );
+    try {
+      return resolve(
+        await jwt.verify(
+          unlockedSessionJwt,
+          jwtSessionToken.jwtSessionTokenElipticKey,
+          { algorithms: ["ES512"] }
+        )
+      );
+    } catch (e) {
+      return reject();
+    }
+  });
 };
 
 var signJwtSessionToken = async (postData, jwtSessionToken, jwt) => {
@@ -100,7 +114,10 @@ var signJwtSessionToken = async (postData, jwtSessionToken, jwt) => {
   var sessionJwtToken = await jwt.sign(
     postData,
     jwtSessionToken.jwtSessionTokenElipticKey,
-    { algorithm: "ES512" }
+    {
+      expiresIn: 60 * 30,
+      algorithm: "ES512",
+    }
   );
   aesIv = Cryptography.ab2str(getRandomValues(new Uint8Array(12)));
   rsaEncryptedAesIv = await Cryptography.rsaEncrypt(

@@ -54,26 +54,28 @@ export class ServiceApi {
   }
 
   async decryptServerData(data, nextRsa, parse = true) {
-    data.rsaEncryptedAes = this.Cryptography.str2ab(data.rsaEncryptedAes);
-    data.aesEncrypted = this.Cryptography.str2ab(data.aesEncrypted);
-    var decryptedAes = await this.Cryptography.rsaDecrypt(
-      data.rsaEncryptedAes,
-      nextRsa.privateKey
-    );
-    var aesKey = await this.Cryptography.importAesKey(decryptedAes);
-    var decryptedToken: any = await this.Cryptography.aesDecrypt(
-      data.aesEncrypted,
-      aesKey,
-      nextRsa.pubkData
-    );
-    if (parse) {
-      decryptedToken = JSON.parse(decryptedToken);
-      this.token.next(this.jwtHelper.decodeToken(decryptedToken.token));
-    }
-    return {
-      decryptedToken: decryptedToken,
-      decryptedAes: decryptedAes,
-      aesKey: aesKey,
-    };
+    return new Promise(async (resolve, reject) => {
+      data.rsaEncryptedAes = this.Cryptography.str2ab(data.rsaEncryptedAes);
+      data.aesEncrypted = this.Cryptography.str2ab(data.aesEncrypted);
+      var decryptedAes = await this.Cryptography.rsaDecrypt(
+        data.rsaEncryptedAes,
+        nextRsa.privateKey
+      );
+      var aesKey = await this.Cryptography.importAesKey(decryptedAes);
+      var decryptedToken: any = await this.Cryptography.aesDecrypt(
+        data.aesEncrypted,
+        aesKey,
+        nextRsa.pubkData
+      );
+      if (parse) {
+        decryptedToken = JSON.parse(decryptedToken);
+        this.token.next(this.jwtHelper.decodeToken(decryptedToken.token));
+      }
+      resolve({
+        decryptedToken: decryptedToken,
+        decryptedAes: decryptedAes,
+        aesKey: aesKey,
+      });
+    });
   }
 }

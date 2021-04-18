@@ -29,6 +29,16 @@ export class ServiceSocket {
         sessionJwt: this.serviceApi.token.value.sessionJwt,
       });
     });
+    this.socket.on('expiredToken', (error) => {
+      this.serviceApi.serviceModals.showToast({
+        status: 'error',
+        statusMessage: this.serviceApi.translate.instant(
+          'components.toastr.error'
+        ),
+        title: this.serviceApi.translate.instant(error.message),
+      });
+      location.reload();
+    });
     this.socket.on('error', (error) => {
       this.serviceApi.serviceModals.showToast({
         status: 'error',
@@ -37,7 +47,7 @@ export class ServiceSocket {
         ),
         title: this.serviceApi.translate.instant(error.message),
       });
-      this.serviceApi.loggedIn.next(null);
+      location.reload();
     });
     this.socket.on('verification', async (data) => {
       data.clientMsgId = Date.now().toString();
@@ -61,7 +71,7 @@ export class ServiceSocket {
         return message.id == data.clientMsgId;
       });
       var message = this.messageQueue.splice(messageIndex, 1)[0];
-      var decryptedData = await this.serviceApi.decryptServerData(
+      var decryptedData: any = await this.serviceApi.decryptServerData(
         data,
         message.rsa
       );

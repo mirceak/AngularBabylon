@@ -54,7 +54,7 @@ export class ServiceAuth {
           return reject(null);
         }
         this.ProviderUser.login(request).then(async (data: any) => {
-          var decrypted = await this.serviceApi.decryptServerData(
+          var decrypted: any = await this.serviceApi.decryptServerData(
             data,
             postData.nextRsa,
             false
@@ -107,7 +107,7 @@ export class ServiceAuth {
           return reject(null);
         }
         this.ProviderUser.register(request).then(async (data: any) => {
-          var decrypted = await this.serviceApi.decryptServerData(
+          var decrypted: any = await this.serviceApi.decryptServerData(
             data,
             postData.nextRsa,
             false
