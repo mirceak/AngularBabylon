@@ -218,14 +218,14 @@ class Cryptography {
         lock = this.lockMap(lock, dataLock);
       }
     }
-    return output.join('');
+    return btoa(unescape(encodeURIComponent(output.join(''))));
   }
   public degraveData(lock, dataLock, output, password) {
     var originalInputIndex = 0;
     var i;
     var unlocked = '';
     lock = JSON.parse(JSON.stringify(lock));
-    output = output.split('');
+    output = decodeURIComponent(escape(atob(output)));
     for (i = 0; i < output.length; i++) {
       originalInputIndex = this.originalMap.indexOf(
         String.fromCharCode(

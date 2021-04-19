@@ -3,12 +3,14 @@ import { Injectable } from '@angular/core';
 import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';
 
 import { TranslateService } from '@ngx-translate/core';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ServiceInternationalization {
   lang = 'en';
+  public setLang = new Subject<any>();
 
   constructor(
     private http: HttpClient,
@@ -21,8 +23,14 @@ export class ServiceInternationalization {
     this.ProviderIdentity.serviceSocket.serviceApi.loggedIn.subscribe((val) => {
       if (val) {
         if (this.lang !== ProviderIdentity.state.language) {
-          this.setLanguage(ProviderIdentity.state.language);
+          this.setLanguage(ProviderIdentity.state.language)
+            .toPromise()
+            .then(() => {
+              this.setLang.next(null);
+            });
+          return;
         }
+        this.setLang.next(null);
       }
     });
   }

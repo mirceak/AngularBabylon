@@ -1,11 +1,10 @@
-import { Injectable, NgZone } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceIdentity } from '../service/service.identity';
 import { ServiceSocket } from '@custom/services/utils/service.socket';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
 import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral';
 import { BehaviorSubject, Subject } from 'rxjs';
-import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
 
 @Injectable({
   providedIn: 'root',
@@ -19,6 +18,12 @@ export class ProviderIdentity extends ServiceIdentity {
     language: 'en',
   };
 
+  crypto = {
+    lock: null,
+    dataLock: null,
+    password: null,
+  };
+
   constructor(
     http: HttpClient,
     public serviceSocket: ServiceSocket,
@@ -26,6 +31,19 @@ export class ProviderIdentity extends ServiceIdentity {
     private ProviderReferral: ProviderReferral
   ) {
     super(http);
+
+    if (!localStorage.getItem('crypto')) {
+      Object.assign(
+        this.crypto,
+        this.serviceSocket.serviceApi.Cryptography.makeCipherPieces(1000)
+      );
+      this.crypto.password = [...Array(1000)]
+        .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
+        .join('');
+      localStorage.setItem('crypto', JSON.stringify(this.crypto));
+    } else {
+      Object.assign(this.crypto, JSON.parse(localStorage.getItem('crypto')));
+    }
 
     this.recycleBin.subscribe(async (val) => {
       if (!this.serviceSocket.serviceApi.loggedIn.value) {
@@ -41,7 +59,15 @@ export class ProviderIdentity extends ServiceIdentity {
       });
       this.encryptingData.next(true);
       //must encrypt val first
-      await this.encryptData(val).then(() => {
+      console.log(val);
+      await this.encryptData(
+        this.serviceSocket.serviceApi.Cryptography.engraveData(
+          this.crypto.lock,
+          this.crypto.dataLock,
+          this.crypto.password,
+          JSON.stringify(val)
+        )
+      ).then(() => {
         this.serviceSocket.serviceApi.serviceModals.hideLoading();
         this.encryptingData.next(false);
       });
@@ -225,16 +251,16 @@ export class ProviderIdentity extends ServiceIdentity {
                 decryptedData.token
               )
             );
-            var unlockedData: any = decryptedData.data.unlockedData;
+            var unlockedData: any = JSON.parse(this.serviceSocket.serviceApi.Cryptography.degraveData(
+              this.crypto.lock,
+              this.crypto.dataLock,
+              decryptedData.data.unlockedData,
+              this.crypto.password
+            ));
             Object.assign(this.state, unlockedData);
             this.ProviderMailBox.mailBoxes.next(this.state.mailBoxes);
             this.ProviderReferral.referrals.next(this.state.referrals);
-            this.serviceSocket.serviceApi.loggedIn.next(true);
-            this.serviceSocket.serviceApi.zone.run(() => {
-              this.serviceSocket.serviceApi.serviceModals.hideLoading();
-              this.serviceSocket.serviceApi.router.navigate(['/']);
-              resolve(null);
-            });
+            resolve(null);
           }
         });
     });
