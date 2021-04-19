@@ -52,9 +52,24 @@ export class ChatContentComponent implements OnInit {
   }
 
   async send(): Promise<any> {
+    this.ProviderIdentity.serviceSocket.serviceApi.serviceModals.showLoading({
+      title: this.translate.instant('components.swal.loading'),
+      html: this.translate.instant('pages.chat.sending'),
+    });
     await this.ProviderMailBox.sendMessage(
       this.form.value,
       this.ProviderMailBox.mailBoxObservable.value
-    );
+    ).then(() => {
+      this.ProviderIdentity.serviceSocket.serviceApi.serviceModals.showToast({
+        status: 'success',
+        statusMessage: this.ProviderIdentity.serviceSocket.serviceApi.translate.instant(
+          'components.toastr.success'
+        ),
+        title: this.ProviderIdentity.serviceSocket.serviceApi.translate.instant('pages.chat.sent'),
+      });
+    })
+    .catch((error) => {
+      //handled as toast in services/utils/service.http.ts
+    });;
   }
 }

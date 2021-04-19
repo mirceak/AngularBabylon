@@ -87,6 +87,8 @@
     "mailBox": {
       "creating": "Creating Mail Box!",
       "free": "Free",
+      "badMailBox": "The information is incorrect!",
+      "acceptingMailBox": "The mailboxes are connecting!",
       "create": "Create MailBox",
       "add": "Add MailBox",
       "secrets": "Share Secrets Piece By Piece On Multiple Communication Channels",
@@ -114,7 +116,9 @@
       "content8": "Talky will not allow linking an email to an identity because that would defeat the purpose of the application. The point is to stay secure and email accounts generally require you to validate your person upon creation."
     },
     "chat": {
-      "send": "Send"
+      "send": "Send",
+      "sending": "Sending message!",
+      "sent": "Message sent!"
     }
   },
   "components": {

@@ -171,6 +171,7 @@ export class ProviderMailBox extends ServiceMailBox {
             ) {
               this.mailBoxObservable.next(this.mailBoxes.value[mailBoxIndex]);
             }
+            resolve(null);
           });
         });
     });

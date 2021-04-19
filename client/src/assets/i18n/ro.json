@@ -88,7 +88,9 @@
       "creating": "Se creeaza o cutie postala!",
       "free": "Liber",
       "create": "Creeaza cutie postala",
-      "add": "Creeaza",
+      "add": "Creeaza",      
+      "badMailBox": "Informatiile sunt incorecte!",
+      "acceptingMailBox": "Se face legatura intre cutiile postale!",
       "secrets": "Dezvaluie secretele bucata cu bucata cu ajutorul mai multor canale de comunicare",
       "secret": "Secret",
       "chat": "Converseaza prin cutie postala",
@@ -114,7 +116,9 @@
       "content8": "Talky nu va permite creearea unei conexiuni intre email si identitate din cauza ca ar incalca politica aplicatiei. Ideea este sa ramai securizat si conturile de email, in general, iti cer sa iti validei persoana la creatie."
     },
     "chat": {
-      "send": "Trimite"
+      "send": "Trimite",
+      "sending": "Mesajul se trimite!",
+      "sent": "Mesaj trimis!"
     }
   },
   "components": {
