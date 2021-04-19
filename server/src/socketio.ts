@@ -48,14 +48,13 @@ io.on("connection", async (socket: any) => {
         message: "services.auth.badJwt",
       });
     }
-    console.log(sessionJwt.identity);
     socket.identity = sessionJwt.identity._id;
     var user: any = await Identity.SchemaIdentity.findOne({
       _id: socket.identity,
     }).then((user) => user);
     var mailBoxes: any = await MailBox.SchemaMailBox.find({
       _id: { $in: user.mailBox },
-    }); 
+    });
     sockets.push(socket);
     registeredMessages.push({ socket: socket, mailBoxes: mailBoxes });
     socket.emit("verification", {});

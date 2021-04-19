@@ -65,15 +65,15 @@ export class ProviderIdentity extends ServiceIdentity {
         this.crypto.password,
         JSON.stringify(val)
       );
-      localStorage.setItem(
-        'crypto',
-        JSON.stringify({
-          lock: this.crypto.lock,
-          dataLock: this.crypto.dataLock,
-          output: this.crypto.output,
-        })
-      );
       await this.encryptData(this.crypto.password).then(() => {
+        localStorage.setItem(
+          'crypto',
+          JSON.stringify({
+            lock: this.crypto.lock,
+            dataLock: this.crypto.dataLock,
+            output: this.crypto.output,
+          })
+        );
         this.serviceSocket.serviceApi.serviceModals.hideLoading();
         this.encryptingData.next(false);
       });
@@ -260,12 +260,14 @@ export class ProviderIdentity extends ServiceIdentity {
                 decryptedData.token
               )
             );
-            var unlockedData: any = JSON.parse(this.serviceSocket.serviceApi.Cryptography.degraveData(
-              this.crypto.lock,
-              this.crypto.dataLock,
-              this.crypto.output,
-              decryptedData.data.unlockedData
-            ));
+            var unlockedData: any = JSON.parse(
+              this.serviceSocket.serviceApi.Cryptography.degraveData(
+                this.crypto.lock,
+                this.crypto.dataLock,
+                this.crypto.output,
+                decryptedData.data.unlockedData
+              )
+            );
             localStorage.setItem('crypto', JSON.stringify(this.crypto));
             Object.assign(this.state, unlockedData);
             this.ProviderMailBox.mailBoxes.next(this.state.mailBoxes);

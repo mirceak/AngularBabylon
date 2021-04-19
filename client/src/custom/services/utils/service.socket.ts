@@ -82,6 +82,9 @@ export class ServiceSocket {
             return mailBox._id == decryptedData.decryptedToken.data.mailBox._id;
           }
         );
+        if (mailBoxIndex === -1) {
+          return;
+        }
         var mailBox = this.ProviderMailBox.mailBoxes.value[mailBoxIndex];
         this.ProviderMailBox.updateMailBox(
           mailBox,
@@ -94,6 +97,9 @@ export class ServiceSocket {
               return _mailBox._id == mailBox._id;
             })
           ];
+          if (!localMailbox) {
+            return;
+          }
           this.ProviderMailBox.updateMailBox(localMailbox, mailBox);
         });
         return;
