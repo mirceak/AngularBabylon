@@ -11,7 +11,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 })
 export class ProviderIdentity extends ServiceIdentity {
   public recycleBin = new Subject<any>();
-  public encryptingData = new BehaviorSubject<boolean>(false);
   public state = {
     mailBoxes: [],
     referrals: [],
@@ -54,7 +53,6 @@ export class ProviderIdentity extends ServiceIdentity {
           'services.auth-identity.encrypting'
         ),
       });
-      this.encryptingData.next(true);
       //must encrypt val first
       this.crypto.password = [...Array(1000)]
         .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
@@ -75,7 +73,6 @@ export class ProviderIdentity extends ServiceIdentity {
           })
         );
         this.serviceSocket.serviceApi.serviceModals.hideLoading();
-        this.encryptingData.next(false);
       });
     });
 
