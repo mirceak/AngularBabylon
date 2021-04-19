@@ -51,7 +51,6 @@ export class ServiceAuth {
         try {
           request = await this.signLoginSessionData(postData);
         } catch (error) {
-          console.log(error)
           return reject(null);
         }
         this.ProviderUser.login(request).then(async (data: any) => {

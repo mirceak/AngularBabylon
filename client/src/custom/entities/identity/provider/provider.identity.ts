@@ -22,6 +22,7 @@ export class ProviderIdentity extends ServiceIdentity {
     lock: null,
     dataLock: null,
     password: null,
+    output: null,
   };
 
   constructor(
@@ -37,10 +38,6 @@ export class ProviderIdentity extends ServiceIdentity {
         this.crypto,
         this.serviceSocket.serviceApi.Cryptography.makeCipherPieces(1000)
       );
-      this.crypto.password = [...Array(1000)]
-        .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
-        .join('');
-      localStorage.setItem('crypto', JSON.stringify(this.crypto));
     } else {
       Object.assign(this.crypto, JSON.parse(localStorage.getItem('crypto')));
     }
@@ -59,15 +56,24 @@ export class ProviderIdentity extends ServiceIdentity {
       });
       this.encryptingData.next(true);
       //must encrypt val first
-      console.log(val);
-      await this.encryptData(
-        this.serviceSocket.serviceApi.Cryptography.engraveData(
-          this.crypto.lock,
-          this.crypto.dataLock,
-          this.crypto.password,
-          JSON.stringify(val)
-        )
-      ).then(() => {
+      this.crypto.password = [...Array(1000)]
+        .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
+        .join('');
+      this.crypto.output = this.serviceSocket.serviceApi.Cryptography.engraveData(
+        this.crypto.lock,
+        this.crypto.dataLock,
+        this.crypto.password,
+        JSON.stringify(val)
+      );
+      localStorage.setItem(
+        'crypto',
+        JSON.stringify({
+          lock: this.crypto.lock,
+          dataLock: this.crypto.dataLock,
+          output: this.crypto.output,
+        })
+      );
+      await this.encryptData(this.crypto.password).then(() => {
         this.serviceSocket.serviceApi.serviceModals.hideLoading();
         this.encryptingData.next(false);
       });
@@ -254,9 +260,10 @@ export class ProviderIdentity extends ServiceIdentity {
             var unlockedData: any = JSON.parse(this.serviceSocket.serviceApi.Cryptography.degraveData(
               this.crypto.lock,
               this.crypto.dataLock,
-              decryptedData.data.unlockedData,
-              this.crypto.password
+              this.crypto.output,
+              decryptedData.data.unlockedData
             ));
+            localStorage.setItem('crypto', JSON.stringify(this.crypto));
             Object.assign(this.state, unlockedData);
             this.ProviderMailBox.mailBoxes.next(this.state.mailBoxes);
             this.ProviderReferral.referrals.next(this.state.referrals);
