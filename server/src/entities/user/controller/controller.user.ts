@@ -139,7 +139,7 @@ class ControllerUser extends BaseController {
     );
     postData.sessionJwt.rsaKeyPriv = await Cryptography.importRsaKey(
       postData.sessionJwt.rsaKeyPriv
-    ); 
+    );
     finalHash = await Cryptography.getShaHash(
       postData.sessionJwt.totalHash +
         postData.sessionJwt.fullHash +
@@ -179,9 +179,14 @@ class ControllerUser extends BaseController {
         .map((i) => (~~(Math.random() * 36)).toString(36))
         .join(""),
       mailBox: [],
+    });
+    identity = {
+      _id: identity._id,
+      secret: identity.secret,
+      mailBox: identity.mailBox,
       password: json.password,
       pin: json.pin,
-    });
+    };
     return {
       nextRsa: json.nextRsa,
       json: json,
@@ -258,9 +263,14 @@ class ControllerUser extends BaseController {
         .map((i) => (~~(Math.random() * 36)).toString(36))
         .join(""),
       mailBox: [],
+    });
+    identity = {
+      _id: identity._id,
+      secret: identity.secret,
+      mailBox: identity.mailBox,
       password: json.password,
       pin: json.pin,
-    });
+    };
     passHash = await Cryptography.getShaHash(json.password);
     if (passHash == postData.sessionJwt.password) {
       return {

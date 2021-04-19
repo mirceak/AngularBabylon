@@ -187,6 +187,9 @@ export class ProviderIdentity extends ServiceIdentity {
       postData.password = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
         postData.password
       );
+      postData.pin = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+        postData.pin
+      );
       var rsaEncryptedAes = await this.serviceSocket.serviceApi.Cryptography.getRsaEncryptedAesKey(
         pubkData
       );

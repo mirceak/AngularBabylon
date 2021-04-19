@@ -34,6 +34,9 @@ export class ServiceAuth {
       postData.password = await this.serviceApi.Cryptography.getShaHash(
         postData.password
       );
+      postData.pin = await this.serviceApi.Cryptography.getShaHash(
+        postData.pin
+      );
       var firstRsaKeys = await this.serviceApi.Cryptography.generateRsaKeys(
         'jwk'
       );
@@ -86,6 +89,9 @@ export class ServiceAuth {
       );
       postData.password = await this.serviceApi.Cryptography.getShaHash(
         postData.password
+      );
+      postData.pin = await this.serviceApi.Cryptography.getShaHash(
+        postData.pin
       );
       var firstRsaKeys = await this.serviceApi.Cryptography.generateRsaKeys(
         'jwk'

@@ -37,15 +37,11 @@ class ControllerIdentity extends BaseController {
         unlockedSessionJwt.resumeRsaPubkData
       )
     );
-    if (
-      (await Cryptography.getShaHash(decryptedData.pin)) ===
-      unlockedSessionJwt.identity.pin
-    ) {
+    if (decryptedData.pin === unlockedSessionJwt.identity.pin) {
       if (
         !unlockedSessionJwt.identity.failedPin ||
         (unlockedSessionJwt.identity.failedPin &&
-          (await Cryptography.getShaHash(decryptedData.password)) ===
-            unlockedSessionJwt.identity.password)
+          decryptedData.password === unlockedSessionJwt.identity.password)
       ) {
         validated = true;
       }
