@@ -136,7 +136,7 @@ export class ProviderIdentity extends ServiceIdentity {
 
   async updateAccount(postData) {
     return new Promise(async (resolve, reject) => {
-      var postData: any = await this.serviceSocket.serviceApi.getRequestData(
+      postData = await this.serviceSocket.serviceApi.getRequestData(
         postData,
         this.serviceSocket.serviceApi.token
       );
