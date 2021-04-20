@@ -157,7 +157,7 @@ export var getRandomValues = webcrypto.getRandomValues;
     jwtSessionTokenRsaKeys.privkData
   );
 
-  jwtSessionToken = Object.assign(jwtSessionToken, {
+  Object.assign(jwtSessionToken, {
     jwtSessionTokenAesKey: jwtSessionTokenAesKey,
     jwtSessionTokenElipticKey: jwtSessionTokenElipticKey,
     jwtSessionTokenRsaKeys: jwtSessionTokenRsaKeys,

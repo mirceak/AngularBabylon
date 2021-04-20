@@ -1,7 +1,12 @@
 import { readFileSync } from "fs";
 import * as https from "https";
 
-import { jwtSessionToken, jwt } from "./certs/jwtSessionToken/jwtSessionToken";
+import ServiceIdentity from "./entities/identity/service/service.identity";
+import {
+  jwtSessionToken,
+  jwt,
+  Cryptography,
+} from "./certs/jwtSessionToken/jwtSessionToken";
 import { Server } from "socket.io";
 import Identity from "./entities/identity/schema/schema.identity";
 import MailBox from "./entities/mailBox/schema/schema.mailBox";
@@ -69,11 +74,28 @@ io.on("connection", async (socket: any) => {
         message: "services.auth.badJwt",
       });
     }
+    var identity = await ServiceIdentity.findOne({
+      _id: reqData.sessionJwt.identity._id,
+      secret: reqData.sessionJwt.identity.secret,
+    });
+    if (
+      identity.lastJwtHash &&
+      identity.lastJwtHash != reqData.sessionJwt.identity.lastJwtHash
+    ) {
+      return socket.emit("expiredToken", {
+        message: "services.auth.badJwt",
+      });
+    }
     var regMessageIndex = registeredMessages.findIndex((msg) => {
       return socket.identity == msg.socket.identity;
     });
     var regMessage = registeredMessages.splice(regMessageIndex, 1)[0];
     var encryptedResponse: any;
+    reqData.sessionJwt.identity.lastJwtHash = await Cryptography.getShaHash(
+      identity.secret + reqData.sessionJwt.identity.lastJwtHash
+    );
+    identity.lastJwtHash = reqData.sessionJwt.identity.lastJwtHash;
+    identity.save();
     if (regMessage.mailBox) {
       encryptedResponse = await utils.encryptResponseData(reqData, {
         mailBox: regMessage.mailBox,

@@ -4,6 +4,7 @@ import * as socketIO from 'socket.io-client';
 
 import { ServiceApi } from './service.api';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +13,17 @@ export class ServiceSocket {
   public socket;
   private messageQueue: any = [];
   lang = 'en';
+  public connected = new BehaviorSubject<boolean>(false);
 
   constructor(
     public serviceApi: ServiceApi,
     public ProviderMailBox: ProviderMailBox
   ) {}
   disconnectSocket() {
-    if (this.socket) this.socket.disconnect();
+    if (this.socket) {
+      this.socket.disconnect();      
+      this.connected.next(false);
+    }
   }
   connectSocket() {
     this.socket = socketIO.io('https://talky.ro:5050', {
@@ -83,6 +88,7 @@ export class ServiceSocket {
           }
         );
         if (mailBoxIndex === -1) {
+          this.connected.next(true);
           return;
         }
         var mailBox = this.ProviderMailBox.mailBoxes.value[mailBoxIndex];
@@ -98,12 +104,13 @@ export class ServiceSocket {
             })
           ];
           if (!localMailbox) {
+            this.connected.next(true);
             return;
           }
           this.ProviderMailBox.updateMailBox(localMailbox, mailBox);
         });
-        return;
       }
+      this.connected.next(true);
     });
   }
 }

@@ -1,4 +1,6 @@
 import * as express from "express";
+import { Cryptography } from "../../certs/jwtSessionToken/jwtSessionToken";
+import ServiceIdentity from "../../entities/identity/service/service.identity";
 import utils from "../utils";
 
 abstract class BaseController {
@@ -61,9 +63,27 @@ abstract class BaseController {
               message: "services.auth.badJwt",
             });
           }
+          var identity = await ServiceIdentity.findOne({
+            _id: reqData.sessionJwt.identity._id,
+            secret: reqData.sessionJwt.identity.secret,
+          });
+          if (
+            identity.lastJwtHash &&
+            identity.lastJwtHash != reqData.sessionJwt.identity.lastJwtHash
+          ) {
+            return res.status(403).send({
+              message: "services.auth.badJwt",
+            });
+          }
           req.decryptedData = reqData.decryptedData;
           req.sessionJwt = reqData.sessionJwt;
+          req.identity = identity;
           req.send = this.getSafeMethod(async (data, res) => {
+            req.sessionJwt.identity.lastJwtHash = await Cryptography.getShaHash(
+              identity.secret + req.sessionJwt.identity.lastJwtHash
+            );
+            identity.lastJwtHash = req.sessionJwt.identity.lastJwtHash;
+            identity.save();
             var encryptedResponse = await utils.encryptResponseData(
               { decryptedData: req.decryptedData, sessionJwt: req.sessionJwt },
               data

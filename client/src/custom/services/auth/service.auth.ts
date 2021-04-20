@@ -118,11 +118,11 @@ export class ServiceAuth {
             postData.nextRsa,
             false
           );
-          this.serviceApi.loggedIn.next(true);
-          this.ProviderIdentity.recycleBin.next(this.ProviderIdentity.state);
           this.serviceApi.token.next(
             this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
           );
+          this.ProviderIdentity.recycleBin.next(this.ProviderIdentity.state);
+          this.serviceApi.loggedIn.next(true);
           this.serviceApi.zone.run(() => {
             this.serviceApi.router.navigate(['/']);
             resolve(null);

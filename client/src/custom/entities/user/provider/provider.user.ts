@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { ServiceUser } from '@custom/entities/user/service/service.user';
 import { ServiceSocket } from '@custom/services/utils/service.socket';
 import { ModelUser } from '@custom/entities/user/model/model.user';
+import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +11,10 @@ import { ModelUser } from '@custom/entities/user/model/model.user';
 export class ProviderUser extends ServiceUser {
   currentUser: ModelUser = null;
 
-  constructor(http: HttpClient, private serviceSocket: ServiceSocket) {
+  constructor(
+    http: HttpClient,
+    private serviceSocket: ServiceSocket
+  ) {
     super(http);
     this.serviceSocket.serviceApi.loggedIn.subscribe(
       this.setCurrentUser.bind(this)

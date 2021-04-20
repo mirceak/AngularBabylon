@@ -66,6 +66,14 @@ class ControllerIdentity extends BaseController {
         nextRsa: nextRsa.pubkData,
       },
     };
+    var identity = await this.Service.findOne({
+      _id: unlockedSessionJwt.identity._id,
+      secret: unlockedSessionJwt.identity.secret,
+    });
+    unlockedSessionJwt.identity.lastJwtHash = await Cryptography.getShaHash(
+      identity.secret + unlockedSessionJwt.identity.lastJwtHash
+    );
+    identity.lastJwtHash = unlockedSessionJwt.identity.lastJwtHash;
     if (validated) {
       var sessionJwt = await utils.encryptResponseData(
         {

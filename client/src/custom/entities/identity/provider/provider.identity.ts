@@ -16,6 +16,7 @@ export class ProviderIdentity extends ServiceIdentity {
     referrals: [],
     language: 'en',
   };
+  private socketSubscriber;
 
   crypto = {
     lock: null,
@@ -42,38 +43,18 @@ export class ProviderIdentity extends ServiceIdentity {
     }
 
     this.recycleBin.subscribe(async (val) => {
-      if (!this.serviceSocket.serviceApi.loggedIn.value) {
-        return;
-      }
-      this.serviceSocket.serviceApi.serviceModals.showLoading({
-        title: this.serviceSocket.serviceApi.translate.instant(
-          'components.swal.loading'
-        ),
-        html: this.serviceSocket.serviceApi.translate.instant(
-          'services.auth-identity.encrypting'
-        ),
-      });
-      //must encrypt val first
-      this.crypto.password = [...Array(1000)]
-        .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
-        .join('');
-      this.crypto.output = this.serviceSocket.serviceApi.Cryptography.engraveData(
-        this.crypto.lock,
-        this.crypto.dataLock,
-        this.crypto.password,
-        JSON.stringify(val)
-      );
-      await this.encryptData(this.crypto.password).then(() => {
-        localStorage.setItem(
-          'crypto',
-          JSON.stringify({
-            lock: this.crypto.lock,
-            dataLock: this.crypto.dataLock,
-            output: this.crypto.output,
-          })
+      if (!this.serviceSocket.connected.value) {
+        this.socketSubscriber = await this.serviceSocket.connected.subscribe(
+          async (connected) => {
+            if (connected) {
+              await this._encryptData(val);
+              this.socketSubscriber.unsubscribe();
+            }
+          }
         );
-        this.serviceSocket.serviceApi.serviceModals.hideLoading();
-      });
+      } else {
+        await this._encryptData(val);
+      }
     });
 
     this.ProviderMailBox.mailBoxes.subscribe((val) => {
@@ -91,6 +72,38 @@ export class ProviderIdentity extends ServiceIdentity {
       this.state.referrals.splice(0);
       this.state.referrals.push(...val);
       this.recycleBin.next(this.state);
+    });
+  }
+
+  async _encryptData(val) {
+    this.serviceSocket.serviceApi.serviceModals.showLoading({
+      title: this.serviceSocket.serviceApi.translate.instant(
+        'components.swal.loading'
+      ),
+      html: this.serviceSocket.serviceApi.translate.instant(
+        'services.auth-identity.encrypting'
+      ),
+    });
+    //must encrypt val first
+    this.crypto.password = [...Array(1000)]
+      .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
+      .join('');
+    this.crypto.output = this.serviceSocket.serviceApi.Cryptography.engraveData(
+      this.crypto.lock,
+      this.crypto.dataLock,
+      this.crypto.password,
+      JSON.stringify(val)
+    );
+    await this.encryptData(this.crypto.password).then(() => {
+      localStorage.setItem(
+        'crypto',
+        JSON.stringify({
+          lock: this.crypto.lock,
+          dataLock: this.crypto.dataLock,
+          output: this.crypto.output,
+        })
+      );
+      this.serviceSocket.serviceApi.serviceModals.hideLoading();
     });
   }
 
