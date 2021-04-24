@@ -1,0 +1,52 @@
+version: "3.8"
+
+#
+
+services:
+  server:
+    container_name: server
+    build:
+      context: ./server
+    volumes:
+      - ./server:/usr/src/app
+      - dist:/usr/src/dist
+    ports:
+      - 80:8000
+      - 443:8001
+      - 5050:8002
+
+  #
+  
+  spa:
+    container_name: spa
+    build:
+      context: ./spa
+    volumes:
+      - ./spa:/usr/src/app
+      - dist:/usr/src/dist
+
+  #
+
+  client:
+    container_name: client
+    build:
+      context: ./client
+    volumes:
+      - ./client:/usr/src/app
+      - dist:/usr/src/dist
+
+  #
+
+  mongo:
+    container_name: mongo
+    image: mongo
+    volumes:
+      - mongodb:/data/db
+    ports:
+      - 27017:27017
+
+#
+
+volumes:
+  mongodb:
+  dist:

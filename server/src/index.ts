@@ -11,7 +11,7 @@ import * as https from 'https';
 
 var socketApp = require('./socketio');
 const httpApp = express();
-httpApp.set('port', 80);
+httpApp.set('port', 8000);
 httpApp.use(express.json());
 httpApp.use(express.urlencoded({ extended: false }));
 httpApp.get('*', function (req, res) {
@@ -27,7 +27,7 @@ const httpsServer = https
     },
     app
   )
-  .listen(443, () => {
+  .listen(8001, () => {
     console.log('Listening for http requests...');
   });
 var bodyParser = require('body-parser');

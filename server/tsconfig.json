@@ -18,9 +18,6 @@
     "src/index.ts",
   ],
   "include": [
-    "src/**/*.ts",
-    "src/**/*.json",
-    "src/**/*.key",
-    "src/**/*.cert",
+    "./src/**/*"
   ]
 }

@@ -4,7 +4,7 @@
   "description": "",
   "private": "true",
   "scripts": {
-    "start": "concurrently \"tsc -w\" \"mongod\" \"nodemon ./dist/server/index.js\""
+    "start": "concurrently \"tsc -w\" \"nodemon dist/server/index.js\""
   },
   "author": "",
   "license": "ISC",

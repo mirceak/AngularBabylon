@@ -26,7 +26,7 @@ const httpsSocketServer = https
       "utf-8"
     ),
   })
-  .listen(5050, () => {
+  .listen(8002, () => {
     console.log("Listening for socket requests...");
   });
 const io = new Server(httpsSocketServer, {
