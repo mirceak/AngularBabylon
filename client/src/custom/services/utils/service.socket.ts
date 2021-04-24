@@ -13,7 +13,7 @@ export class ServiceSocket {
   public socket;
   private messageQueue: any = [];
   lang = 'en';
-  public connected = new BehaviorSubject<boolean>(false);
+  public connected = new BehaviorSubject<boolean>(true);
 
   constructor(
     public serviceApi: ServiceApi,
@@ -88,7 +88,6 @@ export class ServiceSocket {
           }
         );
         if (mailBoxIndex === -1) {
-          this.connected.next(true);
           return;
         }
         var mailBox = this.ProviderMailBox.mailBoxes.value[mailBoxIndex];
@@ -104,7 +103,6 @@ export class ServiceSocket {
             })
           ];
           if (!localMailbox) {
-            this.connected.next(true);
             return;
           }
           this.ProviderMailBox.updateMailBox(localMailbox, mailBox);

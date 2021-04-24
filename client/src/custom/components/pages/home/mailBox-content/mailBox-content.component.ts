@@ -38,6 +38,7 @@ export class MailBoxContentComponent implements OnInit {
           ),
           title: this.serviceApi.translate.instant('pages.mailBox.created'),
         });
+        this.serviceApi.serviceModals.hideLoading();
       })
       .catch((error) => {
         //handled as toast in services/utils/service.http.ts
@@ -57,6 +58,7 @@ export class MailBoxContentComponent implements OnInit {
           ),
           title: this.serviceApi.translate.instant('pages.mailBox.accepted'),
         });
+        this.serviceApi.serviceModals.hideLoading();
       })
       .catch((error) => {
         //handled as toast in services/utils/service.http.ts

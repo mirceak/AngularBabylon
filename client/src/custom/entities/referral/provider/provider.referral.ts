@@ -34,7 +34,7 @@ export class ProviderReferral extends ServiceReferral {
         postData,
         this.serviceApi.token
       );
-      await super
+      super
         .reqSignup({
           sessionJwt: this.serviceApi.token.value.sessionJwt,
           rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
@@ -62,6 +62,7 @@ export class ProviderReferral extends ServiceReferral {
               }),
               decryptedData.decryptedToken.data,
             ]);
+            this.serviceApi.serviceModals.hideLoading();
             resolve(null);
           });
         });

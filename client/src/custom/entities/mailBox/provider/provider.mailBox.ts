@@ -86,7 +86,7 @@ export class ProviderMailBox extends ServiceMailBox {
         postData,
         this.serviceApi.token
       );
-      await super
+      super
         .reqMailBox({
           sessionJwt: this.serviceApi.token.value.sessionJwt,
           rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(

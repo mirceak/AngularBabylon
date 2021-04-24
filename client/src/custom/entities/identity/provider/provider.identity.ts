@@ -2,9 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceIdentity } from '../service/service.identity';
 import { ServiceSocket } from '@custom/services/utils/service.socket';
-import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
-import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral';
-import { BehaviorSubject, Subject } from 'rxjs';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +10,6 @@ import { BehaviorSubject, Subject } from 'rxjs';
 export class ProviderIdentity extends ServiceIdentity {
   public recycleBin = new Subject<any>();
   public state = {
-    mailBoxes: [],
-    referrals: [],
     language: 'en',
   };
   private socketSubscriber;
@@ -28,8 +24,6 @@ export class ProviderIdentity extends ServiceIdentity {
   constructor(
     http: HttpClient,
     public serviceSocket: ServiceSocket,
-    private ProviderMailBox: ProviderMailBox,
-    private ProviderReferral: ProviderReferral
   ) {
     super(http);
 
@@ -55,23 +49,6 @@ export class ProviderIdentity extends ServiceIdentity {
       } else {
         await this._encryptData(val);
       }
-    });
-
-    this.ProviderMailBox.mailBoxes.subscribe((val) => {
-      if (!this.serviceSocket.serviceApi.loggedIn.value) {
-        return;
-      }
-      this.state.mailBoxes.splice(0);
-      this.state.mailBoxes.push(...val);
-      this.recycleBin.next(this.state);
-    });
-    this.ProviderReferral.referrals.subscribe((val) => {
-      if (!this.serviceSocket.serviceApi.loggedIn.value) {
-        return;
-      }
-      this.state.referrals.splice(0);
-      this.state.referrals.push(...val);
-      this.recycleBin.next(this.state);
     });
   }
 
@@ -113,7 +90,7 @@ export class ProviderIdentity extends ServiceIdentity {
         postData,
         this.serviceSocket.serviceApi.token
       );
-      await super
+      super
         .encrypt({
           sessionJwt: this.serviceSocket.serviceApi.token.value.sessionJwt,
           rsaEncryptedAes: await this.serviceSocket.serviceApi.Cryptography.ab2str(
@@ -162,7 +139,7 @@ export class ProviderIdentity extends ServiceIdentity {
       postData.pin = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
         postData.pin
       );
-      await super
+      super
         .account({
           sessionJwt: this.serviceSocket.serviceApi.token.value.sessionJwt,
           rsaEncryptedAes: await this.serviceSocket.serviceApi.Cryptography.ab2str(
@@ -211,7 +188,7 @@ export class ProviderIdentity extends ServiceIdentity {
         rsaEncryptedAes.aesKey,
         JSON.parse(localStorage.getItem('sessionToken')).nextRsa
       );
-      await super
+      super
         .login({
           encryptedDataWithSessionToken: localStorage.getItem('encryptedState'),
           rsaEncryptedAes: this.serviceSocket.serviceApi.Cryptography.ab2str(
@@ -251,6 +228,11 @@ export class ProviderIdentity extends ServiceIdentity {
             this.serviceSocket.serviceApi.sessionToken.next(
               decryptedData.resumeToken
             );
+            this.serviceSocket.serviceApi.token.next(
+              this.serviceSocket.serviceApi.jwtHelper.decodeToken(
+                decryptedData.token
+              )
+            );
             this.serviceSocket.serviceApi.serviceModals.hideLoading();
             reject();
           } else {
@@ -280,8 +262,6 @@ export class ProviderIdentity extends ServiceIdentity {
             );
             localStorage.setItem('crypto', JSON.stringify(this.crypto));
             Object.assign(this.state, unlockedData);
-            this.ProviderMailBox.mailBoxes.next(this.state.mailBoxes);
-            this.ProviderReferral.referrals.next(this.state.referrals);
             resolve(null);
           }
         });
