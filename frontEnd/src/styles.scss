@@ -1,5 +1,4 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink";
-@import "~@sweetalert2/theme-material-ui/material-ui";
 @import "~bootstrap/scss/functions";
 @import "~bootstrap/scss/variables";
 @import "~bootstrap/scss/mixins";
@@ -7,6 +6,8 @@
 
 body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
+  
+  @import "@sweetalert2/theme-material-ui/material-ui";
 }
 
 .loader-center {
