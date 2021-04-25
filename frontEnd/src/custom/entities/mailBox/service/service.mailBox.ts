@@ -16,12 +16,12 @@ export class ServiceMailBox extends ServiceEntityBase<ModelMailBox> {
   }
 
   async reqMailBox(postData: any): Promise<any> {
-    return await this.http.post(`api/${super.options.pathName}/reqMailBox`, postData).toPromise();
+    return await this.http.post(`api/${this.options.pathName}/reqMailBox`, postData).toPromise();
   }
   async getMailBox(postData: any): Promise<any> {
-    return await this.http.post(`api/${super.options.pathName}/getMailBox`, postData).toPromise();
+    return await this.http.post(`api/${this.options.pathName}/getMailBox`, postData).toPromise();
   }
   async setMailBox(postData: any): Promise<any> {
-    return await this.http.post(`/api/${super.options.pathName}/setMailBox`, postData).toPromise();
+    return await this.http.post(`/api/${this.options.pathName}/setMailBox`, postData).toPromise();
   }
 }

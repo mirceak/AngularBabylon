@@ -24,6 +24,8 @@ services:
     volumes:
       - ./frontEnd:/usr/src/app
       - dist:/usr/src/dist
+    ports:
+      - 4200:4200
 
   #
 
