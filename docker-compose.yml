@@ -16,23 +16,13 @@ services:
       - 5050:8002
 
   #
-  
-  spa:
-    container_name: spa
-    build:
-      context: ./spa
-    volumes:
-      - ./spa:/usr/src/app
-      - dist:/usr/src/dist
 
-  #
-
-  client:
-    container_name: client
+  front-end:
+    container_name: front-end
     build:
-      context: ./client
+      context: ./frontEnd
     volumes:
-      - ./client:/usr/src/app
+      - ./frontEnd:/usr/src/app
       - dist:/usr/src/dist
 
   #

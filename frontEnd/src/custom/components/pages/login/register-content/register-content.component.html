@@ -1,0 +1,16 @@
+<mat-card>
+  <mat-card-header>
+    <mat-card-title
+      ><h4>
+        {{ translate.instant("pages.register.register") }}
+      </h4></mat-card-title
+    >
+  </mat-card-header>
+  <app-form-simple
+    [form]="form"
+    [fields]="registerService.fields"
+    [submitLabel]="translate.instant('pages.register.register')"
+    [submitIcon]="'follow_the_signs'"
+    (forSubmit)="register()"
+  ></app-form-simple>
+</mat-card>

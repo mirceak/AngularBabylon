@@ -44,12 +44,12 @@ async function main(): Promise<any> {
       let ctrl: BaseController = Controllers[key];
       app.use('/api', await ctrl.getRouter());
     });
-    app.use('', express.static(path.join(__dirname, '../../../dist/public/')));
+    app.use('', express.static(path.join(__dirname, '../../../dist/frontEnd/')));
     app.get('*', (req, res) => {
       if (req.headers.host.includes('www.')) {
         return res.redirect('https://' + req.headers.host.replaceAll(/www./g, '') + req.url);
       }
-      res.sendFile(path.join(__dirname, '../../../dist/public/spa/index.html'));
+      res.sendFile(path.join(__dirname, '../../../dist/frontEnd/index.html'));
     });
   } catch (err) {
     console.error(err);
