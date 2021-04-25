@@ -9,7 +9,7 @@ services:
       context: ./server
     volumes:
       - ./server:/usr/src/app
-      - dist:/usr/src/app/dist
+      - dist:/usr/src/dist
     ports:
       - 80:8000
       - 443:8001
