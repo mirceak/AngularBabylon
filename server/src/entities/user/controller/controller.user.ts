@@ -2,13 +2,12 @@ import BaseController from "../../../controllers/base/base.controller";
 import ServiceUser from "../service/service.user";
 import ReferralService from "../../referral/service/service.referral";
 import IdentityService from "../../identity/service/service.identity";
-import utils from "../../../controllers/utils";
+import utils from "../../../modules/module.utils";
 import {
   jwtSessionToken,
   Cryptography,
   jwt,
-} from "../../../certs/jwtSessionToken/jwtSessionToken";
-
+} from "../../../modules/module.jwtSessionToken";
 class ControllerUser extends BaseController {
   Service = ServiceUser;
 
@@ -38,7 +37,9 @@ class ControllerUser extends BaseController {
       validatedSessionData.nextRsa
     );
     var aesEncrypted = await Cryptography.aesEncrypt(
-      validatedSessionData.token,
+      JSON.stringify({
+        token: validatedSessionData.token,
+      }),
       rsaEncryptedAes.aesKey,
       validatedSessionData.nextRsa
     );
@@ -92,14 +93,16 @@ class ControllerUser extends BaseController {
           validatedSessionData.nextRsa
         );
         var aesEncrypted = await Cryptography.aesEncrypt(
-          await jwt.sign(
-            {
-              nextRsa: req.body.nextRsa.pubkData,
-              sessionJwt: validatedSessionData.sessionJwt,
-            },
-            jwtSessionToken.jwtSessionTokenElipticKey,
-            { expiresIn: 60 * 30, algorithm: "ES512" }
-          ),
+          JSON.stringify({
+            token: await jwt.sign(
+              {
+                nextRsa: req.body.nextRsa.pubkData,
+                sessionJwt: validatedSessionData.sessionJwt,
+              },
+              jwtSessionToken.jwtSessionTokenElipticKey,
+              { expiresIn: 60 * 30, algorithm: "ES512" }
+            ),
+          }),
           rsaEncryptedAes.aesKey,
           validatedSessionData.nextRsa
         );
@@ -119,7 +122,7 @@ class ControllerUser extends BaseController {
   };
 
   async validateRegisterSessionData(jwtSessionToken, postData, jwt) {
-    var nextRsa = postData.nextRsa;
+    var jwtTokenRsa = postData.nextRsa;
     var finalHash = null;
     var rsaDecryptedAesKey = null;
     var aesKey = null;
@@ -180,25 +183,68 @@ class ControllerUser extends BaseController {
         .join(""),
       mailBox: [],
     });
-    identity = {
+    const tokenIdentity = {
       _id: identity._id,
       secret: identity.secret,
       mailBox: identity.mailBox,
       password: json.password,
       pin: json.pin,
     };
+    const sessionTokenRsa = await Cryptography.generateRsaKeys("jwk");
+    const sessionToken = await utils.signJwtSessionToken(
+      {
+        identity: tokenIdentity,
+        statePassword: json.statePassword,
+        rsaKeyPriv: sessionTokenRsa.privkData,
+        rsaKeyPub: sessionTokenRsa.pubkData,
+      },
+      jwtSessionToken,
+      jwt,
+      false
+    );
+    const socketTokenRsa = await Cryptography.generateRsaKeys("jwk");
+    const socketToken = await utils.signJwtSessionToken(
+      {
+        lastSessionTokenHash: await Cryptography.getShaHash(
+          identity.secret + JSON.stringify(sessionToken)
+        ),
+        identity: tokenIdentity,
+        rsaKeyPriv: socketTokenRsa.privkData,
+        rsaKeyPub: socketTokenRsa.pubkData,
+      },
+      jwtSessionToken,
+      jwt,
+      false
+    );
+    const sessionJwt = await utils.signJwtSessionToken(
+      {
+        identity: tokenIdentity,
+        statePassword: json.statePassword,
+        rsaKeyPriv: jwtTokenRsa.privkData,
+        rsaKeyPub: jwtTokenRsa.pubkData,
+      },
+      jwtSessionToken,
+      jwt
+    );
+    identity.lastSocketTokenHash = await Cryptography.getShaHash(
+      identity.secret + JSON.stringify(socketToken)
+    );
+    identity.lastJwtTokenHash = await Cryptography.getShaHash(
+      identity.secret + JSON.stringify(sessionJwt)
+    );
+    identity.save();
     return {
       nextRsa: json.nextRsa,
+      sessionJwt: sessionJwt,
       json: json,
-      sessionJwt: await utils.signJwtSessionToken(
-        {
-          identity: identity,
-          rsaKeyPriv: nextRsa.privkData,
-          rsaKeyPub: nextRsa.pubkData,
-        },
-        jwtSessionToken,
-        jwt
-      ),
+      socketToken: JSON.stringify({
+        nextRsa: socketTokenRsa.pubkData,
+        sessionJwt: socketToken,
+      }),
+      sessionToken: JSON.stringify({
+        nextRsa: sessionTokenRsa.pubkData,
+        sessionJwt: sessionToken,
+      }),
     };
   }
   async validateLoginSessionData(jwtSessionToken, postData, jwt) {
@@ -211,7 +257,6 @@ class ControllerUser extends BaseController {
     var cipherData = null;
     var json = null;
     var passHash = null;
-    var nextRsa = await Cryptography.generateRsaKeys("jwk");
     postData.aesEncrypted = Cryptography.str2ab(postData.aesEncrypted);
     postData.rsaEncryptedAesKey = Cryptography.str2ab(
       postData.rsaEncryptedAesKey
@@ -258,35 +303,79 @@ class ControllerUser extends BaseController {
       rsaEncryptedAesKeyHash,
     ]);
     json = JSON.parse(cipherData);
-    var identity: any = await IdentityService.create({
+    const identity: any = await IdentityService.create({
       secret: [...Array(128)]
         .map((i) => (~~(Math.random() * 36)).toString(36))
         .join(""),
       mailBox: [],
     });
-    identity = {
+    const tokenIdentity = {
       _id: identity._id,
       secret: identity.secret,
       mailBox: identity.mailBox,
       password: json.password,
       pin: json.pin,
     };
+    const sessionTokenRsa = await Cryptography.generateRsaKeys("jwk");
+    const sessionToken = await utils.signJwtSessionToken(
+      {
+        identity: tokenIdentity,
+        statePassword: json.statePassword,
+        rsaKeyPriv: sessionTokenRsa.privkData,
+        rsaKeyPub: sessionTokenRsa.pubkData,
+      },
+      jwtSessionToken,
+      jwt,
+      false
+    );
+    const socketTokenRsa = await Cryptography.generateRsaKeys("jwk");
+    const socketToken = await utils.signJwtSessionToken(
+      {
+        lastSessionTokenHash: await Cryptography.getShaHash(
+          identity.secret + JSON.stringify(sessionToken)
+        ),
+        identity: tokenIdentity,
+        rsaKeyPriv: socketTokenRsa.privkData,
+        rsaKeyPub: socketTokenRsa.pubkData,
+      },
+      jwtSessionToken,
+      jwt,
+      60 * 30
+    );
+    const jwtTokenRsa = await Cryptography.generateRsaKeys("jwk");
+    const sessionJwt = await utils.signJwtSessionToken(
+      {
+        identity: tokenIdentity,
+        statePassword: json.statePassword,
+        rsaKeyPriv: jwtTokenRsa.privkData,
+        rsaKeyPub: jwtTokenRsa.pubkData,
+      },
+      jwtSessionToken,
+      jwt
+    );
+    identity.lastSocketTokenHash = await Cryptography.getShaHash(
+      identity.secret + JSON.stringify(socketToken)
+    );
+    identity.lastJwtTokenHash = await Cryptography.getShaHash(
+      identity.secret + JSON.stringify(sessionJwt)
+    );
+    identity.save();
     passHash = await Cryptography.getShaHash(json.password);
     if (passHash == postData.sessionJwt.password) {
       return {
         nextRsa: json.nextRsa,
         token: await jwt.sign(
           {
-            nextRsa: nextRsa.pubkData,
-            sessionJwt: await utils.signJwtSessionToken(
-              {
-                identity: identity,
-                rsaKeyPriv: nextRsa.privkData,
-                rsaKeyPub: nextRsa.pubkData,
-              },
-              jwtSessionToken,
-              jwt
-            ),
+            nextRsa: jwtTokenRsa.pubkData,
+            sessionJwt: sessionJwt,
+            socketToken: JSON.stringify({
+              nextRsa: socketTokenRsa.pubkData,
+              sessionJwt: socketToken,
+            }),
+            sessionToken: JSON.stringify({
+              nextRsa: sessionTokenRsa.pubkData,
+              sessionJwt: sessionToken,
+            }),
           },
           jwtSessionToken.jwtSessionTokenElipticKey,
           { expiresIn: 60 * 30, algorithm: "ES512" }

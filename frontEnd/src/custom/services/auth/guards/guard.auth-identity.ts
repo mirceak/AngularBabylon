@@ -10,7 +10,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { ServiceAuth } from '../service.auth';
 
 @Injectable({ providedIn: 'root' })
-export class AuthIdentityGuardService implements CanActivate {
+export class GuardAuthIdentity implements CanActivate {
   constructor(
     private router: Router,
     private serviceAuth: ServiceAuth,

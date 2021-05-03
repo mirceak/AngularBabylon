@@ -33,7 +33,7 @@
     ></app-form-simple>
   </mat-card-content>
 </mat-card>
-<mat-card *ngFor="let mailBox of providerMailBox.mailBoxes.value" class="mailBox">
+<mat-card *ngFor="let mailBox of serviceApi.state.mailBoxes.value" class="mailBox">
   <mat-card-header>
     <mat-card-title>
       <h4 class="elipsis">

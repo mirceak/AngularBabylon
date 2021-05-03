@@ -5,7 +5,7 @@ import { MailBoxContentComponent } from './mailBox-content/mailBox-content.compo
 import { HomeContentComponent } from './home-content/home-content.component';
 import { ReferralContentComponent } from './referral-content/referral-content.component';
 import { AccountContentComponent } from './account-content/account-content.component';
-import { AuthGuardService } from '@custom/services/auth/guards/auth.guard.service';
+import { GuardAuth } from '@custom/services/auth/guards/guard.auth';
 import { ChatContentComponent } from './chat-content/chat-content.component';
 import { Route } from '@angular/compiler/src/core';
 
@@ -22,7 +22,7 @@ const routes: Routes = [
   {
     path: '',
     component: HomeComponent,
-    canActivate: [AuthGuardService],
+    canActivate: [GuardAuth],
     children: [
       {
         path: '',

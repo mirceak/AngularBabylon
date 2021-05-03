@@ -6,4 +6,4 @@ import { HomeModule } from '@custom/components/pages/home/home.module';
 @NgModule({
   imports: [HomeModule, CommonModule],
 })
-export class PageHomeModule {}
+export class ModulePageHome {}

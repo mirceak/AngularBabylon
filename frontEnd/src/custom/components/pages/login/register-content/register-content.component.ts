@@ -37,12 +37,7 @@ export class RegisterContentComponent {
         });
       })
       .catch((error) => {
-        this.serviceModals.hideLoading();
-        this.serviceModals.showToast({
-          status: 'error',
-          statusMessage: this.translate.instant('components.toastr.error'),
-          title: this.translate.instant('pages.login.badLogin'),
-        });
+        // handled as toast in services/utils/service.http.ts
       });
   }
 }

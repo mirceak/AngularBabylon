@@ -10,11 +10,11 @@ import { TranslateService } from '@ngx-translate/core';
 import { ServiceAuth } from '../service.auth';
 
 @Injectable({ providedIn: 'root' })
-export class GuestGuardService implements CanActivate {
+export class GuardAuth implements CanActivate {
   constructor(
     private router: Router,
     private serviceAuth: ServiceAuth,
-    public translate: TranslateService,
+    private translate: TranslateService,
     private serviceModals: ServiceModals
   ) {}
 
@@ -22,17 +22,9 @@ export class GuestGuardService implements CanActivate {
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ): Promise<boolean> {
-    if (this.serviceAuth.serviceApi.loggedIn.value) {
-      this.serviceModals.showToast({
-        status: 'error',
-        statusMessage: this.translate.instant('components.toastr.error'),
-        title: this.translate.instant('services.guards.guest.message'),
-      });
-      this.router.navigate(['/']);
-      return false;
-    } else if (
-      state.url.toString() !== '/auth/login-identity' &&
-      this.serviceAuth.serviceApi.token.value
+    if (
+      this.serviceAuth.serviceApi.sessionToken.value &&
+      !this.serviceAuth.serviceApi.loggedIn.value
     ) {
       this.serviceModals.showToast({
         status: 'error',
@@ -42,8 +34,8 @@ export class GuestGuardService implements CanActivate {
       this.router.navigate(['/auth/login-identity']);
       return false;
     } else if (
-      state.url.toString() === '/auth/login-identity' &&
-      !this.serviceAuth.serviceApi.sessionToken.value
+      !this.serviceAuth.serviceApi.sessionToken.value &&
+      !this.serviceAuth.serviceApi.loggedIn.value
     ) {
       this.router.navigate(['/auth/login']);
       this.serviceModals.showToast({

@@ -66,12 +66,8 @@ export class NavListSimpleComponent implements OnInit {
           status: 'success',
           statusMessage: this.translate.instant('components.toastr.success'),
           title: this.translate.instant('components.nav.changedLang'),
-        });
-        if (!this.serviceAuth.serviceApi.loggedIn.value) {
-          this.serviceModals.hideLoading();
-        } else {
-          this.providerIdentity.recycleBin.next(this.providerIdentity.state);
-        }
+        });        
+        this.serviceModals.hideLoading();
       });
     }
   }

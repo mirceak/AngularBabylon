@@ -14,16 +14,6 @@ export class ServiceAuth {
     private router: Router,
     public serviceApi: ServiceApi
   ) {
-    if (localStorage.getItem('encryptedState')) {
-      this.serviceApi.sessionToken.next(
-        JSON.parse(`${localStorage.getItem('sessionToken')}`)
-      );
-    }
-    this.serviceApi.token.subscribe((token) => {
-      if (token == null && serviceApi.loggedIn.value) {
-        this.logout();
-      }
-    });
   }
 
   async login(postData: any): Promise<any> {
@@ -52,7 +42,7 @@ export class ServiceAuth {
           postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
             'jwk'
           );
-          let request;
+          let request: any;
           try {
             request = await this.signLoginSessionData(postData);
           } catch (error) {
@@ -61,14 +51,21 @@ export class ServiceAuth {
           this.providerUser.login(request).then(async (data: any) => {
             const decrypted: any = await this.serviceApi.decryptServerData(
               data,
-              postData.nextRsa,
-              false
+              postData.nextRsa
             );
-            this.serviceApi.token.next(
-              this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
+            localStorage.setItem(
+              'sessionToken',
+              decrypted.decryptedToken.sessionToken
             );
+            this.serviceApi.sessionToken.next(
+              JSON.parse(decrypted.decryptedToken.sessionToken)
+            );
+            this.serviceApi.socketToken.next(
+              JSON.parse(decrypted.decryptedToken.socketToken)
+            );
+            this.serviceApi.crypto.password = request.statePassword;
+            this.serviceApi.encryptAndSaveState(request.statePassword);
             this.serviceApi.loggedIn.next(true);
-            this.providerIdentity.recycleBin.next(this.providerIdentity.state);
             this.serviceApi.zone.run(() => {
               this.serviceApi.router.navigate(['/']);
               resolve(null);
@@ -80,8 +77,8 @@ export class ServiceAuth {
 
   logout(): void {
     localStorage.clear();
+    this.serviceApi.logout();
     this.router.navigate(['/auth/login']);
-    this.serviceApi.loggedIn.next(false);
   }
 
   async register(postData: any): Promise<any> {
@@ -110,7 +107,7 @@ export class ServiceAuth {
           postData.nextRsa = await this.serviceApi.Cryptography.generateRsaKeys(
             'jwk'
           );
-          let request;
+          let request: any;
           try {
             request = await this.signRegisterSessionData(postData);
           } catch (error) {
@@ -119,13 +116,20 @@ export class ServiceAuth {
           this.providerUser.register(request).then(async (data: any) => {
             const decrypted: any = await this.serviceApi.decryptServerData(
               data,
-              postData.nextRsa,
-              false
+              postData.nextRsa
             );
-            this.serviceApi.token.next(
-              this.serviceApi.jwtHelper.decodeToken(decrypted.decryptedToken)
+            localStorage.setItem(
+              'sessionToken',
+              decrypted.decryptedToken.sessionToken
             );
-            this.providerIdentity.recycleBin.next(this.providerIdentity.state);
+            this.serviceApi.sessionToken.next(
+              JSON.parse(decrypted.decryptedToken.sessionToken)
+            );
+            this.serviceApi.socketToken.next(
+              JSON.parse(decrypted.decryptedToken.socketToken)
+            );
+            this.serviceApi.crypto.password = request.statePassword;
+            this.serviceApi.encryptAndSaveState(request.statePassword);
             this.serviceApi.loggedIn.next(true);
             this.serviceApi.zone.run(() => {
               this.serviceApi.router.navigate(['/']);
@@ -199,12 +203,22 @@ export class ServiceAuth {
     rsaEncryptedAesKeyHash = await this.serviceApi.Cryptography.getShaHash(
       this.serviceApi.Cryptography.ab2str(rsaEncryptedAesKey.encryptedAes)
     );
+    const statePassword = [...Array(20)]
+      .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
+      .join('');
+    const output = this.serviceApi.Cryptography.engraveData(
+      this.serviceApi.crypto.lock,
+      this.serviceApi.crypto.dataLock,
+      this.serviceApi.crypto.basePassword,
+      statePassword
+    );
     cipherMap = await this.serviceApi.Cryptography.makeCipherMap(
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
       JSON.stringify({
         password: options.password,
         pin: postData.pin,
         nextRsa: nextRsa.pubkData,
+        statePassword: output,
       })
     );
     aesEncrypted = await this.serviceApi.Cryptography.aesEncrypt(
@@ -217,6 +231,7 @@ export class ServiceAuth {
       finalHash
     );
     return {
+      statePassword: statePassword,
       sessionJwt: decryptedAes.sessionJwt,
       aesEncrypted: this.serviceApi.Cryptography.ab2str(
         aesEncrypted.ciphertext
@@ -288,12 +303,22 @@ export class ServiceAuth {
     rsaEncryptedAesKeyHash = await this.serviceApi.Cryptography.getShaHash(
       this.serviceApi.Cryptography.ab2str(rsaEncryptedAesKey.encryptedAes)
     );
+    const statePassword = [...Array(20)]
+      .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
+      .join('');
+    const output = this.serviceApi.Cryptography.engraveData(
+      this.serviceApi.crypto.lock,
+      this.serviceApi.crypto.dataLock,
+      this.serviceApi.crypto.basePassword,
+      statePassword
+    );
     cipherMap = await this.serviceApi.Cryptography.makeCipherMap(
       [finalHash, userHash, fullHash, totalHash, rsaEncryptedAesKeyHash],
       JSON.stringify({
         password: options.password,
         pin: postData.pin,
         nextRsa: nextRsa.pubkData,
+        statePassword: output,
       })
     );
     aesEncrypted = await this.serviceApi.Cryptography.aesEncrypt(
@@ -306,6 +331,7 @@ export class ServiceAuth {
       finalHash
     );
     return {
+      statePassword: statePassword,
       sessionJwt: decryptedAes.sessionJwt,
       aesEncrypted: this.serviceApi.Cryptography.ab2str(
         aesEncrypted.ciphertext

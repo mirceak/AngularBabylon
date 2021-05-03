@@ -34,12 +34,12 @@ export class AccountContentComponent implements OnInit {
     });
     await this.providerIdentity.updateAccount(this.form.value)
       .then(() => {
-        this.providerIdentity.recycleBin.next(this.providerIdentity.state);
         this.serviceModals.showToast({
           status: 'success',
           statusMessage: this.translate.instant('components.toastr.success'),
           title: this.translate.instant('pages.account.updated'),
         });
+        this.serviceApi.serviceModals.hideLoading();
       })
       .catch((error) => {
         // handled as toast in services/utils/service.http.ts

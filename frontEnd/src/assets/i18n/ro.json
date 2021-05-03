@@ -66,6 +66,7 @@
       "login": "Login Identitate"
     },
     "account": {
+      "badDetails": "Informatiile anterioare sunt incorecte!",
       "personalData": "Date Personale",
       "update": "Salveaza",
       "updating": "Se salveaza informatiile!",
@@ -145,6 +146,7 @@
     }
   },
   "services": {
+    "deadEnd": "Va rugam sa contactati un administrator. Datele dumneavoastra sunt corupte!",
     "error": "Eroare de server! Va rugam sa incercati din nou!",
     "auth": {
       "badJwt": "Sesiunea a expirat",

@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from '@custom/components/pages/login/login.component';
-import { GuestGuardService } from '@custom/services/auth/guards/guest.guard.service';
-import { AuthIdentityGuardService } from '@custom/services/auth/guards/auth-identity.guard.service';
+import { GuestGuard } from '@custom/services/auth/guards/guard.guest';
+import { GuardAuthIdentity } from '@custom/services/auth/guards/guard.auth-identity';
 import { LoginContentComponent } from './login-content/login-content.component';
 import { LoginIdentityContentComponent } from './login-identity-content/login-identity-content.component';
 import { RegisterContentComponent } from './register-content/register-content.component';
@@ -18,7 +18,7 @@ export const routerComponentDeclarations = [
 const routes: Routes = [
   {
     path: '',
-    canActivate: [GuestGuardService],
+    canActivate: [GuestGuard],
     component: LoginComponent,
     children: [
       {
@@ -28,11 +28,11 @@ const routes: Routes = [
       {
         path: 'login',
         component: LoginContentComponent,
-        canActivate: [AuthIdentityGuardService],
+        canActivate: [GuardAuthIdentity],
       },
       {
         path: 'register',
-        canActivate: [AuthIdentityGuardService],
+        canActivate: [GuardAuthIdentity],
         component: RegisterContentComponent,
       },
     ],

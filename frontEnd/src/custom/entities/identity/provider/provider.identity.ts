@@ -2,183 +2,90 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceIdentity } from '../service/service.identity';
 import { ServiceSocket } from '@custom/services/utils/service.socket';
-import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ProviderIdentity extends ServiceIdentity {
-  public recycleBin = new Subject<any>();
-  public state = {
-    language: 'en',
-  };
-  private socketSubscriber: any;
-
-  crypto = {
-    lock: [],
-    dataLock: [],
-    password: '',
-    output: '',
-  };
-
-  constructor(
-    http: HttpClient,
-    public serviceSocket: ServiceSocket,
-  ) {
+  constructor(http: HttpClient, public serviceSocket: ServiceSocket) {
     super(http);
-
-    if (!localStorage.getItem('crypto')) {
-      Object.assign(
-        this.crypto,
-        this.serviceSocket.serviceApi.Cryptography.makeCipherPieces(1000)
-      );
-    } else {
-      Object.assign(this.crypto, JSON.parse(`${localStorage.getItem('crypto')}`));
-    }
-
-    this.recycleBin.subscribe(async (val) => {
-      if (!this.serviceSocket.connected.value) {
-        this.socketSubscriber = await this.serviceSocket.connected.subscribe(
-          async (connected: any): Promise<any> => {
-            if (connected) {
-              await this._encryptData(val);
-              this.socketSubscriber.unsubscribe();
-            }
-          }
-        );
-      } else {
-        await this._encryptData(val);
-      }
-    });
-  }
-
-  async _encryptData(val: any): Promise<any> {
-    this.serviceSocket.serviceApi.serviceModals.showLoading({
-      title: this.serviceSocket.serviceApi.translate.instant(
-        'components.swal.loading'
-      ),
-      html: this.serviceSocket.serviceApi.translate.instant(
-        'services.auth-identity.encrypting'
-      ),
-    });
-    // must encrypt val first
-    this.crypto.password = [...Array(1000)]
-      .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
-      .join('');
-    this.crypto.output = this.serviceSocket.serviceApi.Cryptography.engraveData(
-      this.crypto.lock,
-      this.crypto.dataLock,
-      this.crypto.password,
-      JSON.stringify(val)
-    );
-    await this.encryptData(this.crypto.password).then(() => {
-      localStorage.setItem(
-        'crypto',
-        JSON.stringify({
-          lock: this.crypto.lock,
-          dataLock: this.crypto.dataLock,
-          output: this.crypto.output,
-        })
-      );
-      this.serviceSocket.serviceApi.serviceModals.hideLoading();
-    });
-  }
-
-  async encryptData(postData: any): Promise<any> {
-    return new Promise(async (resolve, reject) => {
-      postData = await this.serviceSocket.serviceApi.getRequestData(
-        postData,
-        this.serviceSocket.serviceApi.token
-      );
-      super
-        .encrypt({
-          sessionJwt: this.serviceSocket.serviceApi.token.value.sessionJwt,
-          rsaEncryptedAes: await this.serviceSocket.serviceApi.Cryptography.ab2str(
-            postData.rsaEncryptedAes.encryptedAes
-          ),
-          aesEncrypted: await this.serviceSocket.serviceApi.Cryptography.ab2str(
-            postData.aesEncrypted.ciphertext
-          ),
-        })
-        .then(async (data: any) => {
-          if (!data) {
-            return reject();
-          }
-          const decryptedData: any = await this.serviceSocket.serviceApi.decryptServerData(
-            data,
-            postData.nextRsa
-          );
-          localStorage.setItem(
-            'encryptedState',
-            decryptedData.decryptedToken.data.encryptedData
-          );
-          localStorage.setItem(
-            'sessionToken',
-            JSON.stringify(decryptedData.decryptedToken.data.resumeToken)
-          );
-          return resolve(null);
-        });
-    });
   }
 
   async updateAccount(postData: any): Promise<any> {
-    return new Promise(async (resolve, reject): Promise<any> => {
-      postData = await this.serviceSocket.serviceApi.getRequestData(
-        postData,
-        this.serviceSocket.serviceApi.token
-      );
-      postData.oldPassword = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
-        postData.oldPassword
-      );
-      postData.password = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
-        postData.password
-      );
-      postData.oldPin = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
-        postData.oldPin
-      );
-      postData.pin = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
-        postData.pin
-      );
-      super
-        .account({
-          sessionJwt: this.serviceSocket.serviceApi.token.value.sessionJwt,
-          rsaEncryptedAes: await this.serviceSocket.serviceApi.Cryptography.ab2str(
-            postData.rsaEncryptedAes.encryptedAes
-          ),
-          aesEncrypted: await this.serviceSocket.serviceApi.Cryptography.ab2str(
-            postData.aesEncrypted.ciphertext
-          ),
-        })
-        .then(async (data: any): Promise<any> => {
-          if (!data) {
-            return reject();
-          }
-          await this.serviceSocket.serviceApi.decryptServerData(
-            data,
-            postData.nextRsa
+    return new Promise(
+      async (resolve, reject): Promise<any> => {
+        postData.oldPassword = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+          postData.oldPassword
+        );
+        postData.password = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+          postData.password
+        );
+        postData.oldPin = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+          postData.oldPin
+        );
+        postData.pin = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+          postData.pin
+        );
+        postData = await this.serviceSocket.serviceApi.getRequestData(
+          postData,
+          this.serviceSocket.serviceApi.token
+        );
+        super
+          .account({
+            sessionJwt: this.serviceSocket.serviceApi.token.value.sessionJwt,
+            rsaEncryptedAes: await this.serviceSocket.serviceApi.Cryptography.ab2str(
+              postData.rsaEncryptedAes.encryptedAes
+            ),
+            aesEncrypted: await this.serviceSocket.serviceApi.Cryptography.ab2str(
+              postData.aesEncrypted.ciphertext
+            ),
+          })
+          .then(
+            async (data: any): Promise<any> => {
+              if (!data) {
+                return reject();
+              }
+              const decryptedData = await this.serviceSocket.serviceApi.decryptServerData(
+                data,
+                postData.nextRsa
+              );
+              localStorage.setItem('sessionToken', decryptedData.parsedToken.data.sessionToken);
+              this.serviceSocket.disconnectSocket();
+              this.serviceSocket.serviceApi.socketToken.next(
+                JSON.parse(decryptedData.parsedToken.data.socketToken)
+              );
+              this.serviceSocket.connectSocket();
+              this.serviceSocket.serviceApi.sessionToken.next(
+                JSON.parse(decryptedData.parsedToken.data.sessionToken)
+              );
+              this.serviceSocket.serviceApi.encryptAndSaveState(
+                this.serviceSocket.serviceApi.crypto.password
+              );
+              resolve(null);
+            }
           );
-          resolve(null);
-        });
-    });
+      }
+    );
   }
 
   async login(postData: any): Promise<any> {
     return new Promise(async (resolve, reject) => {
-      const pubkData = JSON.parse(`${localStorage.getItem('sessionToken')}`).nextRsa;
+      const sessionToken = JSON.parse(
+        localStorage.getItem('sessionToken') || ''
+      );
       const nextRsa = await this.serviceSocket.serviceApi.Cryptography.generateRsaKeys(
         'jwk'
       );
-      postData.email = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
-        postData.email
-      );
-      postData.password = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
-        postData.password
-      );
+      if (postData.password) {
+        postData.password = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
+          postData.password
+        );
+      }
       postData.pin = await this.serviceSocket.serviceApi.Cryptography.getShaHash(
         postData.pin
       );
       const rsaEncryptedAes = await this.serviceSocket.serviceApi.Cryptography.getRsaEncryptedAesKey(
-        pubkData
+        sessionToken.nextRsa
       );
       const aesEncrypted = await this.serviceSocket.serviceApi.Cryptography.aesEncrypt(
         JSON.stringify({
@@ -186,11 +93,11 @@ export class ProviderIdentity extends ServiceIdentity {
           ...postData,
         }),
         rsaEncryptedAes.aesKey,
-        JSON.parse(`${localStorage.getItem('sessionToken')}`).nextRsa
+        sessionToken.nextRsa
       );
       super
         .login({
-          encryptedDataWithSessionToken: localStorage.getItem('encryptedState'),
+          sessionToken: sessionToken,
           rsaEncryptedAes: this.serviceSocket.serviceApi.Cryptography.ab2str(
             rsaEncryptedAes.encryptedAes
           ),
@@ -199,6 +106,9 @@ export class ProviderIdentity extends ServiceIdentity {
           ),
         })
         .then(async (data: any) => {
+          if (!data) {
+            return reject();
+          }
           data.rsaEncryptedAes = this.serviceSocket.serviceApi.Cryptography.str2ab(
             data.rsaEncryptedAes
           );
@@ -219,49 +129,35 @@ export class ProviderIdentity extends ServiceIdentity {
               nextRsa.pubkData
             )
           );
-          if (!data.valid) {
-            localStorage.setItem('encryptedState', decryptedData.encryptedData);
-            localStorage.setItem(
-              'sessionToken',
-              JSON.stringify(decryptedData.resumeToken)
-            );
-            this.serviceSocket.serviceApi.sessionToken.next(
-              decryptedData.resumeToken
-            );
-            this.serviceSocket.serviceApi.token.next(
-              this.serviceSocket.serviceApi.jwtHelper.decodeToken(
-                decryptedData.token
-              )
-            );
+          if (decryptedData.failedPin) {
+            this.serviceSocket.serviceApi.serviceModals.showToast({
+              status: 'error',
+              statusMessage: this.serviceSocket.serviceApi.translate.instant(
+                'components.toastr.error'
+              ),
+              title: this.serviceSocket.serviceApi.translate.instant(
+                decryptedData.message || 'services.error'
+              ),
+            });
+            localStorage.setItem('sessionToken', JSON.stringify(decryptedData));
+            this.serviceSocket.serviceApi.sessionToken.next(decryptedData);
             this.serviceSocket.serviceApi.serviceModals.hideLoading();
-            reject();
+            return reject();
           } else {
-            localStorage.setItem(
-              'encryptedState',
-              decryptedData.data.normalResponse.encryptedData
+            var decryptedToken: any = this.serviceSocket.serviceApi.jwtHelper.decodeToken(
+              decryptedData.token
             );
-            localStorage.setItem(
-              'sessionToken',
-              JSON.stringify(decryptedData.data.normalResponse.resumeToken)
-            );
+            localStorage.setItem('sessionToken', decryptedToken.sessionToken);
             this.serviceSocket.serviceApi.sessionToken.next(
-              decryptedData.data.normalResponse.resumeToken
+              JSON.parse(decryptedToken.sessionToken)
             );
-            this.serviceSocket.serviceApi.token.next(
-              this.serviceSocket.serviceApi.jwtHelper.decodeToken(
-                decryptedData.token
-              )
+            this.serviceSocket.serviceApi.socketToken.next(
+              JSON.parse(decryptedToken.socketToken)
             );
-            const unlockedData: any = JSON.parse(
-              this.serviceSocket.serviceApi.Cryptography.degraveData(
-                this.crypto.lock,
-                this.crypto.dataLock,
-                this.crypto.output,
-                decryptedData.data.unlockedData
-              )
+            this.serviceSocket.serviceApi.token.next(decryptedToken);
+            this.serviceSocket.serviceApi.decryptStateWithEncryptedPass(
+              decryptedToken.statePassword
             );
-            localStorage.setItem('crypto', JSON.stringify(this.crypto));
-            Object.assign(this.state, unlockedData);
             resolve(null);
           }
         });

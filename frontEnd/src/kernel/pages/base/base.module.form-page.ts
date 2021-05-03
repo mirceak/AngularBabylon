@@ -19,4 +19,4 @@ import {
   ],
   exports: [TranslateModule, FormlyModule, FormlyMaterialModule, HttpClientModule],
 })
-export class BaseFormPageModule {}
+export class BaseModuleFormPage {}

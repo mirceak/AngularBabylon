@@ -1,7 +1,7 @@
 import BaseController from "../../../controllers/base/base.controller";
 import ServiceMailBox from "../service/service.mailBox";
 import ServiceIdentity from "../../identity/service/service.identity";
-import socketApp from "../../../socketio";
+import socketApp from "../../../modules/module.socketio";
 
 class ControllerMailBox extends BaseController {
   Service = ServiceMailBox;

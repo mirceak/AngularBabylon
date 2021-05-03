@@ -3,7 +3,7 @@ import {
   Cryptography,
   jwt,
   getRandomValues,
-} from "../certs/jwtSessionToken/jwtSessionToken";
+} from "./module.jwtSessionToken";
 
 var getRequestData = async (data) => {
   return new Promise(async (resolve, reject) => {
@@ -14,7 +14,7 @@ var getRequestData = async (data) => {
         jwt
       );
     } catch (e) {
-      return reject();
+      return reject(e);
     }
     data.rsaEncryptedAes = Cryptography.str2ab(data.rsaEncryptedAes);
     data.aesEncrypted = Cryptography.str2ab(data.aesEncrypted);
@@ -43,21 +43,23 @@ var encryptResponseData = async (reqData, data) => {
   var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(
     reqData.decryptedData.nextRsa
   );
+  var sessionJwt = await signJwtSessionToken(
+    {
+      identity: reqData.sessionJwt.identity,
+      statePassword: reqData.sessionJwt.statePassword,
+      rsaKeyPriv: nextRsa.privkData,
+      rsaKeyPub: nextRsa.pubkData,
+    },
+    jwtSessionToken,
+    jwt
+  );
   var aesEncrypted = await Cryptography.aesEncrypt(
     JSON.stringify({
       data: data,
       token: await jwt.sign(
         {
           nextRsa: nextRsa.pubkData,
-          sessionJwt: await signJwtSessionToken(
-            {
-              identity: reqData.sessionJwt.identity,
-              rsaKeyPriv: nextRsa.privkData,
-              rsaKeyPub: nextRsa.pubkData,
-            },
-            jwtSessionToken,
-            jwt
-          ),
+          sessionJwt: sessionJwt,
         },
         jwtSessionToken.jwtSessionTokenElipticKey,
         { expiresIn: 60 * 30, algorithm: "ES512" }
@@ -67,6 +69,7 @@ var encryptResponseData = async (reqData, data) => {
     reqData.decryptedData.nextRsa
   );
   return {
+    sessionJwt: sessionJwt,
     rsaEncryptedAes: Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
     aesEncrypted: Cryptography.ab2str(aesEncrypted.ciphertext),
   };
@@ -87,51 +90,65 @@ var parseJwtSessionToken = async (sessionJwt, jwtSessionToken, jwt) => {
       jwtSessionToken.jwtSessionTokenAesKey,
       sessionJwt.rsaIv
     );
-    var unlockedSessionJwt = await Cryptography.degraveData(
-      jwtSessionToken.jwtSessionTokenLock.lock,
-      jwtSessionToken.jwtSessionTokenLock.dataLock,
-      sessionJwt,
-      jwtSessionToken.jwtSessionTokenLock.password[0]
-    );
     try {
       return resolve(
         await jwt.verify(
-          unlockedSessionJwt,
+          deGraveData(sessionJwt),
           jwtSessionToken.jwtSessionTokenElipticKey,
           { algorithms: ["ES512"] }
         )
       );
     } catch (e) {
-      return reject();
+      return reject(e);
     }
   });
 };
 
-var signJwtSessionToken = async (postData, jwtSessionToken, jwt) => {
+var deGraveData = (data) => {
+  return Cryptography.degraveData(
+    jwtSessionToken.jwtSessionTokenLock.lock,
+    jwtSessionToken.jwtSessionTokenLock.dataLock,
+    data,
+    jwtSessionToken.jwtSessionTokenLock.password[0]
+  );
+};
+
+var engraveData = (data) => {
+  return Cryptography.engraveData(
+    jwtSessionToken.jwtSessionTokenLock.lock,
+    jwtSessionToken.jwtSessionTokenLock.dataLock,
+    jwtSessionToken.jwtSessionTokenLock.password[0],
+    data
+  );
+};
+
+var signJwtSessionToken = async (
+  postData,
+  jwtSessionToken,
+  jwt,
+  duration: number | boolean = 60 * 30
+) => {
   var aesIv = null;
   var rsaEncryptedAesIv = null;
   var aesEncryptedJwtToken = null;
+  var sessionJwtTokenOptions: any = {
+    algorithm: "ES512",
+  };
+  if (duration !== false) {
+    sessionJwtTokenOptions.expiresIn = duration;
+  }
   var sessionJwtToken = await jwt.sign(
     postData,
     jwtSessionToken.jwtSessionTokenElipticKey,
-    {
-      expiresIn: 60 * 30,
-      algorithm: "ES512",
-    }
+    sessionJwtTokenOptions
   );
   aesIv = Cryptography.ab2str(getRandomValues(new Uint8Array(12)));
   rsaEncryptedAesIv = await Cryptography.rsaEncrypt(
     aesIv,
     jwtSessionToken.jwtSessionTokenRsaKeys.publicKey
   );
-  var lockedSessionJwtToken = await Cryptography.engraveData(
-    jwtSessionToken.jwtSessionTokenLock.lock,
-    jwtSessionToken.jwtSessionTokenLock.dataLock,
-    jwtSessionToken.jwtSessionTokenLock.password[0],
-    sessionJwtToken
-  );
   aesEncryptedJwtToken = await Cryptography.aesEncrypt(
-    lockedSessionJwtToken,
+    engraveData(sessionJwtToken),
     jwtSessionToken.jwtSessionTokenAesKey,
     aesIv
   );
@@ -146,4 +163,6 @@ export default {
   getRequestData,
   encryptResponseData,
   signJwtSessionToken,
+  engraveData,
+  deGraveData,
 };

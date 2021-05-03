@@ -66,6 +66,7 @@
       "login": "Identity Login"
     },
     "account": {
+      "badDetails": "Previous information is incorrect!",
       "personalData": "Personal Data",
       "update": "Update",
       "updating": "Updating Account!",
@@ -145,6 +146,7 @@
     }
   },
   "services": {
+    "deadEnd": "Please contact an administrator. Your data is corrupted!",
     "error": "Server error! Please try again!",
     "auth": {
       "badJwt": "Your session has expired",

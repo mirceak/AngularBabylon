@@ -2,14 +2,14 @@ import * as express from 'express';
 import * as path from 'path';
 import * as morgan from 'morgan';
 
-import setMongo from './mongo';
+import setMongo from './modules/module.mongo';
 import BaseController from './controllers/base/base.controller';
 import Controllers from './controllers/base/base.controller.index';
 
 import { readFileSync } from 'fs';
 import * as https from 'https';
 
-var socketApp = require('./socketio');
+// var socketApp = require('./modules/module.socketio');
 const httpApp = express();
 httpApp.set('port', 8000);
 httpApp.use(express.json());
@@ -18,7 +18,7 @@ httpApp.get('*', function (req, res) {
   res.redirect('https://' + req.headers.host + req.url);
 });
 httpApp.listen(httpApp.get('port'), () => console.log(`Angular Full Stack listening on port ${httpApp.get('port')}`));
-const app = express();
+const app = express(); 
 const httpsServer = https
   .createServer(
     {
@@ -44,12 +44,12 @@ async function main(): Promise<any> {
       let ctrl: BaseController = Controllers[key];
       app.use('/api', await ctrl.getRouter());
     });
-    app.use('', express.static(path.join(__dirname, '../../../dist/frontEnd/')));
+    app.use('', express.static(path.join(__dirname, '../../../frontEndDist/frontEnd')));
     app.get('*', (req, res) => {
       if (req.headers.host.includes('www.')) {
         return res.redirect('https://' + req.headers.host.replaceAll(/www./g, '') + req.url);
       }
-      res.sendFile(path.join(__dirname, '../../../dist/frontEnd/index.html'));
+      res.sendFile(path.join(__dirname, '../../../frontEndDist/frontEnd/index.html'));
     });
   } catch (err) {
     console.error(err);

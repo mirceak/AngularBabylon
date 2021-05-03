@@ -1,15 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-
 class Options {
   pathNamePlural = '';
   pathName = '';
 }
-
 @Injectable({
   providedIn: 'root',
 })
-export abstract class ServiceEntityBase<Entity> {
+export abstract class BaseEntityService<Entity> {
   constructor(public http: HttpClient, public options: Options) {}
 
   async getEntities(): Promise<any> {

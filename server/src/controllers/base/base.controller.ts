@@ -1,7 +1,7 @@
 import * as express from "express";
-import { Cryptography } from "../../certs/jwtSessionToken/jwtSessionToken";
+import { Cryptography } from "../../modules/module.jwtSessionToken";
 import ServiceIdentity from "../../entities/identity/service/service.identity";
-import utils from "../utils";
+import utils from "../../modules/module.utils";
 
 abstract class BaseController {
   abstract Service: any;
@@ -24,7 +24,7 @@ abstract class BaseController {
       try {
         await method(...arguments);
       } catch (error) {
-        console.log(error);
+        console.log("___Safe_Method_Error___:", error);
         return arguments[1].status(500).send({
           message: "services.error",
         });
@@ -67,9 +67,12 @@ abstract class BaseController {
             _id: reqData.sessionJwt.identity._id,
             secret: reqData.sessionJwt.identity.secret,
           });
+          var identitylastJwtTokenHash = await Cryptography.getShaHash(
+            identity.secret + JSON.stringify(req.body.sessionJwt)
+          );
           if (
-            identity.lastJwtHash &&
-            identity.lastJwtHash != reqData.sessionJwt.identity.lastJwtHash
+            identity.lastJwtTokenHash &&
+            identity.lastJwtTokenHash != identitylastJwtTokenHash
           ) {
             return res.status(403).send({
               message: "services.auth.badJwt",
@@ -79,15 +82,14 @@ abstract class BaseController {
           req.sessionJwt = reqData.sessionJwt;
           req.identity = identity;
           req.send = this.getSafeMethod(async (data, res) => {
-            req.sessionJwt.identity.lastJwtHash = await Cryptography.getShaHash(
-              identity.secret + req.sessionJwt.identity.lastJwtHash
-            );
-            identity.lastJwtHash = req.sessionJwt.identity.lastJwtHash;
-            identity.save();
             var encryptedResponse = await utils.encryptResponseData(
               { decryptedData: req.decryptedData, sessionJwt: req.sessionJwt },
               data
             );
+            identity.lastJwtTokenHash = await Cryptography.getShaHash(
+              identity.secret + JSON.stringify(encryptedResponse.sessionJwt)
+            );
+            identity.save();
             res.send({
               rsaEncryptedAes: encryptedResponse.rsaEncryptedAes,
               aesEncrypted: encryptedResponse.aesEncrypted,

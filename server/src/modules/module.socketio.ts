@@ -1,16 +1,12 @@
 import { readFileSync } from "fs";
 import * as https from "https";
 
-import ServiceIdentity from "./entities/identity/service/service.identity";
-import {
-  jwtSessionToken,
-  jwt,
-  Cryptography,
-} from "./certs/jwtSessionToken/jwtSessionToken";
+import ServiceIdentity from "../entities/identity/service/service.identity";
+import { jwtSessionToken, jwt, Cryptography } from "./module.jwtSessionToken";
 import { Server } from "socket.io";
-import Identity from "./entities/identity/schema/schema.identity";
-import MailBox from "./entities/mailBox/schema/schema.mailBox";
-import utils from "./controllers/utils";
+import Identity from "../entities/identity/schema/schema.identity";
+import MailBox from "../entities/mailBox/schema/schema.mailBox";
+import utils from "./module.utils";
 import path = require("path");
 
 var sockets = [];
@@ -18,11 +14,11 @@ var registeredMessages = [];
 const httpsSocketServer = https
   .createServer({
     key: readFileSync(
-      path.join(__dirname, "../../src/certs/https.key"),
+      path.join(__dirname, "../../../src/certs/https.key"),
       "utf-8"
     ),
     cert: readFileSync(
-      path.join(__dirname, "../../src/certs/https.cert"),
+      path.join(__dirname, "../../../src/certs/https.cert"),
       "utf-8"
     ),
   })
@@ -60,6 +56,12 @@ io.on("connection", async (socket: any) => {
     var mailBoxes: any = await MailBox.SchemaMailBox.find({
       _id: { $in: user.mailBox },
     });
+    var identity = await ServiceIdentity.findOne({
+      _id: sessionJwt.identity._id,
+      secret: sessionJwt.identity.secret,
+    });
+    identity.lastSessionTokenHash = sessionJwt.lastSessionTokenHash;
+    identity.save();
     sockets.push(socket);
     registeredMessages.push({ socket: socket, mailBoxes: mailBoxes });
     socket.emit("verification", {});
@@ -79,8 +81,11 @@ io.on("connection", async (socket: any) => {
       secret: reqData.sessionJwt.identity.secret,
     });
     if (
-      identity.lastJwtHash &&
-      identity.lastJwtHash != reqData.sessionJwt.identity.lastJwtHash
+      identity.lastSocketTokenHash &&
+      identity.lastSocketTokenHash !=
+        (await Cryptography.getShaHash(
+          identity.secret + JSON.stringify(data.sessionJwt)
+        ))
     ) {
       return socket.emit("expiredToken", {
         message: "services.auth.badJwt",
@@ -91,11 +96,6 @@ io.on("connection", async (socket: any) => {
     });
     var regMessage = registeredMessages.splice(regMessageIndex, 1)[0];
     var encryptedResponse: any;
-    reqData.sessionJwt.identity.lastJwtHash = await Cryptography.getShaHash(
-      identity.secret + reqData.sessionJwt.identity.lastJwtHash
-    );
-    identity.lastJwtHash = reqData.sessionJwt.identity.lastJwtHash;
-    identity.save();
     if (regMessage.mailBox) {
       encryptedResponse = await utils.encryptResponseData(reqData, {
         mailBox: regMessage.mailBox,

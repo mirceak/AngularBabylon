@@ -4,7 +4,8 @@ const EntityName = "Identity";
 const identitySchema = new mongoose.Schema({
   secret: String,
   mailBox: [{ type: mongoose.Schema.Types.ObjectId, ref: "MailBox" }],
-  lastJwtHash: String,
+  lastJwtTokenHash: String,
+  lastSocketTokenHash: String,
   lastSessionTokenHash: String,
 });
 

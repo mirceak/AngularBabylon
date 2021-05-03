@@ -8,7 +8,6 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class ProviderMailBox extends ServiceMailBox {
-  mailBoxes = new BehaviorSubject<any>([]);
   mailBoxObservable = new BehaviorSubject<any>({});
 
   constructor(
@@ -20,7 +19,7 @@ export class ProviderMailBox extends ServiceMailBox {
 
     this.serviceApi.loggedIn.subscribe((val) => {
       if (!val) {
-        this.mailBoxes.next([]);
+        this.serviceApi.state.mailBoxes.next([]);
       }
     });
   }
@@ -30,8 +29,9 @@ export class ProviderMailBox extends ServiceMailBox {
 
     if (
       mailBox.remote === false &&
-      mailBox.secret3 === null &&
-      mailBox.messages.remote !== null
+      mailBox.secret3 === undefined &&
+      mailBox.messages.remote !== undefined &&
+      mailBox.messages.remote.length
     ) {
       this.serviceApi.serviceModals.showToast({
         status: 'success',
@@ -74,107 +74,133 @@ export class ProviderMailBox extends ServiceMailBox {
   }
 
   async reqMailBox(postData: any): Promise<any> {
-    return new Promise(async (resolve, reject): Promise<any> => {
-      const mailBoxRsa = await this.serviceApi.Cryptography.generateRsaKeys(
-        'jwk'
-      );
-      postData.message = mailBoxRsa.pubkData;
-      postData.secret = [...Array(20)]
-        .map((i) => (~~(Math.random() * 36)).toString(36))
-        .join('');
-      const reqData = await this.serviceApi.getRequestData(
-        postData,
-        this.serviceApi.token
-      );
-      super
-        .reqMailBox({
-          sessionJwt: this.serviceApi.token.value.sessionJwt,
-          rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
-            reqData.rsaEncryptedAes.encryptedAes
-          ),
-          aesEncrypted: await this.serviceApi.Cryptography.ab2str(
-            reqData.aesEncrypted.ciphertext
-          ),
-        })
-        .then(async (data: any): Promise<any> => {
-          if (!data) {
-            return reject();
-          }
-          const decryptedData: any = await this.serviceApi.decryptServerData(
-            data,
-            reqData.nextRsa
+    return new Promise(
+      async (resolve, reject): Promise<any> => {
+        const mailBoxRsa = await this.serviceApi.Cryptography.generateRsaKeys(
+          'jwk'
+        );
+        postData.message = mailBoxRsa.pubkData;
+        postData.secret = [...Array(20)]
+          .map((i) => (~~(Math.random() * 36)).toString(36))
+          .join('');
+        const reqData = await this.serviceApi.getRequestData(
+          postData,
+          this.serviceApi.token
+        );
+        super
+          .reqMailBox({
+            sessionJwt: this.serviceApi.token.value.sessionJwt,
+            rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
+              reqData.rsaEncryptedAes.encryptedAes
+            ),
+            aesEncrypted: await this.serviceApi.Cryptography.ab2str(
+              reqData.aesEncrypted.ciphertext
+            ),
+          })
+          .then(
+            async (data: any): Promise<any> => {
+              if (!data) {
+                return reject();
+              }
+              const decryptedData: any = await this.serviceApi.decryptServerData(
+                data,
+                reqData.nextRsa
+              );
+              decryptedData.parsedToken.data.name = postData.name;
+              decryptedData.parsedToken.data.remote = false;
+              decryptedData.parsedToken.data.privkData = mailBoxRsa.privkData;
+              decryptedData.parsedToken.data.pubkData = mailBoxRsa.pubkData;
+              this.zone.run(() => {
+                this.serviceApi.state.mailBoxes.next([
+                  ...this.serviceApi.state.mailBoxes.value,
+                  decryptedData.parsedToken.data,
+                ]);
+                this.serviceApi.encryptAndSaveState(
+                  this.serviceApi.crypto.password
+                );
+                resolve(null);
+              });
+            }
           );
-          decryptedData.decryptedToken.data.name = postData.name;
-          decryptedData.decryptedToken.data.remote = false;
-          decryptedData.decryptedToken.data.privkData = mailBoxRsa.privkData;
-          decryptedData.decryptedToken.data.pubkData = mailBoxRsa.pubkData;
-          this.zone.run(() => {
-            this.mailBoxes.next([
-              ...this.mailBoxes.value,
-              decryptedData.decryptedToken.data,
-            ]);
-            resolve(null);
-          });
-        });
-    });
+      }
+    );
   }
 
   async sendMessage(postData: any, mailBox: any): Promise<any> {
-    return new Promise(async (resolve, reject): Promise<any> => {
-      postData.secret1 = mailBox._id;
-      postData.secret2 = mailBox.secret;
-      postData.secret3 = mailBox.secret3;
-      if (postData.message) {
-        postData.message = {
-          content: postData.message,
-          remote: mailBox.remote,
-          timeStamp: new Date().getTime(),
-        };
-      }
-      const reqData = await this.serviceApi.getRequestData(
-        postData,
-        this.serviceApi.token
-      );
-      super
-        .setMailBox({
-          sessionJwt: this.serviceApi.token.value.sessionJwt,
-          rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
-            reqData.rsaEncryptedAes.encryptedAes
-          ),
-          aesEncrypted: await this.serviceApi.Cryptography.ab2str(
-            reqData.aesEncrypted.ciphertext
-          ),
-        })
-        .then(async (data: any): Promise<any> => {
-          if (!data) {
-            return reject();
-          }
-          const decryptedData: any = await this.serviceApi.decryptServerData(
-            data,
-            reqData.nextRsa
-          );
-          const mailBoxIndex = this.mailBoxes.value.findIndex((currentMailBox: any): any => {
-            return currentMailBox._id === decryptedData.decryptedToken.data._id;
-          });
-          this.zone.run(() => {
-            this.mailBoxes.next([
-              ...this.mailBoxes.value.map((currentMailBox: any): any => {
-                if (currentMailBox._id === decryptedData.decryptedToken.data._id) {
-                  currentMailBox.messages = decryptedData.decryptedToken.data.messages;
+    return new Promise(
+      async (resolve, reject): Promise<any> => {
+        postData.secret1 = mailBox._id;
+        postData.secret2 = mailBox.secret;
+        postData.secret3 = mailBox.secret3;
+        if (postData.message) {
+          postData.message = {
+            content: postData.message,
+            remote: mailBox.remote,
+            timeStamp: new Date().getTime(),
+          };
+        }
+        const reqData = await this.serviceApi.getRequestData(
+          postData,
+          this.serviceApi.token
+        );
+        super
+          .setMailBox({
+            sessionJwt: this.serviceApi.token.value.sessionJwt,
+            rsaEncryptedAes: await this.serviceApi.Cryptography.ab2str(
+              reqData.rsaEncryptedAes.encryptedAes
+            ),
+            aesEncrypted: await this.serviceApi.Cryptography.ab2str(
+              reqData.aesEncrypted.ciphertext
+            ),
+          })
+          .then(
+            async (data: any): Promise<any> => {
+              if (!data) {
+                return reject();
+              }
+              const decryptedData: any = await this.serviceApi.decryptServerData(
+                data,
+                reqData.nextRsa
+              );
+              const mailBoxIndex = this.serviceApi.state.mailBoxes.value.findIndex(
+                (currentMailBox: any): any => {
+                  return (
+                    currentMailBox._id === decryptedData.parsedToken.data._id
+                  );
                 }
-                return currentMailBox;
-              }),
-            ]);
-            if (
-              this.mailBoxes.value[mailBoxIndex]._id ===
-              this.mailBoxObservable.value._id
-            ) {
-              this.mailBoxObservable.next(this.mailBoxes.value[mailBoxIndex]);
+              );
+              this.zone.run(() => {
+                this.serviceApi.state.mailBoxes.next([
+                  ...this.serviceApi.state.mailBoxes.value.map(
+                    (currentMailBox: any): any => {
+                      if (
+                        currentMailBox._id ===
+                        decryptedData.parsedToken.data._id
+                      ) {
+                        currentMailBox.messages =
+                          decryptedData.parsedToken.data.messages;
+                      }
+                      return currentMailBox;
+                    }
+                  ),
+                ]);
+                if (
+                  this.serviceApi.state.mailBoxes.value[mailBoxIndex]._id ===
+                  this.mailBoxObservable.value._id
+                ) {
+                  this.mailBoxObservable.next(
+                    this.serviceApi.state.mailBoxes.value[mailBoxIndex]
+                  );
+                }
+                this.serviceApi.encryptAndSaveState(
+                  this.serviceApi.crypto.password
+                );
+                resolve(null);
+              });
             }
-            resolve(null);
-          });
-        });
-    });
+          );
+      }
+    );
   }
   async accMailBox(postData: any): Promise<any> {
     return new Promise(async (resolve, reject) => {
@@ -212,9 +238,9 @@ export class ProviderMailBox extends ServiceMailBox {
               });
               return reject();
             });
-          decryptedData.decryptedToken.data.name = postData.name;
+          decryptedData.parsedToken.data.name = postData.name;
           const remoteRsaPubkData =
-            decryptedData.decryptedToken.data.messages.local[0];
+            decryptedData.parsedToken.data.messages.local[0];
           const secret3 = [...Array(512)]
             .map((i) => (~~(Math.random() * 36)).toString(36))
             .join('');
@@ -232,7 +258,7 @@ export class ProviderMailBox extends ServiceMailBox {
             rsaEncryptedAes.aesKey,
             remoteRsaPubkData
           );
-          postData.messages = decryptedData.decryptedToken.data.messages;
+          postData.messages = decryptedData.parsedToken.data.messages;
           postData.messages.local = [];
           postData.messages.remote = [
             await this.serviceApi.Cryptography.ab2str(
@@ -262,19 +288,22 @@ export class ProviderMailBox extends ServiceMailBox {
                 response,
                 reqData.nextRsa
               );
-              decryptedData.decryptedToken.data.name = postData.name;
-              decryptedData.decryptedToken.data.secret3 = secret3;
-              decryptedData.decryptedToken.data.remote = true;
-              decryptedData.decryptedToken.data.privkData = remoteRsa.privkData;
-              decryptedData.decryptedToken.data.pubkData = remoteRsa.pubkData;
-              decryptedData.decryptedToken.data.nextRsa = remoteRsaPubkData;
-              decryptedData.decryptedToken.data.aesPubkData =
+              decryptedData.parsedToken.data.name = postData.name;
+              decryptedData.parsedToken.data.secret3 = secret3;
+              decryptedData.parsedToken.data.remote = true;
+              decryptedData.parsedToken.data.privkData = remoteRsa.privkData;
+              decryptedData.parsedToken.data.pubkData = remoteRsa.pubkData;
+              decryptedData.parsedToken.data.nextRsa = remoteRsaPubkData;
+              decryptedData.parsedToken.data.aesPubkData =
                 rsaEncryptedAes.aesPubkData;
               this.zone.run(() => {
-                this.mailBoxes.next([
-                  ...this.mailBoxes.value,
-                  decryptedData.decryptedToken.data,
+                this.serviceApi.state.mailBoxes.next([
+                  ...this.serviceApi.state.mailBoxes.value,
+                  decryptedData.parsedToken.data,
                 ]);
+                this.serviceApi.encryptAndSaveState(
+                  this.serviceApi.crypto.password
+                );
                 resolve(null);
               });
             });

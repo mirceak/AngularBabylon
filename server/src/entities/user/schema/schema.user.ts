@@ -1,5 +1,5 @@
 import * as mongoose from "mongoose";
-import { Cryptography } from "../../../certs/jwtSessionToken/jwtSessionToken";
+import { Cryptography } from "../../../modules/module.jwtSessionToken";
 
 const webcrypto = require("crypto").webcrypto;
 const EntityName = "User";

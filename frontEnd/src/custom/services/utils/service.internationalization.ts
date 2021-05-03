@@ -22,8 +22,13 @@ export class ServiceInternationalization {
 
     this.providerIdentity.serviceSocket.serviceApi.loggedIn.subscribe((val) => {
       if (val) {
-        if (this.lang !== providerIdentity.state.language) {
-          this.setLanguage(providerIdentity.state.language)
+        if (
+          this.lang !==
+          providerIdentity.serviceSocket.serviceApi.state.language.value
+        ) {
+          this.setLanguage(
+            providerIdentity.serviceSocket.serviceApi.state.language.value
+          )
             .toPromise()
             .then(() => {
               this.setLang.next(null);
@@ -38,7 +43,14 @@ export class ServiceInternationalization {
   setLanguage(value: any): any {
     this.lang = value;
     localStorage.setItem('lang', this.lang);
-    this.providerIdentity.state.language = this.lang;
+    if (this.providerIdentity.serviceSocket.serviceApi.loggedIn.value) {
+      this.providerIdentity.serviceSocket.serviceApi.state.language.next(
+        this.lang
+      );
+      this.providerIdentity.serviceSocket.serviceApi.encryptAndSaveState(
+        this.providerIdentity.serviceSocket.serviceApi.crypto.password
+      );
+    }
     return this.translate.use(this.lang);
   }
 }

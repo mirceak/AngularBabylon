@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
-import { ServiceEntityBase } from '@custom/entities/base/service.entity.base';
+import { BaseEntityService } from '@custom/entities/base/base.entity.service';
 import { ModelMailBox } from '../model/model.mailBox';
 
 @Injectable({
   providedIn: 'root',
 })
-export class ServiceMailBox extends ServiceEntityBase<ModelMailBox> {
+export class ServiceMailBox extends BaseEntityService<ModelMailBox> {
   constructor(public http: HttpClient) {
     super(http, {
       pathNamePlural: 'mailboxes',

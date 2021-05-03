@@ -4,27 +4,37 @@ import {
   jwtSessionToken,
   Cryptography,
   jwt,
-} from "../../../certs/jwtSessionToken/jwtSessionToken";
-import utils from "../../../controllers/utils";
+} from "../../../modules/module.jwtSessionToken";
+import utils from "../../../modules/module.utils";
 
 class ControllerIdentity extends BaseController {
   Service = Identity;
 
   login = async (req, res) => {
     var validated = false;
-    var unlockedSessionJwt: any = JSON.parse(
-      await Cryptography.degraveData(
-        jwtSessionToken.jwtSessionTokenLock.lock,
-        jwtSessionToken.jwtSessionTokenLock.dataLock,
-        req.body.encryptedDataWithSessionToken,
-        jwtSessionToken.jwtSessionTokenLock.password[0]
-      )
+    var sessionToken: any = await utils.parseJwtSessionToken(
+      req.body.sessionToken.sessionJwt,
+      jwtSessionToken,
+      jwt
     );
+    var identity = await this.Service.findOne({
+      _id: sessionToken.identity._id,
+      secret: sessionToken.identity.secret,
+    });
+    if (
+      [identity.lastSessionTokenHash].indexOf(
+        await Cryptography.getShaHash(
+          identity.secret + JSON.stringify(req.body.sessionToken.sessionJwt)
+        )
+      ) === -1
+    ) {
+      return res.status(403).send({
+        message: "services.deadEnd",
+      });
+    }
     req.body.rsaEncryptedAes = Cryptography.str2ab(req.body.rsaEncryptedAes);
     req.body.aesEncrypted = Cryptography.str2ab(req.body.aesEncrypted);
-    var jwtRsaKey = await Cryptography.importRsaKey(
-      unlockedSessionJwt.resumeRsaPrivkData
-    );
+    var jwtRsaKey = await Cryptography.importRsaKey(sessionToken.rsaKeyPriv);
     var decryptedAes = await Cryptography.rsaDecrypt(
       req.body.rsaEncryptedAes,
       jwtRsaKey
@@ -34,130 +44,179 @@ class ControllerIdentity extends BaseController {
       await Cryptography.aesDecrypt(
         req.body.aesEncrypted,
         aesKey,
-        unlockedSessionJwt.resumeRsaPubkData
+        sessionToken.rsaKeyPub
       )
     );
-    if (decryptedData.pin === unlockedSessionJwt.identity.pin) {
-      if (
-        !unlockedSessionJwt.identity.failedPin ||
-        (unlockedSessionJwt.identity.failedPin &&
-          decryptedData.password === unlockedSessionJwt.identity.password)
-      ) {
-        validated = true;
-      }
+    if (
+      (decryptedData.pin === sessionToken.identity.pin &&
+        !sessionToken.failedPin) ||
+      (sessionToken.failedPin &&
+        decryptedData.pin === sessionToken.identity.pin &&
+        decryptedData.password === sessionToken.identity.password)
+    ) {
+      validated = true;
     }
-    unlockedSessionJwt.identity.failedPin = !validated;
-    var nextRsa = await Cryptography.generateRsaKeys("jwk");
-    var lockedSessionJwtToken = await Cryptography.engraveData(
-      jwtSessionToken.jwtSessionTokenLock.lock,
-      jwtSessionToken.jwtSessionTokenLock.dataLock,
-      jwtSessionToken.jwtSessionTokenLock.password[0],
-      JSON.stringify({
-        resumeRsaPrivkData: nextRsa.privkData,
-        resumeRsaPubkData: nextRsa.pubkData,
-        identity: unlockedSessionJwt.identity,
-        data: unlockedSessionJwt.data,
-      })
-    );
-    var resp: any = {
-      encryptedData: lockedSessionJwtToken,
-      resumeToken: {
-        failedPin: !validated,
-        nextRsa: nextRsa.pubkData,
-      },
-    };
-    var identity = await this.Service.findOne({
-      _id: unlockedSessionJwt.identity._id,
-      secret: unlockedSessionJwt.identity.secret,
-    });
-    unlockedSessionJwt.identity.lastJwtHash = await Cryptography.getShaHash(
-      identity.secret + unlockedSessionJwt.identity.lastJwtHash
-    );
-    identity.lastJwtHash = unlockedSessionJwt.identity.lastJwtHash;
-    if (validated) {
-      var sessionJwt = await utils.encryptResponseData(
-        {
-          sessionJwt: {
-            identity: unlockedSessionJwt.identity,
-          },
-          decryptedData: {
-            nextRsa: decryptedData.nextRsa,
-          },
-        },
-        {
-          unlockedData: unlockedSessionJwt.data,
-          normalResponse: resp,
-        }
-      );
-      res.send({
-        valid: true,
-        rsaEncryptedAes: sessionJwt.rsaEncryptedAes,
-        aesEncrypted: sessionJwt.aesEncrypted,
-      });
-    } else {
+    if (!validated) {
       var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(
         decryptedData.nextRsa
       );
       var aesEncrypted = await Cryptography.aesEncrypt(
         JSON.stringify({
-          ...resp,
+          failedPin: true,
+          message: "services.guards.auth-identity.wrong",
+          nextRsa: req.body.sessionToken.nextRsa,
+          sessionJwt: req.body.sessionToken.sessionJwt,
         }),
         rsaEncryptedAes.aesKey,
         decryptedData.nextRsa
       );
-      res.send({
-        valid: false,
+      return res.send({
+        rsaEncryptedAes: Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
+        aesEncrypted: Cryptography.ab2str(aesEncrypted.ciphertext),
+      });
+    } else {
+      var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(
+        decryptedData.nextRsa
+      );
+      const sessionTokenRsa = await Cryptography.generateRsaKeys("jwk");
+      const sessionTokenObject = {
+        identity: sessionToken.identity,
+        statePassword: sessionToken.statePassword,
+        rsaKeyPriv: sessionTokenRsa.privkData,
+        rsaKeyPub: sessionTokenRsa.pubkData,
+      };
+      sessionToken = await utils.signJwtSessionToken(
+        sessionTokenObject,
+        jwtSessionToken,
+        jwt,
+        false
+      );
+      const socketTokenRsa = await Cryptography.generateRsaKeys("jwk");
+      const socketToken = await utils.signJwtSessionToken(
+        {
+          lastSessionTokenHash: await Cryptography.getShaHash(
+            identity.secret + JSON.stringify(sessionToken)
+          ),
+          identity: sessionTokenObject.identity,
+          rsaKeyPriv: socketTokenRsa.privkData,
+          rsaKeyPub: socketTokenRsa.pubkData,
+        },
+        jwtSessionToken,
+        jwt,
+        60 * 30
+      );
+      const sessionJwtRsa = await Cryptography.generateRsaKeys("jwk");
+      const sessionJwt = await utils.signJwtSessionToken(
+        {
+          identity: sessionTokenObject.identity,
+          statePassword: sessionTokenObject.statePassword,
+          rsaKeyPriv: sessionJwtRsa.privkData,
+          rsaKeyPub: sessionJwtRsa.pubkData,
+        },
+        jwtSessionToken,
+        jwt
+      );
+      var token = await jwt.sign(
+        {
+          sessionJwt: sessionJwt,
+          nextRsa: sessionJwtRsa.pubkData,
+          statePassword: sessionTokenObject.statePassword,
+          sessionToken: JSON.stringify({
+            nextRsa: sessionTokenRsa.pubkData,
+            sessionJwt: sessionToken,
+          }),
+          socketToken: JSON.stringify({
+            nextRsa: socketTokenRsa.pubkData,
+            sessionJwt: socketToken,
+          }),
+        },
+        jwtSessionToken.jwtSessionTokenElipticKey,
+        { expiresIn: 60 * 30, algorithm: "ES512" }
+      );
+      identity.lastSocketTokenHash = await Cryptography.getShaHash(
+        identity.secret + JSON.stringify(socketToken)
+      );
+      identity.lastJwtTokenHash = await Cryptography.getShaHash(
+        identity.secret + JSON.stringify(sessionJwt)
+      );
+      identity.save();
+      var aesEncrypted = await Cryptography.aesEncrypt(
+        JSON.stringify({
+          token: token,
+        }),
+        rsaEncryptedAes.aesKey,
+        decryptedData.nextRsa
+      );
+      return res.send({
         rsaEncryptedAes: Cryptography.ab2str(rsaEncryptedAes.encryptedAes),
         aesEncrypted: Cryptography.ab2str(aesEncrypted.ciphertext),
       });
     }
   };
 
-  encrypt = async (req, res) => {
-    var nextRsa = await Cryptography.generateRsaKeys("jwk");
-    var lockedSessionJwtToken = await Cryptography.engraveData(
-      jwtSessionToken.jwtSessionTokenLock.lock,
-      jwtSessionToken.jwtSessionTokenLock.dataLock,
-      jwtSessionToken.jwtSessionTokenLock.password[0],
-      JSON.stringify({
-        resumeRsaPrivkData: nextRsa.privkData,
-        resumeRsaPubkData: nextRsa.pubkData,
-        identity: req.sessionJwt.identity,
-        data: req.decryptedData.data,
-      })
-    );
-    const resp = {
-      encryptedData: lockedSessionJwtToken,
-      resumeToken: {
-        nextRsa: nextRsa.pubkData,
-      },
-    };
-    req.send(resp, res);
-  };
-
   account = async (req, res) => {
-    var nextRsa = await Cryptography.generateRsaKeys("jwk");
     if (
-      (await Cryptography.getShaHash(req.decryptedData.data.oldPin)) ===
-        req.sessionJwt.identity.pin &&
-      (await Cryptography.getShaHash(req.decryptedData.data.oldPassword)) ===
-        req.sessionJwt.identity.password
+      req.decryptedData.data.oldPin === req.sessionJwt.identity.pin &&
+      req.decryptedData.data.oldPassword === req.sessionJwt.identity.password
     ) {
-      req.sessionJwt.identity.pin = await Cryptography.getShaHash(
-        req.decryptedData.data.pin
-      );
-      req.sessionJwt.identity.password = await Cryptography.getShaHash(
-        req.decryptedData.data.password
-      );
+      req.sessionJwt.identity.pin = req.decryptedData.data.pin;
+      req.sessionJwt.identity.password = req.decryptedData.data.password;
+    } else {
+      return res.status(403).send({
+        message: "pages.account.badDetails",
+      });
     }
-    req.send({}, res);
+    const sessionJwtRsa = await Cryptography.generateRsaKeys("jwk");
+    const sessionToken = await utils.signJwtSessionToken(
+      {
+        identity: req.sessionJwt.identity,
+        statePassword: req.sessionJwt.statePassword,
+        rsaKeyPriv: sessionJwtRsa.privkData,
+        rsaKeyPub: sessionJwtRsa.pubkData,
+      },
+      jwtSessionToken,
+      jwt,
+      false
+    );
+    const socketTokenRsa = await Cryptography.generateRsaKeys("jwk");
+    const socketToken = await utils.signJwtSessionToken(
+      {
+        lastSessionTokenHash: await Cryptography.getShaHash(
+          req.sessionJwt.identity.secret + JSON.stringify(sessionToken)
+        ),
+        identity: req.sessionJwt.identity,
+        rsaKeyPriv: socketTokenRsa.privkData,
+        rsaKeyPub: socketTokenRsa.pubkData,
+      },
+      jwtSessionToken,
+      jwt,
+      60 * 30
+    );
+    var identity = await this.Service.findOne({
+      _id: req.sessionJwt.identity._id,
+      secret: req.sessionJwt.identity.secret,
+    });
+    identity.lastSocketTokenHash = await Cryptography.getShaHash(
+      identity.secret + JSON.stringify(socketToken)
+    );
+    identity.save();
+    req.send(
+      {
+        socketToken: JSON.stringify({
+          nextRsa: socketTokenRsa.pubkData,
+          sessionJwt: socketToken,
+        }),
+        sessionToken: JSON.stringify({
+          nextRsa: sessionJwtRsa.pubkData,
+          sessionJwt: sessionToken,
+        }),
+      },
+      res
+    );
   };
 
   getRouter() {
     super.registerRoute("/login").post(this.getSafeMethod(this.login));
-    super
-      .registerProtectedRoute("/encrypt")
-      .post(this.getSafeMethod(this.encrypt));
     super
       .registerProtectedRoute("/account")
       .post(this.getSafeMethod(this.account));

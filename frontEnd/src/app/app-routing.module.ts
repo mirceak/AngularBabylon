@@ -5,11 +5,11 @@ import { Routes, RouterModule } from '@angular/router';
 const routes: Routes = [
   {
     path: '',
-    loadChildren: () => import ('@final/pages/home/page.home.module').then(m => m.PageHomeModule)
+    loadChildren: () => import ('@final/pages/home/module.page.home').then(m => m.ModulePageHome)
   },
   {
     path: 'auth',
-    loadChildren: () => import ('@final/pages/login/page.login.module').then(m => m.PageLoginModule)
+    loadChildren: () => import ('@final/pages/login/module.page.login').then(m => m.ModulePageLogin)
   },
 ];
 

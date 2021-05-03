@@ -1,5 +1,5 @@
 import { Injectable, NgZone } from '@angular/core';
-import _Cryptography from '../../../cryptography';
+import _Cryptography from '../../../kernel/module.cryptography';
 
 import { TranslateService } from '@ngx-translate/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
@@ -13,9 +13,31 @@ import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 export class ServiceApi {
   lang = 'en';
 
+  public stateSubject = new Subject<any>();
+  protected initialState: any = {
+    language: 'en',
+    mailBoxes: [],
+    referrals: [],
+  };
+  public state: any = {
+    language: new BehaviorSubject<any>(this.initialState.language),
+    mailBoxes: new BehaviorSubject<any>(this.initialState.mailBoxes),
+    referrals: new BehaviorSubject<any>(this.initialState.referrals),
+  };
+
+  public crypto = {
+    lock: [],
+    dataLock: [],
+    password: '',
+    basePassword: '',
+    output: '',
+  };
+
   public loggedIn = new BehaviorSubject<any>(null);
+  public statePassword = new Subject<any>();
   public token = new BehaviorSubject<any>(null);
   public sessionToken = new BehaviorSubject<any>(null);
+  public socketToken = new BehaviorSubject<any>(null);
   public decryptedToken = new ReplaySubject<any>();
   public Cryptography: _Cryptography = new _Cryptography(window.crypto);
 
@@ -26,14 +48,82 @@ export class ServiceApi {
     public router: Router,
     public zone: NgZone
   ) {
-    this.loggedIn.subscribe(this._loggedIn.bind(this));
+    if (!localStorage.getItem('crypto')) {
+      Object.assign(this.crypto, this.Cryptography.makeCipherPieces(1000));
+      this.crypto.basePassword = [...Array(1000)]
+        .map((i) => (~~(Math.random() * 2 ** 36)).toString(36))
+        .join('');
+      localStorage.setItem('crypto', JSON.stringify(this.crypto));
+    } else {
+      Object.assign(
+        this.crypto,
+        JSON.parse(`${localStorage.getItem('crypto')}`)
+      );
+    }
+
+    if (localStorage.getItem('sessionToken')) {
+      this.sessionToken.next(
+        JSON.parse(localStorage.getItem('sessionToken') || '')
+      );
+    }
+
+    this.statePassword.subscribe(this.encryptAndSaveState.bind(this));
   }
 
-  _loggedIn(val: any): void {
-    if (!val) {
-      this.token.next(null);
-      this.sessionToken.next(null);
-    }
+  async decryptStateWithEncryptedPass(encryptedStatePassword: string) {
+    const statePassword = this.Cryptography.degraveData(
+      this.crypto.lock,
+      this.crypto.dataLock,
+      encryptedStatePassword,
+      this.crypto.basePassword
+    );
+    this.crypto.password = statePassword;
+    this.decryptState(statePassword);
+  }
+
+  async decryptState(statePassword: string) {
+    const state = JSON.parse(
+      decodeURIComponent(
+        escape(
+          atob(
+            this.Cryptography.degraveData(
+              this.crypto.lock,
+              this.crypto.dataLock,
+              localStorage.getItem('encryptedState'),
+              statePassword
+            )
+          )
+        )
+      )
+    );
+    Object.keys(this.state).forEach((key) => {
+      this.state[key].next(state[key]);
+    });
+  }
+
+  async encryptAndSaveState(statePassword: string) {
+    const state = Object.keys(this.state).reduce((total: any, key: string) => {
+      total[key] = this.state[key].value;
+      return total;
+    }, {});
+    const output = this.Cryptography.engraveData(
+      this.crypto.lock,
+      this.crypto.dataLock,
+      statePassword,
+      btoa(unescape(encodeURIComponent(JSON.stringify(state))))
+    );
+    localStorage.setItem('encryptedState', output);
+  }
+
+  logout(): void {
+    Object.keys(this.initialState).forEach((key) => {
+      this.state[key].next(this.initialState[key]);
+    });
+    this.token.next(null);
+    this.sessionToken.next(null);
+    this.socketToken.next(null);
+    this.loggedIn.next(null);
+    localStorage.setItem('crypto', JSON.stringify(this.crypto));
   }
 
   async getRequestData(postData: any, token: any): Promise<any> {
@@ -42,7 +132,10 @@ export class ServiceApi {
       token.value.nextRsa
     );
     const aesEncrypted = await this.Cryptography.aesEncrypt(
-      JSON.stringify({ data: postData, nextRsa: nextRsa.pubkData }),
+      JSON.stringify({
+        data: postData,
+        nextRsa: nextRsa.pubkData,
+      }),
       rsaEncryptedAes.aesKey,
       token.value.nextRsa
     );
@@ -53,29 +146,41 @@ export class ServiceApi {
     };
   }
 
-  async decryptServerData(data: any, nextRsa: any, parse = true): Promise<any> {
-    return new Promise(async (resolve, reject): Promise<any> => {
-      data.rsaEncryptedAes = this.Cryptography.str2ab(data.rsaEncryptedAes);
-      data.aesEncrypted = this.Cryptography.str2ab(data.aesEncrypted);
-      const decryptedAes = await this.Cryptography.rsaDecrypt(
-        data.rsaEncryptedAes,
-        nextRsa.privateKey
-      );
-      const aesKey = await this.Cryptography.importAesKey(decryptedAes);
-      let decryptedToken: any = await this.Cryptography.aesDecrypt(
-        data.aesEncrypted,
-        aesKey,
-        nextRsa.pubkData
-      );
-      if (parse) {
-        decryptedToken = JSON.parse(decryptedToken);
-        this.token.next(this.jwtHelper.decodeToken(decryptedToken.token));
+  async decryptServerData(
+    data: any,
+    nextRsa: any,
+    token: any = this.token
+  ): Promise<any> {
+    return new Promise(
+      async (resolve, reject): Promise<any> => {
+        data.rsaEncryptedAes = this.Cryptography.str2ab(data.rsaEncryptedAes);
+        data.aesEncrypted = this.Cryptography.str2ab(data.aesEncrypted);
+        const decryptedAes = await this.Cryptography.rsaDecrypt(
+          data.rsaEncryptedAes,
+          nextRsa.privateKey
+        );
+        const aesKey = await this.Cryptography.importAesKey(decryptedAes);
+        let decryptedToken: any = await this.Cryptography.aesDecrypt(
+          data.aesEncrypted,
+          aesKey,
+          nextRsa.pubkData
+        );
+
+        const parsedToken = JSON.parse(decryptedToken);
+        if (token === this.token) {
+          //main token stream
+          //not socket token stream
+          decryptedToken = this.jwtHelper.decodeToken(parsedToken.token);
+          this.token.next(decryptedToken);
+        }
+
+        resolve({
+          parsedToken,
+          decryptedToken,
+          decryptedAes,
+          aesKey,
+        });
       }
-      resolve({
-        decryptedToken,
-        decryptedAes,
-        aesKey,
-      });
-    });
+    );
   }
 }

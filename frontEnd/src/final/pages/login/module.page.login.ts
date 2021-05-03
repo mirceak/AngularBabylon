@@ -6,4 +6,4 @@ import { LoginModule } from '@custom/components/pages/login/login.module';
 @NgModule({
   imports: [LoginModule, CommonModule],
 })
-export class PageLoginModule {}
+export class ModulePageLogin {}

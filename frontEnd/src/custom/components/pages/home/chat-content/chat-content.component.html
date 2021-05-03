@@ -1,5 +1,10 @@
-<div class="content-box">
-  dfsdsa
+<div #scroll class="content-box">
+  <mat-card
+    *ngFor="let message of messages; trackBy: trackByFn"
+    [ngClass]="{ local: message.remote == false, card: true }"
+  >
+    {{ message.content }}
+  </mat-card>
 </div>
 <mat-card class="message-box">
   <app-form-simple

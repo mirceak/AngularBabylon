@@ -9,7 +9,6 @@ import { BehaviorSubject } from 'rxjs';
   providedIn: 'root',
 })
 export class ProviderReferral extends ServiceReferral {
-  referrals = new BehaviorSubject<any>([]);
 
   constructor(
     http: HttpClient,
@@ -19,7 +18,7 @@ export class ProviderReferral extends ServiceReferral {
     super(http);
     this.serviceApi.loggedIn.subscribe((val) => {
       if (!val) {
-        this.referrals.next([]);
+        this.serviceApi.state.referrals.next([]);
       }
     });
   }
@@ -45,24 +44,21 @@ export class ProviderReferral extends ServiceReferral {
           ),
         })
         .then(async (data: any) => {
-          if (!data) {
-            return reject();
-          }
           const decryptedData: any = await this.serviceApi.decryptServerData(
             data,
             reqData.nextRsa
           );
-          decryptedData.decryptedToken.data.email = originalEmail;
+          decryptedData.parsedToken.data.email = originalEmail;
           this.zone.run(() => {
-            this.referrals.next([
-              ...this.referrals.value.filter((referral: any): any => {
+            this.serviceApi.state.referrals.next([
+              ...this.serviceApi.state.referrals.value.filter((referral: any): any => {
                 return (
-                  referral.email !== decryptedData.decryptedToken.data.email
+                  referral.email !== decryptedData.parsedToken.data.email
                 );
               }),
-              decryptedData.decryptedToken.data,
+              decryptedData.parsedToken.data,
             ]);
-            this.serviceApi.serviceModals.hideLoading();
+            this.serviceApi.encryptAndSaveState(this.serviceApi.crypto.password);
             resolve(null);
           });
         });
