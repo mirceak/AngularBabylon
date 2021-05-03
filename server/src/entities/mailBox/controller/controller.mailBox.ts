@@ -18,7 +18,6 @@ class ControllerMailBox extends BaseController {
         _id: req.decryptedData.data.secret1,
         secret: req.decryptedData.data.secret2,
       });
-      console.log(identity.mailBox);
       if (mailBox == null || identity.mailBox.includes(req.decryptedData.data.secret1)) {
         throw null;
       }
