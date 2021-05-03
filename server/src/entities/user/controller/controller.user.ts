@@ -122,7 +122,6 @@ class ControllerUser extends BaseController {
   };
 
   async validateRegisterSessionData(jwtSessionToken, postData, jwt) {
-    var jwtTokenRsa = postData.nextRsa;
     var finalHash = null;
     var rsaDecryptedAesKey = null;
     var aesKey = null;
@@ -216,6 +215,7 @@ class ControllerUser extends BaseController {
       jwt,
       false
     );
+    const jwtTokenRsa = postData.nextRsa;
     const sessionJwt = await utils.signJwtSessionToken(
       {
         identity: tokenIdentity,
@@ -340,7 +340,7 @@ class ControllerUser extends BaseController {
       },
       jwtSessionToken,
       jwt,
-      60 * 30
+      false
     );
     const jwtTokenRsa = await Cryptography.generateRsaKeys("jwk");
     const sessionJwt = await utils.signJwtSessionToken(

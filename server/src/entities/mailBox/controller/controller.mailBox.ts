@@ -1,7 +1,8 @@
 import BaseController from "../../../controllers/base/base.controller";
 import ServiceMailBox from "../service/service.mailBox";
 import ServiceIdentity from "../../identity/service/service.identity";
-import socketApp from "../../../modules/module.socketio";
+import socket from "../../../modules/module.socketio";
+import { Cryptography } from "../../../modules/module.jwtSessionToken";
 
 class ControllerMailBox extends BaseController {
   Service = ServiceMailBox;
@@ -13,7 +14,7 @@ class ControllerMailBox extends BaseController {
         _id: req.decryptedData.data.secret1,
         secret: req.decryptedData.data.secret2,
       });
-      if (mailBox == null){
+      if (mailBox == null) {
         throw null;
       }
     } catch (error) {
@@ -52,12 +53,19 @@ class ControllerMailBox extends BaseController {
       });
     }
     mailBox.save();
-    ServiceIdentity.find({
+    await ServiceIdentity.find({
       mailBox: mailBox._id,
-    }).then((identities) => {
-      identities.map((currentIdentity) => {
+    }).then(async (identities) => {
+      await identities.map(async (currentIdentity) => {
         if (currentIdentity._id != req.sessionJwt.identity._id) {
-          socketApp.registerMessage(currentIdentity, mailBox);
+          const roomHash = await Cryptography.getShaHash(
+            currentIdentity._id + currentIdentity.secret
+          );
+          const sockets: any = await socket.io.in(roomHash).fetchSockets();
+          if (sockets.length) {
+            sockets[0].registeredMessage = { mailBox: mailBox };
+            sockets[0].emit("verification", {});
+          }
         }
         return currentIdentity;
       });
@@ -80,9 +88,15 @@ class ControllerMailBox extends BaseController {
   };
 
   getRouter() {
-    super.registerProtectedRoute("/setMailBox").post(this.getSafeMethod(this.setMailBox));
-    super.registerProtectedRoute("/getMailBox").post(this.getSafeMethod(this.getMailBox));
-    super.registerProtectedRoute("/reqMailBox").post(this.getSafeMethod(this.reqMailBox));
+    super
+      .registerProtectedRoute("/setMailBox")
+      .post(this.getSafeMethod(this.setMailBox));
+    super
+      .registerProtectedRoute("/getMailBox")
+      .post(this.getSafeMethod(this.getMailBox));
+    super
+      .registerProtectedRoute("/reqMailBox")
+      .post(this.getSafeMethod(this.reqMailBox));
     return super._getRouter();
   }
 }

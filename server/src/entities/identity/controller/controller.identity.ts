@@ -103,7 +103,7 @@ class ControllerIdentity extends BaseController {
         },
         jwtSessionToken,
         jwt,
-        60 * 30
+        false
       );
       const sessionJwtRsa = await Cryptography.generateRsaKeys("jwk");
       const sessionJwt = await utils.signJwtSessionToken(
@@ -190,7 +190,7 @@ class ControllerIdentity extends BaseController {
       },
       jwtSessionToken,
       jwt,
-      60 * 30
+      false
     );
     var identity = await this.Service.findOne({
       _id: req.sessionJwt.identity._id,

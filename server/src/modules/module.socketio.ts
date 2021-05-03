@@ -9,8 +9,6 @@ import MailBox from "../entities/mailBox/schema/schema.mailBox";
 import utils from "./module.utils";
 import path = require("path");
 
-var sockets = [];
-var registeredMessages = [];
 const httpsSocketServer = https
   .createServer({
     key: readFileSync(
@@ -49,9 +47,8 @@ io.on("connection", async (socket: any) => {
         message: "services.auth.badJwt",
       });
     }
-    socket.identity = sessionJwt.identity._id;
     var user: any = await Identity.SchemaIdentity.findOne({
-      _id: socket.identity,
+      _id: sessionJwt.identity._id ,
     }).then((user) => user);
     var mailBoxes: any = await MailBox.SchemaMailBox.find({
       _id: { $in: user.mailBox },
@@ -61,9 +58,14 @@ io.on("connection", async (socket: any) => {
       secret: sessionJwt.identity.secret,
     });
     identity.lastSessionTokenHash = sessionJwt.lastSessionTokenHash;
+    identity.lastSocketTokenHash = await Cryptography.getShaHash(
+      identity.secret + JSON.stringify(data.sessionJwt)
+    );
     identity.save();
-    sockets.push(socket);
-    registeredMessages.push({ socket: socket, mailBoxes: mailBoxes });
+    socket.join(
+      await Cryptography.getShaHash(sessionJwt.identity._id + identity.secret)
+    );
+    socket.registeredMessage = { mailBoxes: mailBoxes };
     socket.emit("verification", {});
   });
   socket.on("verify", async (data) => {
@@ -72,9 +74,10 @@ io.on("connection", async (socket: any) => {
         return result;
       });
     } catch (e) {
-      return socket.emit("expiredToken", {
+      socket.emit("expiredToken", {
         message: "services.auth.badJwt",
       });
+      return socket.disconnect();
     }
     var identity = await ServiceIdentity.findOne({
       _id: reqData.sessionJwt.identity._id,
@@ -91,18 +94,14 @@ io.on("connection", async (socket: any) => {
         message: "services.auth.badJwt",
       });
     }
-    var regMessageIndex = registeredMessages.findIndex((msg) => {
-      return socket.identity == msg.socket.identity;
-    });
-    var regMessage = registeredMessages.splice(regMessageIndex, 1)[0];
     var encryptedResponse: any;
-    if (regMessage.mailBox) {
+    if (socket.registeredMessage.mailBox) {
       encryptedResponse = await utils.encryptResponseData(reqData, {
-        mailBox: regMessage.mailBox,
+        mailBox: socket.registeredMessage.mailBox,
       });
     } else {
       encryptedResponse = await utils.encryptResponseData(reqData, {
-        mailBoxes: regMessage.mailBoxes,
+        mailBoxes: socket.registeredMessage.mailBoxes,
       });
     }
     encryptedResponse.clientMsgId = reqData.decryptedData.data.clientMsgId;
@@ -110,30 +109,10 @@ io.on("connection", async (socket: any) => {
   });
 
   socket.on("disconnect", (data) => {
-    console.log("disconnected", data);
-    sockets.splice(
-      sockets.reduce((total, currentSocket, index) => {
-        if (currentSocket.identity == socket.identity) {
-          total = index;
-        }
-        return total;
-      }, 0),
-      1
-    );
+    console.log("socket disconnected");
   });
 });
 
-var registerMessage = (identity, mailBox) => {
-  var socket = sockets.filter((currentSocket) => {
-    return currentSocket.identity == identity._id;
-  })[0];
-  if (!socket) {
-    return;
-  }
-  registeredMessages.push({ socket: socket, mailBox: mailBox });
-  socket.emit("verification", {});
-};
-
 export default {
-  registerMessage,
+  io,
 };
