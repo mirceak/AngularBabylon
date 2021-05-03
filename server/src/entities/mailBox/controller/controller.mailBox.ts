@@ -9,12 +9,17 @@ class ControllerMailBox extends BaseController {
 
   getMailBox = async (req, res) => {
     var mailBox: any;
+    var identity: any = await ServiceIdentity.findOne({
+      _id: req.sessionJwt.identity._id,
+      secret: req.sessionJwt.identity.secret,
+    });
     try {
       mailBox = await ServiceMailBox.findOne({
         _id: req.decryptedData.data.secret1,
         secret: req.decryptedData.data.secret2,
       });
-      if (mailBox == null) {
+      console.log(identity.mailBox);
+      if (mailBox == null || identity.mailBox.includes(req.decryptedData.data.secret1)) {
         throw null;
       }
     } catch (error) {
@@ -23,10 +28,6 @@ class ControllerMailBox extends BaseController {
       });
     }
     if (req.body.save) {
-      var identity: any = await ServiceIdentity.findOne({
-        _id: req.sessionJwt.identity._id,
-        secret: req.sessionJwt.identity.secret,
-      });
       identity.mailBox.push(mailBox);
       identity.save();
     }
