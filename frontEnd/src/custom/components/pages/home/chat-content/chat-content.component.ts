@@ -36,6 +36,15 @@ export class ChatContentComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.chatContentService.inputFocused.subscribe((focused) => {
+      if (focused) {
+        this.scrollToBottom();
+        setTimeout(() => {
+          this.scrollToBottom();
+        }, 300);
+      }
+    });
+
     this.providerMailBox.mailBoxObservable.next(
       this.providerIdentity.serviceSocket.serviceApi.state.mailBoxes.value.filter(
         (current: any): any => {

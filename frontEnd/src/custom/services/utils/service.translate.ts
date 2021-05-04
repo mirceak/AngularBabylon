@@ -13,12 +13,14 @@ export class ServiceTranslate {
     to.placeholder = this.translate.instant(to._placeholder);
 
     to._translated = true;
-    field.expressionProperties = {
-      ...(field.expressionProperties || {}),
-      'templateOptions.label': () => this.translate.instant(to._label),
-      'templateOptions.placeholder': () =>
-        this.translate.instant(to._placeholder),
-    };
+    field.expressionProperties = Object.assign(
+      field.expressionProperties || {},
+      {
+        'templateOptions.label': () => this.translate.instant(to._label),
+        'templateOptions.placeholder': () =>
+          this.translate.instant(to._placeholder),
+      }
+    );
   }
 }
 

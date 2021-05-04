@@ -1,4 +1,5 @@
 .layout-container {
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   position: absolute;
@@ -17,7 +18,7 @@
   height: calc(100% - 8px);
 }
 
-.layout-toolbar {  
+.layout-toolbar {
   height: 56px;
   max-height: 56px;
 }
@@ -36,6 +37,7 @@ h1.layout-app-name {
   /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This
        causes `<mat-sidenav-content>` to act as our scrolling element for desktop layouts. */
   flex: 1;
+  height: 100%;
 }
 
 .layout-is-mobile .layout-sidenav-container {
@@ -50,11 +52,11 @@ h1.layout-app-name {
 }
 
 .mat-drawer-content {
-  height: calc(100%);
-  overflow: auto;
+  height: calc(100% - 56px);
 }
 
 .layout-content {
+  overflow-y: auto;
   margin-left: 24px;
   margin-right: 24px;
   margin-bottom: 24px;
