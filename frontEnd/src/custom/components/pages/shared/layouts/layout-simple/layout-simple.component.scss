@@ -44,6 +44,10 @@ h1.layout-app-name {
   /* When the sidenav is fixed, don't constrain the height of the sidenav container. This allows the
        `<body>` to be our scrolling element for mobile layouts. */
   flex: 1 0 auto;
+  
+  .mat-drawer-content {
+    height: calc(100% - 56px);
+  }
 }
 
 .mat-drawer.mat-sidenav {
@@ -52,7 +56,7 @@ h1.layout-app-name {
 }
 
 .mat-drawer-content {
-  height: calc(100% - 56px);
+  height: calc(100%);
 }
 
 .layout-content {
