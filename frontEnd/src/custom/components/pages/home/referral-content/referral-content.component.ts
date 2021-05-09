@@ -39,7 +39,7 @@ export class ReferralContentComponent implements OnInit {
           statusMessage: this.translate.instant('components.toastr.success'),
           title: this.translate.instant('pages.referral.created'),
         });
-        this.serviceApi.serviceModals.hideLoading();
+        this.serviceModals.hideLoading();
       })
       .catch((error) => {
         // handled as toast in services/utils/service.http.ts

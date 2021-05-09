@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 
-import { PageFormSimpleComponent } from './page-form-simple.component';
+import { PageFormSimpleComponent } from './page-simple-form.component';
 
 describe('FormSimpleComponent', () => {
   let component: PageFormSimpleComponent;

@@ -4,8 +4,8 @@ import { FormlyFieldConfig } from '@ngx-formly/core';
 
 @Component({
   selector: 'app-form-simple',
-  templateUrl: './page-form-simple.component.html',
-  styleUrls: ['./page-form-simple.component.scss'],
+  templateUrl: './page-simple-form.component.html',
+  styleUrls: ['./page-simple-form.component.scss'],
 })
 export class PageFormSimpleComponent {
   @Output() forSubmit: EventEmitter<any> = new EventEmitter();

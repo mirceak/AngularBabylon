@@ -2,6 +2,7 @@
   "name": "front-end",
   "version": "0.0.0",
   "scripts": {
+    "postinstall": "ngcc",
     "ng": "ng",
     "starts": "ng serve --host 0.0.0.0",
     "start": "ng build --watch",

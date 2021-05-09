@@ -49,7 +49,10 @@ export class ProviderIdentity extends ServiceIdentity {
                 data,
                 postData.nextRsa
               );
-              localStorage.setItem('sessionToken', decryptedData.parsedToken.data.sessionToken);
+              localStorage.setItem(
+                'sessionToken',
+                decryptedData.parsedToken.data.sessionToken
+              );
               this.serviceSocket.disconnectSocket();
               this.serviceSocket.serviceApi.socketToken.next(
                 JSON.parse(decryptedData.parsedToken.data.socketToken)
@@ -97,7 +100,7 @@ export class ProviderIdentity extends ServiceIdentity {
       );
       super
         .login({
-          sessionToken: sessionToken,
+          sessionToken,
           rsaEncryptedAes: this.serviceSocket.serviceApi.Cryptography.ab2str(
             rsaEncryptedAes.encryptedAes
           ),
@@ -144,7 +147,7 @@ export class ProviderIdentity extends ServiceIdentity {
             this.serviceSocket.serviceApi.serviceModals.hideLoading();
             return reject();
           } else {
-            var decryptedToken: any = this.serviceSocket.serviceApi.jwtHelper.decodeToken(
+            const decryptedToken: any = this.serviceSocket.serviceApi.jwtHelper.decodeToken(
               decryptedData.token
             );
             localStorage.setItem('sessionToken', decryptedToken.sessionToken);

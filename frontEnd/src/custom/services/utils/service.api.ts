@@ -70,7 +70,7 @@ export class ServiceApi {
     this.statePassword.subscribe(this.encryptAndSaveState.bind(this));
   }
 
-  async decryptStateWithEncryptedPass(encryptedStatePassword: string) {
+  async decryptStateWithEncryptedPass(encryptedStatePassword: string): Promise<void> {
     const statePassword = this.Cryptography.degraveData(
       this.crypto.lock,
       this.crypto.dataLock,
@@ -81,7 +81,7 @@ export class ServiceApi {
     this.decryptState(statePassword);
   }
 
-  async decryptState(statePassword: string) {
+  async decryptState(statePassword: string): Promise<void> {
     const state = JSON.parse(
       decodeURIComponent(
         escape(
@@ -101,7 +101,7 @@ export class ServiceApi {
     });
   }
 
-  async encryptAndSaveState(statePassword: string) {
+  async encryptAndSaveState(statePassword: string): Promise<void> {
     const state = Object.keys(this.state).reduce((total: any, key: string) => {
       total[key] = this.state[key].value;
       return total;
@@ -168,8 +168,8 @@ export class ServiceApi {
 
         const parsedToken = JSON.parse(decryptedToken);
         if (token === this.token) {
-          //main token stream
-          //not socket token stream
+          // main token stream
+          // not socket token stream
           decryptedToken = this.jwtHelper.decodeToken(parsedToken.token);
           this.token.next(decryptedToken);
         }

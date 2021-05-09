@@ -32,14 +32,14 @@ export class AccountContentComponent implements OnInit {
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('pages.account.updating'),
     });
-    await this.providerIdentity.updateAccount(this.form.value)
+    return await this.providerIdentity.updateAccount(this.form.value)
       .then(() => {
         this.serviceModals.showToast({
           status: 'success',
           statusMessage: this.translate.instant('components.toastr.success'),
           title: this.translate.instant('pages.account.updated'),
         });
-        this.serviceApi.serviceModals.hideLoading();
+        this.serviceModals.hideLoading();
       })
       .catch((error) => {
         // handled as toast in services/utils/service.http.ts

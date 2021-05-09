@@ -231,7 +231,7 @@ export class ServiceAuth {
       finalHash
     );
     return {
-      statePassword: statePassword,
+      statePassword,
       sessionJwt: decryptedAes.sessionJwt,
       aesEncrypted: this.serviceApi.Cryptography.ab2str(
         aesEncrypted.ciphertext
@@ -331,7 +331,7 @@ export class ServiceAuth {
       finalHash
     );
     return {
-      statePassword: statePassword,
+      statePassword,
       sessionJwt: decryptedAes.sessionJwt,
       aesEncrypted: this.serviceApi.Cryptography.ab2str(
         aesEncrypted.ciphertext

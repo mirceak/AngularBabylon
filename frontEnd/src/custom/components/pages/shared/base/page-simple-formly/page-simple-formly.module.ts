@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { BaseModuleFormPage } from '@kernel/pages/base/base.module.form-page';
 import { ReactiveFormsModule } from '@angular/forms';
 import { PageSimpleModule } from '@custom/components/pages/shared/base/page-simple/page-simple.module';
-import { PageFormSimpleComponent } from '@custom/components/pages/shared/base/page-simple-formly/page-form-simple.component';
+import { PageFormSimpleComponent } from '@custom/components/pages/shared/base/page-simple-formly/page-simple-form.component';
 import { ServiceHttp } from '@custom/services/utils/service.http';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 

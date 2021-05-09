@@ -1,25 +1,41 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
+// tslint:disable
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Injectable, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 import { HomeContentComponent } from './home-content.component';
+import { TranslateService } from '@ngx-translate/core';
+
+@Injectable()
+class MockTranslateService {
+  translate() {}
+}
 
 describe('HomeContentComponent', () => {
-  let component: HomeContentComponent;
   let fixture: ComponentFixture<HomeContentComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ HomeContentComponent ]
-    })
-    .compileComponents();
-  }));
+  let component: any;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      declarations: [HomeContentComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [
+        { provide: TranslateService, useClass: MockTranslateService },
+      ],
+    }).compileComponents();
     fixture = TestBed.createComponent(HomeContentComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = fixture.debugElement.componentInstance;
   });
 
-  it('should create', () => {
+  afterEach(() => {
+    component.ngOnDestroy = function () {};
+    fixture.destroy();
+  });
+
+  it('should run #constructor()', async () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should run #ngOnInit()', async () => {
+    expect(component.ngOnInit()).toBeUndefined();
   });
 });

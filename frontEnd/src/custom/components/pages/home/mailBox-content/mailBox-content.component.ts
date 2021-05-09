@@ -3,6 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { MailBoxContentService } from '@custom/components/pages/home/services/mailBox-content.service';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
 import { ServiceApi } from '@custom/services/utils/service.api';
+import { ServiceModals } from '@custom/services/utils/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({
@@ -19,46 +20,45 @@ export class MailBoxContentComponent implements OnInit {
     public mailBoxContentService: MailBoxContentService,
     public providerMailBox: ProviderMailBox,
     public translate: TranslateService,
+    public serviceModals: ServiceModals,
     public serviceApi: ServiceApi
   ) {}
 
   ngOnInit(): void {}
 
   async addMailBox(): Promise<any> {
-    this.serviceApi.serviceModals.showLoading({
+    this.serviceModals.showLoading({
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('pages.mailBox.creating'),
     });
-    await this.providerMailBox.reqMailBox(this.form.value)
+    await this.providerMailBox
+      .reqMailBox(this.form.value)
       .then((): void => {
-        this.serviceApi.serviceModals.showToast({
+        this.serviceModals.showToast({
           status: 'success',
-          statusMessage: this.serviceApi.translate.instant(
-            'components.toastr.success'
-          ),
-          title: this.serviceApi.translate.instant('pages.mailBox.created'),
+          statusMessage: this.translate.instant('components.toastr.success'),
+          title: this.translate.instant('pages.mailBox.created'),
         });
-        this.serviceApi.serviceModals.hideLoading();
+        this.serviceModals.hideLoading();
       })
       .catch((error): void => {
         // handled as toast in services/utils/service.http.ts
       });
   }
   async acceptMailBox(): Promise<any> {
-    this.serviceApi.serviceModals.showLoading({
+    this.serviceModals.showLoading({
       title: this.translate.instant('components.swal.loading'),
       html: this.translate.instant('pages.mailBox.acceptingMailBox'),
     });
-    await this.providerMailBox.accMailBox(this.acceptForm.value)
+    await this.providerMailBox
+      .accMailBox(this.acceptForm.value)
       .then((): void => {
-        this.serviceApi.serviceModals.showToast({
+        this.serviceModals.showToast({
           status: 'success',
-          statusMessage: this.serviceApi.translate.instant(
-            'components.toastr.success'
-          ),
-          title: this.serviceApi.translate.instant('pages.mailBox.accepted'),
+          statusMessage: this.translate.instant('components.toastr.success'),
+          title: this.translate.instant('pages.mailBox.accepted'),
         });
-        this.serviceApi.serviceModals.hideLoading();
+        this.serviceModals.hideLoading();
       })
       .catch((error): void => {
         // handled as toast in services/utils/service.http.ts

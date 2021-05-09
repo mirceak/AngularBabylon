@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   NgZone,
@@ -58,8 +57,8 @@ export class ChatContentComponent implements OnInit {
       this.messages.push(
         ...mailBox.messages.local
           .concat(mailBox.messages.remote)
-          .filter((mailBox: any) => {
-            return mailBox.timeStamp != null;
+          .filter((currentMailBox: any) => {
+            return currentMailBox.timeStamp != null;
           })
           .sort((a: any, b: any) => {
             return a.timeStamp - b.timeStamp;
@@ -80,7 +79,7 @@ export class ChatContentComponent implements OnInit {
     this.scroller.nativeElement.scrollTop = Number.MAX_SAFE_INTEGER;
   }
 
-  trackByFn(index: number, item: any) {
+  trackByFn(index: number, item: any): string {
     return item.timeStamp;
   }
 

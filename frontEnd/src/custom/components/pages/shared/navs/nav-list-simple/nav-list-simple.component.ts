@@ -1,9 +1,4 @@
-import {
-  Component,
-  EventEmitter,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
 import { ServiceModals } from '@custom/services/utils/service.modals';
@@ -66,7 +61,7 @@ export class NavListSimpleComponent implements OnInit {
           status: 'success',
           statusMessage: this.translate.instant('components.toastr.success'),
           title: this.translate.instant('components.nav.changedLang'),
-        });        
+        });
         this.serviceModals.hideLoading();
       });
     }
