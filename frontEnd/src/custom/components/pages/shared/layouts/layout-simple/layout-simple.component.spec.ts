@@ -60,9 +60,11 @@ describe('LayoutSimpleComponent', () => {
   });
 
   it('should run #changedNav()', async () => {
-    component.changedNav({
-      toggle: function () {},
-    });
+    expect(
+      component.changedNav({
+        toggle: function () {},
+      })
+    ).toBeUndefined();
   });
 
   it('should run #ngOnDestroy()', async () => {

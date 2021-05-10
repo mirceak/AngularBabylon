@@ -31,6 +31,6 @@ describe('PageSimpleComponent', () => {
   });
 
   it('should run #ngOnInit()', async () => {
-    component.ngOnInit();
+    expect(component.ngOnInit()).toBeUndefined();
   });
 });

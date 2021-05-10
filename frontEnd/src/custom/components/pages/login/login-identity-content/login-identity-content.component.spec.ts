@@ -89,7 +89,11 @@ describe('LoginIdentityContentComponent', () => {
     };
     component.form = component.form || {};
     component.form.value = 'value';
-    component.internationalization.setLang = observableOf({});
+    component.internationalization.setLang = {
+      subscribe: (method: any) => {
+        return { unsubscribe: () => {}, callback: method() };
+      },
+    };
     await component.login();
     expect(component.serviceModals.showLoading).toHaveBeenCalled();
     expect(component.serviceModals.showToast).toHaveBeenCalled();

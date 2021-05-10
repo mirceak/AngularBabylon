@@ -71,7 +71,7 @@ describe('ChatContentComponent', () => {
     component.scroller.nativeElement = {
       scrollTop: {},
     };
-    component.scrollToBottom();
+    expect(component.scrollToBottom()).toBeUndefined();
   });
 
   it('should run #trackByFn()', async () => {
