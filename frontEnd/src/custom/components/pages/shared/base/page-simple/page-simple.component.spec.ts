@@ -1,25 +1,36 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+// tslint:disable
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA, NO_ERRORS_SCHEMA } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PageSimpleComponent } from './page-simple.component';
 
 describe('PageSimpleComponent', () => {
-  let component: PageSimpleComponent;
   let fixture: ComponentFixture<PageSimpleComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ PageSimpleComponent ]
-    })
-    .compileComponents();
-  }));
+  let component: any;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, ReactiveFormsModule],
+      declarations: [PageSimpleComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [],
+    })
+      .overrideComponent(PageSimpleComponent, {})
+      .compileComponents();
     fixture = TestBed.createComponent(PageSimpleComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = fixture.debugElement.componentInstance;
+  });
+  
+  afterEach(() => {
+    component.ngOnDestroy = function () {};
+    fixture.destroy();
   });
 
-  it('should create', () => {
+  it('should run #constructor()', async () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should run #ngOnInit()', async () => {
+    component.ngOnInit();
   });
 });

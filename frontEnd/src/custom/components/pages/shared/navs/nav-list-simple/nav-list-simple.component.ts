@@ -27,7 +27,7 @@ export class NavListSimpleComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  logout(): void {
+  async logout(): Promise<void> {
     this.serviceModals
       .confirm({
         html: this.translate.instant('components.swal.confirmChanges', {

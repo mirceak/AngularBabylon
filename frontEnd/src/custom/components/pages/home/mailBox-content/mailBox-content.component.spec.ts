@@ -9,6 +9,7 @@ import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mail
 import { TranslateService } from '@ngx-translate/core';
 import { ServiceApi } from '@custom/services/utils/service.api';
 import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceAuth } from '@custom/services/auth/service.auth';
 
 @Injectable()
 class MockTranslateService {

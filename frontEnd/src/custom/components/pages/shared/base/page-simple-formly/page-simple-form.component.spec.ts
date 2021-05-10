@@ -1,25 +1,39 @@
-import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
-
+// tslint:disable
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PageFormSimpleComponent } from './page-simple-form.component';
 
-describe('FormSimpleComponent', () => {
-  let component: PageFormSimpleComponent;
+describe('PageFormSimpleComponent', () => {
   let fixture: ComponentFixture<PageFormSimpleComponent>;
-
-  beforeEach(waitForAsync(() => {
-    TestBed.configureTestingModule({
-      declarations: [ PageFormSimpleComponent ]
-    })
-    .compileComponents();
-  }));
+  let component: any;
 
   beforeEach(() => {
+    TestBed.configureTestingModule({
+      imports: [FormsModule, ReactiveFormsModule],
+      declarations: [PageFormSimpleComponent],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA],
+      providers: [],
+    })
+      .overrideComponent(PageFormSimpleComponent, {})
+      .compileComponents();
     fixture = TestBed.createComponent(PageFormSimpleComponent);
-    component = fixture.componentInstance;
-    fixture.detectChanges();
+    component = fixture.debugElement.componentInstance;
   });
 
-  it('should create', () => {
+  afterEach(() => {
+    component.ngOnDestroy = function () {};
+    fixture.destroy();
+  });
+
+  it('should run #constructor()', async () => {
     expect(component).toBeTruthy();
+  });
+
+  it('should run #emitSubmit()', async () => {
+    spyOn(component.forSubmit, 'emit');
+    component.fields = [];
+    component.emitSubmit();
+    expect(component.forSubmit.emit).toHaveBeenCalled();
   });
 });
