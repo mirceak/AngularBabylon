@@ -20,7 +20,7 @@ export var getRandomValues = webcrypto.getRandomValues;
     writeFileSync(
       path.join(
         __dirname,
-        "../../..//src/certs/jwtSessionToken/jwtSessionTokenLock.json"
+        "../../../src/certs/jwtSessionToken/jwtSessionTokenLock.json"
       ),
       JSON.stringify(jwtSessionTokenLock)
     );
