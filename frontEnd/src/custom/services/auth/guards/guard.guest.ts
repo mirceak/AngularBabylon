@@ -12,15 +12,15 @@ import { ServiceAuth } from '../service.auth';
 @Injectable({ providedIn: 'root' })
 export class GuestGuard implements CanActivate {
   constructor(
-    private router: Router,
-    private serviceAuth: ServiceAuth,
+    public router: Router,
+    public serviceAuth: ServiceAuth,
     public translate: TranslateService,
-    private serviceModals: ServiceModals
+    public serviceModals: ServiceModals
   ) {}
 
   async canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
+    route: ActivatedRouteSnapshot | null,
+    state: RouterStateSnapshot | any
   ): Promise<boolean> {
     if (this.serviceAuth.serviceApi.loggedIn.value) {
       this.serviceModals.showToast({

@@ -1,27 +1,19 @@
 import { Injectable } from '@angular/core';
 import { ServiceModals } from '@custom/services/utils/service.modals';
-import {
-  Router,
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-} from '@angular/router';
+import { Router, CanActivate } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ServiceAuth } from '../service.auth';
 
 @Injectable({ providedIn: 'root' })
 export class GuardAuthIdentity implements CanActivate {
   constructor(
-    private router: Router,
-    private serviceAuth: ServiceAuth,
-    private translate: TranslateService,
-    private serviceModals: ServiceModals
+    public router: Router,
+    public serviceAuth: ServiceAuth,
+    public translate: TranslateService,
+    public serviceModals: ServiceModals
   ) {}
 
-  async canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot
-  ): Promise<boolean> {
+  async canActivate(): Promise<boolean> {
     if (this.serviceAuth.serviceApi.sessionToken.value) {
       this.serviceModals.showToast({
         status: 'error',
