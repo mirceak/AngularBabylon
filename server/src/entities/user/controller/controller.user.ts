@@ -90,21 +90,23 @@ class ControllerUser extends BaseController {
         });
         newUser.save();
         var rsaEncryptedAes = await Cryptography.getRsaEncryptedAesKey(
-          validatedSessionData.nextRsa
+          validatedSessionData.json.nextRsa
         );
         var aesEncrypted = await Cryptography.aesEncrypt(
           JSON.stringify({
             token: await jwt.sign(
               {
-                nextRsa: req.body.nextRsa.pubkData,
+                nextRsa: validatedSessionData.nextRsa,
                 sessionJwt: validatedSessionData.sessionJwt,
+                socketToken: validatedSessionData.socketToken,
+                sessionToken: validatedSessionData.sessionToken,
               },
               jwtSessionToken.jwtSessionTokenElipticKey,
               { expiresIn: 60 * 30, algorithm: "ES512" }
             ),
           }),
           rsaEncryptedAes.aesKey,
-          validatedSessionData.nextRsa
+          validatedSessionData.json.nextRsa
         );
         await ReferralService.findOne({
           email: req.body.sessionJwt.email,
@@ -234,7 +236,7 @@ class ControllerUser extends BaseController {
     );
     identity.save();
     return {
-      nextRsa: json.nextRsa,
+      nextRsa: jwtTokenRsa.nextRsa,
       sessionJwt: sessionJwt,
       json: json,
       socketToken: JSON.stringify({

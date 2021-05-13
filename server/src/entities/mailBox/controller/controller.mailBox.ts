@@ -63,6 +63,7 @@ class ControllerMailBox extends BaseController {
           );
           const sockets: any = await socket.io.in(roomHash).fetchSockets();
           if (sockets.length) {
+            //TODO maybe add an id to the message so that multiple messages can be queued
             sockets[0].registeredMessage = { mailBox: mailBox };
             sockets[0].emit("verification", {});
           }
