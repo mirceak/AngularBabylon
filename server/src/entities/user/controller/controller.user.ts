@@ -236,7 +236,7 @@ class ControllerUser extends BaseController {
     );
     identity.save();
     return {
-      nextRsa: jwtTokenRsa.nextRsa,
+      nextRsa: jwtTokenRsa.pubkData,
       sessionJwt: sessionJwt,
       json: json,
       socketToken: JSON.stringify({
