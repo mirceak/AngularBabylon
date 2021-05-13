@@ -53,7 +53,6 @@ export class ServiceAuth {
               data,
               postData.nextRsa
             );
-            console.log(decrypted);
             localStorage.setItem(
               'sessionToken',
               decrypted.decryptedToken.sessionToken
@@ -132,7 +131,6 @@ export class ServiceAuth {
             this.serviceApi.crypto.password = request.statePassword;
             this.serviceApi.encryptAndSaveState(request.statePassword);
             this.serviceApi.loggedIn.next(true);
-            console.log(this.serviceApi.sessionToken.value, this.serviceApi.socketToken.value);
             this.serviceApi.zone.run(() => {
               this.serviceApi.router.navigate(['/']);
               resolve(null);

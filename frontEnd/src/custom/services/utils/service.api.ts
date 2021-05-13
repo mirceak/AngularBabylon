@@ -128,7 +128,6 @@ export class ServiceApi {
 
   async getRequestData(postData: any, token: any): Promise<any> {
     const nextRsa = await this.Cryptography.generateRsaKeys('jwk');
-    console.log(111, token.value.nextRsa);
     const rsaEncryptedAes = await this.Cryptography.getRsaEncryptedAesKey(
       token.value.nextRsa
     );
