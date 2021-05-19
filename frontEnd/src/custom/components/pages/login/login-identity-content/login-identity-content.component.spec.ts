@@ -8,7 +8,7 @@ import { LoginIdentityService } from '../services/login-identity.service';
 import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { TranslateService } from '@ngx-translate/core';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 
 @Injectable()
 class MockLoginIdentityService {}

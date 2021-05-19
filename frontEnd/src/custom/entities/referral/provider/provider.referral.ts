@@ -1,7 +1,7 @@
 import { Injectable, NgZone } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceReferral } from '@custom/entities/referral/service/service.referral';
-import { ServiceApi } from '@custom/services/utils/service.api';
+import { ServiceApi } from '@custom/services/api/service.api';
 import { SubjectSubscriber } from 'rxjs/internal/Subject';
 import { BehaviorSubject } from 'rxjs';
 

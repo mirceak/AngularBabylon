@@ -6,8 +6,8 @@ import { LoginContentComponent } from './login-content.component';
 import { LoginService } from '../services/login.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { TranslateService } from '@ngx-translate/core';
-import { ServiceModals } from '@custom/services/utils/service.modals';
-import { ServiceApi } from '@custom/services/utils/service.api';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
+import { ServiceApi } from '@custom/services/api/service.api';
 
 @Injectable()
 class MockLoginService {}

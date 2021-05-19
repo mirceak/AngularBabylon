@@ -6,7 +6,7 @@ import { RegisterContentComponent } from './register-content.component';
 import { RegisterService } from '../services/register.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { TranslateService } from '@ngx-translate/core';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 
 @Injectable()
 class MockRegisterService {}

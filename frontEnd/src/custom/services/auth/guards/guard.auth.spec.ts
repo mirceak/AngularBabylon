@@ -6,7 +6,7 @@ import { GuardAuth } from './guard.auth';
 import { Router } from '@angular/router';
 import { ServiceAuth } from '../service.auth';
 import { TranslateService } from '@ngx-translate/core';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 
 @Injectable()
 class MockRouter {

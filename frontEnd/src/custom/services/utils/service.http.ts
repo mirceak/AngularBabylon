@@ -8,7 +8,7 @@ import { Injectable } from '@angular/core';
 
 import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
-import { ServiceApi } from './service.api';
+import { ServiceApi } from '../api/service.api';
 
 @Injectable({
   providedIn: 'root',

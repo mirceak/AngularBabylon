@@ -52,18 +52,33 @@ export class ChatContentComponent implements OnInit {
       )[0]
     );
 
-    this.providerMailBox.mailBoxObservable.subscribe((mailBox: any) => {
+    this.providerMailBox.mailBoxObservable.subscribe(async (mailBox: any) => {
       this.messages.splice(0);
-      this.messages.push(
-        ...mailBox.messages.local
-          .concat(mailBox.messages.remote)
-          .filter((currentMailBox: any) => {
-            return currentMailBox.timeStamp != null;
-          })
-          .sort((a: any, b: any) => {
-            return a.timeStamp - b.timeStamp;
-          })
-      );
+      var concat = [...mailBox.messages.local, ...mailBox.messages.remote];
+      concat = await Promise.all(concat.map(async (currentMessage: any) => {
+        const key =
+          await this.providerIdentity.serviceSocket.serviceApi.Cryptography.importAesKey(
+            mailBox.aesPubkData
+          );
+        const message = JSON.parse(
+          await this.providerIdentity.serviceSocket.serviceApi.Cryptography.aesDecrypt(
+            this.providerIdentity.serviceSocket.serviceApi.Cryptography.str2ab(
+              currentMessage.ciphertext
+            ),
+            key,
+            mailBox.secret3
+          )
+        );
+        message.remote = currentMessage.remote;
+        return message;
+      }))
+      concat = concat.filter((currentMailBox: any) => {
+        return currentMailBox.timeStamp != null;
+      })
+      concat = concat.sort((a: any, b: any) => {
+        return a.timeStamp - b.timeStamp;
+      })
+      this.messages.push(...concat);
       this.zone.run(() => {
         setTimeout(() => {
           this.scrollToBottom();
@@ -96,12 +111,14 @@ export class ChatContentComponent implements OnInit {
       .then(() => {
         this.providerIdentity.serviceSocket.serviceApi.serviceModals.showToast({
           status: 'success',
-          statusMessage: this.providerIdentity.serviceSocket.serviceApi.translate.instant(
-            'components.toastr.success'
-          ),
-          title: this.providerIdentity.serviceSocket.serviceApi.translate.instant(
-            'pages.chat.sent'
-          ),
+          statusMessage:
+            this.providerIdentity.serviceSocket.serviceApi.translate.instant(
+              'components.toastr.success'
+            ),
+          title:
+            this.providerIdentity.serviceSocket.serviceApi.translate.instant(
+              'pages.chat.sent'
+            ),
         });
         this.providerIdentity.serviceSocket.serviceApi.serviceModals.hideLoading();
       })

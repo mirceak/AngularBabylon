@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { AccountContentService } from '@custom/components/pages/home/services/account-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 import { TranslateService } from '@ngx-translate/core';
-import { ServiceApi } from '@custom/services/utils/service.api';
+import { ServiceApi } from '@custom/services/api/service.api';
 import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';
 
 @Component({

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { ReferralContentService } from '@custom/components/pages/home/services/referral-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral';
-import { ServiceApi } from '@custom/services/utils/service.api';
+import { ServiceApi } from '@custom/services/api/service.api';
 
 @Component({
   selector: 'app-referral-content',

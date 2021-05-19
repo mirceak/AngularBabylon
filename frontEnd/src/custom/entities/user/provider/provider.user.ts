@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceUser } from '@custom/entities/user/service/service.user';
-import { ServiceSocket } from '@custom/services/utils/service.socket';
+import { ServiceSocket } from '@custom/services/api/service.socket';
 import { ModelUser } from '@custom/entities/user/model/model.user';
 
 @Injectable({

@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 import { Router } from '@angular/router';
 import { ServiceAuth } from '../service.auth';
 import { TranslateService } from '@ngx-translate/core';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 import { GuardAuthIdentity } from './guard.auth-identity';
 
 @Injectable()

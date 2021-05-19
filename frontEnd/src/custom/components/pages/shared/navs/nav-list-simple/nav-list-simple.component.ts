@@ -1,7 +1,7 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 import { ProviderUser } from '@custom/entities/user/provider/provider.user';
 import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';

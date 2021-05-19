@@ -10,9 +10,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AccountContentComponent } from './account-content.component';
 import { AccountContentService } from '../services/account-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
-import { ServiceApi } from '@custom/services/utils/service.api';
+import { ServiceApi } from '@custom/services/api/service.api';
 import { TranslateService } from '@ngx-translate/core';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';
 
 @Injectable()

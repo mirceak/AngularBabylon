@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MailBoxContentService } from '@custom/components/pages/home/services/mailBox-content.service';
 import { ProviderMailBox } from '@custom/entities/mailBox/provider/provider.mailBox';
-import { ServiceApi } from '@custom/services/utils/service.api';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceApi } from '@custom/services/api/service.api';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

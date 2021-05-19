@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ProviderUser } from '@custom/entities/user/provider/provider.user';
 import { ProviderIdentity } from '@custom/entities/identity/provider/provider.identity';
-import { ServiceApi } from '../utils/service.api';
+import { ServiceApi } from '../api/service.api';
 import { Router } from '@angular/router';
 
 @Injectable({

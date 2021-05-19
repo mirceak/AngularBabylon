@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { LoginIdentityService } from '@custom/components/pages/login/services/login-identity.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
 import { ServiceInternationalization } from '@custom/services/utils/service.internationalization';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 import { TranslateService } from '@ngx-translate/core';
 
 @Component({

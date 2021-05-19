@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { ServiceIdentity } from '../service/service.identity';
-import { ServiceSocket } from '@custom/services/utils/service.socket';
+import { ServiceSocket } from '@custom/services/api/service.socket';
 
 @Injectable({
   providedIn: 'root',

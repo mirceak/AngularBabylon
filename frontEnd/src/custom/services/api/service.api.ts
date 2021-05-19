@@ -3,7 +3,7 @@ import _Cryptography from '../../../kernel/module.cryptography';
 
 import { TranslateService } from '@ngx-translate/core';
 import { JwtHelperService } from '@auth0/angular-jwt';
-import { ServiceModals } from './service.modals';
+import { ServiceModals } from '../plugins/service.modals';
 import { Router } from '@angular/router';
 import { BehaviorSubject, ReplaySubject, Subject } from 'rxjs';
 

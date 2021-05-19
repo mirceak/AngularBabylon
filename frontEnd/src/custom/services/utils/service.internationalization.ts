@@ -20,7 +20,7 @@ export class ServiceInternationalization {
     this.lang = localStorage.getItem('lang') || this.lang;
     this.translate.use(this.lang);
 
-    this.providerIdentity.serviceSocket.serviceApi.loggedIn.subscribe((val) => {
+    this.providerIdentity.serviceSocket.serviceApi.loggedIn.subscribe((val: any) => {
       if (val) {
         if (
           this.lang !==

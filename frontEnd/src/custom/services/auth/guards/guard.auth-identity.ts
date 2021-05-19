@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 import { Router, CanActivate } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ServiceAuth } from '../service.auth';

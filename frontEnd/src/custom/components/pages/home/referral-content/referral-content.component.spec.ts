@@ -5,9 +5,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ReferralContentComponent } from './referral-content.component';
 import { ReferralContentService } from '../services/referral-content.service';
 import { ServiceAuth } from '@custom/services/auth/service.auth';
-import { ServiceApi } from '@custom/services/utils/service.api';
+import { ServiceApi } from '@custom/services/api/service.api';
 import { TranslateService } from '@ngx-translate/core';
-import { ServiceModals } from '@custom/services/utils/service.modals';
+import { ServiceModals } from '@custom/services/plugins/service.modals';
 import { ProviderReferral } from '@custom/entities/referral/provider/provider.referral';
 
 @Injectable()
